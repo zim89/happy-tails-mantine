@@ -1,0 +1,28 @@
+@import "@mantine/core/styles.css";
+@tailwind components;
+@tailwind utilities;
+
+@layer tailwind {
+  @tailwind base;
+}
+
+@layer components {
+}
+
+
+/*noinspection CssInvalidFunction*/
+.mantine-Container-root {
+  width: 100%;
+  max-width: rem(414px);
+  padding: 0 rem(20px);
+
+  @media (min-width: rem(768px)) {
+    max-width: rem(768px);
+    padding: 0 rem(36px);
+  }
+
+  @media (min-width: rem(1280px)) {
+    max-width: rem(1280px);
+    padding: 0 rem(56px);
+  }
+}
