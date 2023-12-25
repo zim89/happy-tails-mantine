@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { navLinks } from '@/lib/data/data';
+import { navLinks } from '@/lib/data';
 import Link from 'next/link';
 import { Group } from '@mantine/core';
 
