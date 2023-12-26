@@ -11,7 +11,9 @@ import Footer from '@/modules/Footer';
 const lato = Lato({
   weight: ['400', '700'],
   subsets: ['latin'],
+  style: ['normal'],
   variable: '--font-lato',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -34,6 +36,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer/>
+          <main>{children}</main>
         </MantineProvider>
       </body>
     </html>
