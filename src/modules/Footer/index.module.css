@@ -1,0 +1,15 @@
+.footer{
+    @apply flex flex-col relative items-start bg-[#161616] py-[36px] px-[56px];
+}
+
+.text_container{
+    @apply flex flex-col gap-2 w-[466px]
+}
+
+.contact{
+    @apply font-bold text-white font-lato text-xl
+}
+
+.text{
+    @apply font-lato font-normal text-lg text-white
+}
