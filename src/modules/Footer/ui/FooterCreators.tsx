@@ -1,21 +1,11 @@
-import Link from 'next/link'
 import React from 'react'
+import { Anchor } from '@mantine/core';
 
 export default function FooterCreators () {
   return (
     <div className="w-full flex justify-between text-white">
-        <div className="flex gap-1 items-center text-white font-normal text-base">
-            <div>
-                @ 2023
-            </div>
-            <div className="">
-                Happy Tails
-            </div>
-        </div>
-        <div className="flex items-center text-white text-xl font-bold font-lato gap-1">
-            <span> Website by</span>
-            <Link href={'https://teamchallenge.io/team/5/public'} target='blanck' className='underline'>Team</Link>
-        </div>
+        <p className=" text-primary text-xs leading-[18px] lg:text-base">@ 2023 Happy Tails</p>
+        <p className='text-xs leading-[18px] font-bold text-primary md:text-xl md:leading-6'>Website by <a href='https://teamchallenge.io/team/5/public' target='_blank' className='underline'>Team</a></p>
     </div>
   )
 }

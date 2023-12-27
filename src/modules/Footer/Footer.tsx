@@ -5,10 +5,10 @@ import FooterCreators from './ui/FooterCreators';
 
 export default function Footer() {
   return (
-    <div className='flex flex-col relative items-start bg-[#161616] py-[36px] px-[56px] gap-8 '>
+    <footer className='flex flex-col relative items-start bg-secondary py-6 px-4 gap-6  md:p-8 md:gap-[36px] lg:py-9 lg:px-14'>
          <FooterInfo/>
          <FooterLinks/>
          <FooterCreators/>
-    </div>
+    </footer>
   )
 }
