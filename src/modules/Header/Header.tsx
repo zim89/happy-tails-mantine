@@ -10,9 +10,9 @@ import Navbar from '@/modules/Header/ui/Navbar';
 
 export default function Header() {
   return (
-    <header className='border-b-brand-grey-300 border-b'>
+    <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-10 border-b border-b-brand-grey-300 bg-primary'>
       <Container>
-        <div className='flex items-center justify-between py-4'>
+        <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
           <div className='flex gap-4'>
             <BurgerMenu />
             <span className='md:hidden'>
@@ -30,20 +30,20 @@ export default function Header() {
               href='/auth'
               className='flex items-center justify-center text-secondary'
             >
-              <UserRound className='h-6 w-6' />
+              <UserRound className='iconBtn' />
             </Link>
             <Link
               href='/favorites'
               className='hidden lg:flex lg:items-center lg:justify-center'
             >
-              <Heart className='h-6 w-6' />
+              <Heart className='iconBtn' />
             </Link>
 
             <Link
               href='/cart'
               className='flex items-center justify-center text-secondary'
             >
-              <ShoppingBag className='h-6 w-6' />
+              <ShoppingBag className='iconBtn' />
             </Link>
           </div>
         </div>
