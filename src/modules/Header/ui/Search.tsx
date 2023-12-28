@@ -4,8 +4,11 @@ import { UnstyledButton } from '@mantine/core';
 
 export default function SearchMenu() {
   return (
-    <UnstyledButton className='flex items-center justify-center'>
-      <Search className='h-6 w-6' />
+    <UnstyledButton
+      className='flex items-center justify-center'
+      aria-label='Search'
+    >
+      <Search className='iconBtn' />
     </UnstyledButton>
   );
 }

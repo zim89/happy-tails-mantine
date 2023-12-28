@@ -9,7 +9,7 @@ import Header from '@/modules/Header';
 import Footer from '@/modules/Footer';
 
 const lato = Lato({
-  weight: ['400', '700'],
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
   style: ['normal'],
   variable: '--font-lato',
@@ -31,11 +31,11 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${lato.variable}`}>
+      <body className={`${lato.variable} pt-[74px] lg:pt-[122px]`}>
         <MantineProvider theme={theme}>
           <Header />
           <main>{children}</main>
-          <Footer/>
+          <Footer />
         </MantineProvider>
       </body>
     </html>
