@@ -34,7 +34,6 @@ export default function RootLayout({
       <body className={`${lato.variable}`}>
         <MantineProvider theme={theme}>
           <Header />
-          {children}
           <main>{children}</main>
           <Footer/>
         </MantineProvider>
