@@ -7,7 +7,7 @@ export const categoryApi = createApi({
     baseUrl: 'http://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
-    getAllCategories: builder.query({
+    findAll: builder.query({
       query: ({ page, limit }) => `category?page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
@@ -17,10 +17,10 @@ export const categoryApi = createApi({
             ]
           : [{ type: 'Categories', id: 'LIST' }],
     }),
-    getOneCategory: builder.query({
+    findOne: builder.query({
       query: (id = 1) => `category/${id}`,
     }),
-    // addProduct: builder.mutation({
+    // create: builder.mutation({
     //   query(body) {
     //     return {
     //       url: 'products',
@@ -33,7 +33,7 @@ export const categoryApi = createApi({
     //   },
     //   invalidatesTags: [{ type: 'Products', id: 'LIST' }]
     // }),
-    // editProduct: builder.mutation({
+    // update: builder.mutation({
     //   query({body}) {
     //     return {
     //       url: `products`,
@@ -46,7 +46,7 @@ export const categoryApi = createApi({
     //   },
     //   invalidatesTags: [{ type: 'Products', id: 'LIST' }]
     // }),
-    // deleteProduct: builder.mutation({
+    // remove: builder.mutation({
     //   query(id) {
     //     return {
     //       url: `products/${id}`,
@@ -59,9 +59,9 @@ export const categoryApi = createApi({
 });
 
 export const {
-  useGetAllCategoriesQuery,
-  useGetOneCategoryQuery,
-  // useAddProductMutation,
-  // useEditProductMutation,
-  // useDeleteProductMutation,
+  useFindAllQuery,
+  useFindOneQuery,
+  // useCreateMutation,
+  // useUpdateMutation,
+  // useRemoveMutation,
 } = categoryApi;

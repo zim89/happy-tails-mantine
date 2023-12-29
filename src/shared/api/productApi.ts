@@ -7,17 +7,20 @@ export const productApi = createApi({
     baseUrl: 'http://18.193.85.240:5000/',
   }),
   endpoints: (builder) => ({
-    getAllProducts: builder.query({
+    findAll: builder.query({
       query: ({ page, limit }) => `products?page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.content.map(({ id }) => ({ type: 'Products', id })),
+              ...result.content.map(({ id }) => ({
+                type: 'Products',
+                id,
+              })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
-    getProductsByCategory: builder.query({
+    findAllByCategory: builder.query({
       query: ({ page, limit, id }) =>
         `product?categoryId=${id}&page=${page}&size=${limit}`,
       providesTags: (result) =>
@@ -28,7 +31,7 @@ export const productApi = createApi({
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
-    searchProductsByName: builder.query({
+    findAllByName: builder.query({
       query: ({ page, limit, value }) =>
         `products/search?name=${value}&page=${page}&size=${limit}`,
       providesTags: (result) =>
@@ -39,10 +42,10 @@ export const productApi = createApi({
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
-    getOneProduct: builder.query({
+    findOne: builder.query({
       query: (id = 1) => `products/${id}`,
     }),
-    addProduct: builder.mutation({
+    create: builder.mutation({
       query(body) {
         return {
           url: 'products',
@@ -55,7 +58,7 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    editProduct: builder.mutation({
+    update: builder.mutation({
       query({ body }) {
         return {
           url: `products`,
@@ -68,7 +71,7 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    deleteProduct: builder.mutation({
+    remove: builder.mutation({
       query(id) {
         return {
           url: `products/${id}`,
@@ -81,11 +84,11 @@ export const productApi = createApi({
 });
 
 export const {
-  useGetAllProductsQuery,
-  useGetProductsByCategoryQuery,
-  useSearchProductsByNameQuery,
-  useGetOneProductQuery,
-  useAddProductMutation,
-  useEditProductMutation,
-  useDeleteProductMutation,
+  useFindAllQuery,
+  useFindAllByCategoryQuery,
+  useFindAllByNameQuery,
+  useFindOneQuery,
+  useCreateMutation,
+  useUpdateMutation,
+  useRemoveMutation,
 } = productApi;
