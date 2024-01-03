@@ -28,19 +28,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AppProviders>
-      <html lang='en'>
-        <head>
-          <ColorSchemeScript />
-        </head>
-        <body className={`${lato.variable} pt-[74px] lg:pt-[122px]`}>
+    <html lang='en'>
+      <head>
+        <ColorSchemeScript />
+      </head>
+      <body className={`${lato.variable} pt-[74px] lg:pt-[122px]`}>
+        <AppProviders>
           <MantineProvider theme={theme}>
             <Header />
             <main>{children}</main>
             <Footer />
           </MantineProvider>
-        </body>
-      </html>
-    </AppProviders>
+        </AppProviders>
+      </body>
+    </html>
   );
 }
