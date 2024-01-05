@@ -1,29 +1,25 @@
-import React from 'react';
-import { Image } from '@mantine/core';
+import Image from 'next/image';
 import Link from 'next/link';
+
+import logoMobile from '@/assets/logo/logo-mobile.svg';
+import logoTablet from '@/assets/logo/logo-tablet.svg';
+import logoDesktop from '@/assets/logo/logo-desktop.svg';
+
+const logoAlt =
+  "The logo depicts a simplified, right-facing, bright orange dog's head with a large, floppy ear and a single black-dot eye, encased within an black circular border.";
 
 function Logo() {
   return (
     <Link href='/'>
+      <Image src={logoMobile} alt={logoAlt} className='md:hidden' />
       <Image
-        src='/logo/logo-mobile.svg'
-        alt='Logo image'
-        w={42}
-        h={42}
-        className='md:hidden'
+        src={logoTablet}
+        alt={`${logoAlt} After logo placed text: Happy Tails`}
+        className='hidden md:max-lg:block'
       />
       <Image
-        src='/logo/logo-tablet.svg'
-        alt='Logo image'
-        h={42}
-        w={237}
-        className='hidden md:block lg:hidden'
-      />
-      <Image
-        src='/logo/logo-desktop.svg'
-        alt='Logo image'
-        h={52}
-        w={282}
+        src={logoDesktop}
+        alt={`${logoAlt} After logo placed text: Happy Tails`}
         className='hidden lg:block'
       />
     </Link>
