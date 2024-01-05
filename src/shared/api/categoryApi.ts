@@ -15,3 +15,7 @@ export type Category = {
 export const getAllCategories = (): Category[] => {
   return categories;
 };
+
+export const getCategoryByPath = (path: string): Category | undefined => {
+  return categories.find((category) => category.path === path);
+};
