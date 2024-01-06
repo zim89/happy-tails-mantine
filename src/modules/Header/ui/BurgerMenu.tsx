@@ -7,8 +7,9 @@ import { AlignLeft, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { categoryLinks, menuLinks } from '../lib/data';
+import { Category } from '@/shared/api/categoryApi';
 
-export default function BurgerMenu() {
+export default function BurgerMenu({ categories }: { categories: Category[] }) {
   const [opened, { open, close, toggle }] = useDisclosure(false);
   const isDesktop = useMediaQuery(`(min-width: ${em(1280)})`);
   const path = usePathname();
@@ -96,29 +97,29 @@ export default function BurgerMenu() {
 
           {/*  Navbar */}
           <ul className='lg:flex lg:gap-3'>
-            {categoryLinks.map((link) => (
+            {categories.map((category) => (
               <li
-                key={link.label}
+                key={category.id}
                 className='border-b border-b-brand-grey-300 lg:border-none'
               >
                 <Link
-                  href={link.href}
+                  href={'/' + category.path}
                   onClick={close}
                   className={clsx(
                     'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                    path === link.href && 'font-bold'
+                    path === '/' + category.path && 'font-bold'
                   )}
                 >
+                  {/* TODO: Add actual image from backend */}
                   <Image
-                    src={link.icon}
-                    alt={link.label}
+                    src='/icons/products-ico.svg'
+                    alt={category.name}
                     h={{ base: 32, lg: 42 }}
                     w='auto'
                     fit='contain'
                   />
-                  <p className='navLink'>
-                    {isDesktop ? link.short : link.label}
-                  </p>
+                  {/* TODO: Add shorter name on mobile */}
+                  <p className='navLink'>{category.name}</p>
                 </Link>
               </li>
             ))}
