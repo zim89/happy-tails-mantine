@@ -7,14 +7,17 @@ import BurgerMenu from '@/modules/Header/ui/BurgerMenu';
 import SearchMenu from '@/modules/Header/ui/Search';
 import Logo from '@/modules/Header/ui/Logo';
 import Navbar from '@/modules/Header/ui/Navbar';
+import { getAllCategories } from '@/shared/api/categoryApi';
 
 export default function Header() {
+  const categories = getAllCategories();
+
   return (
     <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-10 border-b border-b-brand-grey-300 bg-primary'>
       <Container>
         <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
           <div className='flex gap-4'>
-            <BurgerMenu />
+            <BurgerMenu categories={categories} />
             <span className='md:hidden'>
               <SearchMenu />
             </span>
@@ -48,7 +51,7 @@ export default function Header() {
           </div>
         </div>
       </Container>
-      <Navbar />
+      <Navbar categories={categories} />
     </header>
   );
 }
