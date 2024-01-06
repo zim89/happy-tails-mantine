@@ -16,7 +16,7 @@ const config: Config = {
     container: {
       center: true,
       padding: {
-        DEFAULT: '20px',
+        DEFAULT: '16px',
         md: '36px',
         lg: '56px',
       },
@@ -28,16 +28,18 @@ const config: Config = {
       colors: {
         primary: '#fdfdfd',
         secondary: '#161616',
+        'brand-blue': '#4285F4',
+        'brand-yellow': '#FBBC04',
         'brand-orange': {
-          100: '#FDF0EB',
-          200: '#FCE9E1',
-          300: '#F8D1C1',
-          400: '#E86936',
-          500: '#D15F31',
-          600: '#BA542B',
-          700: '#AE4F29',
-          800: '#8B3F20',
-          900: '#682F18',
+          100: '#FEF4E9',
+          200: '#FDEFDE',
+          300: '#FBDEBB',
+          400: '#F39324',
+          500: '#DB8420',
+          600: '#C2761D',
+          700: '#B66E1B',
+          800: '#925816',
+          900: '#6D4210',
         },
         'brand-grey': {
           100: '#FAFAFA',

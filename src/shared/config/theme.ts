@@ -5,12 +5,11 @@ const theme = createTheme({
   black: '#161616',
   colors: {},
   primaryShade: 4,
-  // defaultRadius: 'sm',
   fontFamily: 'Lato',
   breakpoints: {
-    xs: em(414),
+    sm: em(414),
     md: em(768),
-    xl: em(1280),
+    lg: em(1280),
   },
 });
 
