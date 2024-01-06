@@ -4,11 +4,9 @@ import React from 'react';
 export function generateStaticParams() {
   const categories = getAllCategories();
 
-  return categories
-    .map((category) => ({
-      category: category.path,
-    }))
-    .concat({ category: 'products' });
+  return categories.map((category) => ({
+    category: category.path,
+  }));
 }
 
 export const dynamicParams = false;
