@@ -24,7 +24,7 @@ export default function CatalogPage({
   const category = getCategoryByPath(params.category);
 
   return (
-    <div className='pb-6 pt-2'>
+    <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
       <div className='container text-center'>
         <Breadcrumbs
           classNames={{
