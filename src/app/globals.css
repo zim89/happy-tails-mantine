@@ -45,6 +45,10 @@
     @apply relative text-lg after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-secondary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full;
   }
 
+  .navLinkFooter {
+    @apply relative font-bold uppercase after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full;
+  }
+
   /*BADGE*/
   .badge {
     @apply inline-block rounded-[40px] px-2 py-1 text-sm font-bold uppercase leading-normal text-primary;
