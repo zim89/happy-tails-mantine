@@ -31,7 +31,7 @@ export default function CatalogPage({
         <Breadcrumbs
           classNames={{
             root: '[--bc-separator-margin:2px] text-xs/normal mb-4 lg:text-sm/normal',
-            separator: 'text-[--mantine-color-black] text-xs/normal',
+            separator: 'text-secondary text-xs/normal',
           }}
         >
           <Link href='/'>Home</Link>
