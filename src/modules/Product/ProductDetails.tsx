@@ -36,8 +36,9 @@ export default function ProductDetails({ product }: Props) {
                 src={product.imagePath}
                 alt={product.name}
                 priority={true}
-                style={{ objectFit: 'cover' }}
                 fill
+                sizes='100vw'
+                style={{ objectFit: 'cover' }}
               />
             </div>
 
