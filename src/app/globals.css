@@ -1,11 +1,12 @@
-@import "@mantine/core/styles.css";
+@import '@mantine/core/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
+    --toastify-color-success: #389b48 !important;
+    --toastify-color-error: #dc362e !important;
   }
 
   body {
@@ -14,21 +15,79 @@
 }
 
 @layer components {
+  /*SECTION*/
+  .section {
+    @apply py-8 md:py-10 lg:py-14;
+  }
+
+  /*NavBtn*/
+  .navBtn {
+    @apply flex h-8 w-8 items-center justify-center rounded-full md:h-11 md:w-11;
+  }
+
+  .navBtn-icon {
+    @apply h-5 w-5 stroke-[1.45px] md:h-6 md:w-6;
+  }
+
+  .navBtn-primary {
+    @apply border border-secondary bg-secondary text-primary transition-colors duration-300 hover:border-brand-orange-400 hover:bg-brand-orange-400;
+  }
+
+  .navBtn-disabled {
+    @apply border border-brand-grey-400 text-brand-grey-400;
+  }
+
   .iconBtn {
-    @apply h-6 w-6 stroke-2 text-secondary transition-all duration-300 hover:text-brand-grey-800 group-hover:text-brand-grey-800
+    @apply h-6 w-6 stroke-2 text-secondary transition-all duration-300 hover:text-brand-grey-800 group-hover:text-brand-grey-800;
   }
 
   .navLink {
-    @apply relative text-lg after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-secondary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full
+    @apply relative text-lg after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-secondary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full;
+  }
+
+  .navLinkFooter {
+    @apply relative font-bold uppercase after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full;
+  }
+
+  /*BADGE*/
+  .badge {
+    @apply inline-block rounded-[40px] px-2 py-1 text-sm font-bold uppercase leading-normal text-primary;
+  }
+
+  .badge-primary {
+    @apply bg-brand-blue;
+  }
+
+  .badge-warning {
+    @apply bg-brand-yellow;
+  }
+
+  .badge-success {
+    @apply bg-brand-green-400;
+  }
+
+  .badge-success-dark {
+    @apply bg-brand-green-700;
+  }
+
+  .badge-danger {
+    @apply bg-brand-red-500;
+  }
+
+  .badge-danger-dark {
+    @apply bg-brand-red-800;
+  }
+
+  .badge-muted {
+    @apply bg-brand-grey-500;
   }
 }
-
 
 /*noinspection CssInvalidFunction*/
 .mantine-Container-root {
   width: 100%;
   max-width: rem(414px);
-  padding: 0 rem(20px);
+  padding: 0 rem(16px);
 
   @media (min-width: rem(768px)) {
     max-width: rem(768px);

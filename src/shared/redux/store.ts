@@ -13,6 +13,7 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import storage from 'redux-persist/lib/storage';
 
 import { favoritesReducer } from './favorites/favoritesSlice';
+import { productApi } from '@/shared/api/productApi';
 
 const persistFavoritesConfig = {
   key: 'favoritesHappyTails',
@@ -26,6 +27,7 @@ const persistedFavoritesReducer = persistReducer(
 
 export const store = configureStore({
   reducer: {
+    [productApi.reducerPath]: productApi.reducer,
     favorites: persistedFavoritesReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -33,7 +35,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(productApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

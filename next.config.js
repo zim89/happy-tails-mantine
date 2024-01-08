@@ -1,8 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
-    },
-}
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
