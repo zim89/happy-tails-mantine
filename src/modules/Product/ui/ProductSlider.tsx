@@ -1,21 +1,22 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Card, Container, Stack, Text } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
+import { useViewportSize } from '@mantine/hooks';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { sliderData } from '../lib/data';
+
+import { sliderData } from '@/modules/Product/lib/data';
 import '@mantine/carousel/styles.css';
 
-function ProductSlider() {
-  const mobile = useMediaQuery(`(max-width: 767px`);
-  const desktop = useMediaQuery(`(min-width: 1280px`);
+export default function ProductSlider() {
+  const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [hasPrevSlide, setHasPrevSlide] = useState(false);
-  const [hasNextSlide, setHasNextSlide] = useState(!desktop);
+  const [hasNextSlide, setHasNextSlide] = useState(true);
+  const slidesToScroll = useRef(1);
 
   const scrollPrev = useCallback(() => {
     if (embla) embla.scrollPrev();
@@ -37,6 +38,11 @@ function ProductSlider() {
       handleSelect();
     }
   }, [embla, handleSelect]);
+
+  useEffect(() => {
+    if (width >= 768 && width < 1280) slidesToScroll.current = 2;
+    if (width > 1280) slidesToScroll.current = 3;
+  }, [width]);
 
   return (
     <section className='section'>
@@ -68,9 +74,7 @@ function ProductSlider() {
             </button>
           </div>
         </div>
-      </Container>
 
-      <Container>
         <Carousel
           getEmblaApi={setEmbla}
           withControls={false}
@@ -78,7 +82,7 @@ function ProductSlider() {
           align={'start'}
           slideGap={16}
           slideSize={{ base: '100%', md: '50%', lg: '33.33%' }}
-          slidesToScroll={mobile ? 'auto' : desktop ? 3 : 2}
+          slidesToScroll={slidesToScroll.current}
           speed={4}
           dragFree
         >
@@ -89,15 +93,14 @@ function ProductSlider() {
                 padding={28}
                 radius={2}
                 classNames={{
-                  root: 'border-brand-grey-400',
+                  root: 'border-brand-grey-400 w-[340px] md:w-full',
                 }}
               >
                 <Stack gap={20}>
                   <Image
                     src={item.imagePath}
                     alt={item.name}
-                    height={287}
-                    width={desktop ? 304 : 284}
+                    className='h-[287px] w-[284px] lg:w-[304px]'
                   />
                   <Box>
                     <Text className='mb-2 text-xs leading-normal'>
@@ -117,5 +120,3 @@ function ProductSlider() {
     </section>
   );
 }
-
-export default ProductSlider;

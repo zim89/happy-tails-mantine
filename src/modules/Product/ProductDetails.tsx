@@ -11,9 +11,9 @@ import { Info, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Product } from '@/shared/types/types';
+import ProductSlider from '@/modules/Product/ui/ProductSlider';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
-import ProductSlider from '@/modules/Product/ui/ProductSlider';
 
 interface Props {
   product: Product;
