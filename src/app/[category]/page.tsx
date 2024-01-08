@@ -30,20 +30,22 @@ export default function CatalogPage({
         {/* TODO: Move this to separate component */}
         <Breadcrumbs
           classNames={{
-            root: '[--bc-separator-margin:2px] text-xs/normal mb-4 lg:text-sm/normal',
+            root: '[--bc-separator-margin:2px] text-xs/normal mb-4 md:max-lg:mb-3 lg:text-sm/normal',
             separator: 'text-secondary text-xs/normal',
           }}
         >
           <Link href='/'>Home</Link>
           <span className='text-brand-grey-600'>{category?.name}</span>
         </Breadcrumbs>
-        <h2 className='mb-2 text-[1.75rem]/[normal]'>{category?.title}</h2>
-        <p className='mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
+        <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
+          {category?.title}
+        </h2>
+        <p className='\ mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
           {category?.test_description}
         </p>
 
         {/* TODO: Move toolbar to separate component */}
-        <div className='mb-4 flex items-center text-sm/4 md:py-2 lg:text-base'>
+        <div className='mb-4 flex items-center text-sm/4 md:py-2 md:text-base'>
           {/* TODO: Move button to separate component */}
           <button className='flex h-[2.375rem] w-full items-center justify-center gap-2 rounded-sm border border-brand-grey-300 bg-brand-grey-300 px-[1.125rem] font-bold md:mr-6 md:max-w-[10rem] lg:mr-12'>
             Filter
@@ -65,7 +67,7 @@ export default function CatalogPage({
           </button>
         </div>
 
-        <p className='mb-[6.1875rem] text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
+        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
           There are no products in this category yet
         </p>
         <Overview>
