@@ -35,11 +35,11 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${lato.variable} pt-[74px] lg:pt-[122px]`}>
+      <body className={`${lato.variable}`}>
         <AppProviders>
           <MantineProvider theme={theme}>
             <Header />
-            <main>{children}</main>
+            <main className='mt-[4.625rem] lg:mt-32'>{children}</main>
             <Footer />
 
             <ToastContainer
