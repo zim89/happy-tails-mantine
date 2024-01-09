@@ -11,7 +11,7 @@ import { Info, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Product } from '@/shared/types/types';
-import ProductSlider from '@/modules/Product/ui/ProductSlider';
+import ProductSlider from '@/modules/ProductDetails/ui/ProductSlider';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
 
@@ -30,7 +30,7 @@ export default function ProductDetails({ product }: Props) {
       <section className='section pt-6 lg:pt-8'>
         <Container>
           <div className='block lg:flex lg:gap-6'>
-            {/*  Product Image*/}
+            {/*  ProductDetails Image*/}
             <div className='relative mb-9 h-[341px] w-full overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
                 src={product.imagePath}
@@ -42,9 +42,9 @@ export default function ProductDetails({ product }: Props) {
               />
             </div>
 
-            {/*Product Content*/}
+            {/*ProductDetails Content*/}
             <div>
-              {/*Product Header*/}
+              {/*ProductDetails Header*/}
               <div className='mb-6'>
                 <h1 className='text-[32px] font-bold leading-[1.2]'>
                   {product.name}
@@ -54,7 +54,7 @@ export default function ProductDetails({ product }: Props) {
                 </p>
               </div>
 
-              {/*  Product Price*/}
+              {/*  ProductDetails Price*/}
               <div className='mb-8 flex items-center justify-between border-b border-b-brand-grey-600 md:mb-12 lg:mb-14'>
                 <span className='text-[28px] leading-normal'>
                   ${product.price}
@@ -69,7 +69,7 @@ export default function ProductDetails({ product }: Props) {
                 </span>
               </div>
 
-              {/*  Product description*/}
+              {/*  ProductDetails description*/}
               <p className='mb-6'>{product.description}</p>
 
               {/*  Additional text*/}
@@ -86,7 +86,7 @@ export default function ProductDetails({ product }: Props) {
                 for your correct size before ordering
               </p>
 
-              {/*Product footer*/}
+              {/*ProductDetails footer*/}
               <div className='mb-6 flex items-center justify-between md:mb-12'>
                 {/*Number Input*/}
                 <div className='flex w-[158px] items-center rounded-[2px] border border-brand-grey-400'>

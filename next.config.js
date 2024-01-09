@@ -4,9 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.pravatar.cc',
+        hostname: 'assets.petco.com',
         port: '',
-        pathname: '/**',
+        pathname: '/petco/image/upload/**',
       },
     ],
   },

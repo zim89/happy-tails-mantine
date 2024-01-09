@@ -1,34 +1,54 @@
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-import storage from 'redux-persist/lib/storage';
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 
 import { favoritesReducer } from './favorites/favoritesSlice';
 import { productApi } from '@/shared/api/productApi';
 
-const persistFavoritesConfig = {
-  key: 'favoritesHappyTails',
-  storage,
+const createNoopStorage = () => {
+  return {
+    getItem(_key: any) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: any, value: any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key: any) {
+      return Promise.resolve();
+    },
+  };
 };
 
-const persistedFavoritesReducer = persistReducer(
-  persistFavoritesConfig,
+const storage =
+  typeof window !== 'undefined'
+    ? createWebStorage('local')
+    : createNoopStorage();
+
+const favoritesPersistConfig = {
+  key: 'favoritesHappyTails',
+  storage,
+  blacklist: [productApi.reducerPath],
+};
+
+const favoritesPersistedReducer = persistReducer(
+  favoritesPersistConfig,
   favoritesReducer
 );
 
 export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
-    favorites: persistedFavoritesReducer,
+    favorites: favoritesPersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

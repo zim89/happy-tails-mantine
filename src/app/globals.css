@@ -20,6 +20,31 @@
     @apply py-8 md:py-10 lg:py-14;
   }
 
+  /* --------------------- */
+  /* BUTTONS ------------- */
+  /* --------------------- */
+
+  /* Primary (Add to cart) Button*/
+  .btn {
+    @apply rounded-0.5 px-4 py-3 text-center text-base font-bold text-primary;
+  }
+
+  .btn-sm {
+    @apply;
+  }
+
+  .btn-primary {
+    @apply bg-secondary transition-colors duration-300 hover:bg-brand-orange-400 focus:bg-brand-orange-400;
+  }
+
+  .btn-cart {
+    @apply bg-brand-orange-400 transition-colors duration-300 hover:bg-brand-orange-500 focus:bg-brand-orange-500;
+  }
+
+  .btn-disabled {
+    @apply bg-secondary opacity-40;
+  }
+
   /*NavBtn*/
   .navBtn {
     @apply flex h-8 w-8 items-center justify-center rounded-full md:h-11 md:w-11;
