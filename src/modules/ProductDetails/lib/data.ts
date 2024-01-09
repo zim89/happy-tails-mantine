@@ -24,7 +24,7 @@ export const additionalList = [
   },
 ] as const;
 
-// Temp data
+// Temp lib
 export const sliderData = [
   {
     id: 10,

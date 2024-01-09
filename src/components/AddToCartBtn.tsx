@@ -1,18 +1,24 @@
-import React from 'react';
-import { UnstyledButton } from '@mantine/core';
+'use client';
+import React, { MouseEventHandler } from 'react';
 import { toast } from 'react-toastify';
+import clsx from 'clsx';
 
-export default function AddToCartBtn() {
-  const onClick = () => {
+interface Props {
+  disabled?: boolean;
+}
+export default function AddToCartBtn({ disabled }: Props) {
+  const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     toast.success('Add to cart');
   };
 
   return (
-    <UnstyledButton
+    <button
+      disabled={disabled}
       onClick={onClick}
-      className='w-full rounded-[2px] bg-brand-orange-400 px-4 py-3 text-center text-base font-bold text-primary transition-colors duration-300 hover:bg-brand-orange-500'
+      className={clsx('btn w-full', disabled ? 'btn-disabled' : 'btn-cart')}
     >
       Add to cart
-    </UnstyledButton>
+    </button>
   );
 }

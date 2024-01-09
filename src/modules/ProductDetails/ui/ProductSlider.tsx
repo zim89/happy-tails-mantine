@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
 
-import { sliderData } from '@/modules/Product/lib/data';
+import { sliderData } from '@/modules/ProductDetails/lib/data';
 import '@mantine/carousel/styles.css';
 
 export default function ProductSlider() {

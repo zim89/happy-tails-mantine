@@ -25,6 +25,12 @@ const config: Config = {
       fontFamily: {
         lato: ['var(--font-lato)', 'sans-serif'],
       },
+      borderRadius: {
+        0.5: '2px',
+      },
+      boxShadow: {
+        card: '0 2px 8px 0px rgba(0, 0, 0, 0.16)',
+      },
       colors: {
         primary: '#fdfdfd',
         secondary: '#161616',

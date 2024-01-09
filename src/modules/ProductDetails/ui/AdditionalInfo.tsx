@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Image } from '@mantine/core';
 import NextImage from 'next/image';
-import { additionalList } from '@/modules/Product/lib/data';
+import { additionalList } from '@/modules/ProductDetails/lib/data';
 
 export default function AdditionalInfo() {
   return (
