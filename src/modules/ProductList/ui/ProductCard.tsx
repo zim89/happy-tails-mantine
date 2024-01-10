@@ -20,7 +20,7 @@ export default function ProductCard({ product, router }: Props) {
 
   return (
     <div
-      className='hover:shadow-card rounded-0.5 group/card h-[479px] max-w-[382px] cursor-pointer border border-brand-grey-400 p-7 md:w-[340px] lg:w-[373px]'
+      className='group/card h-[479px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:w-[373px]'
       onClick={() => router?.push(`/products/${product.id}`)}
     >
       <div
@@ -57,7 +57,7 @@ export default function ProductCard({ product, router }: Props) {
         <p className={clsx('relative mb-5 text-base')}>
           $ {product.price}{' '}
           <span className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'>
-            <AddToWishBtn />
+            <AddToWishBtn product={product} />
           </span>
         </p>
 

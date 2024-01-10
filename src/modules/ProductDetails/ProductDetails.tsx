@@ -133,7 +133,7 @@ export default function ProductDetails({ product }: Props) {
                     <AddToCartBtn />
                   </div>
 
-                  <AddToWishBtn />
+                  <AddToWishBtn withText product={product} />
                 </div>
               </div>
 
