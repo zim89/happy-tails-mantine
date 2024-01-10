@@ -24,13 +24,12 @@
   /* BUTTONS ------------- */
   /* --------------------- */
 
-  /* Primary (Add to cart) Button*/
   .btn {
     @apply rounded-0.5 px-4 py-3 text-center text-base font-bold text-primary;
   }
 
   .btn-sm {
-    @apply;
+    @apply px-3 py-[10px] text-sm;
   }
 
   .btn-primary {
