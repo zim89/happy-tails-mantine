@@ -13,6 +13,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 
 import { favoritesReducer } from './favorites/favoritesSlice';
+import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
 
 const createNoopStorage = () => {
@@ -40,15 +41,23 @@ const favoritesPersistConfig = {
   blacklist: [productApi.reducerPath],
 };
 
+const cartPersistConfig = {
+  key: 'cartHappyTails',
+  storage,
+};
+
 const favoritesPersistedReducer = persistReducer(
   favoritesPersistConfig,
   favoritesReducer
 );
 
+const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
+
 export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
     favorites: favoritesPersistedReducer,
+    cart: cartPersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
