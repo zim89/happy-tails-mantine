@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 import FooterNav from '@/modules/Footer/ui/FooterNav';
 import logoImg from '@/assets/logo/logo-footer.svg';
+import tiktokSvg from '@/assets/icons/brand/tiktok.svg';
+import { footerSocialLinks } from '@/modules/Footer/lib/data';
 
 export default function Footer() {
   return (
@@ -36,6 +38,29 @@ export default function Footer() {
             >
               onlinestore.teamch2023@gmail.com
             </Anchor>
+
+            <ul className={'lg-mt-4 mt-4 flex gap-4 md:mt-3'}>
+              {footerSocialLinks.map((link) => (
+                <li key={link.label} className={'group'}>
+                  <a
+                    href={link.href}
+                    target='_blank'
+                    className={'text-primary'}
+                  >
+                    {link.icon ? (
+                      link.icon
+                    ) : (
+                      <Image
+                        src={tiktokSvg}
+                        alt={link.label}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -46,9 +71,14 @@ export default function Footer() {
             <span>© 2023</span>
             <span>Happy Tails</span>
           </p>
-          <p className='text-xs font-bold leading-normal md:text-xl md:leading-normal'>
-            Website by <span className='underline'>Team</span>
-          </p>
+          <a
+            href={'#Team'}
+            className={
+              'relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal'
+            }
+          >
+            Website by Team
+          </a>
         </div>
       </Container>
     </footer>
