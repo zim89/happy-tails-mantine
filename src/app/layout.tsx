@@ -2,12 +2,15 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ToastContainer } from 'react-toastify';
+
 import theme from '../shared/config/theme';
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
+import { AppProviders } from '@/shared/config/AppProviders';
 import Header from '@/modules/Header';
 import Footer from '@/modules/Footer';
-import { AppProviders } from '@/shared/config/AppProviders';
 
 const lato = Lato({
   weight: ['300', '400', '700'],
@@ -38,6 +41,19 @@ export default function RootLayout({
             <Header />
             <main className='mt-[4.625rem] lg:mt-32'>{children}</main>
             <Footer />
+
+            <ToastContainer
+              position='top-right'
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme='light'
+            />
           </MantineProvider>
         </AppProviders>
       </body>

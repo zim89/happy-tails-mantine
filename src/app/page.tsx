@@ -1,9 +1,9 @@
-import AdditionalPage from "@/components/AdditionalPage";
+import UnderConstruction from '@/components/UnderConstruction';
 
 export default function HomePage() {
   return (
-    <div>
-      <AdditionalPage/>
-    </div>
+    <>
+      <UnderConstruction />
+    </>
   );
 }
