@@ -61,7 +61,7 @@ export default function ProductCard({ product, router }: Props) {
           </span>
         </p>
 
-        <AddToCartBtn disabled={isAbsent} />
+        <AddToCartBtn disabled={isAbsent} product={product} />
       </div>
     </div>
   );

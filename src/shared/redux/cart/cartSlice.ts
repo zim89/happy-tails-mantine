@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { Product } from '@/shared/types/types';
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   count: number;
 }
 
@@ -47,7 +47,7 @@ const cartSlice = createSlice({
       const item = state.items.find((obj) => obj.id === action.payload);
 
       if (item) {
-        item.count--;
+        if (item.count > 1) item.count--;
       }
 
       state.totalPrice = calcTotalPrice(state.items);
@@ -56,7 +56,7 @@ const cartSlice = createSlice({
       const item = state.items.find((obj) => obj.id === action.payload);
 
       if (item) {
-        item.count++;
+        if (item.count < item.quantity) item.count++;
       }
 
       state.totalPrice = calcTotalPrice(state.items);
@@ -77,5 +77,6 @@ export const {
 } = cartSlice.actions;
 
 export const selectCart = (state: RootState) => state.cart.items;
+export const selectCartTotalPrice = (state: RootState) => state.cart.totalPrice;
 
 export const cartReducer = cartSlice.reducer;
