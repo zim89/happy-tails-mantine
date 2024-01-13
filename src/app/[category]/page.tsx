@@ -1,12 +1,11 @@
 import { getAllCategories, getCategoryByPath } from '@/shared/api/categoryApi';
-import React from 'react';
 
-import Overview from './components/Overview';
+import { Breadcrumbs } from '@mantine/core';
+import { Plus } from 'lucide-react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { Breadcrumbs, Popover } from '@mantine/core';
 import Link from 'next/link';
-import { ChevronDown, Plus } from 'lucide-react';
-import SortBy, { Option } from './components/SortBy/SortBy';
+import Overview from './components/Overview';
+import SortBy, { type Option } from './components/SortBy/SortBy';
 
 export function generateStaticParams() {
   const categories = getAllCategories();
