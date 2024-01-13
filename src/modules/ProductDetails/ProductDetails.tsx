@@ -130,7 +130,7 @@ export default function ProductDetails({ product }: Props) {
 
                 <div className='flex gap-3'>
                   <div className='hidden md:block md:w-[274px]'>
-                    <AddToCartBtn />
+                    <AddToCartBtn product={product} />
                   </div>
 
                   <AddToWishBtn withText product={product} />
@@ -138,7 +138,7 @@ export default function ProductDetails({ product }: Props) {
               </div>
 
               <div className='md:hidden'>
-                <AddToCartBtn />
+                <AddToCartBtn product={product} />
               </div>
 
               <div className='mt-8 flex items-center gap-3 bg-brand-green-200 px-4 py-6'>

@@ -25,15 +25,15 @@
   /* --------------------- */
 
   .btn {
-    @apply rounded-0.5 px-4 py-3 text-center text-base font-bold text-primary;
+    @apply rounded-0.5 px-4 py-3 text-center text-base font-bold;
   }
 
-  .btn-sm {
-    @apply px-3 py-[10px] text-sm;
+  .btn-text {
+    @apply text-secondary transition-colors hover:text-brand-orange-400;
   }
 
   .btn-primary {
-    @apply bg-secondary transition-colors duration-300 hover:bg-brand-orange-400 focus:bg-brand-orange-400;
+    @apply bg-secondary text-primary transition-colors duration-300 hover:bg-brand-orange-400 focus:bg-brand-orange-400;
   }
 
   .btn-cart {
@@ -62,7 +62,11 @@
   }
 
   .iconBtn {
-    @apply h-6 w-6 stroke-2 text-secondary transition-all duration-300 hover:text-brand-grey-800 group-hover:text-brand-grey-800;
+    @apply text-secondary transition-all duration-300 hover:text-brand-grey-800 group-hover:text-brand-grey-800;
+  }
+
+  .iconBtn > svg {
+    @apply h-6 w-6 stroke-2;
   }
 
   .navLink {

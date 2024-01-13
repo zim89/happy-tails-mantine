@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from '@mantine/core';
-import { Heart, ShoppingBag, UserRound } from 'lucide-react';
+import { Heart, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
 import BurgerMenu from '@/modules/Header/ui/BurgerMenu';
@@ -8,6 +8,7 @@ import SearchMenu from '@/modules/Header/ui/Search';
 import Logo from '@/modules/Header/ui/Logo';
 import Navbar from '@/modules/Header/ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
+import Cart from '@/modules/Cart';
 
 export default function Header() {
   const categories = getAllCategories();
@@ -42,12 +43,7 @@ export default function Header() {
               <Heart className='iconBtn' />
             </Link>
 
-            <Link
-              href='/cart'
-              className='flex items-center justify-center text-secondary'
-            >
-              <ShoppingBag className='iconBtn' />
-            </Link>
+            <Cart />
           </div>
         </div>
       </Container>

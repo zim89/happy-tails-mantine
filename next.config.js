@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/petco/image/upload/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'image.chewy.com',
+        port: '',
+        pathname: '/is/image/catalog/**',
+      },
     ],
   },
   experimental: {

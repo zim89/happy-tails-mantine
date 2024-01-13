@@ -1,15 +1,20 @@
 'use client';
 import React, { MouseEventHandler } from 'react';
-import { toast } from 'react-toastify';
 import clsx from 'clsx';
+import { useAppDispatch } from '@/shared/redux/store';
+import { Product } from '@/shared/types/types';
+import { addToCart } from '@/shared/redux/cart/cartSlice';
 
 interface Props {
+  product: Product;
   disabled?: boolean;
 }
-export default function AddToCartBtn({ disabled }: Props) {
+export default function AddToCartBtn({ disabled, product }: Props) {
+  const dispatch = useAppDispatch();
+
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    toast.success('Add to cart');
+    dispatch(addToCart(product));
   };
 
   return (
