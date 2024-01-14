@@ -1,6 +1,7 @@
 'use client';
 
 import { Popover } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -15,7 +16,7 @@ type SortByProps = {
 };
 
 export default function SortBy({ options, onSelect }: SortByProps) {
-  const [open, setOpen] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const [selected, setSelected] = useState<Option>(options[0]);
 
   return (
@@ -24,12 +25,12 @@ export default function SortBy({ options, onSelect }: SortByProps) {
       position='bottom-end'
       offset={1}
       radius={2}
-      opened={open}
-      onClose={() => setOpen(false)}
+      opened={opened}
+      onClose={close}
     >
       <Popover.Target>
         <button
-          onClick={() => setOpen(true)}
+          onClick={open}
           className='ml-4 flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
         >
           <span className='text-center md:text-left'>
@@ -50,7 +51,7 @@ export default function SortBy({ options, onSelect }: SortByProps) {
               <button
                 onClick={() => {
                   setSelected(option);
-                  setOpen(false);
+                  close();
                   onSelect?.(option);
                 }}
                 className='w-full px-6 py-2 text-left text-sm/normal hover:bg-brand-grey-200'

@@ -6,6 +6,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 import Overview from './components/Overview';
 import SortBy, { type Option } from './components/SortBy/SortBy';
+import Filter from './components/Filter';
 
 export function generateStaticParams() {
   const categories = getAllCategories();
@@ -54,12 +55,7 @@ export default function CatalogPage({
 
         {/* TODO: Move toolbar to separate component */}
         <div className='mb-4 flex items-center text-sm/4 md:py-2 md:text-base'>
-          {/* TODO: Move button to separate component */}
-          <button className='flex h-[2.375rem] w-full items-center justify-center gap-2 rounded-sm border border-brand-grey-300 bg-brand-grey-300 px-[1.125rem] font-bold md:mr-6 md:max-w-[10rem] lg:mr-12'>
-            Filter
-            <Plus width={16} height={16} />
-          </button>
-
+          <Filter />
           <p className='hidden md:block'>{category?.productCount} Results</p>
           <SortBy options={sortOptions} />
         </div>
