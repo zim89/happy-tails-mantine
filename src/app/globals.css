@@ -37,7 +37,7 @@
   }
 
   .btn-cart {
-    @apply bg-brand-orange-400 transition-colors duration-300 hover:bg-brand-orange-500 focus:bg-brand-orange-500;
+    @apply bg-brand-orange-400 text-primary transition-colors duration-300 hover:bg-brand-orange-500 focus:bg-brand-orange-500;
   }
 
   .btn-disabled {
