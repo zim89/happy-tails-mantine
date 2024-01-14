@@ -15,7 +15,7 @@ interface Props {
   router?: AppRouterInstance;
 }
 export default function ProductCard({ product, router }: Props) {
-  const isAbsent = product.productStatus === 'TEMPORARILY_ABCENT';
+  const isAbsent = product.productStatus === 'TEMPORARILY_ABSENT';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
 
   return (
@@ -44,7 +44,7 @@ export default function ProductCard({ product, router }: Props) {
               priority={true}
               sizes='100%'
               style={{
-                objectFit: 'cover',
+                objectFit: 'contain',
               }}
             />
           </div>
