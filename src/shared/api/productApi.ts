@@ -4,7 +4,7 @@ export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://happytails-backend.lav.net.ua/happytails/api',
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
     findAll: builder.query({
