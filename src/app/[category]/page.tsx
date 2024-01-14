@@ -1,10 +1,11 @@
-import { getAllCategories, getCategoryByPath } from '@/shared/api/categoryApi';
-
 import { Breadcrumbs } from '@mantine/core';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
+
+import Toolbar from '@/modules/Toolbar';
+import { getAllCategories, getCategoryByPath } from '@/shared/api/categoryApi';
+
 import Overview from './components/Overview';
-import Toolbar from './components/Toolbar';
 
 export function generateStaticParams() {
   const categories = getAllCategories();
