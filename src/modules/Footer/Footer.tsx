@@ -1,14 +1,13 @@
 import React from 'react';
-import { Anchor, Container } from '@mantine/core';
+import { Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import FooterNav from '@/modules/Footer/ui/FooterNav';
+import SocialLinks from '@/modules/Footer/ui/SocialLinks';
 import logoImg from '@/assets/logo/logo-footer.svg';
-import tiktokSvg from '@/assets/icons/brand/tiktok.svg';
-import { footerSocialLinks } from '@/modules/Footer/lib/data';
 
-export default function Footer() {
+export default function Footer(): React.JSX.Element {
   return (
     <footer className='bg-secondary py-6 text-primary md:py-9'>
       <Container>
@@ -31,36 +30,14 @@ export default function Footer() {
               Don&apos;t hesitate to get in touch with us, we&apos;ll be glad to
               assist you!
             </p>
-            <Anchor
+            <a
               href='mailto:onlinestore.teamch2023@gmail.com'
-              underline='never'
-              className='text-xs leading-normal text-primary lg:text-base'
+              className='relative self-start text-xs leading-normal text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full lg:text-base'
             >
               onlinestore.teamch2023@gmail.com
-            </Anchor>
+            </a>
 
-            <ul className={'lg-mt-4 mt-4 flex gap-4 md:mt-3'}>
-              {footerSocialLinks.map((link) => (
-                <li key={link.label} className={'group'}>
-                  <a
-                    href={link.href}
-                    target='_blank'
-                    className={'text-primary'}
-                  >
-                    {link.icon ? (
-                      link.icon
-                    ) : (
-                      <Image
-                        src={tiktokSvg}
-                        alt={link.label}
-                        width={24}
-                        height={24}
-                      />
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <SocialLinks />
           </div>
         </div>
 
