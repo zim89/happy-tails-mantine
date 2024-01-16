@@ -6,6 +6,7 @@ import Toolbar from '@/modules/Toolbar';
 import { getAllCategories, getCategoryByPath } from '@/shared/api/categoryApi';
 
 import Overview from './components/Overview';
+import ProductList from './components/ProductList';
 
 export function generateStaticParams() {
   const categories = getAllCategories();
@@ -39,6 +40,7 @@ export default function CatalogPage({
           <Link href='/'>Home</Link>
           <span className='text-brand-grey-600'>{category?.name}</span>
         </Breadcrumbs>
+
         <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
           {category?.title}
         </h2>
@@ -48,9 +50,8 @@ export default function CatalogPage({
 
         <Toolbar category={category} />
 
-        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          There are no products in this category yet
-        </p>
+        <ProductList category={category} />
+
         <Overview>
           <MDXRemote source={category?.test_overview ?? ''} />
         </Overview>
