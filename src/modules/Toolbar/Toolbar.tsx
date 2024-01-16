@@ -1,6 +1,14 @@
-import { Category } from '@/shared/api/categoryApi';
+'use client';
+
+import { Category, getAllCategories } from '@/shared/api/categoryApi';
 import SortBy, { type Option } from './components/SortBy';
 import Filter from './components/Filter';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useForm } from '@mantine/form';
+import FilterForm from './components/FilterForm';
+import { FilterFormValues } from './components/FilterForm/FilterForm';
+import { Collapse } from '@mantine/core';
+import { useId, useRef } from 'react';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'featured' },
@@ -10,12 +18,40 @@ const sortOptions: Option[] = [
   { title: 'Alphabetically, Z - A', value: 'name-des' },
 ];
 
-export default function Toolbar({ category }: { category: Category }) {
+export type ToolbarProps = {
+  category: Category;
+};
+
+export default function Toolbar({ category }: ToolbarProps) {
+  const collapseId = useId();
+
+  const form = useForm<FilterFormValues>({
+    initialValues: {
+      categories: [],
+      prices: [],
+      onlyInStock: false,
+    },
+  });
+
+  const categories = getAllCategories();
+
   return (
-    <div className='mb-4 flex items-center text-sm/4 md:py-2 md:text-base'>
-      <Filter />
-      <p className='hidden md:block'>{category?.productCount} Results</p>
-      <SortBy options={sortOptions} />
+    <div>
+      <div className='mb-4 flex items-center text-sm/4 md:py-2 md:text-base'>
+        <Filter
+          target={`#${CSS.escape(collapseId)}`}
+          form={form}
+          category={category}
+          categories={categories}
+          onSubmit={form.onSubmit((values) => console.log(values))}
+        />
+        <p className='hidden md:block'>{category?.productCount} Results</p>
+        <SortBy
+          options={sortOptions}
+          onSelect={(option) => console.log(option)}
+        />
+      </div>
+      <div id={collapseId}></div>
     </div>
   );
 }
