@@ -2,23 +2,10 @@
 const nextConfig = {
   images: {
     remotePatterns: [
+      // FIXME: Only for development!
       {
         protocol: 'https',
-        hostname: 'assets.petco.com',
-        port: '',
-        pathname: '/petco/image/upload/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'image.chewy.com',
-        port: '',
-        pathname: '/is/image/catalog/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.shopify.com',
-        port: '',
-        pathname: '/s/files/**',
+        hostname: '**',
       },
     ],
   },
