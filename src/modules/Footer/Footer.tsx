@@ -1,12 +1,13 @@
 import React from 'react';
-import { Anchor, Container } from '@mantine/core';
+import { Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import FooterNav from '@/modules/Footer/ui/FooterNav';
+import SocialLinks from '@/modules/Footer/ui/SocialLinks';
 import logoImg from '@/assets/logo/logo-footer.svg';
 
-export default function Footer() {
+export default function Footer(): React.JSX.Element {
   return (
     <footer className='bg-secondary py-6 text-primary md:py-9'>
       <Container>
@@ -29,13 +30,14 @@ export default function Footer() {
               Don&apos;t hesitate to get in touch with us, we&apos;ll be glad to
               assist you!
             </p>
-            <Anchor
+            <a
               href='mailto:onlinestore.teamch2023@gmail.com'
-              underline='never'
-              className='text-xs leading-normal text-primary lg:text-base'
+              className='relative self-start text-xs leading-normal text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full lg:text-base'
             >
               onlinestore.teamch2023@gmail.com
-            </Anchor>
+            </a>
+
+            <SocialLinks />
           </div>
         </div>
 
@@ -46,9 +48,14 @@ export default function Footer() {
             <span>© 2023</span>
             <span>Happy Tails</span>
           </p>
-          <p className='text-xs font-bold leading-normal md:text-xl md:leading-normal'>
-            Website by <span className='underline'>Team</span>
-          </p>
+          <a
+            href={'#Team'}
+            className={
+              'relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal'
+            }
+          >
+            Website by Team
+          </a>
         </div>
       </Container>
     </footer>

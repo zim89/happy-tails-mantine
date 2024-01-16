@@ -48,11 +48,13 @@ export default function CartItem({ product }: Props) {
       </div>
 
       <div className={'grow'}>
-        <div className={'mb-1 flex justify-between'}>
+        <div className={'mb-2 flex items-center justify-between'}>
           <p className={'text-xs leading-normal'}>{product.article}</p>
           <button
             onClick={() => handleRemove(product.id)}
-            className={'text-xs leading-normal text-brand-red-400'}
+            className={
+              'rounded-0.5 border border-transparent bg-primary px-2 py-1 text-xs leading-normal text-brand-red-400 transition-colors duration-300 hover:border-brand-red-400 hover:bg-brand-red-400/5'
+            }
           >
             Remove
           </button>

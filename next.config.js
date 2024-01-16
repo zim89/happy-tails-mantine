@@ -14,6 +14,12 @@ const nextConfig = {
         port: '',
         pathname: '/is/image/catalog/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
+        port: '',
+        pathname: '/s/files/**',
+      },
     ],
   },
   experimental: {
