@@ -97,34 +97,35 @@ export default function Page() {
                 activePage * limit
               )}
             />
-
-            <Pagination.Root
-              mt={24}
-              value={activePage}
-              onChange={setPage}
-              total={
-                favorites.length % limit > 0
-                  ? ~~(favorites.length / limit) + 1
-                  : favorites.length / limit
-              }
-              siblings={1}
-              classNames={{
-                control: 'pagination-control',
-                dots: 'pagination-dots',
-              }}
-            >
-              <Group gap={0} justify='center'>
-                <div
-                  className={
-                    'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                  }
-                >
-                  <Pagination.Previous icon={PaginationPrevBtn} />
-                  <Pagination.Items />
-                  <Pagination.Next icon={PaginationNextBtn} />
-                </div>
-              </Group>
-            </Pagination.Root>
+            {favorites.length > limit && (
+              <Pagination.Root
+                mt={24}
+                value={activePage}
+                onChange={setPage}
+                total={
+                  favorites.length % limit > 0
+                    ? ~~(favorites.length / limit) + 1
+                    : favorites.length / limit
+                }
+                siblings={1}
+                classNames={{
+                  control: 'pagination-control',
+                  dots: 'pagination-dots',
+                }}
+              >
+                <Group gap={0} justify='center'>
+                  <div
+                    className={
+                      'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
+                    }
+                  >
+                    <Pagination.Previous icon={PaginationPrevBtn} />
+                    <Pagination.Items />
+                    <Pagination.Next icon={PaginationNextBtn} />
+                  </div>
+                </Group>
+              </Pagination.Root>
+            )}
           </Container>
         </section>
       )}
