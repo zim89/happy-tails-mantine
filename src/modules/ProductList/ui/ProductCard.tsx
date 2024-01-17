@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { NumberFormatter } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -54,8 +55,8 @@ export default function ProductCard({ product, router }: Props) {
           </p>
         </Link>
 
-        <p className={clsx('relative mb-5 text-base')}>
-          $ {product.price}{' '}
+        <p className={clsx('relative mb-5 text-start text-base')}>
+          <NumberFormatter prefix='$ ' value={product.price} decimalScale={2} />
           <span className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'>
             <AddToWishBtn product={product} />
           </span>

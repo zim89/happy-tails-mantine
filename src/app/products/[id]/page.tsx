@@ -1,7 +1,7 @@
 'use client';
-import { Container, Loader } from '@mantine/core';
 import { productApi } from '@/shared/api/productApi';
 import ProductDetails from '@/modules/ProductDetails';
+import { Container, Loader } from '@mantine/core';
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { data, isError, isLoading, error } = productApi.useFindOneQuery(
@@ -11,11 +11,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   return (
     <>
       {isLoading && (
-        <section className='section'>
-          <Container>
-            <Loader color='orange' />
-          </Container>
-        </section>
+        <div className='flex h-[calc(100vh-73px)] items-center justify-center lg:h-[calc(100vh-83px)] '>
+          <Loader color='orange' />
+        </div>
       )}
 
       {isError && (
