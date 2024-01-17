@@ -7,9 +7,10 @@ import {
   NumberInputHandlers,
   UnstyledButton,
 } from '@mantine/core';
-import { Info, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
+import { Info, Minus, Plus } from 'lucide-react';
 import clsx from 'clsx';
+
 import { Product } from '@/shared/types/types';
 import ProductSlider from '@/modules/ProductDetails/ui/ProductSlider';
 import AddToWishBtn from '@/components/AddToWishBtn';
@@ -31,14 +32,14 @@ export default function ProductDetails({ product }: Props) {
         <Container>
           <div className='block lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
-            <div className='relative mb-9 h-[341px] w-full overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
+            <div className='relative mb-9 h-[341px] w-full flex-none overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
                 src={product.imagePath}
                 alt={product.name}
                 priority={true}
                 fill
-                sizes='100vw'
-                style={{ objectFit: 'cover' }}
+                sizes='(min-width: 1280px) 100vw, 50vw'
+                style={{ objectFit: 'contain' }}
               />
             </div>
 

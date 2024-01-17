@@ -37,7 +37,7 @@ export default function Header() {
               <UserRound className='iconBtn' />
             </Link>
             <Link
-              href='/favorites'
+              href='/wishlist'
               className='hidden lg:flex lg:items-center lg:justify-center'
             >
               <Heart className='iconBtn' />

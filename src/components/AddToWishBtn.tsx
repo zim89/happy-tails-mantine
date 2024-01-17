@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Trash2 } from 'lucide-react';
 import clsx from 'clsx';
 
 import {
@@ -10,6 +10,7 @@ import {
 } from '@/shared/redux/favorites/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   product: Product;
@@ -20,6 +21,7 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
   const dispatch = useAppDispatch();
   const favorites = useAppSelector(selectFavorites);
   const isFavorite = favorites.some(({ id }) => id === product.id);
+  const isWishlist = usePathname() === '/wishlist';
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -59,13 +61,20 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
           onClick={toggleFavorite}
           disabled={disabled}
           className={clsx(
-            'group/fav h-10 w-10 rounded-full border border-brand-grey-400 bg-primary p-2 transition-colors duration-300 hover:bg-brand-grey-300',
+            'group/fav flex h-10 w-10 items-center justify-center rounded-full border border-brand-grey-400 bg-primary transition-colors duration-300 hover:bg-brand-grey-300',
             disabled && 'text-secondary/40 hover:bg-primary'
           )}
         >
-          <Heart
-            className={clsx('h-6 w-6 stroke-2', isFavorite && 'fill-secondary')}
-          />
+          {isWishlist ? (
+            <Trash2 className={'h-6 w-6 stroke-2'} />
+          ) : (
+            <Heart
+              className={clsx(
+                'h-6 w-6 stroke-2',
+                isFavorite && 'fill-secondary'
+              )}
+            />
+          )}
         </button>
       )}
     </>
