@@ -109,7 +109,7 @@ export default function Page() {
             />
             {favorites.length > limit && (
               <Pagination.Root
-                mt={24}
+                mt={{ base: 24, md: 48, lg: 72 }}
                 value={activePage}
                 onChange={onPaginationChange}
                 total={
