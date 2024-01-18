@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Breadcrumbs, Container, Group, Pagination } from '@mantine/core';
+import { useScrollIntoView } from '@mantine/hooks';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
@@ -12,8 +13,17 @@ import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 
 export default function Page() {
   const favorites = useAppSelector(selectFavorites);
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 10,
+    duration: 500,
+  });
   const [activePage, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+
+  const onPaginationChange = (value: number) => {
+    setPage(value);
+    scrollIntoView();
+  };
 
   return (
     <>
@@ -90,7 +100,7 @@ export default function Page() {
             </div>
           )}
 
-          <Container>
+          <Container ref={targetRef}>
             <ProductList
               data={favorites.slice(
                 (activePage - 1) * limit,
@@ -101,7 +111,7 @@ export default function Page() {
               <Pagination.Root
                 mt={24}
                 value={activePage}
-                onChange={setPage}
+                onChange={onPaginationChange}
                 total={
                   favorites.length % limit > 0
                     ? ~~(favorites.length / limit) + 1
