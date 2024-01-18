@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
 import ProductList from '@/modules/ProductList';
-import { useAppSelector } from '@/shared/redux/store';
-import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import { useAppSelector } from '@/shared/redux/store';
+import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 
 export default function Page() {
   const favorites = useAppSelector(selectFavorites);
@@ -18,7 +18,7 @@ export default function Page() {
     duration: 500,
   });
   const [activePage, setPage] = useState(1);
-  const [limit, setLimit] = useState(6);
+  const [limit] = useState(6);
 
   const onPaginationChange = (value: number) => {
     setPage(value);
