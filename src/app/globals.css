@@ -109,6 +109,71 @@
   .badge-muted {
     @apply bg-brand-grey-500;
   }
+
+  .pagination-control {
+    @apply relative flex h-10 w-10 items-center justify-center rounded-none border-transparent before:absolute before:-left-[2px] before:-top-[1px] before:h-10 before:w-[1px] before:bg-brand-grey-400 after:absolute after:-right-[1px] after:-top-[1px] after:h-10 after:w-[1px] after:bg-brand-grey-400 first:w-24 first:before:hidden first:after:hidden last:w-16 last:before:hidden last:after:hidden data-[active=true]:bg-secondary;
+  }
+
+  .pagination-dots {
+    @apply flex h-10 w-10 items-center justify-center;
+  }
+
+  /*Checkbox input*/
+
+  /*  Need add on checkbox element styles
+    for root: 'group'
+
+    Example:
+
+    classNames={{
+      root: 'group',
+      body: 'checkbox-body',
+      inner: 'checkbox-inner',
+      input: 'checkbox-input',
+      label: 'checkbox-label',
+    }}
+*/
+
+  .checkbox-body {
+    @apply flex items-center;
+  }
+
+  .checkbox-inner {
+    @apply flex items-center justify-center;
+  }
+
+  .checkbox-input {
+    @apply rounded-0.5 border border-secondary group-data-[checked=true]:bg-secondary;
+  }
+
+  .checkbox-label {
+    @apply pl-2 text-sm/normal;
+  }
+
+  /*Radio input*/
+  /*  Need add on Radio element styles
+    for root: 'group'
+
+    Example:
+
+    classNames={{
+      root: 'group',
+      inner: 'radio-inner',
+      radio: 'radio-radio',
+    }}
+*/
+  .radio-inner {
+    @apply flex items-center justify-center;
+  }
+
+  .radio-radio {
+    @apply h-4 w-4 border-secondary group-data-[checked=true]:bg-secondary;
+  }
+
+  /*Text Input*/
+  .text-input {
+    @apply rounded-0.5 border border-brand-grey-400 bg-primary px-4 py-1 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
+  }
 }
 
 /*noinspection CssInvalidFunction*/
@@ -126,12 +191,4 @@
     max-width: rem(1280px);
     padding: 0 rem(56px);
   }
-}
-
-.pagination-control {
-  @apply relative flex h-10 w-10 items-center justify-center rounded-none border-transparent before:absolute before:-left-[2px] before:-top-[1px] before:h-10 before:w-[1px] before:bg-brand-grey-400 after:absolute after:-right-[1px] after:-top-[1px] after:h-10 after:w-[1px] after:bg-brand-grey-400 first:w-24 first:before:hidden first:after:hidden last:w-16 last:before:hidden last:after:hidden data-[active=true]:bg-secondary;
-}
-
-.pagination-dots {
-  @apply flex h-10 w-10 items-center justify-center;
 }
