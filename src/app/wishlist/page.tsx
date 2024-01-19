@@ -27,8 +27,9 @@ export default function Page() {
 
   return (
     <>
-      <Container pt={8}>
+      <Container>
         <Breadcrumbs
+          pt={8}
           classNames={{
             root: '[--bc-separator-margin:2px] text-xs/normal mb-4 md:max-lg:mb-3 lg:text-sm/normal',
             separator: 'text-secondary text-xs/normal',
