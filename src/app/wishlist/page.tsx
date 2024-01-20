@@ -1,24 +1,35 @@
 'use client';
 import React, { useState } from 'react';
 import { Breadcrumbs, Container, Group, Pagination } from '@mantine/core';
+import { useScrollIntoView } from '@mantine/hooks';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
 import ProductList from '@/modules/ProductList';
-import { useAppSelector } from '@/shared/redux/store';
-import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import { useAppSelector } from '@/shared/redux/store';
+import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 
 export default function Page() {
   const favorites = useAppSelector(selectFavorites);
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 10,
+    duration: 500,
+  });
   const [activePage, setPage] = useState(1);
-  const [limit, setLimit] = useState(6);
+  const [limit] = useState(6);
+
+  const onPaginationChange = (value: number) => {
+    setPage(value);
+    scrollIntoView();
+  };
 
   return (
     <>
-      <Container pt={8}>
+      <Container>
         <Breadcrumbs
+          pt={8}
           classNames={{
             root: '[--bc-separator-margin:2px] text-xs/normal mb-4 md:max-lg:mb-3 lg:text-sm/normal',
             separator: 'text-secondary text-xs/normal',
@@ -90,7 +101,7 @@ export default function Page() {
             </div>
           )}
 
-          <Container>
+          <Container ref={targetRef}>
             <ProductList
               data={favorites.slice(
                 (activePage - 1) * limit,
@@ -99,9 +110,9 @@ export default function Page() {
             />
             {favorites.length > limit && (
               <Pagination.Root
-                mt={24}
+                mt={{ base: 24, md: 48, lg: 72 }}
                 value={activePage}
-                onChange={setPage}
+                onChange={onPaginationChange}
                 total={
                   favorites.length % limit > 0
                     ? ~~(favorites.length / limit) + 1
