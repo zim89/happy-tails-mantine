@@ -1,21 +1,24 @@
-import categories from '@/mock/categories.json';
+import { BackendResponse } from '../types/types';
 
-// TODO: Remove test_ prefix
 export type Category = {
   id: number;
   name: string;
   title: string;
-  test_description: string;
-  test_overview: string;
+  description: string;
+  overview: string;
   path: string;
   productCount: number;
 };
 
 // TODO: Implement fetch from the server
-export const getAllCategories = (): Category[] => {
-  return categories;
-};
+export const getAllCategories = async (): Promise<
+  BackendResponse<Category[]>
+> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category`);
 
-export const getCategoryByPath = (path: string): Category | undefined => {
-  return categories.find((category) => category.path === path);
+  if (!res.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+
+  return res.json();
 };
