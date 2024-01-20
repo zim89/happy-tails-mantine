@@ -10,8 +10,8 @@ import Navbar from '@/modules/Header/ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
 import Cart from '@/modules/Cart';
 
-export default function Header() {
-  const categories = getAllCategories();
+export default async function Header() {
+  const { content: categories } = await getAllCategories();
 
   return (
     <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-10 border-b border-b-brand-grey-300 bg-primary'>

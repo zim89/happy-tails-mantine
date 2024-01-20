@@ -3,13 +3,14 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 
 import Toolbar from '@/modules/Toolbar';
-import { getAllCategories, getCategoryByPath } from '@/shared/api/categoryApi';
+import { getAllCategories } from '@/shared/api/categoryApi';
 
 import Overview from './components/Overview';
 import ProductList from './components/ProductList';
+import { notFound } from 'next/navigation';
 
-export function generateStaticParams() {
-  const categories = getAllCategories();
+export async function generateStaticParams() {
+  const { content: categories } = await getAllCategories();
 
   return categories.map((category) => ({
     category: category.path,
@@ -18,14 +19,18 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
-export default function CatalogPage({
+export default async function CatalogPage({
   params,
 }: {
   params: { category: string };
 }) {
-  const category = getCategoryByPath(params.category);
+  const { content: categories } = await getAllCategories();
 
-  if (!category) return;
+  const category = categories.find(
+    (cat) => cat.path === decodeURIComponent(params.category)
+  );
+
+  if (!category) notFound();
 
   return (
     <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
@@ -38,22 +43,18 @@ export default function CatalogPage({
           }}
         >
           <Link href='/'>Home</Link>
-          <span className='text-brand-grey-600'>{category?.name}</span>
+          <span className='text-brand-grey-600'>{category.name}</span>
         </Breadcrumbs>
-
         <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
-          {category?.title}
+          {category.title}
         </h2>
         <p className='\ mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
-          {category?.test_description}
+          {category.description}
         </p>
-
-        <Toolbar category={category} />
-
+        <Toolbar category={category} categories={categories} />
         <ProductList category={category} />
-
         <Overview>
-          <MDXRemote source={category?.test_overview ?? ''} />
+          <MDXRemote source={category.overview} />
         </Overview>
       </div>
     </div>

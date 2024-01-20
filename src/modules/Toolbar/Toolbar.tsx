@@ -20,9 +20,10 @@ const sortOptions: Option[] = [
 
 export type ToolbarProps = {
   category: Category;
+  categories: Category[];
 };
 
-export default function Toolbar({ category }: ToolbarProps) {
+export default function Toolbar({ category, categories }: ToolbarProps) {
   const collapseId = useId();
 
   const form = useForm<FilterFormValues>({
@@ -32,8 +33,6 @@ export default function Toolbar({ category }: ToolbarProps) {
       onlyInStock: false,
     },
   });
-
-  const categories = getAllCategories();
 
   return (
     <div>
