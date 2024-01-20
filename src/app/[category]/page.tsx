@@ -48,13 +48,13 @@ export default async function CatalogPage({
         <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
           {category.title}
         </h2>
-        <p className='\ mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
+        <p className='mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
           {category.description}
         </p>
         <Toolbar category={category} categories={categories} />
         <ProductList category={category} />
         <Overview>
-          <MDXRemote source={category.overview} />
+          <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
         </Overview>
       </div>
     </div>
