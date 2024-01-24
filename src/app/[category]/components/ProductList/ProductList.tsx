@@ -48,6 +48,15 @@ export default function ProductList({ category }: { category: Category }) {
       </div>
     );
 
+  if (!data)
+    return (
+      <div>
+        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
+          Something went wrong...
+        </p>
+      </div>
+    );
+
   return (
     <div ref={targetRef}>
       {category.productCount ? (
