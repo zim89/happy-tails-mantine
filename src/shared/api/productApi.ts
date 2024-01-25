@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BackendResponse, Product } from '../types/types';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -7,37 +8,36 @@ export const productApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
-    findAll: builder.query({
-      query: ({ page, limit }) => `products?page=${page}&size=${limit}`,
+    findAllByCategory: builder.query<
+      BackendResponse<Product[]>,
+      { page: number; limit: number; id: number }
+    >({
+      query: ({ page, limit, id }) =>
+        `product?categoryId=${id}&page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.content.map(({ id }: any) => ({
-                type: 'Products',
+              ...result.content.map(({ id }) => ({
+                type: 'Products' as const,
                 id,
               })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
     }),
-    findAllByCategory: builder.query({
-      query: ({ page, limit, id }) =>
-        `product?categoryId=${id}&page=${page}&size=${limit}`,
-      providesTags: (result) =>
-        result
-          ? [
-              result.content.map(({ id }: any) => ({ type: 'Products', id })),
-              { type: 'Products', id: 'LIST' },
-            ]
-          : [{ type: 'Products', id: 'LIST' }],
-    }),
-    findAllByName: builder.query({
+    findAllByName: builder.query<
+      BackendResponse<Product[]>,
+      { page: number; limit: number; value: string }
+    >({
       query: ({ page, limit, value }) =>
         `products/search?name=${value}&page=${page}&size=${limit}`,
       providesTags: (result) =>
         result
           ? [
-              result.content.map(({ id }: any) => ({ type: 'Products', id })),
+              ...result.content.map(({ id }) => ({
+                type: 'Products' as const,
+                id,
+              })),
               { type: 'Products', id: 'LIST' },
             ]
           : [{ type: 'Products', id: 'LIST' }],
@@ -84,7 +84,6 @@ export const productApi = createApi({
 });
 
 export const {
-  useFindAllQuery,
   useFindAllByCategoryQuery,
   useFindAllByNameQuery,
   useFindOneQuery,
