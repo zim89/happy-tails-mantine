@@ -39,16 +39,7 @@ export default function ProductList({ category }: { category: Category }) {
       </div>
     );
 
-  if (error)
-    return (
-      <div>
-        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          Something went wrong...
-        </p>
-      </div>
-    );
-
-  if (!data)
+  if (error || !data)
     return (
       <div>
         <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
@@ -59,7 +50,7 @@ export default function ProductList({ category }: { category: Category }) {
 
   return (
     <div ref={targetRef}>
-      {category.productCount ? (
+      {!data.empty ? (
         <div className='mb-12 mt-4 md:mb-16 md:max-lg:mt-6 lg:mb-[4.5rem]'>
           <RawProductList data={data.content} />
           <Pagination.Root
