@@ -1,8 +1,8 @@
 import Checkbox from '@/components/Checkbox';
+import { cn } from '@/lib/utils';
 import { Category } from '@/shared/api/categoryApi';
 import { Checkbox as RawCheckbox, Switch } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import clsx from 'clsx';
 import { FormEvent } from 'react';
 
 export type FilterFormValues = {
@@ -31,7 +31,7 @@ export default function FilterForm({
   return (
     <form onSubmit={onSubmit}>
       <div
-        className={clsx(
+        className={cn(
           'mb-8 space-y-8 px-5 py-4 md:mb-12 md:p-0 lg:mb-0',
           desktop && 'flex gap-10 space-y-0 text-left'
         )}
@@ -83,7 +83,10 @@ export default function FilterForm({
 
         <div>
           <div className='mb-4 text-base font-bold'>Availability</div>
+          {/* TODO: add styles for turned off switch */}
           <Switch
+            color='black'
+            size='xs'
             label='Show only in stock products'
             {...form.getInputProps('onlyInStock')}
           />
@@ -91,7 +94,7 @@ export default function FilterForm({
       </div>
 
       <div
-        className={clsx(
+        className={cn(
           desktop && 'absolute bottom-9 right-9 flex w-[19rem] gap-4'
         )}
       >
