@@ -8,5 +8,5 @@
   "jsxSingleQuote": true,
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindConfig": "./tailwind.config.ts",
-  "tailwindFunctions": ["clsx"]
+  "tailwindFunctions": ["clsx", "cn"]
 }
