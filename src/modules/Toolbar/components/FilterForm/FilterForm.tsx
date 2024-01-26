@@ -1,8 +1,8 @@
+import Checkbox from '@/components/Checkbox';
 import { Category } from '@/shared/api/categoryApi';
-import { Checkbox as RawCheckbox, CheckboxProps, Switch } from '@mantine/core';
+import { Checkbox as RawCheckbox, Switch } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import clsx from 'clsx';
-import { Check } from 'lucide-react';
 import { FormEvent } from 'react';
 
 export type FilterFormValues = {
@@ -19,26 +19,6 @@ export type FilterFormProps = {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onClose?: () => void;
 };
-
-const CheckboxIcon: CheckboxProps['icon'] = ({ indeterminate, ...props }) => (
-  <Check
-    {...props}
-    className={clsx(props.className, 'h-3 w-3')}
-    width={12}
-    height={12}
-  />
-);
-
-const Checkbox = (props: CheckboxProps) => (
-  <RawCheckbox
-    size='18'
-    icon={CheckboxIcon}
-    radius={2}
-    color='black'
-    classNames={{ input: 'border-secondary' }}
-    {...props}
-  />
-);
 
 export default function FilterForm({
   form,
