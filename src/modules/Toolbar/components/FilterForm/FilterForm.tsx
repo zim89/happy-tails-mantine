@@ -1,7 +1,8 @@
 import { Category } from '@/shared/api/categoryApi';
-import { Checkbox, Switch } from '@mantine/core';
+import { Checkbox as RawCheckbox, CheckboxProps, Switch } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import clsx from 'clsx';
+import { Check } from 'lucide-react';
 import { FormEvent } from 'react';
 
 export type FilterFormValues = {
@@ -19,6 +20,26 @@ export type FilterFormProps = {
   onClose?: () => void;
 };
 
+const CheckboxIcon: CheckboxProps['icon'] = ({ indeterminate, ...props }) => (
+  <Check
+    {...props}
+    className={clsx(props.className, 'h-3 w-3')}
+    width={12}
+    height={12}
+  />
+);
+
+const Checkbox = (props: CheckboxProps) => (
+  <RawCheckbox
+    size='18'
+    icon={CheckboxIcon}
+    radius={2}
+    color='black'
+    classNames={{ input: 'border-secondary' }}
+    {...props}
+  />
+);
+
 export default function FilterForm({
   form,
   category,
@@ -35,7 +56,7 @@ export default function FilterForm({
           desktop && 'flex gap-10 space-y-0 text-left'
         )}
       >
-        <Checkbox.Group
+        <RawCheckbox.Group
           defaultValue={[category.id.toString()]}
           label='Category'
           classNames={{
@@ -53,8 +74,8 @@ export default function FilterForm({
               </li>
             ))}
           </ul>
-        </Checkbox.Group>
-        <Checkbox.Group
+        </RawCheckbox.Group>
+        <RawCheckbox.Group
           label='Price'
           classNames={{
             label: 'font-bold mb-4 text-base',
@@ -78,7 +99,7 @@ export default function FilterForm({
               <Checkbox value='>90' label='$90 & Above' />
             </li>
           </ul>
-        </Checkbox.Group>
+        </RawCheckbox.Group>
 
         <div>
           <div className='mb-4 text-base font-bold'>Availability</div>
