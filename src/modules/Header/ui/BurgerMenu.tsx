@@ -2,12 +2,12 @@
 import React, { useEffect } from 'react';
 import { UnstyledButton, Drawer, Image, em } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import clsx from 'clsx';
 import { AlignLeft, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { categoryLinks, menuLinks } from '../lib/data';
 import { Category } from '@/shared/api/categoryApi';
+import { cn } from '@/lib/utils';
 
 export default function BurgerMenu({ categories }: { categories: Category[] }) {
   const [opened, { open, close, toggle }] = useDisclosure(false);
@@ -67,7 +67,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
               <Link
                 href='/contacts'
                 onClick={close}
-                className={clsx('navLink', path === '/contacts' && 'font-bold')}
+                className={cn('navLink', path === '/contacts' && 'font-bold')}
               >
                 Contacts
               </Link>
@@ -76,7 +76,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
               <Link
                 href='/delivery&returns'
                 onClick={close}
-                className={clsx(
+                className={cn(
                   'navLink',
                   path === '/delivery&returns' && 'font-bold'
                 )}
@@ -88,7 +88,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
               <Link
                 href='/blog'
                 onClick={close}
-                className={clsx('navLink', path === '/blog' && 'font-bold')}
+                className={cn('navLink', path === '/blog' && 'font-bold')}
               >
                 Blog
               </Link>
@@ -105,7 +105,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                 <Link
                   href={'/' + category.path}
                   onClick={close}
-                  className={clsx(
+                  className={cn(
                     'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
                     path === '/' + category.path && 'font-bold'
                   )}
