@@ -41,3 +41,5 @@ export type BackendResponse<T> = {
   last: boolean;
   empty: boolean;
 };
+
+export type Sort = [string, 'asc' | 'desc'];

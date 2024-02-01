@@ -7,6 +7,7 @@ import Overview from './components/Overview';
 import ProductList from './components/ProductList';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { ToolbarProvider } from '@/modules/Toolbar/ToolbarContext';
 
 export async function generateStaticParams() {
   const { content: categories } = await getAllCategories();
@@ -43,8 +44,10 @@ export default async function CatalogPage({
         <p className='mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
           {category.description}
         </p>
-        <Toolbar category={category} categories={categories} />
-        <ProductList category={category} />
+        <ToolbarProvider>
+          <Toolbar category={category} categories={categories} />
+          <ProductList category={category} />
+        </ToolbarProvider>
         <Overview>
           <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
         </Overview>
