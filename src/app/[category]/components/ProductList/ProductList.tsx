@@ -7,12 +7,18 @@ import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import { useScrollIntoView } from '@mantine/hooks';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { ToolbarContext } from '@/modules/Toolbar/ToolbarContext';
 
 const limit = 12;
 
-export default function ProductList({ category }: { category: Category }) {
+export type ProductListProps = {
+  category: Category;
+};
+
+export default function ProductList({ category }: ProductListProps) {
   const [page, setPage] = useState(1);
+  const [toolbar] = useContext(ToolbarContext);
 
   const onPaginationChange = (page: number) => {
     setPage(page);
@@ -23,6 +29,7 @@ export default function ProductList({ category }: { category: Category }) {
     id: category.id,
     page: page - 1,
     limit,
+    sort: toolbar.sort,
   });
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({

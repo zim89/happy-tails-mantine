@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BackendResponse, Product } from '../types/types';
+import { BackendResponse, Product, Sort } from '../types/types';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -10,10 +10,17 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     findAllByCategory: builder.query<
       BackendResponse<Product[]>,
-      { page: number; limit: number; id: number }
+      {
+        page: number;
+        limit: number;
+        id: number;
+        sort?: Sort;
+      }
     >({
-      query: ({ page, limit, id }) =>
-        `product?categoryId=${id}&page=${page}&size=${limit}`,
+      query: ({ page, limit, id, sort }) =>
+        `product?categoryId=${id}&page=${page}&size=${limit}${
+          sort ? '&sort=' + sort[0] + ',' + sort[1] : ''
+        }`,
       providesTags: (result) =>
         result
           ? [

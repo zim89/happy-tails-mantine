@@ -8,14 +8,16 @@ import { useForm } from '@mantine/form';
 import FilterForm from './components/FilterForm';
 import { FilterFormValues } from './components/FilterForm/FilterForm';
 import { Collapse } from '@mantine/core';
-import { useId, useRef } from 'react';
+import { useContext, useId, useRef } from 'react';
+import { ToolbarContext } from './ToolbarContext';
+import { Sort } from '@/shared/types/types';
 
 const sortOptions: Option[] = [
-  { title: 'Featured', value: 'featured' },
+  { title: 'Featured', value: 'none' },
   { title: 'Price, Low to High', value: 'price-asc' },
-  { title: 'Price, High to Low', value: 'price-des' },
+  { title: 'Price, High to Low', value: 'price-desc' },
   { title: 'Alphabetically, A - Z', value: 'name-asc' },
-  { title: 'Alphabetically, Z - A', value: 'name-des' },
+  { title: 'Alphabetically, Z - A', value: 'name-desc' },
 ];
 
 export type ToolbarProps = {
@@ -25,6 +27,7 @@ export type ToolbarProps = {
 
 export default function Toolbar({ category, categories }: ToolbarProps) {
   const collapseId = useId();
+  const [_, setToolbar] = useContext(ToolbarContext);
 
   const form = useForm<FilterFormValues>({
     initialValues: {
@@ -42,12 +45,22 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           form={form}
           category={category}
           categories={categories}
-          onSubmit={form.onSubmit((values) => console.log(values))}
+          onSubmit={form.onSubmit((values) =>
+            setToolbar((prev) => ({ ...prev, filter: values }))
+          )}
         />
         <p className='hidden md:block'>{category?.productCount} Results</p>
         <SortBy
           options={sortOptions}
-          onSelect={(option) => console.log(option)}
+          onSelect={(sort) =>
+            setToolbar((prev) => ({
+              ...prev,
+              sort:
+                sort.value !== 'none'
+                  ? (sort.value.split('-') as Sort)
+                  : undefined,
+            }))
+          }
         />
       </div>
       <div id={collapseId}></div>
