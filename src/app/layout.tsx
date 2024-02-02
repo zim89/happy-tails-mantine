@@ -35,12 +35,14 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${lato.variable}`}>
+      <body className={`${lato.variable} antialiased`}>
         <AppProviders>
           <MantineProvider theme={theme}>
             <Header />
-            <main className='mt-[4.625rem] lg:mt-32'>{children}</main>
-            <Footer />
+            <div className='grid h-screen grid-rows-[_1fr_auto] pt-[4.625rem] lg:pt-32'>
+              <main className=''>{children}</main>
+              <Footer />
+            </div>
 
             <ToastContainer
               position='top-right'

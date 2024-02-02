@@ -35,6 +35,9 @@
   .btn-primary {
     @apply bg-secondary text-primary transition-colors duration-300 hover:bg-brand-orange-400 focus:bg-brand-orange-400;
   }
+  .btn-secondary {
+    @apply border border-brand-grey-400 bg-transparent text-secondary transition-colors duration-300 hover:bg-brand-grey-200 active:border-brand-grey-500 active:bg-brand-grey-300;
+  }
 
   .btn-cart {
     @apply bg-brand-orange-400 text-primary transition-colors duration-300 hover:bg-brand-orange-500 focus:bg-brand-orange-500;
