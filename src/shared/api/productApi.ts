@@ -8,6 +8,29 @@ export const productApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
+    findAll: builder.query<
+      BackendResponse<Product[]>,
+      {
+        page: number;
+        limit: number;
+        sort?: Sort;
+      }
+    >({
+      query: ({ page, limit, sort }) =>
+        `products?page=${page}&size=${limit}${
+          sort ? '&sort=' + sort[0] + ',' + sort[1] : ''
+        }`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ id }) => ({
+                type: 'Products' as const,
+                id,
+              })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+    }),
     findAllByCategory: builder.query<
       BackendResponse<Product[]>,
       {
@@ -91,6 +114,7 @@ export const productApi = createApi({
 });
 
 export const {
+  useFindAllQuery,
   useFindAllByCategoryQuery,
   useFindAllByNameQuery,
   useFindOneQuery,

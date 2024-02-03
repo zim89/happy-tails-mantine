@@ -97,6 +97,25 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
 
           {/*  Navbar */}
           <ul className='lg:flex lg:gap-3'>
+            <li className='border-b border-b-brand-grey-300 lg:border-none'>
+              <Link
+                href={'/products'}
+                onClick={close}
+                className={cn(
+                  'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
+                  path === '/products' && 'font-bold'
+                )}
+              >
+                <Image
+                  src='/icons/products-ico.svg'
+                  alt='all products page icon'
+                  h={{ base: 32, lg: 42 }}
+                  w='auto'
+                  fit='contain'
+                />
+                <p className='navLink'>All products</p>
+              </Link>
+            </li>
             {categories.map((category) => (
               <li
                 key={category.id}
@@ -118,7 +137,6 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                     w='auto'
                     fit='contain'
                   />
-                  {/* TODO: Add shorter name on mobile */}
                   <p className='navLink'>{category.name}</p>
                 </Link>
               </li>

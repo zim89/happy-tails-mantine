@@ -14,7 +14,7 @@ export default async function Header() {
   const { content: categories } = await getAllCategories();
 
   return (
-    <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-10 z-40 border-b border-b-brand-grey-300 bg-primary'>
+    <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-40 border-b border-b-brand-grey-300 bg-primary'>
       <Container>
         <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
           <div className='flex gap-4'>

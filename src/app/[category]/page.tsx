@@ -3,7 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import Toolbar from '@/modules/Toolbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
 
-import Overview from './components/Overview';
+import Overview from '../../components/Overview';
 import ProductList from './components/ProductList';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
