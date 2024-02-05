@@ -14,6 +14,17 @@ export default function Navbar({ categories }: { categories: Category[] }) {
     <div className='hidden bg-brand-grey-300 lg:block'>
       <Container>
         <ul className='flex justify-between py-2'>
+          <li>
+            <Link
+              href='/products'
+              className={cn(
+                'relative text-lg after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-secondary after:transition-all after:duration-500 after:hover:w-full',
+                path === '/products' && 'font-bold'
+              )}
+            >
+              All Products
+            </Link>
+          </li>
           {categories.map((category) => (
             <li key={category.id}>
               <Link
