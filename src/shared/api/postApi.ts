@@ -31,7 +31,7 @@ export const fetchAllPosts = async (
 export const fetchOnePost = async (id: string): Promise<Post | null> => {
   noStore();
   try {
-    await new Promise((resolve) => setTimeout(resolve, 6000));
+    // await new Promise((resolve) => setTimeout(resolve, 6000));
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
     console.log(res);
     if (res.status === 404) return null;
