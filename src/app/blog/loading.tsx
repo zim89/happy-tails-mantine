@@ -1,13 +1,8 @@
-import { Container } from '@mantine/core';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import HeroBlog from '@/app/blog/ui/HeroBlog';
-import PostList from '@/app/blog/ui/PostList';
-import { fetchAllPosts, fetchHeroPost } from '@/shared/api/postApi';
+import { Container } from '@mantine/core';
+import BlogSkeleton from '@/app/blog/ui/BlogSkeleton';
 
-export default async function BlogPage() {
-  const heroPost = await fetchHeroPost();
-  const posts = await fetchAllPosts();
-
+export default function Loading() {
   return (
     <Container>
       <Breadcrumbs crumbs={[{ href: '/', text: 'Home' }, { text: 'Blog' }]} />
@@ -17,8 +12,7 @@ export default async function BlogPage() {
       </h1>
 
       <div className='pb-12 pt-8 lg:mb-[72px]'>
-        <HeroBlog post={heroPost} />
-        <PostList posts={posts} />
+        <BlogSkeleton />
       </div>
     </Container>
   );
