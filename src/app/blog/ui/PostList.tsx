@@ -26,6 +26,10 @@ export default function PostList({ posts }: Props) {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
 
+  if (!posts.content || posts.content.length === 0) {
+    return <p className='mt-4 text-gray-400'>No data available.</p>;
+  }
+
   return (
     <>
       <ul className='my-6 grid grid-cols-1 gap-4 md:my-8 md:grid-cols-2 md:gap-y-8 lg:my-10 lg:gap-x-6 lg:gap-y-10'>
