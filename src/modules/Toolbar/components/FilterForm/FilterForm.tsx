@@ -46,7 +46,7 @@ export default function FilterForm({
           {...form.getInputProps('category')}
         >
           <ul className='space-y-3.5'>
-            {categories.slice(1).map((category) => (
+            {categories.map((category) => (
               <li key={category.id}>
                 <RadioCheck
                   value={category.id.toString()}
