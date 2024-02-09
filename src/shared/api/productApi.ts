@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BackendResponse, Product, Sort } from '../types/types';
+import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -8,59 +9,48 @@ export const productApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   }),
   endpoints: (builder) => ({
-    findAll: builder.query<
+    findMany: builder.query<
       BackendResponse<Product[]>,
       {
         page: number;
         limit: number;
+        categoryId?: number;
+        filter?: FilterFormValues;
         sort?: Sort;
       }
     >({
-      query: ({ page, limit, sort }) =>
-        `products?page=${page}&size=${limit}${
-          sort ? '&sort=' + sort[0] + ',' + sort[1] : ''
-        }`,
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.content.map(({ id }) => ({
-                type: 'Products' as const,
-                id,
-              })),
-              { type: 'Products', id: 'LIST' },
-            ]
-          : [{ type: 'Products', id: 'LIST' }],
-    }),
-    findAllByCategory: builder.query<
-      BackendResponse<Product[]>,
-      {
-        page: number;
-        limit: number;
-        id: number;
-        sort?: Sort;
-      }
-    >({
-      query: ({ page, limit, id, sort }) =>
-        `product?categoryId=${id}&page=${page}&size=${limit}${
-          sort ? '&sort=' + sort[0] + ',' + sort[1] : ''
-        }`,
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.content.map(({ id }) => ({
-                type: 'Products' as const,
-                id,
-              })),
-              { type: 'Products', id: 'LIST' },
-            ]
-          : [{ type: 'Products', id: 'LIST' }],
-    }),
-    findAllByName: builder.query<
-      BackendResponse<Product[]>,
-      { page: number; limit: number; value: string }
-    >({
-      query: ({ page, limit, value }) =>
-        `products/search?name=${value}&page=${page}&size=${limit}`,
+      query: ({ page, limit, categoryId, filter, sort }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+        });
+
+        if (categoryId) params.append('categoryId', categoryId.toString());
+
+        if (sort) params.append('sort', sort.join(','));
+
+        if (filter) {
+          if (Number(filter.category) > 0)
+            params.set('categoryId', filter.category);
+
+          if (filter.price !== 'none') {
+            const [min, max] = filter.price.split('-');
+
+            if (min.length > 0) params.append('min', min);
+            if (max.length > 0) params.append('max', max);
+          }
+
+          params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
+
+          return `products/filter?${params}`;
+        }
+
+        if (categoryId) {
+          return `product?${params}`;
+        }
+
+        return `products?${params}`;
+      },
       providesTags: (result) =>
         result
           ? [
@@ -114,9 +104,7 @@ export const productApi = createApi({
 });
 
 export const {
-  useFindAllQuery,
-  useFindAllByCategoryQuery,
-  useFindAllByNameQuery,
+  useFindManyQuery,
   useFindOneQuery,
   useCreateMutation,
   useUpdateMutation,
