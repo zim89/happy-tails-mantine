@@ -8,6 +8,7 @@ import { ToolbarContext } from './ToolbarContext';
 import Filter from './components/Filter';
 import { FilterFormValues } from './components/FilterForm/FilterForm';
 import SortBy, { type Option } from './components/SortBy';
+import Badges from './components/Badges';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -50,6 +51,12 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           )}
         />
         <p className='hidden md:block'>{category?.productCount} Results</p>
+        <Badges
+          form={form}
+          className='ml-12 hidden lg:block'
+          category={category}
+          categories={categories}
+        />
         <SortBy
           options={sortOptions}
           onSelect={(sort) =>

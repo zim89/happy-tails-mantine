@@ -4,6 +4,7 @@ import { Collapse, Drawer, Portal } from '@mantine/core';
 import { Plus } from 'lucide-react';
 import FilterForm, { FilterFormProps } from '../FilterForm/FilterForm';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import Badges from '../Badges';
 
 export type FilterProps = { target: string } & FilterFormProps;
 
@@ -27,6 +28,12 @@ export default function Filter({ target, ...props }: FilterProps) {
           iconSize: '100%',
         }}
       >
+        <Badges
+          className='my-4 px-5 md:mb-4 md:mt-0 md:px-0'
+          form={props.form}
+          category={props.category}
+          categories={props.categories}
+        />
         <FilterForm {...props} onClose={close} />
       </Drawer>
       <Portal target={target}>
