@@ -22,7 +22,7 @@ export const productApi = createApi({
       query: ({ page, limit, categoryId, filter, sort }) => {
         const params = new URLSearchParams({
           page: page.toString(),
-          limit: limit.toString(),
+          size: limit.toString(),
         });
 
         if (categoryId) params.append('categoryId', categoryId.toString());
