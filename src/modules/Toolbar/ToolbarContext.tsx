@@ -11,7 +11,7 @@ import {
 } from 'react';
 
 export type ToolbarData = {
-  filter: FilterFormValues;
+  filter?: FilterFormValues;
   sort?: Sort;
 };
 
@@ -20,13 +20,7 @@ export const ToolbarContext = createContext<
 >(null!);
 
 export const ToolbarProvider = ({ children }: { children: ReactNode }) => {
-  const [value, setValue] = useState<ToolbarData>({
-    filter: {
-      categories: [],
-      prices: [],
-      onlyInStock: false,
-    },
-  });
+  const [value, setValue] = useState<ToolbarData>({});
 
   return (
     <ToolbarContext.Provider value={[value, setValue]}>

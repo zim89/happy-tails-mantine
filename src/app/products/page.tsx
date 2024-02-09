@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Overview from '@/components/Overview';
-import ProductList from './components/ProductList';
+import ProductList from '@/modules/CatalogProductList';
 import Toolbar from '@/modules/Toolbar';
 import { ToolbarProvider } from '@/modules/Toolbar/ToolbarContext';
 import { Category, getAllCategories } from '@/shared/api/categoryApi';

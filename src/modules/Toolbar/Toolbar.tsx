@@ -1,16 +1,13 @@
 'use client';
 
-import { Category, getAllCategories } from '@/shared/api/categoryApi';
-import SortBy, { type Option } from './components/SortBy';
-import Filter from './components/Filter';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
-import FilterForm from './components/FilterForm';
-import { FilterFormValues } from './components/FilterForm/FilterForm';
-import { Collapse } from '@mantine/core';
-import { useContext, useId, useRef } from 'react';
-import { ToolbarContext } from './ToolbarContext';
+import { Category } from '@/shared/api/categoryApi';
 import { Sort } from '@/shared/types/types';
+import { useForm } from '@mantine/form';
+import { useContext, useId } from 'react';
+import { ToolbarContext } from './ToolbarContext';
+import Filter from './components/Filter';
+import { FilterFormValues } from './components/FilterForm/FilterForm';
+import SortBy, { type Option } from './components/SortBy';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -31,8 +28,8 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
 
   const form = useForm<FilterFormValues>({
     initialValues: {
-      categories: [],
-      prices: [],
+      category: category.id.toString(),
+      price: 'none',
       onlyInStock: false,
     },
   });
@@ -46,7 +43,10 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           category={category}
           categories={categories}
           onSubmit={form.onSubmit((values) =>
-            setToolbar((prev) => ({ ...prev, filter: values }))
+            setToolbar((prev) => ({
+              ...prev,
+              filter: JSON.parse(JSON.stringify(values)),
+            }))
           )}
         />
         <p className='hidden md:block'>{category?.productCount} Results</p>

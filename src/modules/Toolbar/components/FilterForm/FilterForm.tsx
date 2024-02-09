@@ -1,13 +1,13 @@
-import Checkbox from '@/components/Checkbox';
+import RadioCheck from '@/components/RadioCheck';
 import { cn } from '@/lib/utils';
 import { Category } from '@/shared/api/categoryApi';
-import { Checkbox as RawCheckbox, Switch } from '@mantine/core';
+import { Radio, Switch } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { FormEvent } from 'react';
 
 export type FilterFormValues = {
-  categories: string[];
-  prices: string[];
+  category: string;
+  price: string;
   onlyInStock: boolean;
 };
 
@@ -28,6 +28,7 @@ export default function FilterForm({
   onSubmit,
   onClose,
 }: FilterFormProps) {
+  const categoryId = category.id;
   return (
     <form onSubmit={onSubmit}>
       <div
@@ -36,50 +37,51 @@ export default function FilterForm({
           desktop && 'flex gap-10 space-y-0 text-left'
         )}
       >
-        <RawCheckbox.Group
-          defaultValue={[category.id.toString()]}
+        <Radio.Group
+          defaultValue={categoryId.toString()}
           label='Category'
           classNames={{
             label: 'font-bold mb-4 text-base',
           }}
-          {...form.getInputProps('categories')}
+          {...form.getInputProps('category')}
         >
           <ul className='space-y-3.5'>
             {categories.slice(1).map((category) => (
               <li key={category.id}>
-                <Checkbox
+                <RadioCheck
                   value={category.id.toString()}
                   label={category.name}
+                  disabled={categoryId > 0 && category.id !== categoryId}
                 />
               </li>
             ))}
           </ul>
-        </RawCheckbox.Group>
-        <RawCheckbox.Group
+        </Radio.Group>
+        <Radio.Group
           label='Price'
           classNames={{
             label: 'font-bold mb-4 text-base',
           }}
-          {...form.getInputProps('prices')}
+          {...form.getInputProps('price')}
         >
           <ul className='space-y-3.5'>
             <li>
-              <Checkbox value='<20' label='Under $20' />
+              <RadioCheck value='-20' label='Under $20' />
             </li>
             <li>
-              <Checkbox value='20-50' label='$20 - $50' />
+              <RadioCheck value='20-50' label='$20 - $50' />
             </li>
             <li>
-              <Checkbox value='50-70' label='$50 - $70' />
+              <RadioCheck value='50-70' label='$50 - $70' />
             </li>
             <li>
-              <Checkbox value='70-90' label='$70 - $90' />
+              <RadioCheck value='70-90' label='$70 - $90' />
             </li>
             <li>
-              <Checkbox value='>90' label='$90 & Above' />
+              <RadioCheck value='90-' label='$90 & Above' />
             </li>
           </ul>
-        </RawCheckbox.Group>
+        </Radio.Group>
 
         <div>
           <div className='mb-4 text-base font-bold'>Availability</div>
