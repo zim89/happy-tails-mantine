@@ -17,9 +17,10 @@ export const productApi = createApi({
         categoryId?: number;
         filter?: FilterFormValues;
         sort?: Sort;
+        name?: string;
       }
     >({
-      query: ({ page, limit, categoryId, filter, sort }) => {
+      query: ({ page, limit, categoryId, filter, sort, name }) => {
         const params = new URLSearchParams({
           page: page.toString(),
           size: limit.toString(),
@@ -47,6 +48,11 @@ export const productApi = createApi({
 
         if (categoryId) {
           return `product?${params}`;
+        }
+
+        if (name) {
+          params.append('name', name);
+          return `products/search?${params}`;
         }
 
         return `products?${params}`;
