@@ -30,6 +30,8 @@ export const productApi = createApi({
 
         if (sort) params.append('sort', sort.join(','));
 
+        if (name) params.append('name', name);
+
         if (filter) {
           if (Number(filter.category) > 0)
             params.set('categoryId', filter.category);
@@ -51,8 +53,7 @@ export const productApi = createApi({
         }
 
         if (name) {
-          params.append('name', name);
-          return `products/search?${params}`;
+          return `products/filter?${params}`;
         }
 
         return `products?${params}`;
