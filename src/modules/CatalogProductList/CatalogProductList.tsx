@@ -1,17 +1,25 @@
 'use client';
 
 import RawProductList from '@/modules/ProductList';
-import { useFindAllQuery } from '@/shared/api/productApi';
+import { useFindManyQuery } from '@/shared/api/productApi';
 import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import { useScrollIntoView } from '@mantine/hooks';
 import { useContext, useState } from 'react';
 import { ToolbarContext } from '@/modules/Toolbar/ToolbarContext';
+import { FilterX } from 'lucide-react';
+import { Category } from '@/shared/api/categoryApi';
 
 const limit = 12;
 
-export default function ProductList() {
+export type CatalogProductListProps = {
+  category?: Category;
+};
+
+export default function CatalogProductList({
+  category,
+}: CatalogProductListProps) {
   const [page, setPage] = useState(1);
   const [toolbar] = useContext(ToolbarContext);
 
@@ -20,9 +28,12 @@ export default function ProductList() {
     scrollIntoView();
   };
 
-  const { data, error, isLoading } = useFindAllQuery({
+  const { data, error, isLoading } = useFindManyQuery({
+    categoryId: category?.id,
     page: page - 1,
     limit,
+
+    filter: toolbar.filter,
     sort: toolbar.sort,
   });
 
@@ -80,7 +91,14 @@ export default function ProductList() {
         </div>
       ) : (
         <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          There are no products in this category yet
+          {toolbar.filter ? (
+            <span>
+              <FilterX className='mr-2 inline-block' />
+              No matching results
+            </span>
+          ) : (
+            'There are no products in this category yet'
+          )}
         </p>
       )}
     </div>
