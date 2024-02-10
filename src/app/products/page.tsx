@@ -52,10 +52,8 @@ export default async function AllProducts() {
           Discover a delightful array of high-quality products designed to
           enhance your dog&apos;s comfort, happiness, and well-being
         </p>
-        <ToolbarProvider>
-          <Toolbar category={category} categories={categories} />
-          <ProductList />
-        </ToolbarProvider>
+        <Toolbar category={category} categories={categories} />
+        <ProductList />
         <Overview>
           <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
         </Overview>

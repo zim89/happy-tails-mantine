@@ -1,14 +1,13 @@
 'use client';
 
 import { Category } from '@/shared/api/categoryApi';
-import { Sort } from '@/shared/types/types';
 import { useForm } from '@mantine/form';
-import { useContext, useId } from 'react';
-import { ToolbarContext } from './ToolbarContext';
+import { useCallback, useId } from 'react';
 import Filter from './components/Filter';
 import { FilterFormValues } from './components/FilterForm/FilterForm';
 import SortBy, { type Option } from './components/SortBy';
 import Badges from './components/Badges';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -25,13 +24,26 @@ export type ToolbarProps = {
 
 export default function Toolbar({ category, categories }: ToolbarProps) {
   const collapseId = useId();
-  const [_, setToolbar] = useContext(ToolbarContext);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createQueryString = useCallback(
+    (values: Record<string, string>) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(values).forEach(([key, value]) => params.set(key, value));
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   const form = useForm<FilterFormValues>({
     initialValues: {
-      category: category.id.toString(),
-      price: 'none',
-      onlyInStock: false,
+      category: searchParams.get('category') ?? category.id.toString(),
+      price: searchParams.get('price') ?? 'none',
+      onlyInStock: searchParams.get('inStock') === 'true' ?? false,
     },
   });
 
@@ -43,12 +55,17 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           form={form}
           category={category}
           categories={categories}
-          onSubmit={form.onSubmit((values) =>
-            setToolbar((prev) => ({
-              ...prev,
-              filter: JSON.parse(JSON.stringify(values)),
-            }))
-          )}
+          onSubmit={form.onSubmit((values) => {
+            router.push(
+              pathname +
+                '?' +
+                createQueryString({
+                  category: values.category,
+                  price: values.price,
+                  inStock: values.onlyInStock.toString(),
+                })
+            );
+          })}
         />
         <p className='hidden md:block'>{category?.productCount} Results</p>
         <Badges
@@ -59,15 +76,15 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
         />
         <SortBy
           options={sortOptions}
-          onSelect={(sort) =>
-            setToolbar((prev) => ({
-              ...prev,
-              sort:
-                sort.value !== 'none'
-                  ? (sort.value.split('-') as Sort)
-                  : undefined,
-            }))
-          }
+          onSelect={(sort) => {
+            router.push(
+              pathname +
+                '?' +
+                createQueryString({
+                  sort: sort.value,
+                })
+            );
+          }}
         />
       </div>
       <div id={collapseId}></div>

@@ -33,6 +33,8 @@ export const productApi = createApi({
         if (name) params.append('name', name);
 
         if (filter) {
+          if (!name) params.append('name', '');
+
           if (Number(filter.category) > 0)
             params.set('categoryId', filter.category);
 
