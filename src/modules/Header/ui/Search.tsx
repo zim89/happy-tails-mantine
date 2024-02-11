@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Drawer,
   NumberFormatter,
@@ -11,7 +11,7 @@ import {
   useDisclosure,
   useMediaQuery,
 } from '@mantine/hooks';
-import { ArrowRight, Loader2, Search, X } from 'lucide-react';
+import { ArrowRight, Loader2, Search, X, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFindManyQuery } from '@/shared/api/productApi';
@@ -35,16 +35,17 @@ export default function SearchMenu() {
     }
   );
 
-  useEffect(() => {
-    if (opened) setValue('');
-  }, [opened]);
+  const handleOpen = useCallback(() => {
+    open();
+    setValue('');
+  }, [open]);
 
   return (
     <>
       <UnstyledButton
         className='flex items-center justify-center'
         aria-label='Search'
-        onClick={open}
+        onClick={handleOpen}
       >
         <Search className='iconBtn' />
       </UnstyledButton>
@@ -63,17 +64,27 @@ export default function SearchMenu() {
         <div className='relative'>
           <X className='iconBtn absolute right-0 top-0' onClick={close} />
           <h3 className='text-[28px]/auto mb-8 font-bold'>Search</h3>
-          <TextInput
-            placeholder='What are you looking for?'
-            leftSection={<Search className='h-4 w-4' />}
-            value={value}
-            onChange={(event) => setValue(event.currentTarget.value)}
-            classNames={{
-              input:
-                'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
-              section: 'text-brand-grey-600',
-            }}
-          />
+          <div className='relative'>
+            <TextInput
+              placeholder='What are you looking for?'
+              leftSection={<Search className='h-4 w-4' />}
+              value={value}
+              onChange={(event) => setValue(event.currentTarget.value)}
+              classNames={{
+                input:
+                  'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
+                section: 'text-brand-grey-600',
+              }}
+            />
+            {value && (
+              <button
+                className='group absolute right-3 top-1/2 -translate-y-1/2'
+                onClick={() => setValue('')}
+              >
+                <XCircle className='h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary' />
+              </button>
+            )}
+          </div>
         </div>
 
         <div className='pt-10'>
@@ -141,9 +152,10 @@ export default function SearchMenu() {
                 <Link
                   href={{
                     pathname: '/search',
-                    query: { name: value, page: 0, limit: 12 },
+                    query: { name: value, page: 1 },
                   }}
                   className='ml-auto flex w-min items-center gap-2 whitespace-nowrap py-3 text-sm/normal'
+                  onClick={close}
                 >
                   <span>Show all results</span>
                   <ArrowRight className='h-4 w-4' />

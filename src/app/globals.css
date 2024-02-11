@@ -15,14 +15,13 @@
 }
 
 @layer components {
-  /*SECTION*/
   .section {
     @apply py-8 md:py-10 lg:py-14;
   }
 
-  /* --------------------- */
-  /* BUTTONS ------------- */
-  /* --------------------- */
+  .heading {
+    @apply text-[28px]/normal lg:text-4xl/normal;
+  }
 
   .btn {
     @apply rounded-0.5 px-4 py-3 text-center text-base font-bold;
@@ -113,6 +112,12 @@
     @apply bg-brand-grey-500;
   }
 
+  .pagination-root {
+    @apply flex items-center justify-center;
+  }
+  .pagination-root div {
+    @apply flex flex-nowrap items-center justify-center gap-0 rounded-0.5 border border-brand-grey-400;
+  }
   .pagination-control {
     @apply relative flex h-10 w-10 items-center justify-center rounded-none border-transparent before:absolute before:-left-[2px] before:-top-[1px] before:h-10 before:w-[1px] before:bg-brand-grey-400 after:absolute after:-right-[1px] after:-top-[1px] after:h-10 after:w-[1px] after:bg-brand-grey-400 first:w-24 first:before:hidden first:after:hidden last:w-16 last:before:hidden last:after:hidden data-[active=true]:bg-secondary;
   }
