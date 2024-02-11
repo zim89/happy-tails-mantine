@@ -55,6 +55,7 @@ export const productApi = createApi({
         }
 
         if (name) {
+          params.set('productStatus', '');
           return `products/filter?${params}`;
         }
 
