@@ -6,10 +6,11 @@ import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import { useScrollIntoView } from '@mantine/hooks';
-import { useContext, useState } from 'react';
-import { ToolbarContext } from '@/modules/Toolbar/ToolbarContext';
+import { useMemo, useState } from 'react';
 import { FilterX } from 'lucide-react';
 import { Category } from '@/shared/api/categoryApi';
+import { useSearchParams } from 'next/navigation';
+import { Sort } from '@/shared/types/types';
 
 const limit = 12;
 
@@ -21,20 +22,35 @@ export default function CatalogProductList({
   category,
 }: CatalogProductListProps) {
   const [page, setPage] = useState(1);
-  const [toolbar] = useContext(ToolbarContext);
+  const searchParams = useSearchParams();
 
   const onPaginationChange = (page: number) => {
     setPage(page);
     scrollIntoView();
   };
 
+  let filter = useMemo(() => {
+    if (
+      !searchParams.has('category') ||
+      !searchParams.has('price') ||
+      !searchParams.has('inStock')
+    )
+      return;
+
+    return {
+      category: searchParams.get('category')!,
+      price: searchParams.get('price')!,
+      onlyInStock: searchParams.get('inStock') === 'true',
+    };
+  }, [searchParams]);
+
   const { data, error, isLoading } = useFindManyQuery({
     categoryId: category?.id,
     page: page - 1,
     limit,
 
-    filter: toolbar.filter,
-    sort: toolbar.sort,
+    filter,
+    sort: searchParams.get('sort')?.split('-') as Sort | undefined,
   });
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
@@ -91,7 +107,7 @@ export default function CatalogProductList({
         </div>
       ) : (
         <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          {toolbar.filter ? (
+          {filter ? (
             <span>
               <FilterX className='mr-2 inline-block' />
               No matching results
