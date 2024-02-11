@@ -40,7 +40,7 @@ export default function RootLayout({
           <MantineProvider theme={theme}>
             <Header />
             <div className='grid h-screen grid-rows-[_1fr_auto] pt-[4.625rem] lg:pt-32'>
-              <main className=''>{children}</main>
+              <main>{children}</main>
               <Footer />
             </div>
 
