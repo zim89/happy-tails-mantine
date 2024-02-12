@@ -6,11 +6,12 @@ import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import { useScrollIntoView } from '@mantine/hooks';
-import { useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FilterX } from 'lucide-react';
 import { Category } from '@/shared/api/categoryApi';
 import { useSearchParams } from 'next/navigation';
 import { Sort } from '@/shared/types/types';
+import { ProductCountContext } from './ProductCountContext';
 
 const limit = 12;
 
@@ -21,6 +22,7 @@ export type CatalogProductListProps = {
 export default function CatalogProductList({
   category,
 }: CatalogProductListProps) {
+  const [_, setProductCount] = useContext(ProductCountContext);
   const [page, setPage] = useState(1);
   const searchParams = useSearchParams();
 
@@ -57,6 +59,10 @@ export default function CatalogProductList({
     offset: 10,
     duration: 500,
   });
+
+  useEffect(() => {
+    setProductCount(data?.totalElements ?? 0);
+  }, [data?.totalElements, setProductCount]);
 
   if (isLoading)
     return (
