@@ -2,7 +2,6 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Overview from '@/components/Overview';
 import ProductList from '@/modules/CatalogProductList';
 import Toolbar from '@/modules/Toolbar';
-import { ToolbarProvider } from '@/modules/Toolbar/ToolbarContext';
 import { Category, getAllCategories } from '@/shared/api/categoryApi';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { BackendResponse, Product } from '@/shared/types/types';
