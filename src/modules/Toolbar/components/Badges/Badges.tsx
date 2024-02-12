@@ -21,7 +21,7 @@ export default function Badges({
   const { values } = form;
   const [min, max] = values.price.split('-');
 
-  if (form.isDirty())
+  if (values.category !== category.id.toString() || values.price !== 'none')
     return (
       <ul className={cn('flex space-x-3.5 lg:space-x-4', className)}>
         {values.category !== category.id.toString() ? (

@@ -2,12 +2,13 @@
 
 import { Category } from '@/shared/api/categoryApi';
 import { useForm } from '@mantine/form';
-import { useCallback, useId } from 'react';
+import { useCallback, useContext, useId } from 'react';
 import Filter from './components/Filter';
 import { FilterFormValues } from './components/FilterForm/FilterForm';
 import SortBy, { type Option } from './components/SortBy';
 import Badges from './components/Badges';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ProductCountContext } from '../CatalogProductList/ProductCountContext';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -24,6 +25,7 @@ export type ToolbarProps = {
 
 export default function Toolbar({ category, categories }: ToolbarProps) {
   const collapseId = useId();
+  const [productCount] = useContext(ProductCountContext);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -67,7 +69,7 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
             );
           })}
         />
-        <p className='hidden md:block'>{category?.productCount} Results</p>
+        <p className='hidden md:block'>{productCount} Results</p>
         <Badges
           form={form}
           className='ml-12 hidden lg:block'
