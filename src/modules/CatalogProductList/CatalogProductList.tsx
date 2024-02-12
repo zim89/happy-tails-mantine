@@ -9,8 +9,9 @@ import { useScrollIntoView } from '@mantine/hooks';
 import { useMemo, useState } from 'react';
 import { FilterX } from 'lucide-react';
 import { Category } from '@/shared/api/categoryApi';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Sort } from '@/shared/types/types';
+import { useDeviceSize } from '@/shared/lib/hooks';
 
 const limit = 12;
 
@@ -23,8 +24,14 @@ export default function CatalogProductList({
 }: CatalogProductListProps) {
   const [page, setPage] = useState(1);
   const searchParams = useSearchParams();
+  const path = usePathname();
+  const { replace } = useRouter();
+  const { isMobile, isTablet, isDesktop } = useDeviceSize();
 
   const onPaginationChange = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', String(page));
+    replace(`${path}?${params.toString()}`);
     setPage(page);
     scrollIntoView();
   };
@@ -50,11 +57,12 @@ export default function CatalogProductList({
     limit,
 
     filter,
+    name: searchParams.has('name') ? searchParams.get('name')! : '',
     sort: searchParams.get('sort')?.split('-') as Sort | undefined,
   });
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
-    offset: 10,
+    offset: isDesktop ? 160 : isTablet ? 100 : 90,
     duration: 500,
   });
 
@@ -86,7 +94,7 @@ export default function CatalogProductList({
             value={page}
             onChange={onPaginationChange}
             total={data.totalPages}
-            siblings={1}
+            siblings={isMobile ? 0 : 1}
             classNames={{
               control: 'pagination-control',
               dots: 'pagination-dots',
