@@ -2,7 +2,7 @@
 
 import { Category } from '@/shared/api/categoryApi';
 import { useForm } from '@mantine/form';
-import { useCallback, useContext, useId } from 'react';
+import { useCallback, useContext, useEffect, useId } from 'react';
 import Filter from './components/Filter';
 import { FilterFormValues } from './components/FilterForm/FilterForm';
 import SortBy, { type Option } from './components/SortBy';
@@ -32,9 +32,11 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
   const searchParams = useSearchParams();
 
   const createQueryString = useCallback(
-    (values: Record<string, string>) => {
+    (values: Record<string, string | null>) => {
       const params = new URLSearchParams(searchParams.toString());
-      Object.entries(values).forEach(([key, value]) => params.set(key, value));
+      Object.entries(values).forEach(([key, value]) =>
+        value ? params.set(key, value) : params.delete(key)
+      );
 
       return params.toString();
     },
@@ -43,11 +45,40 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
 
   const form = useForm<FilterFormValues>({
     initialValues: {
-      category: searchParams.get('category') ?? category.id.toString(),
-      price: searchParams.get('price') ?? 'none',
-      onlyInStock: searchParams.get('inStock') === 'true' ?? false,
+      category: category.id.toString(),
+      price: 'none',
+      onlyInStock: false,
     },
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    const category = params.get('category');
+    const price = params.get('price');
+    const inStock = params.get('inStock');
+
+    if (category) form.setFieldValue('category', category);
+    if (price) form.setFieldValue('price', price);
+    if (inStock) form.setFieldValue('onlyInStock', inStock === 'true');
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (form.isTouched())
+      router.push(
+        pathname +
+          '?' +
+          createQueryString({
+            category: form.values.category,
+            price: form.values.price,
+            inStock: String(form.values.onlyInStock),
+          })
+      );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.values]);
 
   return (
     <div>
@@ -57,17 +88,9 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           form={form}
           category={category}
           categories={categories}
-          onSubmit={form.onSubmit((values) => {
-            router.push(
-              pathname +
-                '?' +
-                createQueryString({
-                  category: values.category,
-                  price: values.price,
-                  inStock: values.onlyInStock.toString(),
-                })
-            );
-          })}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
         />
         <p className='hidden md:block'>{productCount} Results</p>
         <Badges
@@ -78,6 +101,9 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
         />
         <SortBy
           options={sortOptions}
+          defaultOption={sortOptions.find(
+            (opt) => opt.value === searchParams.get('sort')
+          )}
           onSelect={(sort) => {
             router.push(
               pathname +
