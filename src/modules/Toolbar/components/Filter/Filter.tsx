@@ -34,12 +34,12 @@ export default function Filter({ target, ...props }: FilterProps) {
           category={props.category}
           categories={props.categories}
         />
-        <FilterForm {...props} onClose={close} />
+        <FilterForm {...props} />
       </Drawer>
       <Portal target={target}>
         <Collapse in={opened && isDesktop} transitionDuration={500}>
           <div className='relative rounded-sm border border-brand-grey-400 p-7 pb-[4.625rem]'>
-            <FilterForm {...props} desktop onClose={close} />
+            <FilterForm {...props} desktop />
           </div>
         </Collapse>
       </Portal>
