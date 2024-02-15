@@ -16,8 +16,7 @@ export type FilterFormProps = {
   categories: Category[];
   form: UseFormReturnType<FilterFormValues>;
   desktop?: boolean;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  onClose?: () => void;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 export default function FilterForm({
@@ -26,7 +25,6 @@ export default function FilterForm({
   categories,
   desktop,
   onSubmit,
-  onClose,
 }: FilterFormProps) {
   const categoryId = category.id;
   return (
@@ -93,26 +91,6 @@ export default function FilterForm({
             {...form.getInputProps('onlyInStock')}
           />
         </div>
-      </div>
-
-      <div
-        className={cn(
-          desktop && 'absolute bottom-9 right-9 flex w-[19rem] gap-4'
-        )}
-      >
-        {desktop && (
-          <button
-            type='button'
-            onClick={onClose}
-            className='w-full max-w-[9rem] rounded-sm border border-brand-grey-400 px-4 py-2.5'
-          >
-            Close
-          </button>
-        )}
-
-        <button className='w-full rounded-sm bg-secondary px-4 py-3 font-bold text-primary md:max-w-[13.8125rem] lg:max-w-[9rem] lg:py-2.5'>
-          Apply
-        </button>
       </div>
     </form>
   );

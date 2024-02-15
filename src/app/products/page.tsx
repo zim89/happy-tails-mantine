@@ -5,6 +5,7 @@ import Toolbar from '@/modules/Toolbar';
 import { Category, getAllCategories } from '@/shared/api/categoryApi';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { BackendResponse, Product } from '@/shared/types/types';
+import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 
 const category: Category = {
   id: 0,
@@ -51,8 +52,10 @@ export default async function AllProducts() {
           Discover a delightful array of high-quality products designed to
           enhance your dog&apos;s comfort, happiness, and well-being
         </p>
-        <Toolbar category={category} categories={categories} />
-        <ProductList />
+        <ProductCountContextProvider>
+          <Toolbar category={category} categories={categories} />
+          <ProductList />
+        </ProductCountContextProvider>
         <Overview>
           <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
         </Overview>

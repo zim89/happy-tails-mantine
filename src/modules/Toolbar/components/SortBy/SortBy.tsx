@@ -12,12 +12,17 @@ export type Option = {
 
 type SortByProps = {
   options: Option[];
+  defaultOption?: Option;
   onSelect?: (option: Option) => void;
 };
 
-export default function SortBy({ options, onSelect }: SortByProps) {
+export default function SortBy({
+  options,
+  defaultOption,
+  onSelect,
+}: SortByProps) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [selected, setSelected] = useState<Option>(options[0]);
+  const [selected, setSelected] = useState<Option>(defaultOption ?? options[0]);
 
   return (
     <Popover
