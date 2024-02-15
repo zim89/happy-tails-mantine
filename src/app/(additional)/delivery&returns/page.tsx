@@ -1,66 +1,68 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Container, Tabs } from '@mantine/core';
 import { ChevronRight } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import styles from './styles.module.css';
 
 export default function DeliveryAndReturnsPage() {
   const [activeTab, setActiveTab] = useState<string | null>('shipping');
 
   return (
-    <Container>
-      <Breadcrumbs
-        crumbs={[{ href: '/', text: 'Home' }, { text: 'Shipping & Returns' }]}
-      />
+    <div className={styles.section}>
+      <Container>
+        <Breadcrumbs
+          crumbs={[{ href: '/', text: 'Home' }, { text: 'Shipping & Returns' }]}
+        />
 
-      <Tabs
-        value={activeTab}
-        onChange={setActiveTab}
-        classNames={{
-          list: 'delivery-tabs-list',
-          tab: 'delivery-tabs-tab',
-          panel: 'delivery-tabs-panel',
-        }}
-      >
-        <div className='flex flex-col gap-8 md:flex-row md:gap-4 lg:gap-12'>
-          <div className='space-y-2 bg-brand-grey-200 px-4 pb-6 pt-4 md:p-4'>
-            <div className='border-b border-b-brand-grey-600 px-4 py-2 text-2xl/[1.2] font-bold'>
-              <div className='md:hidden'>
-                <h2>Delivery</h2>
-                <h2>& Returns</h2>
+        <Tabs
+          value={activeTab}
+          onChange={setActiveTab}
+          classNames={{
+            list: styles.tabsList,
+            tab: styles.tabItem,
+          }}
+        >
+          <div className={styles.wrap}>
+            <div>
+              <div className={styles.sidebarTitleWrap}>
+                <h1 className='md:hidden'>
+                  Delivery <br />& Returns
+                </h1>
+                <h1 className='hidden md:block'>Delivery & Returns</h1>
               </div>
-              <h2 className='hidden md:block'>Delivery & Returns</h2>
+              <div className={styles.tabListWrap}>
+                <Tabs.List grow>
+                  <div className={styles.tabListInner}>
+                    <Tabs.Tab value='shipping'>
+                      Shipping
+                      {activeTab === 'shipping' && (
+                        <ChevronRight className={styles.tabIcon} />
+                      )}
+                    </Tabs.Tab>
+                    <Tabs.Tab value='check'>
+                      How do I check the status of my order?
+                      {activeTab === 'check' && (
+                        <ChevronRight className={styles.tabIcon} />
+                      )}
+                    </Tabs.Tab>
+                    <Tabs.Tab value='return'>
+                      Return policy
+                      {activeTab === 'return' && (
+                        <ChevronRight className={styles.tabIcon} />
+                      )}
+                    </Tabs.Tab>
+                  </div>
+                </Tabs.List>
+              </div>
             </div>
 
-            <Tabs.List grow>
-              <Tabs.Tab value='shipping'>
-                Shipping{' '}
-                {activeTab === 'shipping' && (
-                  <ChevronRight className='absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2' />
-                )}
-              </Tabs.Tab>
-              <Tabs.Tab value='check'>
-                How do I check the status of my order?
-                {activeTab === 'check' && (
-                  <ChevronRight className='absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2' />
-                )}
-              </Tabs.Tab>
-              <Tabs.Tab value='return'>
-                Return policy
-                {activeTab === 'return' && (
-                  <ChevronRight className='absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2' />
-                )}
-              </Tabs.Tab>
-            </Tabs.List>
-          </div>
-
-          <div className='pb-12 text-xl/none lg:pb-[72px]'>
             <Tabs.Panel value='shipping'>
-              <h2 className='delivery-title'>Shipping Policy</h2>
-              <div className='delivery-content'>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>Shipping</h3>
-                  <p className='mb-4'>
+              <h2 className={styles.title}>Shipping Policy</h2>
+              <div className={styles.panelInner}>
+                <div className={styles.panelContent}>
+                  <h3>Shipping</h3>
+                  <p>
                     Orders will be processed and shipped usually within 3-10
                     business days once credit card authorization and
                     verification have been obtained. Order processing and
@@ -75,18 +77,14 @@ export default function DeliveryAndReturnsPage() {
                     Rates will apply.
                   </p>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>Holiday Shipping Policy</h3>
-                  <p className='mb-4'>
-                    U.S Standard Shipping - Order by December 15
-                  </p>
+                <div className={styles.panelContent}>
+                  <h3>Holiday Shipping Policy</h3>
+                  <p>U.S Standard Shipping - Order by December 15</p>
                   <p>U.S Fast Shipping - Order by December 20th by noon EST</p>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>
-                    Domestic & International Shipping Rates
-                  </h3>
-                  <p className='mb-4'>
+                <div className={styles.panelContent}>
+                  <h3>Domestic & International Shipping Rates</h3>
+                  <p>
                     At this time we only ship to the U.S. and Canada. Shipping
                     is free on all orders.
                   </p>
@@ -102,9 +100,7 @@ export default function DeliveryAndReturnsPage() {
             </Tabs.Panel>
 
             <Tabs.Panel value='check'>
-              <h2 className='delivery-title'>
-                How do I check the status of my order?
-              </h2>
+              <h2>How do I check the status of my order?</h2>
               <p>
                 When your order has shipped, you will receive an email
                 notification from us which will include a tracking number you
@@ -114,9 +110,9 @@ export default function DeliveryAndReturnsPage() {
             </Tabs.Panel>
 
             <Tabs.Panel value='return'>
-              <h2 className='delivery-title'>Refund policy</h2>
-              <div className='delivery-content'>
-                <div className='delivery-subcontent'>
+              <h2>Refund policy</h2>
+              <div className={styles.panelInner}>
+                <div className={styles.panelContent}>
                   <p>
                     We have a 30-day return policy, which means you have 30 days
                     after receiving your item to request a return.
@@ -135,8 +131,8 @@ export default function DeliveryAndReturnsPage() {
                     costs.
                   </p>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>Damages & Issues</h3>
+                <div className={styles.panelContent}>
+                  <h3>Damages & Issues</h3>
                   <p>
                     Please inspect your order upon reception and contact us
                     immediately if the item is defective, damaged or if you
@@ -144,15 +140,13 @@ export default function DeliveryAndReturnsPage() {
                     and make it right.
                   </p>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>
-                    Eceptions/Non-retulnable Item
-                  </h3>
+                <div className={styles.panelContent}>
+                  <h3>Eceptions/Non-retulnable Item</h3>
                   <p>
                     Please note the following exceptions to our return and
                     refund policy:
                   </p>
-                  <ul className='delivery-list'>
+                  <ul className={styles.panelList}>
                     <li>
                       Discounted items are final and cannot be returned or
                       exchanged
@@ -163,16 +157,16 @@ export default function DeliveryAndReturnsPage() {
                     </li>
                   </ul>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>Exchanges</h3>
-                  <p className='mb-8'>
+                <div className={styles.panelContent}>
+                  <h3>Exchanges</h3>
+                  <p>
                     The fastest way to ensure you get what you want is to return
                     the item you have, and once the return is accepted, make a
                     separate purchase for the new item.
                   </p>
                 </div>
-                <div className='delivery-subcontent'>
-                  <h3 className='delivery-subtitle'>Refunds</h3>
+                <div className={styles.panelContent}>
+                  <h3>Refunds</h3>
                   <p>
                     We will notify you once we’ve received and inspected your
                     return, and let you know if the refund was approved or not.
@@ -190,8 +184,8 @@ export default function DeliveryAndReturnsPage() {
               </div>
             </Tabs.Panel>
           </div>
-        </div>
-      </Tabs>
-    </Container>
+        </Tabs>
+      </Container>
+    </div>
   );
 }
