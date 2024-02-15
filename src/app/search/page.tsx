@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { Container, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -40,7 +39,7 @@ export default function Page({ searchParams }: Props) {
     debounced ? params.set('name', debounced) : params.delete('name');
     params.set('page', String(page));
     replace(`${path}?${params.toString()}`);
-  }, [page, debounced]);
+  }, [page, debounced, query, replace, path]);
 
   return (
     <Container>

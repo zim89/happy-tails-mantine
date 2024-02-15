@@ -9,9 +9,10 @@ import { useScrollIntoView } from '@mantine/hooks';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { FilterX } from 'lucide-react';
 import { Category } from '@/shared/api/categoryApi';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Sort } from '@/shared/types/types';
 import { ProductCountContext } from './ProductCountContext';
+import { useDeviceSize } from '@/shared/lib/hooks';
 
 const limit = 12;
 
@@ -25,8 +26,14 @@ export default function CatalogProductList({
   const [_, setProductCount] = useContext(ProductCountContext);
   const [page, setPage] = useState(1);
   const searchParams = useSearchParams();
+  const path = usePathname();
+  const { replace } = useRouter();
+  const { isMobile, isTablet, isDesktop } = useDeviceSize();
 
   const onPaginationChange = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', String(page));
+    replace(`${path}?${params.toString()}`);
     setPage(page);
     scrollIntoView();
   };
@@ -52,17 +59,23 @@ export default function CatalogProductList({
     limit,
 
     filter,
+    name: searchParams.has('name') ? searchParams.get('name')! : '',
     sort: searchParams.get('sort')?.split('-') as Sort | undefined,
   });
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
-    offset: 10,
+    offset: isDesktop ? 160 : isTablet ? 100 : 90,
     duration: 500,
   });
 
   useEffect(() => {
     setProductCount(data?.totalElements ?? 0);
   }, [data?.totalElements, setProductCount]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (params.has('page') && params.get('page') === '1') setPage(1);
+  }, [searchParams]);
 
   if (isLoading)
     return (
@@ -87,29 +100,32 @@ export default function CatalogProductList({
       {!data.empty ? (
         <div className='mb-12 mt-4 md:mb-16 md:max-lg:mt-6 lg:mb-[4.5rem]'>
           <RawProductList data={data.content} />
-          <Pagination.Root
-            mt={{ base: 24, md: 48, lg: 72 }}
-            value={page}
-            onChange={onPaginationChange}
-            total={data.totalPages}
-            siblings={1}
-            classNames={{
-              control: 'pagination-control',
-              dots: 'pagination-dots',
-            }}
-          >
-            <Group gap={0} justify='center'>
-              <div
-                className={
-                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                }
-              >
-                <Pagination.Previous icon={PaginationPrevBtn} />
-                <Pagination.Items />
-                <Pagination.Next icon={PaginationNextBtn} />
-              </div>
-            </Group>
-          </Pagination.Root>
+
+          {data.totalElements > limit && (
+            <Pagination.Root
+              mt={{ base: 24, md: 48, lg: 72 }}
+              value={page}
+              onChange={onPaginationChange}
+              total={data.totalPages}
+              siblings={isMobile ? 0 : 1}
+              classNames={{
+                control: 'pagination-control',
+                dots: 'pagination-dots',
+              }}
+            >
+              <Group gap={0} justify='center'>
+                <div
+                  className={
+                    'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
+                  }
+                >
+                  <Pagination.Previous icon={PaginationPrevBtn} />
+                  <Pagination.Items />
+                  <Pagination.Next icon={PaginationNextBtn} />
+                </div>
+              </Group>
+            </Pagination.Root>
+          )}
         </div>
       ) : (
         <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
