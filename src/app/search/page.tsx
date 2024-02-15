@@ -1,20 +1,38 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
-import { Container, Pagination, TextInput } from '@mantine/core';
-import {
-  useDebouncedValue,
-  useMediaQuery,
-  useScrollIntoView,
-} from '@mantine/hooks';
+import React, { useContext, useEffect, useState } from 'react';
+import { Container, TextInput } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, XCircle } from 'lucide-react';
 
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import ProductList from '@/modules/ProductList';
-import { useFindManyQuery } from '@/shared/api/productApi';
+import CatalogProductList from '@/modules/CatalogProductList';
+import { Category, getAllCategories } from '@/shared/api/categoryApi';
+import Toolbar from '@/modules/Toolbar';
+import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
+
+const category: Category = {
+  id: 0,
+  name: 'All Products',
+  title: 'Premium Dog Products',
+  description:
+    'We understand that your furry friend deserves nothing but the best. Discover a delightful array of high-quality products designed to enhance your dog&apos;s comfort, happiness, and well-being',
+  overview: `From cozy beds to stylish apparel, interactive toys to nutritious treats, our curated collection offers a wide range of items to cater to your dog's every need. Each product is thoughtfully selected to ensure your canine companion experiences ultimate joy and care. Experience the joy of pampering your beloved companion with the finest dog products available. Our commitment to quality ensures that your dog receives the care they truly deserve. Explore our catalog now and elevate your dog's lifestyle to new heights of comfort and happiness!
+### Comfortable Rest
+Explore our luxurious dog beds and cozy sleeping options that provide your pup with the perfect place to unwind after a day of play. <ins>Plush Bolster Bed for Small Breeds, Cozy Donut Cuddler Bed</ins> - our beds provide optimal support and comfort, ensuring your canine companion enjoys restful sleep
+### Tail-Wagging Fashion
+Dress your furry friend in style with our trendy dog apparel, from adorable sweaters to practical raincoats, making walks and outings a fashion statement. Waterproof raincoats, doggie bandanas in various prints, adorable dog bowties or reflective safety vests for night walks our clother collection combines fashion and function!
+### Engaging Playtime
+Choose from an assortment of interactive toys that keep them entertained for hours on end.
+### Grooming and Wellness
+Discover grooming products that promote your dog's hygiene and well-being, from gentle shampoos to effective tick and flea solutions.
+### Travel Essentials
+Make adventures with your dog stress-free with our travel-friendly accessories, including collapsible bowls, comfortable carriers, and more.
+### Stylish Collars and Durable Leads
+Ensure your dog's safety and style during walks with our exquisite collection of collars and leads. Choose from a range of designs and materials that blend fashion and functionality seamlessly.`,
+  path: 'products',
+  productCount: 0,
+};
 
 interface Props {
   searchParams: {
@@ -24,65 +42,40 @@ interface Props {
 }
 
 export default function Page({ searchParams }: Props) {
-  const isTablet = useMediaQuery('(min-width: 768px)');
   const query = useSearchParams();
   const path = usePathname();
   const { replace } = useRouter();
 
-  const [page, setPage] = useState(Number(searchParams.page) || 1);
-  const [value, setValue] = useState(searchParams.name);
-  const [debounced] = useDebouncedValue(value, 300);
-
-  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
-    offset: 90,
-    duration: 500,
-  });
-
-  const { data, isLoading, isError } = useFindManyQuery({
-    name: debounced,
-    page: page - 1,
-    limit: 12,
-  });
+  const [inputValue, setInputValue] = useState(searchParams.name);
+  const [debounced] = useDebouncedValue(inputValue, 300);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const onChange = (value: string) => {
-    setPage(1);
-    setValue(value);
-  };
-
-  const onPaginationChange = (page: number) => {
-    setPage(page);
-    scrollIntoView();
+    const params = new URLSearchParams(query);
+    params.set('page', '1');
+    replace(`${path}?${params.toString()}`);
+    setInputValue(value);
   };
 
   const onReset = () => {
-    setPage(1);
-    setValue('');
+    const params = new URLSearchParams(query);
+    params.set('page', '1');
+    replace(`${path}?${params.toString()}`);
+    setInputValue('');
   };
 
   useEffect(() => {
     const params = new URLSearchParams(query);
     debounced ? params.set('name', debounced) : params.delete('name');
-    params.set('page', String(page));
     replace(`${path}?${params.toString()}`);
-  }, [page, debounced]);
+  }, [debounced, path, query, replace]);
 
-  if (isLoading)
-    return (
-      <div>
-        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          Loading...
-        </p>
-      </div>
-    );
-
-  if (isError || !data)
-    return (
-      <div>
-        <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-          Something went wrong...
-        </p>
-      </div>
-    );
+  useEffect(() => {
+    (async () => {
+      const { content: categories } = await getAllCategories();
+      setCategories(categories);
+    })();
+  }, []);
 
   return (
     <Container>
@@ -93,11 +86,11 @@ export default function Page({ searchParams }: Props) {
 
         <div className='mb-8 space-y-4 md:mx-auto md:mb-12 md:w-[458px] lg:mb-16 lg:w-[572px]'>
           <h2 className='heading text-center'>Search results</h2>
-          <div className='relative' ref={targetRef}>
+          <div className='relative'>
             <TextInput
               placeholder='What are you looking for?'
               leftSection={<Search className='h-4 w-4' />}
-              value={value}
+              value={inputValue}
               onChange={(event) => onChange(event.currentTarget.value)}
               classNames={{
                 input:
@@ -105,7 +98,7 @@ export default function Page({ searchParams }: Props) {
                 section: 'text-brand-grey-600',
               }}
             />
-            {value && (
+            {inputValue && (
               <button
                 className='group absolute right-3 top-1/2 -translate-y-1/2'
                 onClick={onReset}
@@ -116,30 +109,10 @@ export default function Page({ searchParams }: Props) {
           </div>
         </div>
 
-        {!data.empty ? (
-          <div className='space-y-12'>
-            <ProductList data={data.content} />
-
-            <Pagination
-              mt={{ base: 24, md: 48, lg: 72 }}
-              value={page}
-              onChange={onPaginationChange}
-              total={data.totalPages}
-              siblings={isTablet ? 1 : 0}
-              previousIcon={PaginationPrevBtn}
-              nextIcon={PaginationNextBtn}
-              classNames={{
-                root: 'pagination-root',
-                control: 'pagination-control',
-                dots: 'pagination-dots',
-              }}
-            />
-          </div>
-        ) : (
-          <p className='mb-[6.1875rem] mt-8 text-center font-light text-brand-grey-700 md:mb-36 md:text-2xl/normal'>
-            No matching results
-          </p>
-        )}
+        <ProductCountContextProvider>
+          <Toolbar category={category} categories={categories} />
+          <CatalogProductList />
+        </ProductCountContextProvider>
       </div>
     </Container>
   );
