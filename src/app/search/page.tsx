@@ -20,26 +20,28 @@ export default function Page({ searchParams }: Props) {
   const path = usePathname();
   const { replace } = useRouter();
 
-  const [page, setPage] = useState(1);
   const [value, setValue] = useState(searchParams.name);
   const [debounced] = useDebouncedValue(value, 300);
 
   const onChange = (value: string) => {
-    setPage(1);
+    const params = new URLSearchParams(query);
+    params.set('page', '1');
+    replace(`${path}?${params.toString()}`);
     setValue(value);
   };
 
   const onReset = () => {
-    setPage(1);
+    const params = new URLSearchParams(query);
+    params.set('page', '1');
+    replace(`${path}?${params.toString()}`);
     setValue('');
   };
 
   useEffect(() => {
     const params = new URLSearchParams(query);
     debounced ? params.set('name', debounced) : params.delete('name');
-    params.set('page', String(page));
     replace(`${path}?${params.toString()}`);
-  }, [page, debounced, query, replace, path]);
+  }, [debounced, path, query, replace]);
 
   return (
     <Container>
@@ -72,7 +74,6 @@ export default function Page({ searchParams }: Props) {
             )}
           </div>
         </div>
-
         <CatalogProductList />
       </div>
     </Container>

@@ -74,8 +74,13 @@ export default function CatalogProductList({
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    if (params.has('page') && params.get('page') === '1') setPage(1);
-  }, [searchParams]);
+    if (
+      params.has('page') &&
+      params.get('page')! === '1' &&
+      Number(params.get('page')!) !== page
+    )
+      setPage(1);
+  }, [page, searchParams]);
 
   if (isLoading)
     return (
