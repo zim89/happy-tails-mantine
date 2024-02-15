@@ -88,7 +88,7 @@ export default function FilterForm({
             color='black'
             size='xs'
             label='Show only in stock products'
-            {...form.getInputProps('onlyInStock')}
+            {...form.getInputProps('onlyInStock', { type: 'checkbox' })}
           />
         </div>
       </div>
