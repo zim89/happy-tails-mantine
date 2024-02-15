@@ -6,17 +6,27 @@ import FilterForm, { FilterFormProps } from '../FilterForm/FilterForm';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import Badges from '../Badges';
 
-export type FilterProps = { target: string } & FilterFormProps;
+export type FilterProps = {
+  target: string;
+  opened: boolean;
+  onClose: () => void;
+  onToggle: () => void;
+} & FilterFormProps;
 
-export default function Filter({ target, ...props }: FilterProps) {
-  const [opened, { close, toggle }] = useDisclosure(false);
+export default function Filter({
+  target,
+  opened,
+  onClose,
+  onToggle,
+  ...props
+}: FilterProps) {
   const isDesktop = useMediaQuery('(min-width: 1280px)') ?? false;
 
   return (
     <>
       <Drawer
         opened={opened && !isDesktop}
-        onClose={close}
+        onClose={onClose}
         title='Filter'
         classNames={{
           inner: 'max-w-[22.375rem] md:max-w-[30.9375rem]',
@@ -44,7 +54,7 @@ export default function Filter({ target, ...props }: FilterProps) {
         </Collapse>
       </Portal>
       <button
-        onClick={toggle}
+        onClick={onToggle}
         className='flex h-[2.375rem] w-full items-center justify-center gap-2 rounded-sm border border-brand-grey-300 bg-brand-grey-300 px-[1.125rem] font-bold md:mr-6 md:max-w-[10rem] lg:mr-12'
       >
         Filter

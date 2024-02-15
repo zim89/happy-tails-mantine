@@ -9,6 +9,7 @@ import SortBy, { type Option } from './components/SortBy';
 import Badges from './components/Badges';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductCountContext } from '../CatalogProductList/ProductCountContext';
+import { useDisclosure } from '@mantine/hooks';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -26,6 +27,7 @@ export type ToolbarProps = {
 export default function Toolbar({ category, categories }: ToolbarProps) {
   const collapseId = useId();
   const [productCount] = useContext(ProductCountContext);
+  const [opened, { close, toggle }] = useDisclosure(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -77,6 +79,8 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           })
       );
 
+    close();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values]);
 
@@ -91,6 +95,9 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           onSubmit={(e) => {
             e.preventDefault();
           }}
+          opened={opened}
+          onClose={close}
+          onToggle={toggle}
         />
         <p className='hidden md:block'>{productCount} Results</p>
         <Badges
