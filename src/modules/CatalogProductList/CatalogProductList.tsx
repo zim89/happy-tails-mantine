@@ -64,7 +64,7 @@ export default function CatalogProductList({
   });
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
-    offset: isDesktop ? 160 : isTablet ? 100 : 90,
+    offset: isDesktop ? 214 : isTablet ? 176 : 144,
     duration: 500,
   });
 
