@@ -201,35 +201,5 @@
   }
 }
 
-/*Delivery & Returns*/
-.delivery-tabs-list {
-  @apply !m-0 py-6 before:hidden md:w-[208px] lg:w-[373px];
-}
-
-.delivery-tabs-tab {
-  @apply relative justify-start whitespace-normal border-0 p-0 py-3 pl-4 pr-12 text-lg/none text-brand-grey-900 data-[active=true]:bg-brand-grey-300 data-[active=true]:text-secondary lg:pr-14;
-}
-
-.delivery-tabs-panel {
-  @apply pb-12 text-xl/none;
-}
-
-.delivery-title {
-  @apply mb-8 text-[32px]/[1.2] font-bold lg:mb-12;
-}
-
-.delivery-subtitle {
-  @apply mb-6 text-2xl/[1.2] font-bold;
-}
-
-.delivery-content {
-  @apply space-y-8 lg:space-y-12;
-}
-
-.delivery-subcontent {
-  @apply space-y-4;
-}
-
 .delivery-list {
-  @apply list-disc space-y-4 pl-8;
 }
