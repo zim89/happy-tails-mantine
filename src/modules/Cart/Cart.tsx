@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Drawer, ScrollArea, UnstyledButton } from '@mantine/core';
+import { Drawer, Indicator, ScrollArea, UnstyledButton } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { ShoppingBag } from 'lucide-react';
 
@@ -20,9 +20,22 @@ export default function Cart() {
     <>
       <UnstyledButton
         onClick={open}
-        className={'flex items-center justify-center text-secondary'}
+        className={'group flex items-center justify-center text-secondary'}
       >
-        <ShoppingBag className='iconBtn' />
+        <Indicator
+          label={cart.length}
+          disabled={cart.length === 0}
+          position='bottom-end'
+          color='#F39324'
+          size={10}
+          offset={5}
+          inline
+          classNames={{
+            indicator: 'p-0 text-[6px]/[7px] font-bold text-black',
+          }}
+        >
+          <ShoppingBag className='iconBtn' />
+        </Indicator>
       </UnstyledButton>
 
       <Drawer
