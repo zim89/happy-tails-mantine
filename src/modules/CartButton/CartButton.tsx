@@ -1,20 +1,21 @@
 'use client';
-import React from 'react';
 import { Drawer, Indicator, ScrollArea, UnstyledButton } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { ShoppingBag } from 'lucide-react';
 
-import CartHeader from '@/modules/Cart/ui/CartHeader';
-import CartItem from '@/modules/Cart/ui/CartItem';
-import CartFooter from '@/modules/Cart/ui/CartFooter';
+import CartHeader from './ui/CartHeader';
+import CartItem from './ui/CartItem';
+import CartFooter from './ui/CartFooter';
 
 import { useAppSelector } from '@/shared/redux/store';
 import { selectCart } from '@/shared/redux/cart/cartSlice';
+import { useDeviceSize } from '@/shared/lib/hooks';
 
-export default function Cart() {
+export default function CartButton() {
   const [opened, { open, close }] = useDisclosure(false);
+  const { isTablet } = useDeviceSize();
   const cart = useAppSelector(selectCart);
-  const tablet = useMediaQuery('(min-width: 768px)');
+  const hasItemsInCart = cart.length > 0;
 
   return (
     <>
@@ -24,7 +25,7 @@ export default function Cart() {
       >
         <Indicator
           label={cart.length}
-          disabled={cart.length === 0}
+          disabled={!hasItemsInCart}
           position='bottom-end'
           color='#F39324'
           size={10}
@@ -44,7 +45,7 @@ export default function Cart() {
         position='right'
         overlayProps={{ backgroundOpacity: 0.2, color: '#161616' }}
         withCloseButton={false}
-        size={tablet ? 529 : '100%'}
+        size={isTablet ? 529 : '100%'}
         classNames={{
           body: 'flex h-full flex-col p-0',
         }}
