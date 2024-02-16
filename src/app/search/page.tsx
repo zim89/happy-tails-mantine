@@ -7,7 +7,7 @@ import { Search, XCircle } from 'lucide-react';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CatalogProductList from '@/modules/CatalogProductList';
-import { Category, getAllCategories } from '@/shared/api/categoryApi';
+import { type Category, getAllCategories } from '@/shared/api/categoryApi';
 import Toolbar from '@/modules/Toolbar';
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 

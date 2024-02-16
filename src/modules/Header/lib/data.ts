@@ -1,67 +1,75 @@
+import collarsIcon from '@/assets/icons/categories/collars.svg';
+import careIcon from '@/assets/icons/categories/care.svg';
+import toysIcon from '@/assets/icons/categories/toys.svg';
+import clothingIcon from '@/assets/icons/categories/clothing.svg';
+import productsIcon from '@/assets/icons/categories/products.svg';
+import leadsIcon from '@/assets/icons/categories/leads.svg';
+import furnitureIcon from '@/assets/icons/categories/furniture.svg';
+
 export const categoryLinks = [
-  {
-    label: 'All products',
-    short: 'All products',
-    href: '/products',
-    icon: '/icons/products-ico.svg',
-  },
-  {
-    label: 'Clothing',
-    short: 'Clothing',
-    href: '/clothing',
-    icon: '/icons/clothing-ico.svg',
-  },
-  {
-    label: 'Leads&Harnesses',
-    short: 'Leads',
-    href: '/leads&harnesses',
-    icon: '/icons/leads-ico.svg',
-  },
-  {
-    label: 'Toys',
-    short: 'Toys',
-    href: '/toys',
-    icon: '/icons/toys-ico.svg',
-  },
   {
     label: 'Care',
     short: 'Care',
     href: '/care',
-    icon: '/icons/care-ico.svg',
-  },
-  {
-    label: 'Furniture',
-    short: 'Furniture',
-    href: '/furniture',
-    icon: '/icons/furniture-ico.svg',
+    icon: careIcon,
   },
   {
     label: 'Collars',
     short: 'Collars',
     href: '/collars',
-    icon: '/icons/collars-ico.svg',
+    icon: collarsIcon,
+  },
+  {
+    label: 'Toys',
+    short: 'Toys',
+    href: '/toys',
+    icon: toysIcon,
+  },
+  {
+    label: 'Clothing',
+    short: 'Clothing',
+    href: '/clothing',
+    icon: clothingIcon,
+  },
+  {
+    label: 'All products',
+    short: 'All products',
+    href: '/products',
+    icon: productsIcon,
+  },
+  {
+    label: 'Leads&harnesses',
+    short: 'Leads',
+    href: '/leads&harnesses',
+    icon: leadsIcon,
+  },
+  {
+    label: 'Furniture',
+    short: 'Furniture',
+    href: '/furniture',
+    icon: furnitureIcon,
   },
 ] as const;
 
-export const menuLinks = [
+export const additionalLinks = [
   {
     label: 'My Wishlist',
-    href: '',
+    href: '/wishlist',
   },
   {
     label: 'Log in',
-    href: '',
+    href: '/auth',
   },
   {
     label: 'Contacts',
-    href: '',
+    href: '/contacts',
   },
   {
     label: 'Delivery & Returns',
-    href: '',
+    href: '/delivery&returns',
   },
   {
     label: 'Blog',
-    href: '',
+    href: '/blog',
   },
 ] as const;

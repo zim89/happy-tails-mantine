@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Container } from '@mantine/core';
-import BlogSkeleton from '@/app/blog/ui/BlogSkeleton';
+import BlogSkeleton from '@/app/(additional)/blog/ui/BlogSkeleton';
 
 export default function Loading() {
   return (

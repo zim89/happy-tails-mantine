@@ -1,18 +1,33 @@
 'use client';
-import React, { useEffect } from 'react';
-import { UnstyledButton, Drawer, Image, em } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useEffect } from 'react';
+import { UnstyledButton, Drawer } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { AlignLeft, X } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { categoryLinks, menuLinks } from '../lib/data';
-import { Category } from '@/shared/api/categoryApi';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import Image from 'next/image';
+
+import { type Category } from '@/shared/api/categoryApi';
+import { useDeviceSize } from '@/shared/lib/hooks';
+import { additionalLinks, categoryLinks } from '../lib/data';
+import logoImg from '@/assets/logo/logo-tablet.svg';
 
 export default function BurgerMenu({ categories }: { categories: Category[] }) {
-  const [opened, { open, close, toggle }] = useDisclosure(false);
-  const isDesktop = useMediaQuery(`(min-width: ${em(1280)})`);
+  const [opened, { close, toggle }] = useDisclosure(false);
+  const { isDesktop } = useDeviceSize();
   const path = usePathname();
+
+  const getCategoryIcon = (cat: string) => {
+    const index = categoryLinks.findIndex(
+      (item) => item.label.toLowerCase() === cat.toLowerCase()
+    );
+    return categoryLinks[index].icon;
+  };
+
+  useEffect(() => {
+    close();
+  }, [close, path]);
 
   return (
     <>
@@ -46,27 +61,21 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
       >
         {/*  Header */}
         <div className='mb-4 flex items-center justify-between border-b border-b-brand-grey-300 bg-brand-grey-100 px-4 py-4 pb-[15px] md:px-9 lg:hidden'>
-          <Image
-            src='/logo-tablet.svg'
-            h={{ base: 42 }}
-            w={{ base: 237 }}
-            alt='Logo image'
-          />
+          <Image src={logoImg} alt='Logo image' height={42} width={237} />
           <UnstyledButton
-            onClick={close}
             className='flex items-center justify-center'
+            onClick={close}
           >
             <X className='btnIcon' />
           </UnstyledButton>
         </div>
 
-        <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:flex-row lg:items-center lg:justify-between'>
-          {/*  Desktop Menubar */}
+        <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:mx-auto lg:w-[1280px] lg:flex-row lg:items-center lg:justify-between lg:px-14'>
+          {/*  Desktop Additional Menubar */}
           <ul className='hidden lg:flex lg:flex-col lg:gap-6'>
             <li>
               <Link
-                href='/contacts'
-                onClick={close}
+                href={'/contacts'}
                 className={cn('navLink', path === '/contacts' && 'font-bold')}
               >
                 Contacts
@@ -74,8 +83,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
             </li>
             <li>
               <Link
-                href='/delivery&returns'
-                onClick={close}
+                href={'/delivery&returns'}
                 className={cn(
                   'navLink',
                   path === '/delivery&returns' && 'font-bold'
@@ -86,8 +94,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
             </li>
             <li>
               <Link
-                href='/blog'
-                onClick={close}
+                href={'/blog'}
                 className={cn('navLink', path === '/blog' && 'font-bold')}
               >
                 Blog
@@ -100,18 +107,16 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
             <li className='border-b border-b-brand-grey-300 lg:border-none'>
               <Link
                 href={'/products'}
-                onClick={close}
                 className={cn(
                   'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
                   path === '/products' && 'font-bold'
                 )}
               >
                 <Image
-                  src='/icons/products-ico.svg'
+                  src={getCategoryIcon('All products')}
                   alt='all products page icon'
-                  h={{ base: 32, lg: 42 }}
-                  w='auto'
-                  fit='contain'
+                  height={isDesktop ? 42 : 32}
+                  width={isDesktop ? 42 : 32}
                 />
                 <p className='navLink'>All products</p>
               </Link>
@@ -131,23 +136,28 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                 >
                   {/* TODO: Add actual image from backend */}
                   <Image
-                    src='/icons/products-ico.svg'
+                    src={getCategoryIcon(category.name)}
                     alt={category.name}
-                    h={{ base: 32, lg: 42 }}
-                    w='auto'
-                    fit='contain'
+                    height={isDesktop ? 42 : 32}
+                    width={isDesktop ? 42 : 32}
                   />
-                  <p className='navLink'>{category.name}</p>
+                  <p className='navLink'>
+                    {category.name === 'Leads&harnesses'
+                      ? 'Leads'
+                      : category.name}
+                  </p>
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/*  Tablet/Mobile Menubar */}
+          {/*  Tablet/Mobile Additional Menubar */}
           <ul className='flex flex-col gap-4 lg:hidden'>
-            {menuLinks.map((link) => (
+            {additionalLinks.map((link) => (
               <li key={link.label}>
-                <p className='text-base font-light'>{link.label}</p>
+                <Link href={link.href} className='text-base font-light'>
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
