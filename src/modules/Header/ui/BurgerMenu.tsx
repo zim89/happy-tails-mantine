@@ -116,7 +116,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                   src={getCategoryIcon('All products')}
                   alt='all products page icon'
                   height={isDesktop ? 42 : 32}
-                  width={isDesktop ? 42 : 32}
+                  style={{ width: 'auto' }}
                 />
                 <p className='navLink'>All products</p>
               </Link>
@@ -139,7 +139,7 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                     src={getCategoryIcon(category.name)}
                     alt={category.name}
                     height={isDesktop ? 42 : 32}
-                    width={isDesktop ? 42 : 32}
+                    style={{ width: 'auto' }}
                   />
                   <p className='navLink'>
                     {category.name === 'Leads&harnesses'
