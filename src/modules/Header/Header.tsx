@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from '@mantine/core';
-import { Heart, UserRound } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import Link from 'next/link';
 
 import BurgerMenu from '@/modules/Header/ui/BurgerMenu';
@@ -9,6 +9,7 @@ import CartButton from '@/modules/CartButton';
 import Logo from '@/modules/Header/ui/Logo';
 import Navbar from '@/modules/Header/ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
+import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
 
 export default async function Header() {
   const { content: categories } = await getAllCategories();
@@ -36,13 +37,7 @@ export default async function Header() {
             >
               <UserRound className='iconBtn' />
             </Link>
-            <Link
-              href={'/wishlist'}
-              className='hidden lg:flex lg:items-center lg:justify-center'
-            >
-              <Heart className='iconBtn' />
-            </Link>
-
+            <FavoriteButton />
             <CartButton />
           </div>
         </div>
