@@ -31,13 +31,13 @@ export default async function Header() {
               <SearchMenu />
             </span>
             <Link
-              href='/auth'
+              href={'/auth'}
               className='flex items-center justify-center text-secondary'
             >
               <UserRound className='iconBtn' />
             </Link>
             <Link
-              href='/wishlist'
+              href={'/wishlist'}
               className='hidden lg:flex lg:items-center lg:justify-center'
             >
               <Heart className='iconBtn' />
