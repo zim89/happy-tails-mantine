@@ -5,10 +5,10 @@ import Link from 'next/link';
 
 import BurgerMenu from '@/modules/Header/ui/BurgerMenu';
 import SearchMenu from '@/modules/Header/ui/Search';
+import CartButton from '@/modules/CartButton';
 import Logo from '@/modules/Header/ui/Logo';
 import Navbar from '@/modules/Header/ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
-import Cart from '@/modules/Cart';
 
 export default async function Header() {
   const { content: categories } = await getAllCategories();
@@ -43,7 +43,7 @@ export default async function Header() {
               <Heart className='iconBtn' />
             </Link>
 
-            <Cart />
+            <CartButton />
           </div>
         </div>
       </Container>

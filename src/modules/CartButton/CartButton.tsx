@@ -1,28 +1,42 @@
 'use client';
-import React from 'react';
-import { Drawer, ScrollArea, UnstyledButton } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { Drawer, Indicator, ScrollArea, UnstyledButton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { ShoppingBag } from 'lucide-react';
 
-import CartHeader from '@/modules/Cart/ui/CartHeader';
-import CartItem from '@/modules/Cart/ui/CartItem';
-import CartFooter from '@/modules/Cart/ui/CartFooter';
+import CartHeader from './ui/CartHeader';
+import CartItem from './ui/CartItem';
+import CartFooter from './ui/CartFooter';
 
 import { useAppSelector } from '@/shared/redux/store';
 import { selectCart } from '@/shared/redux/cart/cartSlice';
+import { useDeviceSize } from '@/shared/lib/hooks';
 
-export default function Cart() {
+export default function CartButton() {
   const [opened, { open, close }] = useDisclosure(false);
+  const { isTablet } = useDeviceSize();
   const cart = useAppSelector(selectCart);
-  const tablet = useMediaQuery('(min-width: 768px)');
+  const hasItemsInCart = cart.length > 0;
 
   return (
     <>
       <UnstyledButton
         onClick={open}
-        className={'flex items-center justify-center text-secondary'}
+        className={'group flex items-center justify-center text-secondary'}
       >
-        <ShoppingBag className='iconBtn' />
+        <Indicator
+          label={cart.length}
+          disabled={!hasItemsInCart}
+          position='bottom-end'
+          color='#F39324'
+          size={10}
+          offset={5}
+          inline
+          classNames={{
+            indicator: 'p-0 text-[6px]/[7px] font-bold text-black',
+          }}
+        >
+          <ShoppingBag className='iconBtn' />
+        </Indicator>
       </UnstyledButton>
 
       <Drawer
@@ -31,7 +45,7 @@ export default function Cart() {
         position='right'
         overlayProps={{ backgroundOpacity: 0.2, color: '#161616' }}
         withCloseButton={false}
-        size={tablet ? 529 : '100%'}
+        size={isTablet ? 529 : '100%'}
         classNames={{
           body: 'flex h-full flex-col p-0',
         }}
