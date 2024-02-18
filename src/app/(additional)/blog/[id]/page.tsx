@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Container } from '@mantine/core';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!post) notFound();
 
   return (
-    <>
+    <div className='lg:pt-4'>
       <Container>
         <Breadcrumbs
           crumbs={[
@@ -54,12 +54,14 @@ export default async function Page({ params }: { params: { id: string } }) {
 
               <div className='space-y-12 lg:space-y-10'>
                 <ShareInSocial />
-                <PopularPosts />
+                <Suspense fallback={null}>
+                  <PopularPosts />
+                </Suspense>
               </div>
             </div>
           </Container>
         </>
       )}
-    </>
+    </div>
   );
 }
