@@ -1,26 +1,35 @@
 'use client';
+import { useCallback } from 'react';
 import { Drawer, Indicator, ScrollArea, UnstyledButton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { ShoppingBag } from 'lucide-react';
 
 import CartHeader from './ui/CartHeader';
 import CartItem from './ui/CartItem';
 import CartFooter from './ui/CartFooter';
 
-import { useAppSelector } from '@/shared/redux/store';
-import { selectCart } from '@/shared/redux/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
+import {
+  closeCartDrawer,
+  openCartDrawer,
+  selectCart,
+  selectCartIsOpen,
+} from '@/shared/redux/cart/cartSlice';
 import { useDeviceSize } from '@/shared/lib/hooks';
 
 export default function CartButton() {
-  const [opened, { open, close }] = useDisclosure(false);
+  const dispatch = useAppDispatch();
   const { isTablet } = useDeviceSize();
+  const isOpen = useAppSelector(selectCartIsOpen);
   const cart = useAppSelector(selectCart);
   const hasItemsInCart = cart.length > 0;
+
+  const openCart = useCallback(() => dispatch(openCartDrawer()), [dispatch]);
+  const closeCart = useCallback(() => dispatch(closeCartDrawer()), [dispatch]);
 
   return (
     <>
       <UnstyledButton
-        onClick={open}
+        onClick={openCart}
         className={'group flex items-center justify-center text-secondary'}
       >
         <Indicator
@@ -40,8 +49,8 @@ export default function CartButton() {
       </UnstyledButton>
 
       <Drawer
-        opened={opened}
-        onClose={close}
+        opened={isOpen}
+        onClose={closeCart}
         position='right'
         overlayProps={{ backgroundOpacity: 0.2, color: '#161616' }}
         withCloseButton={false}
@@ -50,7 +59,7 @@ export default function CartButton() {
           body: 'flex h-full flex-col p-0',
         }}
       >
-        <CartHeader length={cart.length} close={close} />
+        <CartHeader length={cart.length} close={closeCart} />
 
         <ScrollArea h={'100%'} w={'100%'} type='auto'>
           <div className={'px-9'}>
@@ -75,7 +84,7 @@ export default function CartButton() {
           </div>
         </ScrollArea>
 
-        <CartFooter length={cart.length} close={close} />
+        <CartFooter length={cart.length} close={closeCart} />
       </Drawer>
     </>
   );

@@ -8,11 +8,13 @@ export interface CartItem extends Product {
 
 export interface CartState {
   items: CartItem[];
+  isOpen: boolean;
   totalPrice: number;
 }
 
 const initialState: CartState = {
   items: [],
+  isOpen: false,
   totalPrice: 0,
 };
 
@@ -24,6 +26,14 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    openCartDrawer: (state) => {
+      state.isOpen = true;
+    },
+
+    closeCartDrawer: (state) => {
+      state.isOpen = false;
+    },
+
     addToCart: (state, action) => {
       const item = state.items.find((obj) => obj.id === action.payload.id);
 
@@ -43,6 +53,7 @@ const cartSlice = createSlice({
       state.items = state.items.filter((obj) => obj.id !== action.payload);
       state.totalPrice = calcTotalPrice(state.items);
     },
+
     decrementCartItem(state, action: PayloadAction<number>) {
       const item = state.items.find((obj) => obj.id === action.payload);
 
@@ -52,6 +63,7 @@ const cartSlice = createSlice({
 
       state.totalPrice = calcTotalPrice(state.items);
     },
+
     incrementCartItem(state, action: PayloadAction<number>) {
       const item = state.items.find((obj) => obj.id === action.payload);
 
@@ -61,6 +73,7 @@ const cartSlice = createSlice({
 
       state.totalPrice = calcTotalPrice(state.items);
     },
+
     clearCart(state) {
       state.items = [];
       state.totalPrice = 0;
@@ -74,9 +87,12 @@ export const {
   decrementCartItem,
   incrementCartItem,
   clearCart,
+  openCartDrawer,
+  closeCartDrawer,
 } = cartSlice.actions;
 
 export const selectCart = (state: RootState) => state.cart.items;
 export const selectCartTotalPrice = (state: RootState) => state.cart.totalPrice;
+export const selectCartIsOpen = (state: RootState) => state.cart.isOpen;
 
 export const cartReducer = cartSlice.reducer;
