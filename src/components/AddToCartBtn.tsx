@@ -3,7 +3,7 @@ import React, { MouseEventHandler } from 'react';
 import clsx from 'clsx';
 import { useAppDispatch } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
-import { addToCart } from '@/shared/redux/cart/cartSlice';
+import { addToCart, openCartDrawer } from '@/shared/redux/cart/cartSlice';
 
 interface Props {
   product: Product;
@@ -15,6 +15,7 @@ export default function AddToCartBtn({ disabled, product }: Props) {
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     dispatch(addToCart(product));
+    dispatch(openCartDrawer());
   };
 
   return (
