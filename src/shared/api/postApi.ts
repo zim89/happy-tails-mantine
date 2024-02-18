@@ -49,3 +49,14 @@ export const fetchHeroPost = async (): Promise<Post> => {
     throw new Error('Failed to fetch hero post');
   }
 };
+
+export const fetchLastFivePosts = async (): Promise<Post[]> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/last-five`
+    );
+    return res.json();
+  } catch (error) {
+    throw new Error('Failed to fetch last posts');
+  }
+};
