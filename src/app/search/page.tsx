@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Container, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -45,6 +45,7 @@ export default function Page({ searchParams }: Props) {
   const query = useSearchParams();
   const path = usePathname();
   const { replace } = useRouter();
+  const isFirstRender = useRef(true);
 
   const [inputValue, setInputValue] = useState(searchParams.name);
   const [debounced] = useDebouncedValue(inputValue, 300);
@@ -65,9 +66,16 @@ export default function Page({ searchParams }: Props) {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(query);
-    debounced ? params.set('name', debounced) : params.delete('name');
-    replace(`${path}?${params.toString()}`);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (!isFirstRender) {
+      const params = new URLSearchParams(query);
+      debounced ? params.set('name', debounced) : params.delete('name');
+      replace(`${path}?${params.toString()}`);
+    }
   }, [debounced, path, query, replace]);
 
   useEffect(() => {
