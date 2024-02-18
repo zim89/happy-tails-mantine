@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!post) notFound();
 
   return (
-    <>
+    <div className='lg:pt-4'>
       <Container>
         <Breadcrumbs
           crumbs={[
@@ -62,6 +62,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Container>
         </>
       )}
-    </>
+    </div>
   );
 }
