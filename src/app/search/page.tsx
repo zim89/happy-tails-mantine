@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -34,48 +34,37 @@ Ensure your dog's safety and style during walks with our exquisite collection of
   productCount: 0,
 };
 
-interface Props {
-  searchParams: {
-    name: string;
-    page?: string;
-  };
-}
+export default function Page() {
+  const [value, setValue] = useState('');
+  const [debounced] = useDebouncedValue(value, 300, { leading: true });
+  const [categories, setCategories] = useState<Category[]>([]);
 
-export default function Page({ searchParams }: Props) {
   const query = useSearchParams();
   const path = usePathname();
   const { replace } = useRouter();
-  const isFirstRender = useRef(true);
-
-  const [inputValue, setInputValue] = useState(searchParams.name);
-  const [debounced] = useDebouncedValue(inputValue, 300);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   const onChange = (value: string) => {
     const params = new URLSearchParams(query);
     params.set('page', '1');
     replace(`${path}?${params.toString()}`);
-    setInputValue(value);
+    setValue(value);
   };
 
   const onReset = () => {
     const params = new URLSearchParams(query);
     params.set('page', '1');
     replace(`${path}?${params.toString()}`);
-    setInputValue('');
+    setValue('');
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    setValue(query.get('name') || '');
+  }, []);
 
-    if (!isFirstRender) {
-      const params = new URLSearchParams(query);
-      debounced ? params.set('name', debounced) : params.delete('name');
-      replace(`${path}?${params.toString()}`);
-    }
+  useEffect(() => {
+    const params = new URLSearchParams(query);
+    debounced ? params.set('name', debounced) : params.delete('name');
+    replace(`${path}?${params.toString()}`);
   }, [debounced, path, query, replace]);
 
   useEffect(() => {
@@ -98,7 +87,7 @@ export default function Page({ searchParams }: Props) {
             <TextInput
               placeholder='What are you looking for?'
               leftSection={<Search className='h-4 w-4' />}
-              value={inputValue}
+              value={value}
               onChange={(event) => onChange(event.currentTarget.value)}
               classNames={{
                 input:
@@ -106,7 +95,7 @@ export default function Page({ searchParams }: Props) {
                 section: 'text-brand-grey-600',
               }}
             />
-            {inputValue && (
+            {value && (
               <button
                 className='group absolute right-3 top-1/2 -translate-y-1/2'
                 onClick={onReset}
