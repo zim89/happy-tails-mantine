@@ -3,8 +3,8 @@ import { Container } from '@mantine/core';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import ShareInSocial from '@/app/(additional)/blog/[id]/ui/ShareInSocial';
-import PopularPosts from '@/app/(additional)/blog/[id]/ui/PopularPosts';
+import ShareInSocial from './ui/ShareInSocial';
+import PopularPosts from './ui/PopularPosts';
 import { fetchOnePost } from '@/shared/api/postApi';
 import { formatDate } from '@/shared/lib/helpers';
 
