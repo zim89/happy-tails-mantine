@@ -1,5 +1,5 @@
 import React from 'react';
-import AdditionalInfo from '../../../../modules/ProductDetails/ui/AdditionalInfo';
+import ProductAdditionalInfo from '@/components/ProductAdditionalInfo';
 
 export default function DashboardLayout({
   children,
@@ -9,7 +9,7 @@ export default function DashboardLayout({
   return (
     <>
       {children}
-      <AdditionalInfo />
+      <ProductAdditionalInfo />
     </>
   );
 }

@@ -1,8 +1,8 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { fetchLastFivePosts } from '@/shared/api/postApi';
 import { formatDate } from '@/shared/lib/helpers';
 import noImage from '@/assets/icons/no-image.512x512.png';
-import Link from 'next/link';
 
 async function PopularPosts() {
   const posts = await fetchLastFivePosts();

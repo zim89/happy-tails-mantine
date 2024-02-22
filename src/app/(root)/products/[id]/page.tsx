@@ -1,7 +1,7 @@
 'use client';
-import { productApi } from '../../../../shared/api/productApi';
-import ProductDetails from '../../../../modules/ProductDetails';
 import { Container, Loader } from '@mantine/core';
+import { productApi } from '@/shared/api/productApi';
+import ProductDetails from '@/modules/ProductDetails';
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { data, isError, isLoading, error } = productApi.useFindOneQuery(

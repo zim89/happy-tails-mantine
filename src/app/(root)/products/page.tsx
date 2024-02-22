@@ -1,11 +1,11 @@
-import Breadcrumbs from '../../../components/Breadcrumbs';
-import Overview from '../../../components/Overview';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import ProductList from '@/modules/CatalogProductList';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import Overview from '@/components/Overview';
 import Toolbar from '@/modules/Toolbar';
 import { Category, getAllCategories } from '@/shared/api/categoryApi';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import { BackendResponse, Product } from '@/shared/types/types';
-import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 
 const category: Category = {
   id: 0,

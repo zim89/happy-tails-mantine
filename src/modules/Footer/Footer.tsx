@@ -3,8 +3,8 @@ import { Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import FooterNav from '@/modules/Footer/ui/FooterNav';
-import SocialLinks from '@/modules/Footer/ui/SocialLinks';
+import FooterNav from './ui/FooterNav';
+import SocialLinks from './ui/SocialLinks';
 import logoImg from '@/assets/logo/logo-footer.svg';
 
 export default function Footer(): React.JSX.Element {

@@ -1,11 +1,11 @@
 'use client';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Loader } from '@mantine/core';
-import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import type { BackendResponse } from '@/shared/types/types';
-import PostCard from './PostCard';
 import { fetchAllPosts, Post } from '@/shared/api/postApi';
+import PostCard from './PostCard';
 
 interface Props {
   posts: BackendResponse<Post[]>;

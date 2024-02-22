@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Image } from '@mantine/core';
 import NextImage from 'next/image';
+import { Container, Image } from '@mantine/core';
 import { additionalList } from '@/modules/ProductDetails/lib/data';
 
-export default function AdditionalInfo() {
+export default function ProductAdditionalInfo() {
   return (
     <section>
       <div className='bg-brand-grey-200 py-8'>
