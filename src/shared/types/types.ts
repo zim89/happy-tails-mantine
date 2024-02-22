@@ -1,4 +1,4 @@
-type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT';
+type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
 
 export interface Product {
   id: number;

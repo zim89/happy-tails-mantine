@@ -16,7 +16,7 @@ interface Props {
   router?: AppRouterInstance;
 }
 export default function ProductCard({ product, router }: Props) {
-  const isAbsent = product.productStatus === 'TEMPORARILY_ABSENT';
+  const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
 
   return (
@@ -27,7 +27,7 @@ export default function ProductCard({ product, router }: Props) {
       <div
         className={clsx(
           'h-full overflow-hidden',
-          isAbsent && 'text-secondary/40'
+          !isAvailable && 'text-secondary/40'
         )}
       >
         <Link href={`/products/${product.id}`}>
@@ -35,7 +35,7 @@ export default function ProductCard({ product, router }: Props) {
             className={clsx(
               'relative mb-5 transition-all duration-500',
               desktop ? 'h-[287px] group-hover/card:h-[223px]' : 'h-[223px]',
-              isAbsent ? 'grayscale' : 'grayscale-0'
+              !isAvailable ? 'grayscale' : 'grayscale-0'
             )}
           >
             <Image
@@ -62,7 +62,7 @@ export default function ProductCard({ product, router }: Props) {
           </span>
         </p>
 
-        <AddToCartBtn disabled={isAbsent} product={product} />
+        <AddToCartBtn product={product} />
       </div>
     </div>
   );

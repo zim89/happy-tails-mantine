@@ -1,16 +1,16 @@
 'use client';
 import React, { MouseEventHandler } from 'react';
-import clsx from 'clsx';
 import { useAppDispatch } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
 import { addToCart, openCartDrawer } from '@/shared/redux/cart/cartSlice';
+import { cn } from '@/lib/utils';
 
 interface Props {
   product: Product;
-  disabled?: boolean;
 }
-export default function AddToCartBtn({ disabled, product }: Props) {
+export default function AddToCartBtn({ product }: Props) {
   const dispatch = useAppDispatch();
+  const isAvailable = product.productStatus === 'IN STOCK';
 
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -20,11 +20,11 @@ export default function AddToCartBtn({ disabled, product }: Props) {
 
   return (
     <button
-      disabled={disabled}
+      disabled={!isAvailable}
       onClick={onClick}
-      className={clsx('btn w-full', disabled ? 'btn-disabled' : 'btn-cart')}
+      className={cn('btn w-full', !isAvailable ? 'btn-disabled' : 'btn-cart')}
     >
-      Add to cart
+      {isAvailable ? 'Add to cart' : 'Out of stock'}
     </button>
   );
 }

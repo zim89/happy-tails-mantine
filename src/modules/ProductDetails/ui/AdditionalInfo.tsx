@@ -5,7 +5,7 @@ import { additionalList } from '@/modules/ProductDetails/lib/data';
 
 export default function AdditionalInfo() {
   return (
-    <section className='section pb-0'>
+    <section>
       <div className='bg-brand-grey-200 py-8'>
         <Container>
           <h2 className='mb-9 text-center text-[28px] font-bold leading-normal'>
