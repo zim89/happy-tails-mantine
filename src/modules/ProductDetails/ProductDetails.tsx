@@ -5,16 +5,16 @@ import {
   Container,
   NumberInput,
   NumberInputHandlers,
-  UnstyledButton,
 } from '@mantine/core';
 import Image from 'next/image';
 import { Info, Minus, Plus } from 'lucide-react';
-import clsx from 'clsx';
 
 import { Product } from '@/shared/types/types';
 import ProductSlider from '@/modules/ProductDetails/ui/ProductSlider';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { cn } from '@/lib/utils';
 
 interface Props {
   product: Product;
@@ -25,12 +25,20 @@ export default function ProductDetails({ product }: Props) {
   const [quantity, setQuantity] = useState<string | number>(
     product.quantity === 0 ? 0 : 1
   );
+  const isAvailable = product.productStatus === 'IN STOCK';
 
   return (
     <>
-      <section className='section pt-6 lg:pt-8'>
+      <section className='pb-16 pt-2 md:pt-2.5 lg:pb-28 lg:pt-4'>
         <Container>
-          <div className='block lg:flex lg:gap-6'>
+          <Breadcrumbs
+            crumbs={[
+              { href: '/', text: 'Home' },
+              { href: '/products', text: 'Catalog' },
+              { text: product.name },
+            ]}
+          />
+          <div className='mb-16 block md:mb-20 lg:mb-28 lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
             <div className='relative mb-9 h-[341px] w-full flex-none overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
@@ -61,7 +69,7 @@ export default function ProductDetails({ product }: Props) {
                   ${product.price}
                 </span>
                 <span
-                  className={clsx(
+                  className={cn(
                     'badge',
                     product.quantity > 0 ? 'badge-success' : 'badge-muted'
                   )}
@@ -91,16 +99,16 @@ export default function ProductDetails({ product }: Props) {
               <div className='mb-6 flex items-center justify-between md:mb-12'>
                 {/*Number Input*/}
                 <div className='flex w-[158px] items-center rounded-[2px] border border-brand-grey-400'>
-                  <UnstyledButton
+                  <button
                     onClick={() => handlersRef.current?.decrement()}
-                    className={clsx(
+                    disabled={quantity === 1 || !isAvailable}
+                    className={cn(
                       'px-4 py-3',
-                      quantity === 1 && 'text-brand-grey-400'
+                      (quantity === 1 || !isAvailable) && 'text-brand-grey-400'
                     )}
-                    disabled={quantity === 1}
                   >
                     <Minus className='h-5 w-5' />
-                  </UnstyledButton>
+                  </button>
                   <NumberInput
                     handlersRef={handlersRef}
                     variant='unstyled'
@@ -113,17 +121,19 @@ export default function ProductDetails({ product }: Props) {
                     max={product.quantity}
                     value={quantity}
                     onChange={setQuantity}
+                    readOnly
                     classNames={{
                       input: 'px-4 py-2 text-center text-base font-bold',
                     }}
                   />
                   <button
                     onClick={() => handlersRef.current?.increment()}
-                    className={clsx(
+                    disabled={quantity === product.quantity || !isAvailable}
+                    className={cn(
                       'px-4 py-3',
-                      quantity === product.quantity && 'text-brand-grey-400'
+                      (quantity === product.quantity || !isAvailable) &&
+                        'text-brand-grey-400'
                     )}
-                    disabled={quantity === product.quantity}
                   >
                     <Plus className='h-5 w-5' />
                   </button>
@@ -151,10 +161,10 @@ export default function ProductDetails({ product }: Props) {
               </div>
             </div>
           </div>
+
+          <ProductSlider />
         </Container>
       </section>
-
-      <ProductSlider />
     </>
   );
 }

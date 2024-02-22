@@ -43,7 +43,7 @@
   }
 
   .btn-disabled {
-    @apply bg-secondary opacity-40;
+    @apply bg-secondary text-white opacity-40;
   }
 
   /*NavBtn*/
