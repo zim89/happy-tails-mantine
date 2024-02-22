@@ -10,20 +10,13 @@ import Image from 'next/image';
 
 import { type Category } from '@/shared/api/categoryApi';
 import { useDeviceSize } from '@/shared/lib/hooks';
-import { additionalLinks, categoryLinks } from '../lib/data';
+import { additionalLinks } from '../lib/data';
 import logoImg from '@/assets/logo/logo-tablet.svg';
 
 export default function BurgerMenu({ categories }: { categories: Category[] }) {
   const [opened, { close, toggle }] = useDisclosure(false);
   const { isDesktop } = useDeviceSize();
   const path = usePathname();
-
-  const getCategoryIcon = (cat: string) => {
-    const index = categoryLinks.findIndex(
-      (item) => item.label.toLowerCase() === cat.toLowerCase()
-    );
-    return categoryLinks[index].icon;
-  };
 
   useEffect(() => {
     close();
@@ -113,10 +106,10 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                 )}
               >
                 <Image
-                  src={getCategoryIcon('All products')}
+                  src='/icons/categories/products.svg'
                   alt='all products page icon'
                   height={isDesktop ? 42 : 32}
-                  style={{ width: 'auto' }}
+                  width={isDesktop ? 42 : 32}
                 />
                 <p className='navLink'>All products</p>
               </Link>
@@ -136,10 +129,10 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
                 >
                   {/* TODO: Add actual image from backend */}
                   <Image
-                    src={getCategoryIcon(category.name)}
+                    src={`/icons/categories/${category.name.toLowerCase()}.svg`}
                     alt={category.name}
                     height={isDesktop ? 42 : 32}
-                    style={{ width: 'auto' }}
+                    width={isDesktop ? 42 : 32}
                   />
                   <p className='navLink'>
                     {category.name === 'Leads&harnesses'
