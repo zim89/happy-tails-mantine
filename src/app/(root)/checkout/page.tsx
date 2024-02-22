@@ -14,13 +14,13 @@ import { ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import { useAppSelector } from '@/shared/redux/store';
+import { useAppSelector } from '../../../shared/redux/store';
 import {
   selectCart,
   selectCartTotalPrice,
-} from '@/shared/redux/cart/cartSlice';
-import visaImg from '@/assets/icons/additional/visa.svg';
-import mastercardImg from '@/assets/icons/additional/mastercard.svg';
+} from '../../../shared/redux/cart/cartSlice';
+import visaImg from '../../../assets/icons/additional/visa.svg';
+import mastercardImg from '../../../assets/icons/additional/mastercard.svg';
 
 export default function Page() {
   const cart = useAppSelector(selectCart);
@@ -59,7 +59,7 @@ export default function Page() {
           separator: 'text-secondary text-xs/normal',
         }}
       >
-        <Link href='/'>Home</Link>
+        <Link href='/public'>Home</Link>
         <span className='text-brand-grey-600'>Checkout</span>
       </Breadcrumbs>
 

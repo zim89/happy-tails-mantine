@@ -1,6 +1,6 @@
 'use client';
-import { productApi } from '@/shared/api/productApi';
-import ProductDetails from '@/modules/ProductDetails';
+import { productApi } from '../../../../shared/api/productApi';
+import ProductDetails from '../../../../modules/ProductDetails';
 import { Container, Loader } from '@mantine/core';
 
 export default function ProductPage({ params }: { params: { id: string } }) {

@@ -4,8 +4,8 @@ import { Lato } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
 
-import theme from '../shared/config/theme';
-import './globals.css';
+import theme from '@/shared/config/theme';
+import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { AppProviders } from '@/shared/config/AppProviders';

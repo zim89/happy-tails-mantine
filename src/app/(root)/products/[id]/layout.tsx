@@ -1,5 +1,5 @@
 import React from 'react';
-import AdditionalInfo from '@/modules/ProductDetails/ui/AdditionalInfo';
+import AdditionalInfo from '../../../../modules/ProductDetails/ui/AdditionalInfo';
 
 export default function DashboardLayout({
   children,
