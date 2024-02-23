@@ -1,13 +1,12 @@
 import * as React from 'react';
+import Link from 'next/link';
 import { Container } from '@mantine/core';
 import { UserRound } from 'lucide-react';
-import Link from 'next/link';
-
-import BurgerMenu from '@/modules/Header/ui/BurgerMenu';
-import SearchMenu from '@/modules/Header/ui/Search';
 import CartButton from '@/modules/CartButton';
-import Logo from '@/modules/Header/ui/Logo';
-import Navbar from '@/modules/Header/ui/Navbar';
+import BurgerMenu from './ui/BurgerMenu';
+import SearchMenu from './ui/Search';
+import Logo from './ui/Logo';
+import Navbar from './ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
 import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
 

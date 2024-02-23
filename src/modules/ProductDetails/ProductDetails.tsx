@@ -10,10 +10,10 @@ import Image from 'next/image';
 import { Info, Minus, Plus } from 'lucide-react';
 
 import { Product } from '@/shared/types/types';
-import ProductSlider from '@/modules/ProductDetails/ui/ProductSlider';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ProductSlider from './ui/ProductSlider';
 import { cn } from '@/lib/utils';
 
 interface Props {

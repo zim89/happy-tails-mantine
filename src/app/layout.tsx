@@ -4,13 +4,11 @@ import { Lato } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
 
-import theme from '../shared/config/theme';
-import './globals.css';
+import theme from '@/shared/config/theme';
+import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { AppProviders } from '@/shared/config/AppProviders';
-import Header from '@/modules/Header';
-import Footer from '@/modules/Footer';
 
 const lato = Lato({
   weight: ['300', '400', '700'],
@@ -38,12 +36,7 @@ export default function RootLayout({
       <body className={`${lato.variable} antialiased`}>
         <AppProviders>
           <MantineProvider theme={theme}>
-            <Header />
-            <div className='grid h-screen grid-rows-[_1fr_auto] pt-[4.625rem] lg:pt-32'>
-              <main>{children}</main>
-              <Footer />
-            </div>
-
+            {children}
             <ToastContainer
               position='top-right'
               autoClose={5000}

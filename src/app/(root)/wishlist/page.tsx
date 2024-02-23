@@ -5,9 +5,9 @@ import { useScrollIntoView } from '@mantine/hooks';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
-import ProductList from '@/modules/ProductList';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import ProductList from '@/modules/ProductList';
 import { useAppSelector } from '@/shared/redux/store';
 import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 

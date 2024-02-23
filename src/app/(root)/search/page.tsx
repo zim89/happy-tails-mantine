@@ -5,11 +5,11 @@ import { useDebouncedValue } from '@mantine/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, XCircle } from 'lucide-react';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
-import CatalogProductList from '@/modules/CatalogProductList';
 import { type Category, getAllCategories } from '@/shared/api/categoryApi';
-import Toolbar from '@/modules/Toolbar';
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
+import CatalogProductList from '@/modules/CatalogProductList';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import Toolbar from '@/modules/Toolbar';
 import { CATEGORY } from '@/lib/constants';
 
 export default function Page() {

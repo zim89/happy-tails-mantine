@@ -1,7 +1,7 @@
 import { Container } from '@mantine/core';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import HeroBlog from '@/app/(additional)/blog/ui/HeroBlog';
-import PostList from '@/app/(additional)/blog/ui/PostList';
+import HeroBlog from './ui/HeroBlog';
+import PostList from './ui/PostList';
 import { fetchAllPosts, fetchHeroPost } from '@/shared/api/postApi';
 
 export default async function BlogPage() {

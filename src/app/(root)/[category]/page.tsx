@@ -1,13 +1,11 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
-
-import Toolbar from '@/modules/Toolbar';
-import { getAllCategories } from '@/shared/api/categoryApi';
-
-import Overview from '@/components/Overview';
 import { notFound } from 'next/navigation';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import ProductList from '@/modules/CatalogProductList';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
+import ProductList from '@/modules/CatalogProductList';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import Toolbar from '@/modules/Toolbar';
+import Overview from '@/components/Overview';
+import { getAllCategories } from '@/shared/api/categoryApi';
 
 export async function generateStaticParams() {
   const { content: categories } = await getAllCategories();
