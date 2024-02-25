@@ -10,7 +10,7 @@ import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCou
 import CatalogProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Toolbar from '@/modules/Toolbar';
-import { CATEGORY } from '@/lib/constants';
+import { CATEGORY } from '@/shared/lib/constants';
 
 export default function Page() {
   const [value, setValue] = useState('');

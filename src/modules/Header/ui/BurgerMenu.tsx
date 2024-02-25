@@ -4,7 +4,7 @@ import { UnstyledButton, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { AlignLeft, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 
