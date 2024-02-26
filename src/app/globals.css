@@ -24,7 +24,7 @@
   }
 
   .btn {
-    @apply rounded-0.5 px-4 py-3 text-center text-base font-bold;
+    @apply rounded-0.5 px-4 py-2.5 text-center text-base font-bold;
   }
 
   .btn-text {
@@ -32,10 +32,10 @@
   }
 
   .btn-primary {
-    @apply bg-secondary text-primary transition-colors duration-300 hover:bg-brand-orange-400 focus:bg-brand-orange-400;
+    @apply border border-secondary bg-secondary text-primary transition-colors duration-300 hover:border-brand-orange-400 hover:bg-brand-orange-400;
   }
   .btn-secondary {
-    @apply border border-brand-grey-400 bg-transparent text-secondary transition-colors duration-300 hover:bg-brand-grey-200 active:border-brand-grey-500 active:bg-brand-grey-300;
+    @apply border border-brand-grey-400 bg-transparent text-secondary transition-colors duration-300 hover:bg-brand-grey-200;
   }
 
   .btn-cart {
@@ -181,6 +181,22 @@
   /*Text Input*/
   .text-input {
     @apply rounded-0.5 border border-brand-grey-400 bg-primary px-4 py-1 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
+  }
+
+  .form-root {
+    @apply relative;
+  }
+
+  .form-input {
+    @apply rounded-0.5 border border-brand-grey-400 bg-primary px-4 py-2.5 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
+  }
+
+  .form-label {
+    @apply mb-1 text-sm/normal;
+  }
+
+  .form-error {
+    @apply absolute -bottom-4 left-0 text-[10px]/[12px] text-brand-red-400;
   }
 }
 

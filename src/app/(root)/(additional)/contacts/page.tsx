@@ -14,7 +14,7 @@ import { useForm } from '@mantine/form';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { postRequest, Credentials } from '@/shared/api/contactsApi';
-import { readTextFileAsPromise } from '@/lib/utils';
+import { readTextFileAsPromise } from '@/shared/lib/utils';
 
 import styles from './styles.module.css';
 
@@ -58,7 +58,7 @@ export default function ContactsPage() {
     };
 
     if (file) {
-      // Load a file and replace a message's content 
+      // Load a file and replace a message's content
       let res = await readTextFileAsPromise(file);
       request.content = res;
     }
@@ -109,8 +109,8 @@ export default function ContactsPage() {
               withErrorStyles
               styles={{
                 label: {
-                  minWidth: "100%"
-                }
+                  minWidth: '100%',
+                },
               }}
               {...form.getInputProps('content')}
               label='Enter your question or message here'
@@ -153,8 +153,8 @@ export default function ContactsPage() {
 
         <p className={styles.partner_message}>
           For partnership opportunities, collaborations, or wholesale inquiries,
-          please email us at partnerships@happytails.com. We&apos;re always open to
-          new and exciting ventures.
+          please email us at partnerships@happytails.com. We&apos;re always open
+          to new and exciting ventures.
         </p>
       </div>
     </Container>
