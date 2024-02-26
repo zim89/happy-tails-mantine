@@ -3,6 +3,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { Button, Table } from '@mantine/core';
 import { PlusCircle } from "lucide-react"
 import { useDisclosure } from '@mantine/hooks';
+import Image from "next/image";
 
 import Modal from "@/components/ModalWindow";
 
@@ -46,7 +47,8 @@ const mockData: Category[] = [
 const CategoryLine = ({ image, itemsCount, name }: Category) => (
   <Table.Tr className='text-[#161616]'>
     <Table.Td>
-      <img src={image} alt={name} />
+      {/* Fix: width/height: auto to maintain ratio of Image frames */} 
+      <Image src={image} width={42} height={42} style={{ width: "auto", height: "auto" }} alt={name} />
     </Table.Td>
     <Table.Td>{name}</Table.Td>
     <Table.Td align='left'>{itemsCount}</Table.Td>
@@ -72,7 +74,7 @@ export default function CategoryPage() {
     </Table.Tr>
   );
 
-  const tbs = mockData.map((cat) => <CategoryLine {...cat} />);
+  const tbs = mockData.map((cat, index) => <CategoryLine key={index} {...cat} />);
 
   return (
     <div className='py-2'>

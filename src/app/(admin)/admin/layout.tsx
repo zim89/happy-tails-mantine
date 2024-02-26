@@ -14,6 +14,7 @@ import { LayoutList, Minus, LogOut, ChevronLeft } from 'lucide-react';
 
 import logo from '@/assets/logo/logo-footer.svg';
 import Link from 'next/link';
+import Image from "next/image";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -96,7 +97,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className={classes.navbarMain}>
           <Group className={classes.header} justify='center'>
             <a href='#'>
-              <img src={logo.src} className='max-w-36' alt='Happy Tails' />
+              <Image src={logo.src} priority width={147} height={26} alt='Happy Tails' />
             </a>
           </Group>
           {links}
