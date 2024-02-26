@@ -17,28 +17,28 @@ type Category = {
 
 const mockData: Category[] = [
   {
-    image: '/static/icons/categories/clothing.svg',
+    image: '/icons/categories/clothing.svg',
     name: 'Clothing',
     itemsCount: 0,
   },
   {
-    image: '/static/icons/categories/leads.svg',
+    image: '/icons/categories/leads.svg',
     name: 'Leads&harnesses',
     itemsCount: 100,
   },
   {
-    image: '/static/icons/categories/collars.svg',
+    image: '/icons/categories/collars.svg',
     name: 'Collars',
     itemsCount: 21457,
   },
-  { image: '/static/icons/categories/toys.svg', name: 'Toys', itemsCount: 22 },
+  { image: '/icons/categories/toys.svg', name: 'Toys', itemsCount: 22 },
   {
-    image: '/static/icons/categories/furniture.svg',
+    image: '/icons/categories/furniture.svg',
     name: 'Furniture',
     itemsCount: 7879654,
   },
   {
-    image: '/static/icons/categories/care.svg',
+    image: '/icons/categories/care.svg',
     name: 'Care',
     itemsCount: 7777,
   },
