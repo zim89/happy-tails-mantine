@@ -1,9 +1,9 @@
-import { getServerSession } from 'next-auth';
-import { authConfig } from '@/auth';
+import { auth } from '@/shared/auth/auth';
 
 export default async function Page() {
-  const session = await getServerSession(authConfig);
-  console.log(session?.user);
+  const session = await auth();
+  console.log(session);
+
   return (
     <div>
       <h1>Profile of </h1>
