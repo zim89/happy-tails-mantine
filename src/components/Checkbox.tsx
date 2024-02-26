@@ -1,6 +1,6 @@
 import { CheckboxProps, Checkbox as RawCheckbox } from '@mantine/core';
 import { Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 const CheckboxIcon: CheckboxProps['icon'] = ({ indeterminate, ...props }) => (
   <Check

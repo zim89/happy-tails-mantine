@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Loader } from '@mantine/core';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import type { BackendResponse } from '@/shared/types/types';
 import { fetchAllPosts, Post } from '@/shared/api/postApi';
 import PostCard from './PostCard';

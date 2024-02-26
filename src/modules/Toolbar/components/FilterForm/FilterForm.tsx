@@ -1,5 +1,5 @@
 import RadioCheck from '@/components/RadioCheck';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { Category } from '@/shared/api/categoryApi';
 import { Radio, Switch } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';

@@ -1,6 +1,6 @@
 import { UseFormReturnType } from '@mantine/form';
 import { FilterFormValues } from '../FilterForm/FilterForm';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { Category } from '@/shared/api/categoryApi';
 import { Badge } from '@mantine/core';
 import { X } from 'lucide-react';
