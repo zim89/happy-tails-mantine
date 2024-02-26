@@ -53,10 +53,6 @@ export const categoryLinks = [
 
 export const additionalLinks = [
   {
-    label: 'My Wishlist',
-    href: '/wishlist',
-  },
-  {
     label: 'Log in',
     href: '/auth',
   },
