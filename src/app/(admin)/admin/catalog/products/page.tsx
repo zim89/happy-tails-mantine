@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Page() {
-  return <div>Products Page</div>;
+  return <div>Admin Page</div>;
 }
