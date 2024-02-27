@@ -1,3 +1,3 @@
-export default function Page() {
-    return <div>Category list</div>;
-  }
+export default function CategoryPage() {
+  return <div>Category list</div>;
+}
