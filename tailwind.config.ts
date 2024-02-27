@@ -36,6 +36,7 @@ const config: Config = {
         secondary: '#161616',
         'brand-blue': '#4285F4',
         'brand-yellow': '#FBBC04',
+        'auth-bg': '#EDE8E2',
         'brand-orange': {
           100: '#FEF4E9',
           200: '#FDEFDE',

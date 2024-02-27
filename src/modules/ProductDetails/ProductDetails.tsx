@@ -14,7 +14,7 @@ import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductSlider from './ui/ProductSlider';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 interface Props {
   product: Product;
