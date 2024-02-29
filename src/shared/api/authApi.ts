@@ -1,7 +1,7 @@
 'use server';
-import { signIn } from 'next-auth/react';
-import { AuthError } from 'next-auth';
+import { AuthError, Session } from 'next-auth';
 import axios from 'axios';
+import { signIn, signOut } from '@/shared/auth/auth';
 
 export interface LoginFormData {
   email: string;
@@ -36,12 +36,23 @@ export const login = async (values: LoginFormData) => {
   }
 };
 
-export const register = async (values: RegisterFormData) => {
+// export const register = async (values: RegisterFormData) => {
+//   try {
+//     const user = await axios.post(
+//       `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`,
+//       values
+//     );
+//     console.log(user);
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+export const logout = async () => {
   try {
-    const user = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/users/register`,
-      values
-    );
-    console.log(user);
-  } catch (error) {}
+    // await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/logout`);
+    await signOut();
+  } catch (error) {
+    throw error;
+  }
 };

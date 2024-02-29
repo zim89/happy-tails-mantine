@@ -8,8 +8,6 @@ import {
   protectedRoutes,
 } from '@/shared/auth/routes';
 
-// export default NextAuth(authConfig).auth;
-
 const { auth } = NextAuth(authConfig);
 
 // @ts-ignore

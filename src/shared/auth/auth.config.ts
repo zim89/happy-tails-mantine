@@ -5,7 +5,7 @@ import type { JWT } from '@auth/core/jwt';
 const login = async (credentials: any) => {
   try {
     const response = await axios.post(
-      process.env.KEYCLOAK_AUTH_URL!,
+      `${process.env.KEYCLOAK_AUTH_URL}/token`,
       new URLSearchParams({
         grant_type: 'password',
         scope: 'openid email',
@@ -28,17 +28,20 @@ const login = async (credentials: any) => {
 
 const getUserInfo = async (token: JWT) => {
   try {
-    const { data } = await axios.get(process.env.KEYCLOAK_AUTH_USERINFO!, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+    const { data } = await axios.get(
+      `${process.env.KEYCLOAK_AUTH_URL}/userinfo`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
     return {
       id: data.sub,
       email: data.email,
       name: data.name,
-      isAdmin: data.realm_access.roles.includes('ADMIN'),
+      isAdmin: data.realm_access.roles.includes('ROLE_ADMIN'),
       picture: data.image,
     };
   } catch (error) {
