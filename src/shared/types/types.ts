@@ -13,6 +13,30 @@ export interface Product {
   imagePath: string;
 }
 
+export interface Order {
+  number: string;
+  orderStatus: string;
+  createdDate: string;
+  price: number;
+  count: number;
+  userId: string;
+  orderProductDTOList: {
+    id: number;
+    orderNumber: string;
+    productId: number;
+    productName: string;
+    productPrice: number;
+    onSale: boolean;
+    salePrice: number;
+    count: number;
+  }[];
+  purchasedDate: string;
+  shippingAddress: string;
+  shippingMethod: string;
+  paymentMethod: string;
+  discountCode: string;
+}
+
 export type BackendSort = {
   empty: boolean;
   sorted: boolean;
