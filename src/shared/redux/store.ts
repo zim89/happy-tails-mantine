@@ -15,6 +15,7 @@ import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 import { favoritesReducer } from './favorites/favoritesSlice';
 import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
+import { ordersApi } from '../api/ordersApi';
 
 const createNoopStorage = () => {
   return {
@@ -56,6 +57,7 @@ const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
 export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
   },
@@ -64,7 +66,9 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(productApi.middleware),
+    })
+      .concat(productApi.middleware)
+      .concat(ordersApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

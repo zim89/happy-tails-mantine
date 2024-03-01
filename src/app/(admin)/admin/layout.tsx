@@ -14,7 +14,7 @@ import { LayoutList, Minus, LogOut, ChevronLeft } from 'lucide-react';
 
 import logo from '@/assets/logo/logo-footer.svg';
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -32,11 +32,7 @@ function LinksGroup({
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Link
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-    >
+    <Link className={classes.link} href={link.link} key={link.label}>
       <Minus className='scale-x-50' />
       <span>{link.label}</span>
     </Link>
@@ -84,7 +80,7 @@ const data = [
   {
     label: 'Orders',
     icon: LayoutList,
-    links: [],
+    links: [{ label: 'Orders', link: '/admin/orders' }],
   },
 ];
 
@@ -97,7 +93,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className={classes.navbarMain}>
           <Group className={classes.header} justify='center'>
             <a href='#'>
-              <Image src={logo.src} priority width={147} height={26} alt='Happy Tails' />
+              <Image
+                src={logo.src}
+                priority
+                width={147}
+                height={26}
+                alt='Happy Tails'
+              />
             </a>
           </Group>
           {links}
@@ -109,7 +111,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           View your store
         </Link>
         <div className='flex items-center gap-8 lg:gap-[107px]'>
-          <div className='md:flex gap-2 hidden'>
+          <div className='hidden gap-2 md:flex'>
             <span className='flex h-6 w-6 items-center justify-center rounded-full bg-[black] text-sm text-white'>
               A
             </span>
