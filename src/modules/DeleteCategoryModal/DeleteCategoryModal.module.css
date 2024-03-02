@@ -1,0 +1,19 @@
+.controls {
+    @apply flex mt-6 justify-end;
+}
+
+.actionButton {
+    @apply p-0 text-black block;
+}
+
+.message {
+    @apply flex items-center gap-3;
+}
+
+.message h2 {
+    @apply font-bold mb-3;
+}
+
+.message p {
+    @apply text-sm text-[#A0A0A0];
+}

@@ -1,0 +1,15 @@
+.actionButton {
+    @apply p-0 text-black block;
+}
+
+.categoryRow {
+    @apply text-[#161616] p-3;
+}
+
+.categoryRow img {
+    @apply w-6 h-6;
+}
+
+.categoryHeadrow {
+    @apply text-xs uppercase leading-[15px] text-[#787878];
+}

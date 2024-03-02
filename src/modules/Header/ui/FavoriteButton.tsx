@@ -12,7 +12,7 @@ export default function FavoriteButton() {
   return (
     <Link
       href={'/wishlist'}
-      className='group hidden lg:flex lg:items-center lg:justify-center'
+      className='group lg:hidden flex lg:items-center lg:justify-center'
     >
       <Indicator
         label={favorites.length}

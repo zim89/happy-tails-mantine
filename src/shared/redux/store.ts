@@ -57,7 +57,7 @@ export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
     favorites: favoritesPersistedReducer,
-    cart: cartPersistedReducer,
+    cart: cartPersistedReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

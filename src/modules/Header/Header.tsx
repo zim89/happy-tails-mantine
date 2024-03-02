@@ -32,7 +32,7 @@ export default async function Header() {
             </span>
             <Link
               href={'/auth'}
-              className='flex items-center justify-center text-secondary'
+              className='hidden lg:flex items-center justify-center text-secondary'
             >
               <UserRound className='iconBtn' />
             </Link>
