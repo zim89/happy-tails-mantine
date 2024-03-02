@@ -35,11 +35,11 @@ export default auth((req) => {
   //   return null;
   // }
 
-  // if (isAdminRoute) {
-  //   if (!isLoggedIn || !isAdmin) {
-  //     return Response.redirect(new URL('/', nextUrl));
-  //   }
-  // }
+  if (isAdminRoute) {
+    if (!isLoggedIn || !isAdmin) {
+      // return Response.redirect(new URL('/', nextUrl));
+    }
+  }
 
   if (!isLoggedIn && isProtectedRoute) {
     let callbackUrl = nextUrl.pathname;
