@@ -9,6 +9,7 @@ import Logo from './ui/Logo';
 import Navbar from './ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
 import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
+import UserMenu from '@/modules/Header/ui/UserMenu';
 
 export default async function Header() {
   const { content: categories } = await getAllCategories();
@@ -30,12 +31,7 @@ export default async function Header() {
             <span className='hidden md:block'>
               <SearchMenu />
             </span>
-            <Link
-              href={'/auth'}
-              className='flex items-center justify-center text-secondary'
-            >
-              <UserRound className='iconBtn' />
-            </Link>
+            <UserMenu />
             <FavoriteButton />
             <CartButton />
           </div>

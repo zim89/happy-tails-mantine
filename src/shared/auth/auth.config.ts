@@ -1,3 +1,4 @@
+/*
 import axios from 'axios';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import type { JWT } from '@auth/core/jwt';
@@ -62,3 +63,4 @@ export const authConfig = {
     }),
   ],
 };
+*/
