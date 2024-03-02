@@ -1,6 +1,5 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@mantine/core';
-import { Check, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 
 import styles from './DeleteCategoryModal.module.css';
@@ -8,7 +7,6 @@ import { useDisclosure } from '@mantine/hooks';
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
 import { Category } from '../CategoriesTable/lib/data';
-import { categoriesContext } from '../CategoriesTable/lib/utils';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import file_error from '@/assets/icons/categories/file_error.svg';
@@ -16,19 +14,16 @@ import check_circle from '@/assets/icons/additional/check-circle.svg';
 import ModalFooter from '@/components/ModalFooter';
 
 type Props = {
-  categoryLine: Category;
+  categoryLine: Omit<Category, "description" | "path" | "title"> & { image: { path: string; name: string; } };
 };
 export default ({ categoryLine }: Props) => {
-  const { setCategories } = use(categoriesContext);
-
   const [isNotified, setIsNotified] = useState(false);
 
   const handleDelete = () => {
-    if (categoryLine.itemsCount > 0) {
+    if (categoryLine.productCount > 0) {
       closeMain();
       openError();
     } else {
-      setCategories((prev) => prev.filter((c) => c.id !== categoryLine.id));
       closeMain();
       setIsNotified(true);
     }
@@ -122,7 +117,7 @@ export default ({ categoryLine }: Props) => {
             className='h-6 w-6'
           />
         }
-        color='#389B48'
+        color='transparent'
         visible={isNotified}
         onClose={handleClose}
         className=''

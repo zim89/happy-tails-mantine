@@ -1,5 +1,7 @@
+"use client";
+
 import { Table } from '@mantine/core';
-import { useMemo, useRef, useState, use } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import PaginationBar from '../PaginationBar';
 import CategoryLine from './ui/CategoryRow';
@@ -7,11 +9,12 @@ import CategoryLine from './ui/CategoryRow';
 import styles from './CategoriesTable.module.css';
 
 import { Category } from './lib/data';
-import { chunk, categoriesContext } from './lib/utils';
+import { chunk } from './lib/utils';
 
-export default () => {
-  const { categories } = use(categoriesContext);
-
+type Props = {
+  categories: Category[]
+};
+export default ({ categories }: Props) => {
   const [page, setPage] = useState(1);
   const paginated = useRef<Category[][]>([]);
 
@@ -35,7 +38,6 @@ export default () => {
   return (
     <>
       <div className={styles.table}>
-        <p>Products Catalog</p>
         <Table
           highlightOnHover
           horizontalSpacing={16}

@@ -1,4 +1,4 @@
-import { use, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Button,
   FileInput,
@@ -16,13 +16,11 @@ import Modal from '@/components/ModalWindow';
 import { readImageAsPromise } from '@/shared/lib/utils';
 import { Credentials, postRequest } from '@/shared/api/admin_categoryApi';
 
-import { categoriesContext } from '@/modules/CategoriesTable/lib/utils';
 import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
 export default () => {
-  const { setCategories } = use(categoriesContext);
   const [isNotified, setIsNotified] = useState(false);
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
@@ -86,18 +84,17 @@ export default () => {
       previewImage.current.name = image.name;
     }
 
-    setCategories((state) => [
-      ...state,
-      {
-        id: state.length,
-        image: request.image,
-        name: request.name,
-        itemsCount: Math.round(Math.random() * 10000),
-      },
-    ]);
-
     // const res = postRequest(request);
     // console.log(res);
+
+    const newCategory = {
+      description: "",
+      id: Math.round(Math.random() * 190),
+      path: "",
+      name: categoryName,
+      title: "",
+      productCount: 0
+    };
 
     clearAndClose();
     setIsNotified(true);

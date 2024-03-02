@@ -23,7 +23,7 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
 type Props = {
-  categoryLine: Category;
+  categoryLine: Omit<Category, "productCount" | "description" | "path" | "title"> & { image: { path: string; name: string; } };
 };
 export default ({ categoryLine }: Props) => {
   const [isChanged, setIsChanged] = useState(false);
@@ -103,7 +103,6 @@ export default ({ categoryLine }: Props) => {
     setCategories((state) =>
       state.reduce<Category[]>((acc, curr) => {
         if (curr.id === categoryLine.id) {
-          curr.image = request.image;
           curr.name = request.name;
         }
 
