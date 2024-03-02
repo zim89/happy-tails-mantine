@@ -7,9 +7,8 @@ import PaginationBar from '../PaginationBar';
 import CategoryLine from './ui/CategoryRow';
 
 import styles from './CategoriesTable.module.css';
-
-import { Category } from './lib/data';
 import { chunk } from './lib/utils';
+import { Category } from '@/shared/api/categoryApi';
 
 type Props = {
   categories: Category[]

@@ -13,14 +13,16 @@ import { useDisclosure } from '@mantine/hooks';
 
 import styles from './AddCategoryModal.module.css';
 import Modal from '@/components/ModalWindow';
-import { readImageAsPromise } from '@/shared/lib/utils';
-import { Credentials, postRequest } from '@/shared/api/admin_categoryApi';
+// import { readImageAsPromise } from '@/shared/lib/utils';
+import { Category, useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 
 import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
 export default () => {
+  const [dispatch] = useAddNewCategoryMutation();
+
   const [isNotified, setIsNotified] = useState(false);
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
@@ -47,7 +49,7 @@ export default () => {
 
     validate: {
       categoryName: (value) =>
-        !value.trim() ? 'Enter a valid category name' : null,
+        !value.trim() ? 'Entered an invalid category name' : null,
     },
   });
 
@@ -69,32 +71,23 @@ export default () => {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    let request: Credentials = {
+    // TODO: image upload
+
+    // if (image && previewImage.current) {
+    //   let res = await readImageAsPromise(image);
+    // }
+
+    const newCategory: Category = {
+      description: '',
+      id: Math.round(Math.random() * 190).toString(),
+      path: '',
       name: categoryName,
-      image: {
-        name: '',
-        path: '',
-      },
+      title: '',
+      productCount: 0,
+      overview: '',
     };
 
-    if (image && previewImage.current) {
-      let res = await readImageAsPromise(image);
-      request.image.path = res;
-      previewImage.current.image = res;
-      previewImage.current.name = image.name;
-    }
-
-    // const res = postRequest(request);
-    // console.log(res);
-
-    const newCategory = {
-      description: "",
-      id: Math.round(Math.random() * 190),
-      path: "",
-      name: categoryName,
-      title: "",
-      productCount: 0
-    };
+    await dispatch(newCategory);
 
     clearAndClose();
     setIsNotified(true);

@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Button,
   FileInput,
@@ -11,25 +11,21 @@ import { Info, UploadCloud, X, Check } from 'lucide-react';
 import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
 import Modal from '@/components/ModalWindow';
-import { readImageAsPromise } from '@/shared/lib/utils';
+// import { readImageAsPromise } from '@/shared/lib/utils';
 import { useForm } from '@mantine/form';
-import { Credentials, putRequest } from '@/shared/api/admin_categoryApi';
 
-import { categoriesContext } from '@/modules/CategoriesTable/lib/utils';
 import Notify from '@/components/Notify';
-import { Category } from '../CategoriesTable/lib/data';
 
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
+import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 
 type Props = {
-  categoryLine: Omit<Category, "productCount" | "description" | "path" | "title"> & { image: { path: string; name: string; } };
+  categoryLine: Category & { image: { path: string; name: string } };
 };
 export default ({ categoryLine }: Props) => {
-  const [isChanged, setIsChanged] = useState(false);
-  const { setCategories } = use(categoriesContext);
   const [isNotified, setIsNotified] = useState(false);
-
+  const [dispatch] = useUpdateCategoryMutation();
   const previewImage = useRef<(typeof categoryLine)['image']>();
 
   const handleClose = () => {
@@ -52,7 +48,7 @@ export default ({ categoryLine }: Props) => {
 
     validate: {
       categoryName: (value) =>
-        !value.trim() ? 'Enter a valid category name' : null,
+        !value.trim() ? 'Entered a valid category name' : null,
     },
   });
 
@@ -74,7 +70,6 @@ export default ({ categoryLine }: Props) => {
 
   const clearAndClose = () => {
     form.reset();
-    clearFile();
     close();
   };
 
@@ -82,38 +77,18 @@ export default ({ categoryLine }: Props) => {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    let request: Credentials = {
+    // TODO: image upload
+    // if (image && previewImage.current) {
+    //   let res = await readImageAsPromise(image);
+
+    // }
+
+    const updatedCategory: Category = {
+      ...categoryLine,
       name: categoryName,
-      image: {
-        path: '',
-        name: '',
-      },
     };
 
-    if (image && previewImage.current) {
-      let res = await readImageAsPromise(image);
-      request.image = {
-        path: res,
-        name: image.name,
-      };
-      previewImage.current.path = res;
-      previewImage.current.name = image.name;
-    }
-
-    setCategories((state) =>
-      state.reduce<Category[]>((acc, curr) => {
-        if (curr.id === categoryLine.id) {
-          curr.name = request.name;
-        }
-
-        return acc.concat(curr);
-      }, [])
-    );
-
-    setIsChanged(true);
-
-    // const res = postRequest(request);
-    // console.log(res);
+    await dispatch(updatedCategory);
 
     clearAndClose();
     setIsNotified(true);
@@ -141,7 +116,7 @@ export default ({ categoryLine }: Props) => {
               input: 'rounded-sm outline-none border-0 p-0',
               label: 'mb-1',
               wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
-              section: 'static w-auto text-[#161616]',
+              section: 'static w-auto text-[#161616] whitespace-nowrap',
             }}
             withErrorStyles
             type='text'

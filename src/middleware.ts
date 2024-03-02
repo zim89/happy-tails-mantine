@@ -28,16 +28,16 @@ export default auth((req) => {
     return null;
   }
 
-  // if (isAuthRoute) {
-  //   if (isLoggedIn) {
-  //     return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-  //   }
-  //   return null;
-  // }
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
 
   if (isAdminRoute) {
     if (!isLoggedIn || !isAdmin) {
-      // return Response.redirect(new URL('/', nextUrl));
+      return Response.redirect(new URL('/', nextUrl));
     }
   }
 

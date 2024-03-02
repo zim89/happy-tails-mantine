@@ -2,32 +2,26 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import styles from './category.module.css';
 
-import { CategoriesProvider } from '@/modules/CategoriesTable/lib/utils';
 import Table from '@/modules/CategoriesTable/CategoriesTable';
-import AddCategory from "@/modules/AddCategoryModal/AddCategoryModal";
+import AddCategory from '@/modules/AddCategoryModal/AddCategoryModal';
 
-import { useFakeCategoriesQuery } from "@/shared/api/admin_categoryApi";
+import { useCategoriesQuery } from '@/shared/api/categoryApi';
 
 export default function CategoryPage() {
-  const { data, isError, isLoading, isUninitialized } = useFakeCategoriesQuery();
+  const { data, isError, isLoading, isUninitialized } = useCategoriesQuery();
 
-  if (isLoading || isUninitialized) 
-    return <p>Loading, please wait</p>
-  
-  if (isError)
-    return <p>Oops, something went wrong</p>
+  if (isLoading || isUninitialized) return <p>Loading, please wait</p>;
+
+  if (isError) return <p>Oops, something went wrong</p>;
 
   return (
-    <CategoriesProvider>
-      <div className={styles.pageWrapper}>
-        <Breadcrumbs
-          crumbs={[{ href: '/admin/', text: 'Admin' }, { text: 'category' }]}
-        />
+    <div className={styles.pageWrapper}>
+      <Breadcrumbs
+        crumbs={[{ href: '/admin/', text: 'Admin' }, { text: 'category' }]}
+      />
 
-        <AddCategory/>
-        <Table categories={data} />
-
-      </div>
-    </CategoriesProvider>
+      <AddCategory />
+      <Table categories={data} />
+    </div>
   );
 }

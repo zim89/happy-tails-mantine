@@ -16,7 +16,7 @@ import { favoritesReducer } from './favorites/favoritesSlice';
 import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
 import { ordersApi } from '../api/ordersApi';
-import { categoriesApi } from '../api/admin_categoryApi';
+import { categoriesApi } from '../api/categoryApi';
 
 const createNoopStorage = () => {
   return {

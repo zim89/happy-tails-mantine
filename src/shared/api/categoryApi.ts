@@ -1,7 +1,9 @@
 import { BackendResponse } from '../types/types';
 
+type ID = string | number;
+
 export type Category = {
-  id: number;
+  id: ID;
   name: string;
   title: string;
   description: string;
@@ -9,6 +11,57 @@ export type Category = {
   path: string;
   productCount: number;
 };
+
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+// Make sure you have run mock server "npm run mockend"
+export const categoriesApi = createApi({
+  reducerPath: 'categoriesApi',
+  tagTypes: ['Categories'],
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3001'
+  }),
+  endpoints: builder => ({
+    categories: builder.query<Category[], void>({
+      query: () => "/content",
+      providesTags: ["Categories"],
+    }),
+    addNewCategory: builder.mutation<Category, Category>({
+      query: payload => ({
+        url: "/content",
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }),
+      invalidatesTags: ["Categories"]
+    }),
+    removeCategory: builder.mutation<Category, ID>({
+      query: payload => ({
+        url: `/content/${payload}`,
+        method: "DELETE",
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }),
+      invalidatesTags: ["Categories"]
+    }),
+    updateCategory: builder.mutation<Category, Partial<Category>>({
+      query: payload => ({
+        url: `/content/${payload.id}`,
+        method: "PUT",
+        body: payload,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }),
+      invalidatesTags: ["Categories"]
+    })
+  }),
+});
+
+export const { useCategoriesQuery, useAddNewCategoryMutation, useRemoveCategoryMutation, useUpdateCategoryMutation } = categoriesApi;
 
 // TODO: Implement fetch from the server
 export const getAllCategories = async (): Promise<

@@ -6,24 +6,28 @@ import styles from './DeleteCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
-import { Category } from '../CategoriesTable/lib/data';
+import { Category } from '@/shared/api/categoryApi';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import file_error from '@/assets/icons/categories/file_error.svg';
 import check_circle from '@/assets/icons/additional/check-circle.svg';
 import ModalFooter from '@/components/ModalFooter';
 
+import { useRemoveCategoryMutation } from "@/shared/api/categoryApi";
+
 type Props = {
-  categoryLine: Omit<Category, "description" | "path" | "title"> & { image: { path: string; name: string; } };
+  categoryLine: Category;
 };
 export default ({ categoryLine }: Props) => {
+  const [dispatch] = useRemoveCategoryMutation();
   const [isNotified, setIsNotified] = useState(false);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (categoryLine.productCount > 0) {
       closeMain();
       openError();
     } else {
+      await dispatch(categoryLine.id);
       closeMain();
       setIsNotified(true);
     }
