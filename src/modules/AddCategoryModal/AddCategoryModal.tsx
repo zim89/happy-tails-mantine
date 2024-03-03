@@ -20,7 +20,7 @@ import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
-export default () => {
+export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
 
   const [isNotified, setIsNotified] = useState(false);

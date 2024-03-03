@@ -23,7 +23,7 @@ import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 type Props = {
   categoryLine: Category & { image: { path: string; name: string } };
 };
-export default ({ categoryLine }: Props) => {
+export default function UpdateCategoryModal({ categoryLine }: Props) {
   const [isNotified, setIsNotified] = useState(false);
   const [dispatch] = useUpdateCategoryMutation();
   const previewImage = useRef<(typeof categoryLine)['image']>();

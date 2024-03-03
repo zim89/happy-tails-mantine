@@ -18,7 +18,7 @@ import { useRemoveCategoryMutation } from "@/shared/api/categoryApi";
 type Props = {
   categoryLine: Category;
 };
-export default ({ categoryLine }: Props) => {
+export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useRemoveCategoryMutation();
   const [isNotified, setIsNotified] = useState(false);
 
@@ -28,7 +28,7 @@ export default ({ categoryLine }: Props) => {
       openError();
     } else {
       // await dispatch(categoryLine.id);
-      
+
       closeMain();
       setIsNotified(true);
     }
@@ -63,7 +63,7 @@ export default ({ categoryLine }: Props) => {
           <div className={styles.message}>
             <Image src={file_attention.src} alt='' width={64} height={64} />
             <hgroup>
-              <h2>Delete "{categoryLine.name}" category?</h2>
+              <h2>{`Delete "${categoryLine.name}" category?`}</h2>
               <p>
                 This action cannot be undone. Please confirm that you want to
                 proceed.
@@ -95,7 +95,7 @@ export default ({ categoryLine }: Props) => {
         <div className={styles.message}>
           <Image src={file_error.src} alt='' width={64} height={64} />
           <hgroup>
-            <h2>Delete "{categoryLine.name}" Unavailable</h2>
+            <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
             <p>
               This category cannot be deleted because it contains associated
               products. To delete the category, please remove or reassign the

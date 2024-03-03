@@ -14,7 +14,7 @@ const image = {
   name: 'No image',
 };
 
-export default (category: Category) => {
+export default function CategoryRow(category: Category) {
   return (
     <Table.Tr className={styles.categoryRow}>
       <Table.Td>

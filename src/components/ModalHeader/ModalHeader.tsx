@@ -6,7 +6,7 @@ type Props = {
   heading: string;
   handleClose: () => void
 }
-export default ({ heading, handleClose }: Props) => {
+export default function ModalHeader({ heading, handleClose }: Props) {
   return (
     <>
       <span className='absolute right-4 top-6 cursor-pointer' onClick={handleClose}>

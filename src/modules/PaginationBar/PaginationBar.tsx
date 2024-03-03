@@ -4,7 +4,7 @@ import { Pagination, Group, PaginationProps } from "@mantine/core";
 
 import styles from "./PaginationBar.module.css";
 
-export default (props: PaginationProps) => {    
+export default function PaginationBar(props: PaginationProps) {    
     return (
       <Pagination.Root
         className='mt-12'

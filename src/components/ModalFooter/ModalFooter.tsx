@@ -23,7 +23,7 @@ type DoubleButtonProps = {
 
 type Props = CommonProps & (SingleButtonProps | DoubleButtonProps);
 
-export default (props: Props) => {
+export default function ModalFooter(props: Props) {
   if (props.singleBtn) {
     return (
       <div className={styles.controls} style={props.containerStyles}>

@@ -13,7 +13,7 @@ import { Category } from '@/shared/api/categoryApi';
 type Props = {
   categories: Category[]
 };
-export default ({ categories }: Props) => {
+export default function CategoriesTable({ categories }: Props) {
   const [page, setPage] = useState(1);
   const paginated = useRef<Category[][]>([]);
 
