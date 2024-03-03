@@ -20,7 +20,7 @@ import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
-export default () => {
+export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
 
   const [isNotified, setIsNotified] = useState(false);
@@ -77,15 +77,14 @@ export default () => {
     //   let res = await readImageAsPromise(image);
     // }
 
-    const newCategory: Category = {
-      description: '',
-      id: Math.round(Math.random() * 190).toString(),
-      path: '',
-      name: categoryName,
-      title: '',
-      productCount: 0,
-      overview: '',
-    };
+    // const newCategory: Partial<Category> = {
+    //   description: '',
+    //   path: '',
+    //   name: categoryName,
+    //   title: '',
+    //   productCount: 0,
+    //   overview: '',
+    // };
 
     // await dispatch(newCategory);
 

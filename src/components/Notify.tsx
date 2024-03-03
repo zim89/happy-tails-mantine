@@ -5,7 +5,7 @@ type NotifyProps = {
     visible: boolean;
     onClose: () => void;
 } & Omit<NotificationProps, "onClose">;
-export default ({ visible, text, onClose, ...props }: NotifyProps) => {
+export default function Notify({ visible, text, onClose, ...props }: NotifyProps) {
   if (!visible) return null;
 
   return (
