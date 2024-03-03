@@ -3,7 +3,7 @@ import { BackendResponse } from '../types/types';
 type ID = string | number;
 
 export type Category = {
-  id: ID;
+  id: number;
   name: string;
   title: string;
   description: string;
