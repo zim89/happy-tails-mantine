@@ -21,7 +21,7 @@ export default function CategoryPage() {
       />
 
       <AddCategory />
-      <Table categories={data} />
+      <Table categories={data.content} />
     </div>
   );
 }

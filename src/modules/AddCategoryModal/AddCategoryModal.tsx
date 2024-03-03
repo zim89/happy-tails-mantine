@@ -87,7 +87,7 @@ export default () => {
       overview: '',
     };
 
-    await dispatch(newCategory);
+    // await dispatch(newCategory);
 
     clearAndClose();
     setIsNotified(true);

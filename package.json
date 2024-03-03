@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "mockend": "npx json-server ./src/modules/CategoriesTable/lib/category.json -p 3001"
+    "lint": "next lint"
   },
   "dependencies": {
     "@mantine/carousel": "^7.3.2",

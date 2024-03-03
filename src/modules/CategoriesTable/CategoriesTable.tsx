@@ -27,7 +27,7 @@ export default ({ categories }: Props) => {
   );
 
   const tbs = useMemo(() => {
-    paginated.current = chunk(categories, 8);
+    paginated.current = chunk(categories, 5);
 
     return paginated.current[page - 1].map((item, index) => (
       <CategoryLine key={index} {...item} />

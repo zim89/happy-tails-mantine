@@ -27,7 +27,8 @@ export default ({ categoryLine }: Props) => {
       closeMain();
       openError();
     } else {
-      await dispatch(categoryLine.id);
+      // await dispatch(categoryLine.id);
+      
       closeMain();
       setIsNotified(true);
     }
