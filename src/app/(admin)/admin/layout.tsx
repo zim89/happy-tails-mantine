@@ -50,7 +50,7 @@ function LinksGroup({
         }
       >
         <Group>
-          <Box style={{ display: 'flex' }}>
+          <Box className="flex">
             <Icon style={{ width: rem(22), height: rem(22), color: 'white' }} />
             <Box ml='md' className='text-xl font-bold leading-6 text-white'>
               {label}

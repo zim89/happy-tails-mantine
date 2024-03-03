@@ -37,7 +37,7 @@ export default auth((req) => {
 
   if (isAdminRoute) {
     if (!isLoggedIn || !isAdmin) {
-      // return Response.redirect(new URL('/', nextUrl));
+      return Response.redirect(new URL('/', nextUrl));
     }
   }
 

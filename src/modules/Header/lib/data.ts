@@ -67,5 +67,5 @@ export const additionalLinks = [
   {
     label: 'Blog',
     href: '/blog',
-  },
+  }
 ] as const;

@@ -16,6 +16,7 @@ import { favoritesReducer } from './favorites/favoritesSlice';
 import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
 import { ordersApi } from '../api/ordersApi';
+import { categoriesApi } from '../api/categoryApi';
 
 const createNoopStorage = () => {
   return {
@@ -58,8 +59,9 @@ export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
     favorites: favoritesPersistedReducer,
-    cart: cartPersistedReducer,
+    cart: cartPersistedReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -68,7 +70,8 @@ export const store = configureStore({
       },
     })
       .concat(productApi.middleware)
-      .concat(ordersApi.middleware),
+      .concat(ordersApi.middleware)
+      .concat(categoriesApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

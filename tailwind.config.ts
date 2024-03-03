@@ -1,3 +1,4 @@
+import { transform } from 'next/dist/build/swc';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -22,6 +23,16 @@ const config: Config = {
       },
     },
     extend: {
+      keyframes: {
+        progress: {
+          '0%': {
+            transform: "scaleX(0%)"
+          },
+          '100%': {
+            transform: "scaleX(100%)"
+          }
+        }
+      },
       fontFamily: {
         lato: ['var(--font-lato)', 'sans-serif'],
       },

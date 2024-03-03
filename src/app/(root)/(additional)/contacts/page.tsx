@@ -32,16 +32,16 @@ export default function ContactsPage() {
       userEmail: (value) =>
         /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(value)
           ? null
-          : 'The email you entered did not match our record. Please double check and try again.',
+          : 'Please enter a valid email address',
       content: (value, { file }) =>
         // If there is a file attached, ignore it
         !value.length && !file
-          ? 'Hey, you forgot to write down the message!'
+          ? 'Please enter some content.'
           : null,
       userName: (value) =>
-        value.length <= 2 ? "Come on, you have a name, don't you?" : null,
+        value.length <= 2 ? "Please enter a username." : null,
       termsOfService: (value) =>
-        !value ? "We won't steal your data. Rest assured!" : null,
+        !value ? "You must agree to the Terms of Service." : null,
     },
   });
 
@@ -64,7 +64,8 @@ export default function ContactsPage() {
     }
 
     // Make a request to feedback-controller
-    const res = await postRequest(request);
+    // const res = await postRequest(request);
+
     form.reset();
   };
 
@@ -148,7 +149,7 @@ export default function ContactsPage() {
             </span>
           </UnstyledButton>
 
-          <button type='submit'>Send</button>
+          <button disabled={!!form.errors["termsOfService"]} type='submit'>Send</button>
         </form>
 
         <p className={styles.partner_message}>

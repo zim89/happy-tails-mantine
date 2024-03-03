@@ -27,3 +27,26 @@ export function readTextFileAsPromise(file: File) {
     reader.readAsText(file);
   });
 } 
+
+export function readImageAsPromise(file: File) {
+  return new Promise<string>((resolve, reject) => {
+  
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const imageSrc = reader.result;
+      
+      if (imageSrc == null) {
+        reject('Parsing file failed!');
+      } else {
+        resolve(imageSrc.toString());
+      }
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+} 
