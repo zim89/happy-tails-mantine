@@ -26,6 +26,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import dayjs from 'dayjs';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
+import { RowActions } from './RowActions';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -88,6 +89,14 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Payment',
     enableSorting: false,
+  }),
+  columnHelper.display({
+    id: 'actions',
+    cell: (info) => (
+      <div className='flex justify-center'>
+        <RowActions ctx={info} />
+      </div>
+    ),
   }),
 ];
 
