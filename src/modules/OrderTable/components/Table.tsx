@@ -14,6 +14,7 @@ import {
   Badge,
   Button,
   Group,
+  Input,
   Table as MantineTable,
   Pagination,
   Select,
@@ -22,11 +23,12 @@ import {
 import type { Order } from '@/shared/types/types';
 import { useState } from 'react';
 import { cn } from '@/shared/lib/utils';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { RowActions } from './RowActions';
+import { useDebouncedState } from '@mantine/hooks';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -102,14 +104,18 @@ const columns = [
 
 export default function Table({ data }: { data: Order[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useDebouncedState('', 200);
+  console.log('🚀 ~ Table ~ globalFilter:', globalFilter);
 
   const table = useReactTable({
     columns,
     data,
     state: {
       columnFilters,
+      globalFilter,
     },
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -158,6 +164,26 @@ export default function Table({ data }: { data: Order[] }) {
             </li>
           ))}
         </ul>
+      </div>
+      <div className='flex items-center border border-b-0 border-brand-grey-300 p-4'>
+        <p>
+          Displaying{' '}
+          {table.getState().pagination.pageIndex *
+            table.getState().pagination.pageSize +
+            1}{' '}
+          to{' '}
+          {table.getState().pagination.pageIndex *
+            table.getState().pagination.pageSize +
+            table.getRowModel().rows.length}{' '}
+          of {table.getCoreRowModel().rows.length} entries
+        </p>
+        <Input
+          className='ml-auto'
+          placeholder='Search Order'
+          leftSection={<Search size={16} />}
+          defaultValue={globalFilter}
+          onChange={(value) => setGlobalFilter(value.target.value)}
+        />
       </div>
 
       <MantineTable
