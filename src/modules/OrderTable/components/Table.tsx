@@ -111,7 +111,7 @@ export default function Table({ data }: { data: Order[] }) {
   return (
     <div>
       <div className='flex items-center border border-b-0 border-brand-grey-300 p-4'>
-        <h3 className='mr-3 flex-1 text-right text-xl font-bold'>Orders</h3>
+        <h3 className='mr-3 flex-1 text-xl font-bold'>Orders</h3>
         <ul className='flex space-x-3'>
           <li>
             <Button
@@ -168,12 +168,7 @@ export default function Table({ data }: { data: Order[] }) {
             >
               {group.headers.map((header) => (
                 <MantineTable.Th key={header.id}>
-                  <div
-                    className={cn(
-                      'flex items-center',
-                      header.column.getCanSort() ? null : 'justify-end'
-                    )}
-                  >
+                  <div className='flex items-center'>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
