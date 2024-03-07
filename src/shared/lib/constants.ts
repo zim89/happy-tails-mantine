@@ -1,5 +1,7 @@
 import type { Category } from '@/shared/api/categoryApi';
 
+export const DEFAULT_CATEGORY_IMAGE = "https://i.imgur.com/dhBg9XH.png";
+
 export const CATEGORY: Category = {
   id: 0,
   name: 'All Products',
@@ -21,4 +23,5 @@ Make adventures with your dog stress-free with our travel-friendly accessories, 
 Ensure your dog's safety and style during walks with our exquisite collection of collars and leads. Choose from a range of designs and materials that blend fashion and functionality seamlessly.`,
   path: 'products',
   productCount: 0,
+  imgSrc: DEFAULT_CATEGORY_IMAGE
 };

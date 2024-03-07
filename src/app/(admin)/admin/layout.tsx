@@ -9,6 +9,8 @@ import {
   UnstyledButton,
   rem,
   Button,
+  useCombobox,
+  Combobox,
 } from '@mantine/core';
 import { LayoutList, Minus, LogOut, ChevronLeft } from 'lucide-react';
 
@@ -86,7 +88,6 @@ const data = [
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const links = data.map((item) => <LinksGroup {...item} key={item.label} />);
-
   return (
     <div className={classes.layoutWrapper}>
       <nav className={classes.navbar}>
@@ -122,6 +123,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Button>
         </div>
       </header>
+      <div className='px-6 pt-4'>
+      </div>
       <div className={classes.content}>{children}</div>
     </div>
   );

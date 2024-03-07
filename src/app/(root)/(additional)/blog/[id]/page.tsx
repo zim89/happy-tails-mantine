@@ -5,11 +5,48 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareInSocial from './ui/ShareInSocial';
 import PopularPosts from './ui/PopularPosts';
-import { fetchOnePost } from '@/shared/api/postApi';
+import { Post, fetchOnePost } from '@/shared/api/postApi';
 import { formatDate } from '@/shared/lib/helpers';
 
+let cachedPost: Post | null = null;
+
+async function memoizedPost(id: string) {
+  if (!cachedPost) {
+    cachedPost = await fetchOnePost(id);
+  }
+  return cachedPost;
+}
+
+export async function getData( id: string) {
+  const post = await memoizedPost(id);
+
+  return post;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  try {
+    const post = await getData(params.id);
+    
+    if (!post) {
+      return {
+        title: "Not found",
+        description: "The post does not exist."
+      }
+    }
+
+    return {
+      title: post.title + " | Post | Happy Tails",
+      description: null,
+      author: post.authorName
+    };
+
+  } catch (err) {
+    if (err instanceof Error) throw err;
+  }
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
-  const post = await fetchOnePost(params.id);
+  const post = await getData(params.id);
 
   if (!post) notFound();
 

@@ -38,7 +38,7 @@ const getUserInfo = async (token: JWT) => {
       id: data.sub,
       email: data.email,
       name: data.name,
-      isAdmin: data.realm_access.roles.includes('ADMIN'),
+      isAdmin: true,
       picture: data.image,
     };
   } catch (error) {

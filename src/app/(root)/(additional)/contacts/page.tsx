@@ -17,6 +17,7 @@ import { postRequest, Credentials } from '@/shared/api/contactsApi';
 import { readTextFileAsPromise } from '@/shared/lib/utils';
 
 import styles from './styles.module.css';
+import axios from 'axios';
 
 export default function ContactsPage() {
   const form = useForm({
@@ -35,13 +36,11 @@ export default function ContactsPage() {
           : 'Please enter a valid email address',
       content: (value, { file }) =>
         // If there is a file attached, ignore it
-        !value.length && !file
-          ? 'Please enter some content.'
-          : null,
+        !value.length && !file ? 'Please enter some content.' : null,
       userName: (value) =>
-        value.length <= 2 ? "Please enter a username." : null,
+        value.length <= 2 ? 'Please enter a username.' : null,
       termsOfService: (value) =>
-        !value ? "You must agree to the Terms of Service." : null,
+        !value ? 'You must agree to the Terms of Service.' : null,
     },
   });
 
@@ -51,22 +50,43 @@ export default function ContactsPage() {
     userName,
     file,
   }: (typeof form)['values']) => {
-    let request: Credentials = {
-      content,
-      userEmail,
-      userName,
-    };
+    try {
+      // let request: Credentials = {
+      //   content,
+      //   userEmail,
+      //   userName,
+      // };
+      
+      if (file) {
+        const payload = new FormData();
+        payload.append('image', file);
+        payload.append("type", "image");
+        payload.append("title", "FEEDBACK: Image Upload");
 
-    if (file) {
-      // Load a file and replace a message's content
-      let res = await readTextFileAsPromise(file);
-      request.content = res;
+        const res = await axios.post(
+          'https://api.imgur.com/3/image/',
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        console.log(res);
+      }
+
+      // Make a request to feedback-controller
+      // const res = await postRequest(request);
+
+      console.log(form.values.file);
+
+      form.reset();
+    } catch (err) {
+      if (err instanceof Error)
+        throw new Error("Failed request, see what's happened: ", err);
     }
-
-    // Make a request to feedback-controller
-    // const res = await postRequest(request);
-
-    form.reset();
   };
 
   return (
@@ -85,6 +105,7 @@ export default function ContactsPage() {
         </hgroup>
         <form
           className={styles.form}
+          // @ts-ignore
           onSubmit={form.onSubmit((values) => handleSubmit(values))}
         >
           <div className={styles.field}>
@@ -123,7 +144,7 @@ export default function ContactsPage() {
                 variant='unstyled'
                 className='w-6 opacity-0'
                 {...form.getInputProps('file')}
-                accept='.txt'
+                accept='.jpeg,.jpg,.png,.gif,.apng,.tiff'
               />
               <Tooltip label='Attach file' className='pointer-events-none'>
                 <Paperclip color={form.values.file ? 'black' : '#999'} />
@@ -149,7 +170,9 @@ export default function ContactsPage() {
             </span>
           </UnstyledButton>
 
-          <button disabled={!!form.errors["termsOfService"]} type='submit'>Send</button>
+          <button disabled={!!form.errors['termsOfService']} type='submit'>
+            Send
+          </button>
         </form>
 
         <p className={styles.partner_message}>

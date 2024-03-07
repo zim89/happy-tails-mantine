@@ -88,7 +88,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       name: categoryName,
     };
 
-    // await dispatch(updatedCategory);
+    await dispatch(updatedCategory);
 
     clearAndClose();
     setIsNotified(true);

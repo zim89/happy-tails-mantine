@@ -10,6 +10,7 @@ export type Category = {
   overview: string;
   path: string;
   productCount: number;
+  imgSrc: null | string;
 };
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -25,13 +26,13 @@ export const categoriesApi = createApi({
       query: () => "/category",
       providesTags: ["Categories"],
     }),
-    addNewCategory: builder.mutation<Category, Category>({
+    addNewCategory: builder.mutation<Category, Partial<Category>>({
       query: payload => ({
         url: "/category",
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
-          'Content-type': 'application/json; charset=UTF-8',
+          'Content-type': 'application/json; charset=UTF-8'
         },
       }),
       invalidatesTags: ["Categories"]

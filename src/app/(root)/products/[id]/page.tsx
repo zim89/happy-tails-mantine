@@ -1,15 +1,23 @@
-'use client';
+"use client";
+import { Title } from "react-meta-elements";
 import { Container, Loader } from '@mantine/core';
 import { productApi } from '@/shared/api/productApi';
 import ProductDetails from '@/modules/ProductDetails';
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default function ProductPage({ params }: Props) {
   const { data, isError, isLoading, error } = productApi.useFindOneQuery(
     params.id
   );
 
   return (
     <>
+      {data && <Title title={`${data.name} | Happy Tails`}/>}
       {isLoading && (
         <div className='flex h-[calc(100vh-73px)] items-center justify-center lg:h-[calc(100vh-83px)] '>
           <Loader color='orange' />

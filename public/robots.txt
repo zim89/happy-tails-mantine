@@ -1,0 +1,5 @@
+# Allow to crawl all pages save ones which define noindex
+User-agent: *
+Allow: /
+
+Sitemap: http://localhost:3000/sitemap.xml
