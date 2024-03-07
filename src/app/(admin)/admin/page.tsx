@@ -1,11 +1,11 @@
 import { Container } from '@mantine/core';
 import { Metadata } from 'next';
 
-export const metaData: Metadata = {
-  other: {
-    content: "noindex"
-  }
-}
+// export const metaData: Metadata = {
+//   other: {
+//     content: "noindex"
+//   }
+// }
 
 export default function AdminPage() {
   return (

@@ -8,9 +8,7 @@ import {
   Group,
   UnstyledButton,
   rem,
-  Button,
-  useCombobox,
-  Combobox,
+  Button
 } from '@mantine/core';
 import { LayoutList, Minus, LogOut, ChevronLeft } from 'lucide-react';
 
