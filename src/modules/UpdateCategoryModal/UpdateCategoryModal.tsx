@@ -19,6 +19,7 @@ import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
+import Image from 'next/image';
 
 type Props = {
   categoryLine: Category & { image: { path: string; name: string } };
@@ -52,12 +53,16 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     },
   });
 
-  // When the list of categories is changed, change the form values respectively
-  useEffect(() => {
+  const changeThumbnail = () => {
     previewImage.current = {
       path: categoryLine.image.path,
       name: categoryLine.image.name,
     };
+  }
+
+  // When the list of categories is changed, change the form values respectively
+  useEffect(() => {
+    changeThumbnail();
   }, [categoryLine.id]);
 
   const clearFile = () => {
@@ -156,8 +161,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </div>
           ) : (
             <div className='flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1'>
-              <img
+              <Image
                 className='h-8 w-8 object-contain'
+                width={32}
+                height={32}
                 src={previewImage.current.path}
                 alt={previewImage.current.name}
               />
