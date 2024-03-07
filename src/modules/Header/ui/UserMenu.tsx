@@ -10,12 +10,12 @@ import { logout } from '@/shared/redux/auth/authOperations';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
-  const { isAuth, currentUser, token } = useAuth();
+  const { isAuth, currentUser, access_token, id_token } = useAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
-    dispatch(logout());
+    dispatch(logout({ access_token, id_token }));
   };
 
   return (

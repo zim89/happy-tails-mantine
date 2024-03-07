@@ -19,7 +19,9 @@ export interface User {
 
 export interface AuthState {
   user: User | null;
-  token: string;
+  access_token: string;
+  refresh_token: string;
+  id_token: string;
   error: unknown;
   isAuth: boolean;
   isAdmin: boolean;
@@ -28,7 +30,9 @@ export interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  token: '',
+  access_token: '',
+  refresh_token: '',
+  id_token: '',
   error: null,
   isAuth: false,
   isAdmin: false,
@@ -50,7 +54,9 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
-        state.token = action.payload.access_token;
+        state.access_token = action.payload.access_token;
+        state.refresh_token = action.payload.refresh_token;
+        state.id_token = action.payload.id_token;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -78,7 +84,9 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
-        state.token = '';
+        state.access_token = '';
+        state.refresh_token = '';
+        state.id_token = '';
         state.error = null;
         state.isAuth = false;
         state.isAdmin = false;
@@ -91,7 +99,10 @@ const authSlice = createSlice({
 
 export const selectLoading = (state: RootState) => state.auth.isLoading;
 export const selectError = (state: RootState) => state.auth.error;
-export const selectToken = (state: RootState) => state.auth.token;
+export const selectAccessToken = (state: RootState) => state.auth.access_token;
+export const selectRefreshToken = (state: RootState) =>
+  state.auth.refresh_token;
+export const selectIdToken = (state: RootState) => state.auth.id_token;
 export const selectUserData = (state: RootState) => state.auth.user;
 export const selectIsAuth = (state: RootState) => state.auth.isAuth;
 export const selectIsAdmin = (state: RootState) => state.auth.isAdmin;

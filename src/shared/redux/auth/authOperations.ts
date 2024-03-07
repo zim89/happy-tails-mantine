@@ -2,13 +2,8 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const instance = axios.create({
-  baseURL:
-    'https://test-happytails-security.lav.net.ua/realms/happytails/protocol/openid-connect',
+  baseURL: process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL!,
 });
-
-const setBaseUrl = (url: string) => {
-  instance.defaults.baseURL = url;
-};
 
 const setToken = (token: string) => {
   instance.defaults.headers.authorization = `Bearer ${token}`;
@@ -18,7 +13,6 @@ const clearToken = () => {
   instance.defaults.headers.authorization = '';
 };
 
-// TODO: KEYCLOAK_AUTH_URL from process.env
 export const getUserInfo = createAsyncThunk(
   'auth/getUserInfo',
   async (_, thunkApi) => {
@@ -35,21 +29,16 @@ export const getUserInfo = createAsyncThunk(
   }
 );
 
-// TODO: KEYCLOAK_AUTH_URL and KEYCLOAK_CLIENT_ID from process.env
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, thunkApi) => {
-    setBaseUrl(
-      'https://test-happytails-security.lav.net.ua/realms/happytails/protocol/openid-connect'
-    );
-
     try {
       const { data } = await instance.post(
         `/token`,
         new URLSearchParams({
           grant_type: 'password',
           scope: 'openid email',
-          client_id: 'happytails-ui',
+          client_id: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID!,
           username: credentials.email,
           password: credentials.password,
         }),
@@ -67,13 +56,17 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
-  setBaseUrl('https://happytails-backend.lav.net.ua/happytails/api');
-
-  try {
-    await instance.post('/user/logout');
-    clearToken();
-  } catch (error: any) {
-    return thunkApi.rejectWithValue(error.message);
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (data: { access_token: string; id_token: string }, thunkApi) => {
+    try {
+      setToken(data.access_token);
+      await instance.get(`/logout`, {
+        params: { id_token_hint: data.id_token },
+      });
+      clearToken();
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.message);
+    }
   }
-});
+);
