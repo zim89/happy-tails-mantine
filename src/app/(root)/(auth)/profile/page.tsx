@@ -1,8 +1,13 @@
 import { auth } from '@/shared/auth/auth';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Happy Tails | Profile",
+  description: null
+}
 
 export default async function Page() {
   const session = await auth();
-  console.log(session);
 
   return (
     <div>

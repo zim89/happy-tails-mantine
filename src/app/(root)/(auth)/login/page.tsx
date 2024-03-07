@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import LoginForm from '@/components/LoginForm';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Happy Tails | Login",
+  description: null
+}
 
 export default function Page() {
   return (

@@ -1,5 +1,10 @@
-import React from 'react';
 import { Container } from '@mantine/core';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Happy Tails | Auth",
+  description: null
+}
 
 export default function AuthPage() {
   return (
