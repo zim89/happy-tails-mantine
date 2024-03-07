@@ -50,13 +50,7 @@ export default function ContactsPage() {
     userName,
     file,
   }: (typeof form)['values']) => {
-    try {
-      // let request: Credentials = {
-      //   content,
-      //   userEmail,
-      //   userName,
-      // };
-      
+    try {      
       if (file) {
         const payload = new FormData();
         payload.append('image', file);
@@ -78,7 +72,7 @@ export default function ContactsPage() {
       }
 
       // Make a request to feedback-controller
-      // const res = await postRequest(request);
+      // const res = await postRequest();
 
       console.log(form.values.file);
 
@@ -91,9 +85,11 @@ export default function ContactsPage() {
 
   return (
     <Container>
+      <div className={styles.spacing}>
       <Breadcrumbs
         crumbs={[{ href: '/', text: 'Home' }, { text: 'Contacts' }]}
       />
+      </div>
       <div className={styles.content}>
         <hgroup className={styles.heading}>
           <h1>{"We'd love to hear from you!"}</h1>
