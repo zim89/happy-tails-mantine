@@ -1,0 +1,15 @@
+.header {
+    @apply flex items-center justify-between;
+}
+
+.header h2 {
+    @apply mt-6 text-[32px] font-bold leading-9;
+}
+
+.header span {
+    @apply cursor-pointer;
+}
+
+.divider {
+    @apply my-7 rounded-sm border-[1px] border-t-0 border-[#5A5A5A];
+}

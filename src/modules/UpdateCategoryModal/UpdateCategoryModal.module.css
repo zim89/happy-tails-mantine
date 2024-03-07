@@ -1,0 +1,35 @@
+.actionButton {
+    @apply p-0 text-black block;
+}
+
+.formHeader {
+    @apply flex items-center justify-between;
+}
+
+.formHeader h2 {
+    @apply mt-6 text-[32px] font-bold leading-9;
+}
+
+.formHeader span {
+    @apply cursor-pointer;
+}
+
+.divider {
+    @apply my-7 rounded-sm border-[1px] border-t-0 border-[#5A5A5A];
+}
+
+.upload {
+    @apply flex;
+}
+
+.upload label {
+    @apply flex cursor-pointer items-center justify-evenly gap-2 bg-[#5A5A5A] px-4 py-[10px];
+}
+
+.upload label span {
+    @apply whitespace-nowrap font-bold leading-4 text-white;
+}
+
+.controls {
+    @apply mt-12;
+}

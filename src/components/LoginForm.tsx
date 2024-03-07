@@ -20,7 +20,7 @@ export default function LoginForm() {
     },
     validate: {
       email: isEmail('Invalid email'),
-      password: hasLength({ min: 6 }, 'Password must have 6 or more symbols'),
+      password: hasLength({ min: 1 }, 'Password must have 6 or more symbols'),
     },
   });
 
