@@ -14,7 +14,7 @@ export default function UserMenu() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     dispatch(logout({ access_token, id_token }));
   };
 
@@ -42,7 +42,7 @@ export default function UserMenu() {
             </button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Label>{isAuth}</Menu.Label>
+            <Menu.Label>{currentUser?.email}</Menu.Label>
             <Menu.Item
               leftSection={<LogOut className='h-4 w-4' />}
               onClick={handleLogout}
