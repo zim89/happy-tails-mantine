@@ -29,7 +29,7 @@ export function readTextFileAsPromise(file: File) {
 } 
 
 export function readImageAsPromise(file: File) {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<string | ArrayBuffer>((resolve, reject) => {
   
     const reader = new FileReader();
 
@@ -39,7 +39,7 @@ export function readImageAsPromise(file: File) {
       if (imageSrc == null) {
         reject('Parsing file failed!');
       } else {
-        resolve(imageSrc.toString());
+        resolve(imageSrc);
       }
     };
 

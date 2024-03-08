@@ -120,3 +120,26 @@ export const {
   useUpdateMutation,
   useRemoveMutation,
 } = productApi;
+
+export const { findOne } = productApi.endpoints;
+
+// It's used on server components
+export const getProductById = async (id: string) => {
+  try {
+    const request = await fetch(
+      process.env.NEXT_PUBLIC_BASE_URL + '/products/' + id,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const result: Product = await request.json();
+    return result;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+  }
+};

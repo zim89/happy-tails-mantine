@@ -13,9 +13,10 @@ export default function CategoryPage() {
   if (isLoading || isUninitialized) return <p>Loading, please wait</p>;
 
   if (isError) return <p>Oops, something went wrong</p>;
-
+  
   return (
-    <div className={styles.pageWrapper}>
+    <>
+    <div className={styles.pageWrapper} style={{ position: "relative" }}>
       <Breadcrumbs
         crumbs={[{ href: '/admin/', text: 'Admin' }, { text: 'category' }]}
       />
@@ -23,5 +24,7 @@ export default function CategoryPage() {
       <AddCategory />
       <Table categories={data.content} />
     </div>
+    
+    </>
   );
 }

@@ -1,9 +1,15 @@
-'use client';
+"use client";
 import { Container, Loader } from '@mantine/core';
 import { productApi } from '@/shared/api/productApi';
 import ProductDetails from '@/modules/ProductDetails';
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default function ProductPage({ params }: Props) {
   const { data, isError, isLoading, error } = productApi.useFindOneQuery(
     params.id
   );

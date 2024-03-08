@@ -15,10 +15,12 @@ import styles from './AddCategoryModal.module.css';
 import Modal from '@/components/ModalWindow';
 // import { readImageAsPromise } from '@/shared/lib/utils';
 import { Category, useAddNewCategoryMutation } from '@/shared/api/categoryApi';
+import { DEFAULT_CATEGORY_IMAGE } from "@/shared/lib/constants"; 
 
 import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
+import axios from 'axios';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -72,21 +74,28 @@ export default function AddCategoryModal() {
     image,
   }: (typeof form)['values']) => {
     // TODO: image upload
+    let path = DEFAULT_CATEGORY_IMAGE;
 
-    // if (image && previewImage.current) {
-    //   let res = await readImageAsPromise(image);
-    // }
+    if (image) {
+      const form = new FormData();
+      form.append('image', image);
+      form.append('title', 'CATEGORY: image deploy');
 
-    // const newCategory: Partial<Category> = {
-    //   description: '',
-    //   path: '',
-    //   name: categoryName,
-    //   title: '',
-    //   productCount: 0,
-    //   overview: '',
-    // };
+      const res = await axios.post('https://api.imgur.com/3/image/', form, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    }
 
-    // await dispatch(newCategory);
+    const newCategory: Partial<Category> = {
+      name: categoryName,
+      productCount: 0,
+      imgSrc: path
+    };
+
+    await dispatch(newCategory);
 
     clearAndClose();
     setIsNotified(true);
@@ -193,4 +202,4 @@ export default function AddCategoryModal() {
       />
     </>
   );
-};
+}

@@ -1,4 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
+
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import ProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -28,6 +29,7 @@ Make adventures with your dog stress-free with our travel-friendly accessories, 
 Ensure your dog's safety and style during walks with our exquisite collection of collars and leads. Choose from a range of designs and materials that blend fashion and functionality seamlessly.`,
   path: 'products',
   productCount: 0,
+  imgSrc: null
 };
 
 export default async function AllProducts() {
@@ -43,7 +45,7 @@ export default async function AllProducts() {
       <div className='container text-center'>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'All Products' }]}
-        />
+          />
         <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
           Premium Dog Products
         </h2>

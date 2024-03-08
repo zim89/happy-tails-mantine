@@ -1,0 +1,15 @@
+.controls {
+    @apply flex items-center gap-8 lg:gap-[107px];
+}
+
+.returnLink {
+    @apply flex gap-[2px];
+}
+
+.avatar {
+    @apply hidden gap-2 md:flex;
+}
+
+.avatarLogo {
+    @apply flex h-6 w-6 items-center justify-center rounded-full bg-[black] text-sm text-white;
+}

@@ -1,0 +1,17 @@
+.navbar {
+    grid-area: nav;
+    background-color: #161616;
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.navbarMain {
+    flex: 1;
+}
+
+.header {
+    @apply py-12 px-14;
+}
