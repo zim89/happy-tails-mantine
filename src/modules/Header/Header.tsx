@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Container } from '@mantine/core';
-import { UserRound } from 'lucide-react';
 import CartButton from '@/modules/CartButton';
 import BurgerMenu from './ui/BurgerMenu';
 import SearchMenu from './ui/Search';
@@ -9,6 +8,7 @@ import Logo from './ui/Logo';
 import Navbar from './ui/Navbar';
 import { getAllCategories } from '@/shared/api/categoryApi';
 import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
+import UserMenu from '@/modules/Header/ui/UserMenu';
 
 export default async function Header() {
   const { content: categories } = await getAllCategories();
@@ -30,13 +30,9 @@ export default async function Header() {
             <span className='hidden md:block'>
               <SearchMenu />
             </span>
-            <Link
-              href={'/auth'}
-              className='hidden lg:flex items-center justify-center text-secondary'
-              aria-label="Go to Auth Page"
-            >
-              <UserRound className='iconBtn' />
-            </Link>
+  
+              <UserMenu />
+            
             <FavoriteButton />
             <CartButton />
           </div>

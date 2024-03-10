@@ -1,3 +1,4 @@
+/*
 'use server';
 import { signIn } from 'next-auth/react';
 import { AuthError } from 'next-auth';
@@ -45,3 +46,4 @@ export const register = async (values: RegisterFormData) => {
     console.log(user);
   } catch (error) {}
 };
+*/
