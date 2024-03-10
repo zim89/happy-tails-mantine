@@ -26,7 +26,6 @@ export default function RegisterForm() {
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
-    form.reset();
   };
 
   return (

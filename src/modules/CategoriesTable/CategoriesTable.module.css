@@ -1,0 +1,11 @@
+.categoryHeadrow {
+    @apply text-xs uppercase leading-[15px] text-[#787878];
+}
+
+.table {
+    @apply mt-6;
+}
+
+.table > p {
+    @apply border-[1px] border-[#EEE] p-4 text-end font-bold;
+}

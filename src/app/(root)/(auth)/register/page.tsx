@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import RegisterForm from '@/components/RegisterForm';
+
+export const metadata: Metadata = {
+  title: "Happy Tails | Register",
+  description: null
+}
 
 export default function Page() {
   return (

@@ -6,10 +6,13 @@ import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useAppDispatch } from '@/shared/redux/store';
+import { getUserInfo, login } from '@/shared/redux/auth/authOperations';
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -17,23 +20,19 @@ export default function LoginForm() {
     },
     validate: {
       email: isEmail('Invalid email'),
-      password: hasLength({ min: 6 }, 'Password must have 6 or more symbols'),
+      password: hasLength({ min: 1 }, 'Password must have 6 or more symbols'),
     },
   });
 
   type FormValues = typeof form.values;
 
   const onSubmit = async (values: FormValues) => {
-    const res = await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    });
-
-    if (res && !res.error) {
-      router.push('/profile');
-    } else {
-      console.log(res);
+    try {
+      await dispatch(login(values));
+      await dispatch(getUserInfo());
+      router.push('/');
+    } catch (error) {
+      console.log(error);
     }
   };
 
