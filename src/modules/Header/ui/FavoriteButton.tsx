@@ -13,6 +13,7 @@ export default function FavoriteButton() {
     <Link
       href={'/wishlist'}
       className='group lg:hidden flex lg:items-center lg:justify-center'
+      aria-label="Go to Wishlist"
     >
       <Indicator
         label={favorites.length}

@@ -12,7 +12,7 @@ export default function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
   return (
     <RawBreadcrumbs
       classNames={{
-        root: '[--bc-separator-margin:2px] text-xs/normal mb-4 md:max-lg:mb-3 lg:text-sm/normal lg:mb-4',
+        root: '[--bc-separator-margin:2px] text-xs/normal py-3 mb-4 md:max-lg:mb-3 lg:text-sm/normal lg:mb-4',
         separator: 'text-secondary text-xs/normal',
       }}
     >

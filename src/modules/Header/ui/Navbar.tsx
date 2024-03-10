@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { categoryLinks } from '../lib/data';
 import Link from 'next/link';
 import { Container } from '@mantine/core';
 import { usePathname } from 'next/navigation';

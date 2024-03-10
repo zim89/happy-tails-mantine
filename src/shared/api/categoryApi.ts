@@ -63,7 +63,7 @@ export const categoriesApi = createApi({
 
 export const { useCategoriesQuery, useAddNewCategoryMutation, useRemoveCategoryMutation, useUpdateCategoryMutation } = categoriesApi;
 
-// TODO: Implement fetch from the server
+// TODO: Implement fetch to the server
 export const getAllCategories = async (): Promise<
   BackendResponse<Category[]>
 > => {

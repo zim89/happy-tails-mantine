@@ -33,6 +33,7 @@ export default async function Header() {
             <Link
               href={'/auth'}
               className='hidden lg:flex items-center justify-center text-secondary'
+              aria-label="Go to Auth Page"
             >
               <UserRound className='iconBtn' />
             </Link>

@@ -50,32 +50,34 @@ export default function ContactsPage() {
     userName,
     file,
   }: (typeof form)['values']) => {
-    try {      
+    try {
+      let request = {
+        userEmail,
+        userName,
+        imageSrc: '',
+        content,
+      };
+
       if (file) {
-        const payload = new FormData();
-        payload.append('image', file);
-        payload.append("type", "image");
-        payload.append("title", "FEEDBACK: Image Upload");
-
-        const res = await axios.post(
-          'https://api.imgur.com/3/image/',
-          payload,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-
-        console.log(res);
+        // const payload = new FormData();
+        // payload.append('image', file);
+        // payload.append("type", "image");
+        // payload.append("title", "FEEDBACK: Image Upload");
+        // const res = await axios.post(
+        //   'https://api.imgur.com/3/image/',
+        //   payload,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+        //       'Content-Type': 'multipart/form-data',
+        //     },
+        //   }
+        // );
+        // request.imageSrc = res.data.data.link;
       }
 
       // Make a request to feedback-controller
-      // const res = await postRequest();
-
-      console.log(form.values.file);
-
+      const res = await postRequest(request);
       form.reset();
     } catch (err) {
       if (err instanceof Error)
@@ -85,11 +87,10 @@ export default function ContactsPage() {
 
   return (
     <Container>
-      <div className={styles.spacing}>
       <Breadcrumbs
         crumbs={[{ href: '/', text: 'Home' }, { text: 'Contacts' }]}
       />
-      </div>
+
       <div className={styles.content}>
         <hgroup className={styles.heading}>
           <h1>{"We'd love to hear from you!"}</h1>
@@ -101,7 +102,6 @@ export default function ContactsPage() {
         </hgroup>
         <form
           className={styles.form}
-          // @ts-ignore
           onSubmit={form.onSubmit((values) => handleSubmit(values))}
         >
           <div className={styles.field}>
