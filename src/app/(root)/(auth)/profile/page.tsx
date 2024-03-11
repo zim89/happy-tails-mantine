@@ -1,17 +1,24 @@
 import { Metadata } from 'next';
+import { Container } from '@mantine/core';
+
+import SliderMenu from "./ui/SliderMenu";
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile',
   description: null,
   robots: {
-    index: false
-  }
+    index: false,
+  },
 };
+
 
 export default async function Page() {
   return (
-    <div>
-      <h1>Profile of </h1>
-    </div>
+    <>
+      <SliderMenu />
+      <Container className='mt-12 lg:mt-0'>
+        <h1>Profile</h1>
+      </Container>
+    </>
   );
 }
