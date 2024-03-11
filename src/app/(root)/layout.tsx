@@ -4,7 +4,7 @@ import Footer from '@/modules/Footer';
 
 export const metadata: Metadata = {
   title: "Happy Tails: Spoil Your Pup with Love (Clothes, Furniture, Toys & More!)",
-  description: "Pamper your furry friend with love from Happy Tails! We offer a wide selection of dog clothes, furniture, toys, and other supplies to keep your pup happy and healthy. Shop now for fast shipping and amazing deals!"
+  description: "We offer a wide selection of dog clothes, furniture, toys, and other supplies to keep your pup happy and healthy. Shop now for amazing deals!"
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {

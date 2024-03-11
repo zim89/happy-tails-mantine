@@ -4,7 +4,7 @@ import { Container } from '@mantine/core';
 import SliderMenu from "./ui/SliderMenu";
 
 export const metadata: Metadata = {
-  title: 'Happy Tails | Profile',
+  title: 'Happy Tails | Profile Page',
   description: null,
   robots: {
     index: false,
