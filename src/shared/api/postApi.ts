@@ -28,6 +28,18 @@ export const fetchAllPosts = async (
   }
 };
 
+export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/posts`
+    );
+    return res.json();
+  } catch (error) {
+    throw new Error('Failed to fetch posts');
+  }
+};
+
+
 export const fetchOnePost = async (id: string): Promise<Post | null> => {
   noStore();
   try {

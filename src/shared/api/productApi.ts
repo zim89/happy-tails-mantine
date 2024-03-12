@@ -135,8 +135,28 @@ export const getProductById = async (id: string) => {
       }
     );
 
-    const result: Product = await request.json();
-    return result;
+    const result: BackendResponse<Product> = await request.json();
+    return result.content;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+  }
+};
+
+export const getProducts = async () => {
+  try {
+    const request = await fetch(
+      process.env.NEXT_PUBLIC_BASE_URL + '/products',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const result: BackendResponse<Product[]> = await request.json();
+    return result.content;
   } catch (err) {
     if (err instanceof Error) {
       throw err;
