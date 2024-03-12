@@ -18,8 +18,9 @@ export default async function sitemap() {
     url: `${URL}/${encodeURIComponent(path)}`,
   }));
 
-  const parsedProducts = products.map(({ id }) => ({
+  const parsedProducts = products.map(({ id, updatedAt }) => ({
     url: `${URL}/products/${id}`,
+    lastModified: new Date(updatedAt || Date.now()).toISOString()
   }));
 
   const parsedPosts = posts.map(({ id, createdAt }) => ({

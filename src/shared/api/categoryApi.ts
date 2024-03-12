@@ -11,6 +11,8 @@ export type Category = {
   path: string;
   productCount: number;
   imgSrc: null | string;
+  updatedAt?: string;
+  createdAt?: string;
 };
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';

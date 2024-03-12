@@ -8,8 +8,8 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { useAppDispatch } from '@/shared/redux/store';
 import { logout } from '@/shared/redux/auth/authOperations';
 
-import { profileMenu } from "../lib/data";
 import { cn } from '@/shared/lib/utils';
+import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);

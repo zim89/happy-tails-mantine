@@ -1,6 +1,5 @@
 'use client';
-
-import { profileMenu } from '@/modules/Header/lib/data';
+import { profileMenu } from '../lib/data';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState, UIEvent } from 'react';
 

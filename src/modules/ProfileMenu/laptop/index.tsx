@@ -1,6 +1,5 @@
 'use client';
-
-import { profileMenu } from '@/modules/Header/lib/data';
+import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 import { useAuth } from '@/shared/hooks/useAuth';
 import Link from 'next/link';
 

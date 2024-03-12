@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { Container } from '@mantine/core';
 
-import SliderMenu from './ui/SliderMenu';
-import SidebarMenu from './ui/SidebarMenu';
+import SliderMenu from '@/modules/ProfileMenu/mobile';
+import SidebarMenu from '@/modules/ProfileMenu/laptop';
 import { cn } from '@/shared/lib/utils';
 
 import classes from "./page.module.css";
@@ -15,10 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-type Props = {
-  children: React.ReactNode
-}
-export default function Page({ children }: Props) {
+export default function Page() {
   return (
     <>
       {/* Only on mobiles and tablets */}
@@ -29,7 +26,7 @@ export default function Page({ children }: Props) {
         <SidebarMenu />
         
         <div className="max-w-full mx-auto">
-          {children}
+          Profile page
         </div>
       </Container>
     </>
