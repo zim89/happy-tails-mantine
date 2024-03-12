@@ -1,7 +1,11 @@
 import { Metadata } from 'next';
 import { Container } from '@mantine/core';
 
-import SliderMenu from "./ui/SliderMenu";
+import SliderMenu from './ui/SliderMenu';
+import SidebarMenu from './ui/SidebarMenu';
+import { cn } from '@/shared/lib/utils';
+
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile Page',
@@ -11,13 +15,22 @@ export const metadata: Metadata = {
   },
 };
 
-
-export default async function Page() {
+type Props = {
+  children: React.ReactNode
+}
+export default function Page({ children }: Props) {
   return (
     <>
+      {/* Only on mobiles and tablets */}
       <SliderMenu />
-      <Container className='mt-12 lg:mt-0'>
-        <h1>Profile</h1>
+
+      <Container className={cn('mt-12 lg:mt-0', classes.pageContent)}>
+        {/* From laptops and beyond */}
+        <SidebarMenu />
+        
+        <div className="max-w-full mx-auto">
+          {children}
+        </div>
       </Container>
     </>
   );

@@ -30,9 +30,9 @@ export default async function Header() {
             <span className='hidden md:block'>
               <SearchMenu />
             </span>
-  
-              <UserMenu />
-            
+
+            <UserMenu />
+
             <FavoriteButton />
             <CartButton />
           </div>

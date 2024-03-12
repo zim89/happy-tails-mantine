@@ -1,4 +1,3 @@
-import React from 'react';
 import { Lato } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
@@ -8,6 +7,7 @@ import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { AppProviders } from '@/shared/config/AppProviders';
+import Sitelinks from "./(root)/sitelinks";
 
 const lato = Lato({
   weight: ['300', '400', '700'],
@@ -25,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
+        <Sitelinks />
         <ColorSchemeScript />
       </head>
       <body className={`${lato.variable} antialiased`}>

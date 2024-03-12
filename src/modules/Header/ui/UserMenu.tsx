@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/shared/redux/store';
 import { logout } from '@/shared/redux/auth/authOperations';
 
 import { profileMenu } from "../lib/data";
+import { cn } from '@/shared/lib/utils';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
@@ -25,7 +26,7 @@ export default function UserMenu() {
       {!isAuth ? (
         <Link
           href={'/login'}
-          className='hidden items-center justify-center text-secondary lg:flex '
+          className='hidden items-center justify-center text-secondary lg:flex'
           aria-label={'Logout'}
         >
           <UserRound className='iconBtn' />
@@ -47,7 +48,10 @@ export default function UserMenu() {
             <button
               type='button'
               aria-label={"Open profile's menu"}
-              className="hidden lg:block"
+              className={cn(
+                "hidden lg:block rounded-full p-1",
+                opened && "bg-[#EEE]"
+              )}
             >
               <UserRound className='iconBtn' />
             </button>

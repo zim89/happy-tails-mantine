@@ -45,7 +45,7 @@ export default function SliderMenu() {
 
   return (
     <div
-      className='custom-scroll sm: relative h-16 min-w-max overflow-hidden overflow-x-scroll bg-slate-200 md:hidden'
+      className='custom-scroll sm: relative h-11 min-w-max overflow-hidden overflow-x-scroll bg-slate-200 md:hidden'
       onScroll={(e) => handleScroll(e)}
     >
       <div
@@ -56,9 +56,9 @@ export default function SliderMenu() {
           <Link
             key={item.id}
             href={item.href}
-            className='flex gap-2 whitespace-nowrap bg-slate-200 p-4'
+            className='flex gap-2 items-center whitespace-nowrap bg-slate-200 py-[10px] px-4'
           >
-            <item.icon />
+            <item.icon size={20}/>
             <span>{item.label}</span>
           </Link>
         ))}
