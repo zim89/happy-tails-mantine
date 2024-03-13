@@ -16,8 +16,8 @@ export interface Product {
   onSale?: boolean;
   salePrice?: number;
   productType?: ProductType; 
-  updatedAt?: string;
-  createdAt?: string;
+  updatedAt: number | null;
+  createdAt: number;
 }
 
 export interface Order {

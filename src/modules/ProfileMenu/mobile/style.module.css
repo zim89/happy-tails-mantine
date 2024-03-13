@@ -9,8 +9,10 @@
 }
 
 .menu {
+
+
     animation: scroll 6s ease-in-out infinite alternate;
-    @apply absolute flex;
+    @apply absolute flex origin-left;
 }
 
 .paused {

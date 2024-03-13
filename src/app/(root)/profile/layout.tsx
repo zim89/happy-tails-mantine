@@ -5,7 +5,7 @@ import SliderMenu from '@/modules/ProfileMenu/mobile';
 import SidebarMenu from '@/modules/ProfileMenu/laptop';
 import { cn } from '@/shared/lib/utils';
 
-import classes from "./page.module.css";
+import classes from "./layout.module.css";
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile Page',
@@ -15,7 +15,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
+type Props = {
+  children: React.ReactNode
+}
+
+export default function Layout({ children }: Props) {
   return (
     <>
       {/* Only on mobiles and tablets */}
@@ -26,7 +30,7 @@ export default function Page() {
         <SidebarMenu />
         
         <div className="max-w-full mx-auto">
-          Profile page
+          {children}
         </div>
       </Container>
     </>

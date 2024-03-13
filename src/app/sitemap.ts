@@ -14,18 +14,19 @@ export default async function sitemap() {
   const postsRequest = await fetchPostList();
   const posts = postsRequest.content || [];
 
-  const parsedCategories = categories.map(({ path }) => ({
+  const parsedCategories = categories.map(({ path, createdAt, updatedAt }) => ({
     url: `${URL}/${encodeURIComponent(path)}`,
+    lastModified: new Date(updatedAt || createdAt!).toISOString()
   }));
 
-  const parsedProducts = products.map(({ id, updatedAt }) => ({
+  const parsedProducts = products.map(({ id, updatedAt, createdAt }) => ({
     url: `${URL}/products/${id}`,
-    lastModified: new Date(updatedAt || Date.now()).toISOString()
+    lastModified: new Date(updatedAt || createdAt!).toISOString()
   }));
 
-  const parsedPosts = posts.map(({ id, createdAt }) => ({
+  const parsedPosts = posts.map(({ id, createdAt,  updatedAt }) => ({
     url: `${URL}/blog/${id}`,
-    lastModified: new Date(createdAt).toISOString()
+    lastModified: new Date(updatedAt || createdAt).toISOString()
   }));
 
   const routes = [

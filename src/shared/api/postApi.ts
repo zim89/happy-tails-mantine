@@ -10,7 +10,7 @@ export interface Post {
   blogStatus: string;
   content: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt: number | null;
   publishedAt: number;
 }
 
