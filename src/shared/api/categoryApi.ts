@@ -11,6 +11,8 @@ export type Category = {
   path: string;
   productCount: number;
   imgSrc: null | string;
+  updatedAt: number | null;
+  createdAt: number;
 };
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -26,15 +28,26 @@ export const categoriesApi = createApi({
       query: () => "/category",
       providesTags: ["Categories"],
     }),
-    addNewCategory: builder.mutation<Category, Partial<Category>>({
-      query: payload => ({
+    addNewCategory: builder.mutation<Category, Partial<Category> & { access_token: string }>({
+      query: payload => {
+
+        return {
         url: "/category",
         method: "POST",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name: payload.name,
+          title: payload.name,
+          path: "path",
+          description: "Test description",
+          overview: "Test overview",
+          imgSrc: payload.imgSrc,
+        }),
+        
         headers: {
-          'Content-type': 'application/json; charset=UTF-8'
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${payload.access_token}`
         },
-      }),
+      }},
       invalidatesTags: ["Categories"]
     }),
     removeCategory: builder.mutation<Category, ID>({
@@ -63,7 +76,7 @@ export const categoriesApi = createApi({
 
 export const { useCategoriesQuery, useAddNewCategoryMutation, useRemoveCategoryMutation, useUpdateCategoryMutation } = categoriesApi;
 
-// TODO: Implement fetch from the server
+// TODO: Implement fetch to the server
 export const getAllCategories = async (): Promise<
   BackendResponse<Category[]>
 > => {

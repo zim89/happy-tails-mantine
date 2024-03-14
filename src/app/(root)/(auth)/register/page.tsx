@@ -4,8 +4,11 @@ import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import RegisterForm from '@/components/RegisterForm';
 
 export const metadata: Metadata = {
-  title: "Happy Tails | Register",
-  description: null
+  title: "Happy Tails | Register Page",
+  description: null,
+  robots: {
+    index: false
+  }
 }
 
 export default function Page() {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Container } from '@mantine/core';
-import { UserRound } from 'lucide-react';
 import CartButton from '@/modules/CartButton';
 import BurgerMenu from './ui/BurgerMenu';
 import SearchMenu from './ui/Search';
@@ -31,7 +30,9 @@ export default async function Header() {
             <span className='hidden md:block'>
               <SearchMenu />
             </span>
+
             <UserMenu />
+
             <FavoriteButton />
             <CartButton />
           </div>

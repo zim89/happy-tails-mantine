@@ -10,19 +10,20 @@ import { Info, PlusCircle, UploadCloud, X, Check } from 'lucide-react';
 import Image from 'next/image';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
+import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
-import Modal from '@/components/ModalWindow';
-// import { readImageAsPromise } from '@/shared/lib/utils';
-import { Category, useAddNewCategoryMutation } from '@/shared/api/categoryApi';
+import { useAuth } from "@/shared/hooks/useAuth";
+import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 import { DEFAULT_CATEGORY_IMAGE } from "@/shared/lib/constants"; 
 
+import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import axios from 'axios';
 
 export default function AddCategoryModal() {
+  const { access_token, id_token, currentUser } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
 
   const [isNotified, setIsNotified] = useState(false);
@@ -74,7 +75,7 @@ export default function AddCategoryModal() {
     image,
   }: (typeof form)['values']) => {
     // TODO: image upload
-    let path = DEFAULT_CATEGORY_IMAGE;
+    let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
     if (image) {
       const form = new FormData();
@@ -87,12 +88,15 @@ export default function AddCategoryModal() {
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      imgSrc = res.data.data.link;
     }
 
-    const newCategory: Partial<Category> = {
+    const newCategory = {
       name: categoryName,
       productCount: 0,
-      imgSrc: path
+      imgSrc,
+      access_token: access_token
     };
 
     await dispatch(newCategory);

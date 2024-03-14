@@ -11,10 +11,15 @@ export async function generateMetadata({params}: { params: { id: string } }) {
         description: 'The product you are looking does not exist.',
       };
     }
-  
+
+    let meta = {
+      title: `${product.quantity < 10 ? "Almost Out of Stock | " : "Buy Freely! | "} ${product.name} | Happy Tails`,
+      description: `${(product.quantity < 10) ? "Almost Sold Out! " + "Grab This " + product.name + " Before It's Gone for Excellent Price: " + product.price + "$": "Spoil Your Pup! Shop This " + product.name + " Now! " + "Get Yours Almost For Nothing: " + product.price + "$ You Don't Want to Miss it Out!"}`
+    }
+
     return {
-      title: product.name + " | Happy Tails",
-      description: product.description
+      title: meta.title,
+      description: meta.description
     }
   } catch (err) {
     if (err instanceof Error) throw err;

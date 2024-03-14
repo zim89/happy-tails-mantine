@@ -3,17 +3,20 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import dogImg from '@/assets/images/auth-dog.png';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { isAuth } = useAuth();
   const router = useRouter();
+  const path = usePathname();
 
-  useEffect(() => {
-    if (isAuth) {
-      router.push('/');
-    }
-  }, [isAuth, router]);
+  if (path === "/profile") return <>{children}</>
+
+  // useEffect(() => {
+  //   if (isAuth) {
+  //     router.push('/');
+  //   }
+  // }, [isAuth, router]);
 
   return (
     <div className='h-full bg-auth-bg '>

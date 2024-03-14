@@ -79,7 +79,3 @@
 .field p {
     @apply absolute;
 }
-
-.spacing {
-    @apply py-3;
-}

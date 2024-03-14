@@ -1,33 +1,36 @@
 import React from 'react';
 import { Facebook, Instagram, Youtube } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SocialLinks(): React.JSX.Element {
   return (
     <ul className={'mt-4 flex gap-4 md:mt-3 lg:mt-4'}>
       <li>
-        <a
+        <Link
           href={'https://www.facebook.com/'}
           target='_blank'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
+          aria-label="Happy Tails on Facebook"
         >
           <Facebook className='h-6 w-6' />
-        </a>
+        </Link>
       </li>
       <li>
-        <a
+        <Link
           href={'https://www.youtube.com/'}
           target='_blank'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
+          aria-label="Happy Tails YouTube Channel"
         >
           <Youtube className='h-6 w-6' />
-        </a>
+        </Link>
       </li>
       <li>
-        <a href={'https://www.tiktok.com/'} target='_blank' className={'group'}>
+        <Link href={'https://www.tiktok.com/'} target='_blank' className={'group'} aria-label="Happy Tails TikTok Account"> 
           <svg
             width='24'
             height='24'
@@ -45,18 +48,19 @@ export default function SocialLinks(): React.JSX.Element {
               strokeLinejoin='round'
             />
           </svg>
-        </a>
+        </Link>
       </li>
       <li>
-        <a
+        <Link
           href={'https://www.instagram.com/'}
           target='_blank'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
+          aria-label="Happy Tails Instagram Page"
         >
           <Instagram className='h-6 w-6' />
-        </a>
+        </Link>
       </li>
     </ul>
   );

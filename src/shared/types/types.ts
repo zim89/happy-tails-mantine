@@ -1,4 +1,5 @@
 type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
+type ProductType = 'IN_STOCK' | 'OUT OF STOCK';
 
 export interface Product {
   id: number;
@@ -11,6 +12,12 @@ export interface Product {
   quantity: number;
   productStatus: ProductStatus;
   imagePath: string;
+  unitsSold?: number;
+  onSale?: boolean;
+  salePrice?: number;
+  productType?: ProductType; 
+  updatedAt: number | null;
+  createdAt: number;
 }
 
 export interface Order {

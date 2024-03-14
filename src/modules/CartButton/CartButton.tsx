@@ -31,6 +31,7 @@ export default function CartButton() {
       <UnstyledButton
         onClick={openCart}
         className={'group flex items-center justify-center text-secondary'}
+        aria-label='View Cart Items'
       >
         <Indicator
           label={cart.length}

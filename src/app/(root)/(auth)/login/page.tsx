@@ -4,8 +4,11 @@ import LoginForm from '@/components/LoginForm';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Happy Tails | Login",
-  description: null
+  title: "Happy Tails | Login Page",
+  description: null,
+  robots: {
+    index: false
+  }
 }
 
 export default function Page() {

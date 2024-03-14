@@ -12,6 +12,7 @@ import { type Category } from '@/shared/api/categoryApi';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import { additionalLinks } from '../lib/data';
 import logoImg from '@/assets/logo/logo-tablet.svg';
+import MenuNavbar from './MenuNavbar';
 
 export default function BurgerMenu({ categories }: { categories: Category[] }) {
   const [opened, { close, toggle }] = useDisclosure(false);
@@ -63,98 +64,8 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
           </UnstyledButton>
         </div>
 
-        <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:mx-auto lg:w-[1280px] lg:flex-row lg:items-center lg:justify-between lg:px-14'>
-          {/*  Desktop Additional Menubar */}
-          <ul className='hidden lg:flex lg:flex-col lg:gap-6'>
-            <li>
-              <Link
-                href={'/contacts'}
-                className={cn('navLink', path === '/contacts' && 'font-bold')}
-              >
-                Contacts
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/delivery&returns'}
-                className={cn(
-                  'navLink',
-                  path === '/delivery&returns' && 'font-bold'
-                )}
-              >
-                Delivery & Returns
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/blog'}
-                className={cn('navLink', path === '/blog' && 'font-bold')}
-              >
-                Blog
-              </Link>
-            </li>
-          </ul>
-
-          {/*  Navbar */}
-          <ul className='lg:flex lg:gap-3'>
-            <li className='border-b border-b-brand-grey-300 lg:border-none'>
-              <Link
-                href={'/products'}
-                className={cn(
-                  'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                  path === '/products' && 'font-bold'
-                )}
-              >
-                <Image
-                  src='/icons/categories/products.svg'
-                  alt='all products page icon'
-                  height={isDesktop ? 42 : 32}
-                  width={isDesktop ? 42 : 32}
-                />
-                <p className='navLink'>All products</p>
-              </Link>
-            </li>
-            {categories.map((category) => (
-              <li
-                key={category.id}
-                className='border-b border-b-brand-grey-300 lg:border-none'
-              >
-                <Link
-                  href={'/' + category.path}
-                  onClick={close}
-                  className={cn(
-                    'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                    path === '/' + category.path && 'font-bold'
-                  )}
-                >
-                  {/* TODO: Add actual image from backend */}
-                  <Image
-                    src={`/icons/categories/${category.name.toLowerCase()}.svg`}
-                    alt={category.name}
-                    height={isDesktop ? 42 : 32}
-                    width={isDesktop ? 42 : 32}
-                  />
-                  <p className='navLink'>
-                    {category.name === 'Leads&harnesses'
-                      ? 'Leads'
-                      : category.name}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/*  Tablet/Mobile Additional Menubar */}
-          <ul className='flex flex-col gap-4 lg:hidden'>
-            {additionalLinks.map((link) => (
-              <li key={link.label}>
-                <Link href={link.href} className='text-base font-light'>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/*  Navbar */}
+        <MenuNavbar menu={categories} path={path} />
       </Drawer>
     </>
   );

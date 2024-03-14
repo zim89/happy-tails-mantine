@@ -16,6 +16,7 @@ import { favoritesReducer } from './favorites/favoritesSlice';
 import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
 import { authReducer } from '@/shared/redux/auth/authSlice';
+import { categoriesApi } from "@/shared/api/categoryApi";
 
 const createNoopStorage = () => {
   return {
@@ -39,7 +40,7 @@ const storage =
 const favoritesPersistConfig = {
   key: 'favoritesHappyTails',
   storage,
-  blacklist: [productApi.reducerPath],
+  blacklist: [productApi.reducerPath, categoriesApi.reducerPath],
 };
 const cartPersistConfig = {
   key: 'cartHappyTails',
@@ -60,6 +61,7 @@ const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
 export const store = configureStore({
   reducer: {
     [productApi.reducerPath]: productApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
@@ -69,7 +71,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(productApi.middleware),
+    }).concat(productApi.middleware, categoriesApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

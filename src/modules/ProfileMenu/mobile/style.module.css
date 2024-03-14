@@ -1,0 +1,20 @@
+@keyframes scroll {
+    0% {
+        transform: translateX(20vw);
+    }
+
+    100% {
+        transform: translateX(calc(-100% + 90vw));
+    }
+}
+
+.menu {
+
+
+    animation: scroll 6s ease-in-out infinite alternate;
+    @apply absolute flex origin-left;
+}
+
+.paused {
+    animation-play-state: paused;
+}

@@ -4,15 +4,16 @@ export type Credentials = {
   content: string;
   userName: string;
   userEmail: string;
+  imageSrc: string;
 };
 
 enum FeedStatus {
   NEW = "NEW"
 }
 
-export type BackendResponse = {
+export type Response = {
     userId: string | null;
-    id: 2;
+    id: number;
     feedbackStatus: FeedStatus;
     sentAt: number;
     resolvedAt: number | null;
@@ -24,7 +25,7 @@ export const postRequest = async ({
   userName,
 }: Credentials) => {
   try {
-    const res = await axios.post<BackendResponse>(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
+    const res = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
       content,
       userName,
       userEmail
