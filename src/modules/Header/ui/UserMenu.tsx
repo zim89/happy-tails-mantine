@@ -1,24 +1,32 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Menu } from '@mantine/core';
-import { LogOut, UserRound } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useAppDispatch } from '@/shared/redux/store';
-import { logout } from '@/shared/redux/auth/authOperations';
 
 import { cn } from '@/shared/lib/utils';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
+import { useLogoutMutation } from '@/shared/api/authApi';
+import { clearAuthData } from '@/shared/redux/auth/authSlice';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
-  const { isAuth, currentUser, access_token, id_token } = useAuth();
+  const [logout, { isLoading }] = useLogoutMutation();
+  const { isAuth } = useAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout({ access_token, id_token }));
+  const handleLogout = async () => {
+    try {
+      await logout('');
+      dispatch(clearAuthData());
+      router.push('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -49,17 +57,17 @@ export default function UserMenu() {
               type='button'
               aria-label={"Open profile's menu"}
               className={cn(
-                "hidden lg:block rounded-full p-1",
-                opened && "bg-[#EEE]"
+                'hidden rounded-full p-1 lg:block',
+                opened && 'bg-[#EEE]'
               )}
             >
               <UserRound className='iconBtn' />
             </button>
           </Menu.Target>
           <Menu.Dropdown>
-            {profileMenu.map(item => 
+            {profileMenu.map((item) => (
               <Menu.Item key={item.id}>{item.label}</Menu.Item>
-            )}
+            ))}
             <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
           </Menu.Dropdown>
         </Menu>
