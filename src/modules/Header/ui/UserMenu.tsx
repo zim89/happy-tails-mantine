@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';

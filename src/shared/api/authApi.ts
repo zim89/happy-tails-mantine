@@ -38,7 +38,7 @@ export interface LoginRequest {
   password: string;
 }
 
-const axiosBaseQuery =
+export const axiosBaseQuery =
   (
     { baseUrl }: { baseUrl: string } = { baseUrl: '' }
   ): BaseQueryFn<
@@ -106,12 +106,3 @@ export const authApi = createApi({
 
 export const { useRegisterMutation, useLoginMutation, useLogoutMutation } =
   authApi;
-
-// prepareHeaders: (headers, { getState }) => {
-//     // const token = (getState() as RootState).auth.access_token;
-//     if (token) {
-//       headers.set('authorization', `Bearer ${token}`);
-//     }
-//
-//     return headers;
-// },
