@@ -35,16 +35,13 @@ export default function RegisterForm() {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      // FIXME: fix the type of the response
-      // @ts-ignore
-      const { data: user } = await register(values);
+      const user = await register(values).unwrap();
+
       if (user) {
-        // FIXME: fix the type of the response
-        // @ts-ignore
-        const { data } = await login({
+        const data = await login({
           email: values.email,
           password: values.password,
-        });
+        }).unwrap();
         dispatch(setAuthData(data));
         router.push('/');
       }

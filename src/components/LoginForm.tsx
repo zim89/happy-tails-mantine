@@ -31,9 +31,7 @@ export default function LoginForm() {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      // FIXME: fix the type of the response
-      // @ts-ignore
-      const { data } = await login(values);
+      const data = await login(values).unwrap();
       dispatch(setAuthData(data));
       router.push('/');
     } catch (error) {
