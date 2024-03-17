@@ -13,6 +13,15 @@ export const useAuth = () => {
   const refresh_token = useAppSelector(selectRefreshToken);
   const currentUser = useAppSelector(selectUser);
   const isAdmin = currentUser?.roles.includes('ROLE_ADMIN') || false;
+  // FIXME delete this
+  const id_token = '';
 
-  return { isAuth, access_token, refresh_token, currentUser, isAdmin };
+  return {
+    isAuth,
+    access_token,
+    refresh_token,
+    currentUser,
+    isAdmin,
+    id_token,
+  };
 };
