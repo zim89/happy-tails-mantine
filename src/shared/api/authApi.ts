@@ -1,9 +1,7 @@
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
-import axios from 'axios';
 import type { AxiosRequestConfig, AxiosError } from 'axios';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import axiosInstance from '@/shared/lib/interceptor';
-import { RootState } from '@/shared/redux/store';
 
 export interface RegisterRequest {
   email: string;
@@ -101,8 +99,18 @@ export const authApi = createApi({
         method: 'post',
       }),
     }),
+    getUserInfo: builder.query({
+      query: () => ({
+        url: '/user/info',
+        method: 'get',
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useGetUserInfoQuery,
+} = authApi;

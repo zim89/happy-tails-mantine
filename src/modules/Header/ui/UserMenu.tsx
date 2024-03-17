@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -9,15 +9,23 @@ import { useAppDispatch } from '@/shared/redux/store';
 
 import { cn } from '@/shared/lib/utils';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
-import { useLogoutMutation } from '@/shared/api/authApi';
-import { clearAuthData } from '@/shared/redux/auth/authSlice';
+import { useGetUserInfoQuery, useLogoutMutation } from '@/shared/api/authApi';
+import { clearAuthData, setUserData } from '@/shared/redux/auth/authSlice';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
-  const [logout, { isLoading }] = useLogoutMutation();
   const { isAuth } = useAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [logout, { isLoading: isLoadingLogout }] = useLogoutMutation();
+  const { data, isLoading } = useGetUserInfoQuery('');
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      dispatch(setUserData(data));
+    }
+  }, [data, dispatch]);
 
   const handleLogout = async () => {
     try {
