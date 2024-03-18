@@ -1,20 +1,7 @@
-@keyframes scroll {
-    0% {
-        transform: translateX(20vw);
-    }
-
-    100% {
-        transform: translateX(calc(-100% + 90vw));
-    }
-}
-
 .menu {
-
-
-    animation: scroll 6s ease-in-out infinite alternate;
-    @apply absolute flex origin-left;
+    @apply flex bg-[#F7F7F7] overflow-x-scroll;
 }
 
-.paused {
-    animation-play-state: paused;
+.menu::-webkit-scrollbar {
+    display: none;
 }

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:secure": "npx ts-node ./server.ts"
   },
   "dependencies": {
     "@mantine/carousel": "^7.3.2",

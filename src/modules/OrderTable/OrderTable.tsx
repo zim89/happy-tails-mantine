@@ -3,9 +3,11 @@
 import { useFindManyQuery } from '@/shared/api/ordersApi';
 import Table from './components/Table';
 import mock from './mock.json';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 export default function OrderTable() {
-  const { data, error, isLoading } = useFindManyQuery({ page: 0, limit: 10 });
+  const { access_token } = useAuth();
+  const { data, error, isLoading } = useFindManyQuery({ page: 0, limit: 10, token: access_token });
 
   return <Table data={mock.content} />;
 

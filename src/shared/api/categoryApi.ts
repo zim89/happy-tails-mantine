@@ -37,10 +37,10 @@ export const categoriesApi = createApi({
         body: JSON.stringify({
           name: payload.name,
           title: payload.name,
-          path: "path",
+          path: "testing",
           description: "Test description",
           overview: "Test overview",
-          imgSrc: payload.imgSrc,
+          imgSrc: null,
         }),
         
         headers: {
@@ -50,7 +50,7 @@ export const categoriesApi = createApi({
       }},
       invalidatesTags: ["Categories"]
     }),
-    removeCategory: builder.mutation<Category, ID>({
+    removeCategory: builder.mutation<void, ID>({
       query: payload => ({
         url: `/category/${payload}`,
         method: "DELETE",

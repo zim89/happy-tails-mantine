@@ -73,4 +73,6 @@ export type BackendResponse<T> = {
   empty: boolean;
 };
 
+export type ID = number | string; 
+
 export type Sort = [string, 'asc' | 'desc'];

@@ -3,9 +3,8 @@ import { Container } from '@mantine/core';
 
 import SliderMenu from '@/modules/ProfileMenu/mobile';
 import SidebarMenu from '@/modules/ProfileMenu/laptop';
-import { cn } from '@/shared/lib/utils';
 
-import classes from "./layout.module.css";
+import classes from './layout.module.css';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile Page',
@@ -16,23 +15,19 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function Layout({ children }: Props) {
   return (
-    <>
+    <Container className={classes.pageContent}>
       {/* Only on mobiles and tablets */}
       <SliderMenu />
 
-      <Container className={cn('mt-12 lg:mt-0', classes.pageContent)}>
-        {/* From laptops and beyond */}
-        <SidebarMenu />
-        
-        <div className="max-w-full mx-auto">
-          {children}
-        </div>
-      </Container>
-    </>
+      {/* From laptops and beyond */}
+      <SidebarMenu />
+
+      <div className='lg:px-8 px-3 pt-11 lg:mt-0'>{children}</div>
+    </Container>
   );
 }

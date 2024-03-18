@@ -1,4 +1,8 @@
 .pageContent {
-    display: grid;
-    grid-template-columns: min-content 1fr;
+    @media screen and (min-width: 1280px) {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+    }
+
+    @apply p-0;
 }
