@@ -1,7 +1,4 @@
-"use client";
-import { Button } from '@mantine/core';
-
-import Logout from '@/components/Logout';
+import { Logout } from "./components/Logout";
 
 export default function ProfilePage() {
   return (
@@ -13,16 +10,7 @@ export default function ProfilePage() {
           your details, repeat orders and view your order history.
         </p>
       </hgroup>
-      <Logout>
-        {(handleLogout) => (
-          <Button
-            className='rounded-sm bg-black uppercase md:self-center'
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        )}
-      </Logout>
+      <Logout />
     </div>
   );
 }

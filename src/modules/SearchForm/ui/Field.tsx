@@ -57,7 +57,7 @@ export const Field = ({
         onChange={(event) => onChange(event.currentTarget.value)}
         classNames={{
           input: cn(
-            'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
+            'form-input rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
             classNames?.input
           ),
           section: 'text-brand-grey-600',

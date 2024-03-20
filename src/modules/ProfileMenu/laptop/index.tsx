@@ -11,7 +11,7 @@ export default function SidebarMenu() {
       {profileMenu[0] && (
         <li className='border-b-[1px] border-r-[1px]'>
           <Link href={profileMenu[0].href} className='block w-full pb-6 pt-4'>
-            <span className='block pb-2 text-[28px] text-[#161616] hover:text-[#DB8420]'>
+            <span className='block pb-2 text-[28px] text-[#DB8420]'>
               {profileMenu[0].label}
             </span>
             <span className="font-light">

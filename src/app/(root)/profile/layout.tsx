@@ -4,7 +4,7 @@ import { Container } from '@mantine/core';
 import SliderMenu from '@/modules/ProfileMenu/mobile';
 import SidebarMenu from '@/modules/ProfileMenu/laptop';
 
-import classes from './layout.module.css';
+import classes from './styles.module.css';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile Page',

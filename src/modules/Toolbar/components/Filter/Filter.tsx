@@ -3,7 +3,7 @@
 import { Collapse, Drawer, Portal } from '@mantine/core';
 import { Plus } from 'lucide-react';
 import FilterForm, { FilterFormProps } from '../FilterForm/FilterForm';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery } from '@mantine/hooks';
 import Badges from '../Badges';
 
 export type FilterProps = {
