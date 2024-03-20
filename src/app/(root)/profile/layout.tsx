@@ -27,7 +27,7 @@ export default function Layout({ children }: Props) {
       {/* From laptops and beyond */}
       <SidebarMenu />
 
-      <div className='lg:px-8 px-3 pt-11 lg:mt-0'>{children}</div>
+      <div className='lg:px-8 px-3 py-10 lg:mt-0'>{children}</div>
     </Container>
   );
 }

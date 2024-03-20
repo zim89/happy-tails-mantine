@@ -1,8 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Menu } from '@mantine/core';
-import { LogOut, UserRound } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useAppDispatch } from '@/shared/redux/store';
@@ -13,8 +12,7 @@ import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
-  const { isAuth, currentUser, access_token, id_token } = useAuth();
-  const router = useRouter();
+  const { isAuth, access_token, id_token } = useAuth();
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {

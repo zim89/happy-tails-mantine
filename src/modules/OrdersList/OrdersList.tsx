@@ -50,7 +50,6 @@ export default function OrdersList({ orders }: Props) {
           >
             <Image
               className={cn(
-                'mr-4',
                 activeOrders.includes(order.number) && 'order-3 md:order-none'
               )}
               width={50}
@@ -107,7 +106,7 @@ export default function OrdersList({ orders }: Props) {
               <p className='flex items-center gap-2 text-sm text-orange-500'>
                 <FileText className='inline' size={12} /> Electronic check
               </p>
-              <div className='ml-auto flex flex-col gap-4'>
+              <div className='ml-auto flex flex-col md:flex-row gap-4'>
                 <Button className='border-[#EEE] text-black'>
                   Leave a review
                 </Button>

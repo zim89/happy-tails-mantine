@@ -55,7 +55,7 @@ export default function Filter({
       </Portal>
       <button
         onClick={onToggle}
-        className='flex h-[2.375rem] w-full items-center justify-center gap-2 rounded-sm border border-brand-grey-300 bg-brand-grey-300 px-[1.125rem] font-bold md:mr-6 md:max-w-[10rem] lg:mr-12'
+        className='flex h-[2.375rem] w-full items-center justify-center gap-2 rounded-sm border border-brand-grey-300 bg-brand-grey-300 px-[1.125rem] font-bold md:mr-4 lg:mr-8 md:max-w-[10rem]'
       >
         Filter
         <Plus width={16} height={16} />

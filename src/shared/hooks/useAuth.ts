@@ -5,7 +5,6 @@ import {
   selectIdToken,
   selectIsAdmin,
   selectIsAuth,
-  selectRefreshToken,
   selectUserData,
 } from '@/shared/redux/auth/authSlice';
 

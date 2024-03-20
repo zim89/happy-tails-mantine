@@ -10,11 +10,11 @@ import {
   FileInput,
 } from '@mantine/core';
 import { Paperclip } from 'lucide-react';
-import { useForm } from '@mantine/form';
+import { hasLength, isEmail, useForm } from '@mantine/form';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { postRequest, Credentials } from '@/shared/api/contactsApi';
-import { readTextFileAsPromise } from '@/shared/lib/utils';
+import { postRequest } from '@/shared/api/contactsApi';
+import { cn } from '@/shared/lib/utils';
 
 import styles from './styles.module.css';
 import axios from 'axios';
@@ -23,36 +23,32 @@ export default function ContactsPage() {
   const form = useForm({
     initialValues: {
       userName: '',
-      userEmail: '',
+      email: '',
       content: '',
       termsOfService: false,
       file: null as File | null,
     },
 
     validate: {
-      userEmail: (value) =>
-        /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(value)
-          ? null
-          : 'Please enter a valid email address',
+      email: isEmail('Invalid email'),
       content: (value, { file }) =>
         // If there is a file attached, ignore it
-        !value.length && !file ? 'Please enter some content.' : null,
-      userName: (value) =>
-        value.length <= 2 ? 'Please enter a username.' : null,
+        !value.length && !file ? 'Please enter some content' : null,
+      userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       termsOfService: (value) =>
-        !value ? 'You must agree to the Terms of Service.' : null,
+        !value && 'You must agree to the Terms of Service',
     },
   });
 
   const handleSubmit = async ({
     content,
-    userEmail,
+    email,
     userName,
     file,
   }: (typeof form)['values']) => {
     try {
       let request = {
-        userEmail,
+        email,
         userName,
         imageSrc: '',
         content,
@@ -104,31 +100,46 @@ export default function ContactsPage() {
           className={styles.form}
           onSubmit={form.onSubmit((values) => handleSubmit(values))}
         >
-          <div className={styles.field}>
-            <TextInput
-              withErrorStyles
-              {...form.getInputProps('userName')}
-              type='text'
-              label='Name'
-            />
-          </div>
+          <TextInput
+            {...form.getInputProps('userName')}
+            type='text'
+            label='Name'
+            classNames={{
+              root: 'form-root mb-7',
+              label: 'form-label',
+              input: cn(
+                'form-input md:w-[458px] lg:w-[315px]',
+                form?.errors?.userName && 'border-brand-red-400 text-secondary'
+              ),
+              error: 'form-error',
+            }}
+          />
 
-          <div className={styles.field}>
-            <TextInput
-              withErrorStyles
-              {...form.getInputProps('userEmail')}
-              type='text'
-              label='Email'
-            />
-          </div>
+          <TextInput
+            {...form.getInputProps('email')}
+            type='text'
+            label='Email'
+            classNames={{
+              root: 'form-root mb-7',
+              label: 'form-label',
+              input: cn(
+                'form-input md:w-[458px] lg:w-[315px]',
+                form?.errors?.email && 'border-brand-red-400 text-secondary'
+              ),
+              error: 'form-error',
+            }}
+          />
 
           <div className={styles.message}>
             <Textarea
-              withErrorStyles
-              styles={{
-                label: {
-                  minWidth: '100%',
-                },
+              classNames={{
+                root: 'form-root',
+                label: 'form-label whitespace-pre',
+                input: cn(
+                  'form-input md:w-[458px] lg:w-[315px]',
+                  form?.errors?.content && 'border-brand-red-400 text-secondary'
+                ),
+                error: 'form-error',
               }}
               {...form.getInputProps('content')}
               label='Enter your question or message here'

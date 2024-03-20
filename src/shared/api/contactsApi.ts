@@ -3,7 +3,7 @@ import axios from "axios";
 export type Credentials = {
   content: string;
   userName: string;
-  userEmail: string;
+  email: string;
   imageSrc: string;
 };
 
@@ -21,14 +21,14 @@ export type Response = {
 
 export const postRequest = async ({
   content,
-  userEmail,
+  email,
   userName,
 }: Credentials) => {
   try {
     const res = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
       content,
       userName,
-      userEmail
+      email
     });
 
     return res;

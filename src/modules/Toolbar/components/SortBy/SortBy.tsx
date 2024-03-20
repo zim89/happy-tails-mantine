@@ -36,7 +36,7 @@ export default function SortBy({
       <Popover.Target>
         <button
           onClick={open}
-          className='ml-4 flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
+          className='flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
         >
           <span className='text-center md:text-left flex flex-col md:flex-row items-center'>
             Sort by

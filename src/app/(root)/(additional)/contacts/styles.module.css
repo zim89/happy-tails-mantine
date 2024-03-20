@@ -26,7 +26,8 @@
     @apply text-sm mb-1 leading-[21px] max-w-52;
 }
 
-.form input {
+.form input,
+.form textarea {
     @apply w-full;
 }
 
@@ -66,16 +67,4 @@
 
 .partner_message {
     @apply text-lg mb-12 mt-8 leading-[27px];
-}
-
-.field {
-    @apply relative;
-}
-
-.field + .field {
-    @apply mt-8;
-}
-
-.field p {
-    @apply absolute;
 }

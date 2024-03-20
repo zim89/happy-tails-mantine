@@ -32,7 +32,7 @@ export default function OrderToolbar() {
 
   return (
     
-    <div className='flex'>
+    <div className='flex gap-4'>
       <div className="flex-1">
         <Field placeholder="Search by all orders" />
       </div>

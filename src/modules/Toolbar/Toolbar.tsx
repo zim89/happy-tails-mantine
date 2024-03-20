@@ -86,7 +86,7 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
 
   return (
     <div>
-      <div className='mb-4 flex items-center text-sm/4 md:py-2 md:text-base'>
+      <div className='mb-4 flex gap-4 items-center text-sm/4 md:py-2 md:text-base'>
         <Filter
           target={`#${CSS.escape(collapseId)}`}
           form={form}
