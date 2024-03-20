@@ -1,3 +1,5 @@
+import { DeliveryForm } from "../components/DeliveryForm";
+
 export default function DeliveryPage() {
   return (
     <>
@@ -8,7 +10,7 @@ export default function DeliveryPage() {
           Please enter your delivery address
         </p>
       </hgroup>
-      <DeliveryPage />
+      <DeliveryForm />
     </>
   );
 }

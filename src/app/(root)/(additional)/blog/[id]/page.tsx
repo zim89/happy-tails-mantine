@@ -30,6 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <Script
+        id="blog-schema"
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />

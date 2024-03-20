@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
+import axios from 'axios';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -126,7 +127,7 @@ export const { findOne } = productApi.endpoints;
 // It's used on server components
 export const getProductById = async (id: string) => {
   try {
-    const request = await fetch(
+    const request = await axios.get<Product>(
       process.env.NEXT_PUBLIC_BASE_URL + '/products/' + id,
       {
         headers: {
@@ -136,7 +137,7 @@ export const getProductById = async (id: string) => {
     );
 
     
-    const result: Product = await request.json();
+    const result = request.data;
     return result;
   } catch (err) {
     if (err instanceof Error) {

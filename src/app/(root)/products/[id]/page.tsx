@@ -55,6 +55,7 @@ export default function ProductPage({ params }: Props) {
   return (
     <>
       <Script
+        id="product-schema"
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />

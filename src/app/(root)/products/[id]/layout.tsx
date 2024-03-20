@@ -1,14 +1,9 @@
 import ProductAdditionalInfo from '@/components/ProductAdditionalInfo';
 import { getProductById } from "@/shared/api/productApi"; 
 
-export async function getData(id: string) {
-  const product = await getProductById(id);
-  return product;
-}
-
 export async function generateMetadata({params}: { params: { id: string } }) {
   try {
-    const product = await getData(params.id);
+    const product = await getProductById(params.id);
   
     if (!product) {
       return {

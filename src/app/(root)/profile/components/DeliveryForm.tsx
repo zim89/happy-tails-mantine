@@ -1,42 +1,43 @@
-"use client";
-import { cn } from "@/shared/lib/utils";
-import { Button, Group, TextInput } from "@mantine/core";
-import { hasLength, isNotEmpty, useForm } from "@mantine/form";
+'use client';
+import { cn } from '@/shared/lib/utils';
+import { Button, Group, TextInput } from '@mantine/core';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 export const DeliveryForm = () => {
-    const form = useForm({
-        initialValues: {
-          firstName: '',
-          lastName: '',
-          country: '',
-          city: '',
-          postcode: '',
-          company: '',
-          addressOne: '',
-          addressTwo: '',
-          contactNumber: '',
-          county: '',
-        },
-    
-        transformValues(values) {
-          return {
-            ...values,
-            addressTwo: values.addressOne,
-          };
-        },
-    
-        validate: {
-          firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
-          lastName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
-          country: isNotEmpty('Please enter a country name.'),
-          city: isNotEmpty('Please enter a city name.'),
-          postcode: isNotEmpty('Please enter a postcode.'),
-          addressOne: isNotEmpty('Please enter an address.'),
-          contactNumber: isNotEmpty('Please enter a contact number.'),
-        },
-      });
+  const form = useForm({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      country: '',
+      city: '',
+      postcode: '',
+      company: '',
+      addressOne: '',
+      addressTwo: '',
+      contactNumber: '',
+      county: '',
+    },
 
-      <form
+    transformValues(values) {
+      return {
+        ...values,
+        addressTwo: values.addressOne,
+      };
+    },
+
+    validate: {
+      firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
+      lastName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
+      country: isNotEmpty('Please enter a country name.'),
+      city: isNotEmpty('Please enter a city name.'),
+      postcode: isNotEmpty('Please enter a postcode.'),
+      addressOne: isNotEmpty('Please enter an address.'),
+      contactNumber: isNotEmpty('Please enter a contact number.'),
+    },
+  });
+
+  return (
+    <form
       className='flex flex-col gap-4 md:items-center'
       onSubmit={form.onSubmit((values) => {
         console.log(values);
@@ -169,7 +170,8 @@ export const DeliveryForm = () => {
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.contactNumber && 'border-brand-red-400 text-secondary'
+              form?.errors?.contactNumber &&
+                'border-brand-red-400 text-secondary'
             ),
             error: 'form-error',
           }}
@@ -194,4 +196,5 @@ export const DeliveryForm = () => {
         Add Address
       </Button>
     </form>
+  );
 };

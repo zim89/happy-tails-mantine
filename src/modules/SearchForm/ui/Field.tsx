@@ -40,6 +40,7 @@ export const Field = ({
 
   useEffect(() => {
     setValue(query.get('name') || '');
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
