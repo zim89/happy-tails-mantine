@@ -7,11 +7,14 @@ import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/shared/redux/store';
-import { getUserInfo, login } from '@/shared/redux/auth/authOperations';
+import { useLoginMutation } from '@/shared/api/authApi';
+import { setAuthData } from '@/shared/redux/auth/authSlice';
+import React, { useEffect } from 'react';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
 
   const form = useForm({
     initialValues: {
@@ -28,8 +31,8 @@ export default function LoginForm() {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await dispatch(login(values));
-      await dispatch(getUserInfo());
+      const data = await login(values).unwrap();
+      dispatch(setAuthData(data));
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -85,7 +88,9 @@ export default function LoginForm() {
           {/*TODO: correct link*/}
           <Link href={'/auth'}>Forgot Password?</Link>
         </div>
-        <button className='btn btn-primary w-full'>Sign In</button>
+        <button className='btn btn-primary w-full' disabled={isLoading}>
+          Sign In
+        </button>
       </div>
     </form>
   );
