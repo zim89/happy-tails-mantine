@@ -1,4 +1,14 @@
-import { Logout } from "./components/Logout";
+import { Metadata } from 'next';
+
+import Logout from "./components/Logout";
+
+export const metadata: Metadata = {
+  title: 'Happy Tails | Profile Page',
+  description: null,
+  robots: {
+    index: false,
+  },
+};
 
 export default function ProfilePage() {
   return (

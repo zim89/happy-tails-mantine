@@ -1,4 +1,12 @@
+import { Metadata } from 'next';
+
 import { Container } from '@mantine/core';
+
+export const metadata: Metadata = {
+  robots: {
+      index: false
+  }
+}
 
 export default function AdminPage() {
   return (

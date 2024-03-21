@@ -1,24 +1,28 @@
-import { Metadata } from 'next';
+"use client";
 import { Container } from '@mantine/core';
 
 import SliderMenu from '@/modules/ProfileMenu/mobile';
 import SidebarMenu from '@/modules/ProfileMenu/laptop';
 
 import classes from './styles.module.css';
-
-export const metadata: Metadata = {
-  title: 'Happy Tails | Profile Page',
-  description: null,
-  robots: {
-    index: false,
-  },
-};
+import { useAuth } from '@/shared/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 type Props = {
   children: React.ReactNode;
 };
 
 export default function Layout({ children }: Props) {
+  const router = useRouter();
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    if (!currentUser) router.push("/"); 
+  }, [currentUser]);
+
+  if (!currentUser) return null;  
+
   return (
     <Container className={classes.pageContent}>
       {/* Only on mobiles and tablets */}

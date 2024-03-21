@@ -1,6 +1,7 @@
 import axiosInstance from '@/shared/lib/interceptor';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 
 export interface RegisterRequest {
@@ -38,7 +39,9 @@ export interface LoginRequest {
 
 export const axiosBaseQuery =
   (
-    { baseUrl }: { baseUrl: string } = { baseUrl: process.env.NEXT_PUBLIC_BASE_URL! }
+    { baseUrl }: { baseUrl: string } = {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
+    }
   ): BaseQueryFn<
     {
       url: string;
