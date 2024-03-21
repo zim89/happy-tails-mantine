@@ -15,7 +15,7 @@ export default function SidebarMenu() {
               {profileMenu[0].label}
             </span>
             <span className="font-light">
-            {currentUser!.email}
+            {currentUser?.email}
             </span>
           </Link>
         </li>
