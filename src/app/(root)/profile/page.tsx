@@ -1,5 +1,3 @@
 export default function ProfilePage() {
-    return (
-        <>My account</>
-    )
+  return <>My account</>;
 }
