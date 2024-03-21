@@ -3,6 +3,7 @@ import OrderCounter from '@/components/OrderCounter';
 import OrderTable from '@/modules/OrderTable';
 import { Button } from '@mantine/core';
 import { Download, PlusCircle } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -28,6 +29,8 @@ export default function Page() {
             Export
           </Button>
           <Button
+            component={Link}
+            href='/admin/orders/new'
             leftSection={<PlusCircle size={20} />}
             size='md'
             className='ml-6 bg-black'

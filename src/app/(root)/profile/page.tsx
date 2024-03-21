@@ -1,6 +1,7 @@
 import { Logout } from "./components/Logout";
 
 export default function ProfilePage() {
+
   return (
     <div className='mx-auto flex flex-col md:max-w-[572px]'>
       <hgroup className='text-center'>
