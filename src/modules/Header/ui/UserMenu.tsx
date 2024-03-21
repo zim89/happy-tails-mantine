@@ -77,9 +77,9 @@ export default function UserMenu() {
             // {profileMenu.map(item => 
             //  <Menu.Item key={item.id}><Link href={item.href}>{item.label}</Link></Menu.Item>
             // )}
-            {profileMenu.map((item) => (
-              <Menu.Item key={item.id}>{item.label}</Menu.Item>
-            ))}
+            //{profileMenu.map((item) => (
+            //  <Menu.Item key={item.id}>{item.label}</Menu.Item>
+            //))}
 
             <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
           </Menu.Dropdown>
