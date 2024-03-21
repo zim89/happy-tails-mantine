@@ -1,10 +1,7 @@
-import {
-  Container,
-  Breadcrumbs,
-} from '@mantine/core';
+import { Container, Breadcrumbs } from '@mantine/core';
 import Link from 'next/link';
 
-import CheckoutForm from "@/modules/CheckoutForm";
+import CheckoutForm from '@/modules/CheckoutForm';
 
 export default function Page() {
   return (

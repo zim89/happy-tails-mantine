@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-export interface User {
+export interface UserData {
   userId: string;
   email: string;
   firstName: string;
   lastName: string;
-  registerDate: number[];
+  registerDate: string;
   roles: string[];
 }
 
 export interface AuthState {
-  user: User | null;
+  user: UserData | null;
   access_token: string;
   refresh_token: string;
   isAuth: boolean;

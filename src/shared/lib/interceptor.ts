@@ -4,6 +4,7 @@ import { store } from '@/shared/redux/store';
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL!,
   headers: {
+    'Content-Type': 'application/json',
     // Add any other headers or configurations you need
   },
 });
@@ -12,7 +13,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = store.getState()?.auth?.access_token;
     if (token) {
-      config.headers['authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },

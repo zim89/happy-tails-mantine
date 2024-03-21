@@ -17,21 +17,21 @@ export default function UserMenu() {
   const { isAuth } = useAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [logout, { isLoading: isLoadingLogout }] = useLogoutMutation();
-  const { data, isLoading } = useGetUserInfoQuery('');
+
+  const [logout, { isLoading }] = useLogoutMutation();
+  const { data: user } = useGetUserInfoQuery('', {skip: !isAuth });
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
-      dispatch(setUserData(data));
+    if (user) {
+      dispatch(setUserData(user));
     }
-  }, [data, dispatch]);
+  }, [dispatch, user]);
 
   const handleLogout = async () => {
     try {
-      await logout('');
+      await logout();
       dispatch(clearAuthData());
-      router.push('/login');
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
