@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { getUserInfo, login, logout } from '@/shared/redux/auth/authOperations';
 
@@ -8,7 +8,6 @@ export interface Roles {
 
 export interface User {
   sub: string;
-  email_verified: boolean;
   realm_access: Roles;
   name: string;
   preferred_username: string;
