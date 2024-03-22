@@ -1,12 +1,12 @@
-import { UpdatePasswordForm } from "../components/UpdatePasswordForm";
+import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
+
+import classes from '../styles.module.css';
 
 export default function UpdatePassword() {
   return (
     <>
-      <h1 className='heading hidden text-center lg:block'>
-        Update your password
-      </h1>
-    <UpdatePasswordForm />
+      <h1 className={classes.profileHeading}>Update your password</h1>
+      <UpdatePasswordForm />
     </>
   );
 }

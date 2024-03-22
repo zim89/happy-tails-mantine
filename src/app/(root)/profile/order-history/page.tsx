@@ -1,10 +1,12 @@
-import { OrderTabs } from "../components/OrderTabs";
+import { OrderTabs } from '../components/OrderTabs';
+
+import classes from '../styles.module.css';
 
 function OrderPage() {
   return (
     <>
-    <h1 className="hidden lg:block text-4xl leading-[43.2px] mb-6">Order History</h1>    
-    <OrderTabs />
+      <h1 className={classes.profileHeading}>Order History</h1>
+      <OrderTabs />
     </>
   );
 }

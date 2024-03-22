@@ -12,7 +12,7 @@ export const useAuth = () => {
   const access_token = useAppSelector(selectAccessToken);
   const refresh_token = useAppSelector(selectRefreshToken);
   const currentUser = useAppSelector(selectUser);
-  console.log(currentUser);
+
   const isAdmin = currentUser?.roles.includes('ROLE_ADMIN') || false;
   // FIXME delete this
   const id_token = '';

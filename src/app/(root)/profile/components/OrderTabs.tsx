@@ -14,7 +14,7 @@ export const OrderTabs = () => {
       defaultValue='orders'
       color='orange'
       classNames={{
-        root: 'mt-9 md:lg-10 lg:mt-0',
+        root: classes.tabs,
         tab: classes.tab,
       }}
     >
@@ -25,7 +25,7 @@ export const OrderTabs = () => {
       <Tabs.Panel
         value='orders'
         classNames={{
-          panel: 'pt-6 flex flex-col min-h-[700px]',
+          panel: classes.ordersPanel,
         }}
       >
         <Toolbar />
@@ -40,17 +40,17 @@ export const OrderTabs = () => {
         </PaginationStateful>
       </Tabs.Panel>
       <Tabs.Panel value='warranty-returns'>
-        <div className='mx-auto mt-14 flex flex-col md:max-w-[572px] md:items-center'>
-          <hgroup className='text-center'>
-            <h1 className='text-2xl font-light leading-9'>
+        <div className={classes.box}>
+          <hgroup>
+            <h1 className={classes.boxHeading}>
               The Application List is Empty!
             </h1>
-            <p className='py-4 font-light'>
+            <p className={classes.boxParagraph}>
               No return or warranty requests have been made yet. Feel free to
               initiate one whenever needed. Your satisfaction is our priority!
             </p>
           </hgroup>
-          <Button className='bg-black font-bold'>Report a problem</Button>
+          <Button className={classes.reportButton}>Report a problem</Button>
         </div>
       </Tabs.Panel>
     </Tabs>

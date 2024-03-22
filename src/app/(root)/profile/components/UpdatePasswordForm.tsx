@@ -4,6 +4,8 @@ import { Button, PasswordInput } from '@mantine/core';
 import { useForm, hasLength, matchesField } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
 
+import classes from "../styles.module.css";
+
 export const UpdatePasswordForm = () => {
     const form = useForm({
         initialValues: {
@@ -19,7 +21,7 @@ export const UpdatePasswordForm = () => {
 
     return (
         <form
-        className='mt-8 flex flex-col gap-4 md:items-center'
+        className={cn('mt-8', classes.form)}
         onSubmit={form.onSubmit((values) => {
           console.log(values);
           form.clearErrors();
@@ -33,8 +35,9 @@ export const UpdatePasswordForm = () => {
             root: 'form-root',
             label: 'form-label',
             input: cn(
-              'form-input md:w-[458px] lg:w-[315px]',
-              form?.errors?.password && 'border-brand-red-400 text-secondary'
+              'form-input',
+              classes.inputSizing,
+              form?.errors?.password && 'form-error--input'
             ),
             innerInput: 'form-input',
             visibilityToggle: 'text-secondary',
@@ -59,9 +62,10 @@ export const UpdatePasswordForm = () => {
             visibilityToggle: 'text-secondary',
             innerInput: 'form-input',
             input: cn(
-              'form-input md:w-[458px] lg:w-[315px]',
+              'form-input',
+              classes.inputSizing,
               form?.errors?.confirmPassword &&
-                'border-brand-red-400 text-secondary'
+                'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -77,7 +81,7 @@ export const UpdatePasswordForm = () => {
         />
         <Button
           type='submit'
-          className='btn mt-9 bg-black uppercase md:w-[458px] lg:w-[315px]'
+          className={cn('btn mt-9 bg-black uppercase', classes.inputSizing)}
         >
           Update
         </Button>
