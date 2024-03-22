@@ -48,17 +48,11 @@
 }
 
 .terms span {
-    color: #5A5A5A;
-    @apply text-[14px] leading-[21px];
+    @apply text-[14px] text-[#5A5A5A] leading-[21px];
 }
 
 .terms span a {
-    border-bottom-color: #5A5A5A;
-    @apply border-b;
-}
-
-.terms p {
-    @apply text-red-500 text-xs absolute -bottom-5 -left-3;
+    @apply border-b border-[#5A5A5A];
 }
 
 .form button[type=submit] {
