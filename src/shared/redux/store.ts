@@ -11,13 +11,13 @@ import {
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
-
 import { favoritesReducer } from './favorites/favoritesSlice';
 import { cartReducer } from '@/shared/redux/cart/cartSlice';
 import { productApi } from '@/shared/api/productApi';
 import { authReducer } from '@/shared/redux/auth/authSlice';
 import { categoriesApi } from '@/shared/api/categoryApi';
 import { authApi } from '@/shared/api/authApi';
+import { ordersApi } from '@/shared/api/ordersApi';
 
 const createNoopStorage = () => {
   return {
@@ -41,7 +41,11 @@ const storage =
 const favoritesPersistConfig = {
   key: 'favoritesHappyTails',
   storage,
-  blacklist: [productApi.reducerPath, categoriesApi.reducerPath],
+  blacklist: [
+    productApi.reducerPath,
+    categoriesApi.reducerPath,
+    ordersApi.reducerPath,
+  ],
 };
 const cartPersistConfig = {
   key: 'cartHappyTails',
@@ -61,9 +65,10 @@ const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
+    [authApi.reducerPath]: authApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
@@ -74,13 +79,14 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     })
+      .concat(authApi.middleware)
       .concat(productApi.middleware)
       .concat(categoriesApi.middleware)
-      .concat(authApi.middleware),
+      .concat(ordersApi.middleware),
 });
 
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

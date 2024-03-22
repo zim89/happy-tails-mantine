@@ -43,7 +43,6 @@ export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
 export const fetchOnePost = async (id: string): Promise<Post | null> => {
   noStore();
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 6000));
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
     if (res.status === 404) return null;
     return res.json();

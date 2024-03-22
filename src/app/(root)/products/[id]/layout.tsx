@@ -30,7 +30,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
+    return (
     <>
       {children}
       <ProductAdditionalInfo />

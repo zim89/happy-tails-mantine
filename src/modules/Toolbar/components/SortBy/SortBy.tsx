@@ -36,16 +36,15 @@ export default function SortBy({
       <Popover.Target>
         <button
           onClick={open}
-          className='ml-4 flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
+          className='flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
         >
-          <span className='text-center md:text-left'>
+          <span className='text-center md:text-left flex flex-col md:flex-row items-center'>
             Sort by
-            <br className='md:hidden' />
             <span className='text-[0.625rem] md:ml-2 md:text-[length:inherit] md:font-bold'>
               {selected.title}
             </span>
           </span>
-          <ChevronDown width={16} height={16} className='ml-2' />
+          <ChevronDown width={16} height={16} className='hidden md:inline-block ml-2' />
         </button>
       </Popover.Target>
 

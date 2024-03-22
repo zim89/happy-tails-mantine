@@ -27,7 +27,7 @@ export default async function sitemap() {
   const parsedPosts = posts.map(({ id, createdAt,  updatedAt }) => ({
     url: `${URL}/blog/${id}`,
     lastModified: new Date(updatedAt || createdAt).toISOString()
-  }));
+  }));  
 
   const routes = [
     '',

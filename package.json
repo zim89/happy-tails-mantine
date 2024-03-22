@@ -26,10 +26,10 @@
     "next-mdx-remote": "^4.4.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-helmet": "^6.1.0",
     "react-redux": "^9.0.4",
     "react-toastify": "^9.1.3",
     "redux-persist": "^6.0.0",
+    "sharp": "^0.33.2",
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
@@ -37,7 +37,6 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/react-helmet": "^6.1.11",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",

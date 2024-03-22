@@ -33,11 +33,13 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, thunkApi) => {
     try {
+      console.log(process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL);
+
       const { data } = await instance.post(
-        `/token`,
+        "/token",
         new URLSearchParams({
           grant_type: 'password',
-          scope: 'openid email',
+          scope: 'openid email address phone',
           client_id: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID!,
           username: credentials.email,
           password: credentials.password,

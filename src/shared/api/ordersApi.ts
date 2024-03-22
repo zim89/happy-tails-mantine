@@ -10,9 +10,9 @@ export const ordersApi = createApi({
   endpoints: (builder) => ({
     findMany: builder.query<
       BackendResponse<Order[]>,
-      { page: number; limit: number; sort?: Sort }
+      { page: number; limit: number; token: string; sort?: Sort }
     >({
-      query: ({ page, limit, sort }) => {
+      query: ({ page, limit, token, sort }) => {
         const params = new URLSearchParams({
           page: page.toString(),
           size: limit.toString(),
@@ -20,7 +20,13 @@ export const ordersApi = createApi({
 
         if (sort) params.append('sort', sort.join(','));
 
-        return `orders/all?${params}`;
+        return {
+          url: `orders/all?${params}`,
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        };
       },
       providesTags: (result) =>
         result

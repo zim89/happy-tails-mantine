@@ -19,7 +19,7 @@ export default function UserMenu() {
   const dispatch = useAppDispatch();
 
   const [logout, { isLoading }] = useLogoutMutation();
-  const { data: user } = useGetUserInfoQuery('', {skip: !isAuth });
+  const { data: user } = useGetUserInfoQuery('', { skip: !isAuth });
 
   useEffect(() => {
     if (user) {
@@ -74,8 +74,17 @@ export default function UserMenu() {
           </Menu.Target>
           <Menu.Dropdown>
             {profileMenu.map((item) => (
+              <Menu.Item key={item.id}>
+                <Link href={item.href}>{item.label}</Link>
+              </Menu.Item>
+            ))}
+
+            {/*
+            {profileMenu.map((item) => (
               <Menu.Item key={item.id}>{item.label}</Menu.Item>
             ))}
+            */}
+
             <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
           </Menu.Dropdown>
         </Menu>

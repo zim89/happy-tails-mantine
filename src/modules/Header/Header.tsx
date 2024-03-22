@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from 'next/link';
 import { Container } from '@mantine/core';
 import CartButton from '@/modules/CartButton';
 import BurgerMenu from './ui/BurgerMenu';

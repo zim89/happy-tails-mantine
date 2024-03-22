@@ -1,54 +1,50 @@
-'use client';
-import { profileMenu } from '../lib/data';
+"use client";
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState, UIEvent } from 'react';
+
+import { profileMenu } from '../lib/data';
+import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
+import { useRef } from 'react';
 
 import classes from './style.module.css';
 
-let timeout: number;
-
 export default function SliderMenu() {
-  const [isScrolling, setIsScrolling] = useState(false);
-  let transform = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = useCallback(
-    (e: UIEvent<HTMLDivElement>) => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-      
-      timeout = window.setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
-    },
-    [timeout]
-  );
+  const moveForward = () => {
+    const target = menuRef.current;
+    if (target) {
+      target.scrollTo({ left: target.offsetWidth, behavior: "smooth" });
+    } 
+  }
 
-  useEffect(() => {
-    return () => {
-      window.clearTimeout(timeout);
-    };
-  }, []);
+  const moveBackward = () => {
+    if (menuRef.current) {
+      const target = menuRef.current;
+
+      target.scrollTo({ left: 0, behavior: "smooth" });
+    } 
+  }
 
   return (
     <div
-      className='relative h-11 min-w-max overflow-hidden overflow-x-scroll bg-slate-200 md:hidden'
-      onScroll={(e) => handleScroll(e)}
+      className='md:hidden overflow-hidden relative'
     >
       <div
-        ref={transform}
-        className={`${classes.menu} ${isScrolling ? classes.paused : ''}`}
+        className={classes.menu}
+        ref={menuRef}
       >
-        {profileMenu.map((item) => (
+        <span className="flex items-center p-2 cursor-pointer" onClick={moveForward}><ArrowRightFromLine size={15}/></span>
+        {profileMenu.map(item => (
           <Link
             key={item.id}
             href={item.href}
-            className='flex gap-2 items-center whitespace-nowrap bg-slate-200 py-[10px] px-4'
+            className='flex gap-2 items-center whitespace-nowrap py-[10px] px-4'
           >
             <item.icon size={20}/>
             <span>{item.label}</span>
           </Link>
         ))}
+        <span className="flex items-center p-2 cursor-pointer" onClick={moveBackward}><ArrowLeftFromLine size={15}/></span>
       </div>
     </div>
   );

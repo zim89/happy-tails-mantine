@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/shared/redux/store';
 import { useLoginMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
-import React, { useEffect } from 'react';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
