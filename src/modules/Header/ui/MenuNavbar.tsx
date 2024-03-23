@@ -3,7 +3,6 @@ import { useDeviceSize } from "@/shared/lib/hooks";
 import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { additionalLinks } from '../lib/data';
 
@@ -57,7 +56,7 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
             )}
           >
             <Image
-              src='/icons/categories/products.svg'
+              src="https://i.imgur.com/4FsWarQ.png"
               alt='all products page icon'
               height={isDesktop ? 42 : 32}
               width={isDesktop ? 42 : 32}
@@ -78,9 +77,8 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
                 path === '/' + item.path && 'font-bold'
               )}
             >
-              {/* TODO: Add actual image from backend */}
               <Image
-                src={`/icons/categories/${item.name.toLowerCase()}.svg`}
+                src={String(item.imgSrc)}
                 alt={item.name}
                 height={isDesktop ? 42 : 32}
                 width={isDesktop ? 42 : 32}

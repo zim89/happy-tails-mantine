@@ -9,8 +9,6 @@ import { cn } from '@/shared/lib/utils';
 export default function Navbar({ categories }: { categories: Category[] }) {
   const path = usePathname();
 
-  console.log();
-
   return (
     <div className='hidden bg-brand-grey-300 md:block'>
       <Container>

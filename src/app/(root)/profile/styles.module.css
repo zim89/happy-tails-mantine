@@ -16,7 +16,7 @@
 }
 
 .boxHeading {
-    @apply heading font-light leading-9;
+    @apply font-light leading-9;
 }
 
 .boxParagraph {
@@ -37,7 +37,7 @@
 }
 
 .profileHeading {
-    @apply heading hidden text-center lg:block;
+    @apply hidden text-center lg:block;
 }
 
 /* Delivery form */
@@ -66,10 +66,6 @@
 /* Profile page */
 .profileParagraph {
     @apply py-4 font-light;
-}
-
-.profileHeading {
-    @apply heading;
 }
 
 .profileContent {

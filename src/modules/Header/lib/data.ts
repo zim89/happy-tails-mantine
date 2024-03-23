@@ -17,7 +17,7 @@ export const categoryLinks = [
     label: 'Collars',
     short: 'Collars',
     href: '/collars',
-    icon: collarsIcon,
+    icon: "https://i.imgur.com/xxfcU4d.png",
   },
   {
     label: 'Toys',

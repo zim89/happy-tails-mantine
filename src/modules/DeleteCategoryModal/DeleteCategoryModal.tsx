@@ -14,11 +14,13 @@ import check_circle from '@/assets/icons/additional/check-circle.svg';
 import ModalFooter from '@/components/ModalFooter';
 
 import { useRemoveCategoryMutation } from "@/shared/api/categoryApi";
+import { useAuth } from '@/shared/hooks/useAuth';
 
 type Props = {
   categoryLine: Category;
 };
 export default function DeleteCategoryModal({ categoryLine }: Props) {
+  const { access_token } = useAuth();
   const [dispatch] = useRemoveCategoryMutation();
   const [isNotified, setIsNotified] = useState(false);
 
@@ -27,7 +29,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
       closeMain();
       openError();
     } else {
-      // await dispatch(categoryLine.id);
+      await dispatch({ id: categoryLine.id, access_token });
 
       closeMain();
       setIsNotified(true);

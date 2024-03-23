@@ -7,6 +7,7 @@ import mock from '@/modules/OrderTable/mock.json';
 import classes from '../styles.module.css';
 import OrdersList from '@/modules/OrdersList';
 import { PaginationStateful } from '@/modules/PaginationBar';
+import { cn } from '@/shared/lib/utils';
 
 export const OrderTabs = () => {
   return (
@@ -42,7 +43,7 @@ export const OrderTabs = () => {
       <Tabs.Panel value='warranty-returns'>
         <div className={classes.box}>
           <hgroup>
-            <h1 className={classes.boxHeading}>
+            <h1 className={cn(classes.boxHeading, "heading")}>
               The Application List is Empty!
             </h1>
             <p className={classes.boxParagraph}>

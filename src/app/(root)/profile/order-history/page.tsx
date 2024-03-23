@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';
 
 import classes from '../styles.module.css';
@@ -5,7 +6,7 @@ import classes from '../styles.module.css';
 function OrderPage() {
   return (
     <>
-      <h1 className={classes.profileHeading}>Order History</h1>
+      <h1 className={cn(classes.profileHeading, "heading")}>Order History</h1>
       <OrderTabs />
     </>
   );
