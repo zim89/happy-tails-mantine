@@ -108,6 +108,14 @@ export const authApi = createApi({
         method: 'get',
       }),
     }),
+    updateDetails: builder.mutation<any, Partial<{ firstName: string, lastName: string, email: string }>>({
+      query: (payload) => ({
+        url: "/users/update",
+        method: 'put',
+        data: payload
+      }),
+      invalidatesTags: ["Auth"]
+    })
   }),
 });
 
@@ -116,4 +124,5 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useGetUserInfoQuery,
+  useUpdateDetailsMutation
 } = authApi;

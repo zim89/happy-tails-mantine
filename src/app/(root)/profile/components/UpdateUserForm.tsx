@@ -4,8 +4,14 @@ import { Button, TextInput } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 
 import classes from "../styles.module.css";
+import { dirtyFields } from '@/shared/lib/helpers';
+import { useUpdateDetailsMutation } from '@/shared/api/authApi';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 export const UpdateUserForm = () => {
+  const { currentUser } = useAuth();
+  const [updateUser, { data, isLoading }] = useUpdateDetailsMutation();
+
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -13,20 +19,64 @@ export const UpdateUserForm = () => {
       email: '',
     },
 
+    transformValues(values) {
+      return {
+        firstName: values.firstName.trim(),
+        email: values.email.trim(),
+        lastName: values.lastName.trim()
+      };
+    },
+
     validate: {
-      firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
-      lastName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
-      email: isEmail('Invalid email'),
+      
+      firstName: val => {
+        let error = null;
+
+        if (val.trim().length) {
+          error = hasLength({ min: 2 }, "Field must have 2 or more characters")(val);
+        }
+
+        return error;
+      },
+      lastName: val => {
+        let error = null;
+
+        if (val.trim().length) {
+          error = hasLength({ min: 2 }, "Field must have 2 or more characters")(val);
+        }
+
+        return error; 
+      },
+      email: val => {
+        let error = null;
+
+        if (val.trim().length) {
+          error = isEmail("Invalid email")(val);
+        }
+        
+        return error; 
+      },
     },
   });
 
   return (
     <form
       className={cn('mt-8', classes.form)}
-      onSubmit={form.onSubmit((values) => {
-        console.log(values);
-        form.clearErrors();
-        form.reset();
+      onSubmit={form.onSubmit(async (values) => {
+        try {
+          const [updatedUser, count] = dirtyFields(values);
+          // If there is no changes, omit the call to API
+          if (count === 0) return;
+          if (!currentUser) return;
+
+          const { registerDate, userId, roles, ...prevUser } = currentUser;  
+          await updateUser({ ...prevUser, ...updatedUser });
+
+          form.clearErrors();
+          form.reset();
+        } catch (err) {
+          console.log(err);
+        }
       })}
     >
       <TextInput
@@ -46,7 +96,7 @@ export const UpdateUserForm = () => {
         placeholder='Enter your First Name'
       />
       <TextInput
-        label='Confirm Password'
+        label='Last Name'
         type='text'
         classNames={{
           root: 'form-root',

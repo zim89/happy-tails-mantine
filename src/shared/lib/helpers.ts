@@ -13,11 +13,28 @@ export const formatRawPostDate = (raw: string) => {
   return dayjs(raw).format();
 }
 
+// I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces 
+export const dirtyFields = (obj: { [P in string]: string }) => {
+  let res: [{ [P in string]: string }, number] = [{}, 0];
+
+  Object.entries(obj).forEach(([key, val]) => {
+    const candidate = val.trim();
+
+    if (candidate.length > 0) {
+      res[0][key] = val;
+      res[1]++;
+    }
+  });
+
+  return res;
+}
+
 export const availabilityMap: {
   [P in NonNullable<Product["productType"]>]: string;
 } = {
   "IN_STOCK": "https://schema.org/InStock",
   "OUT OF STOCK": "https://schema.org/OutOfStock",
+
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.
   // https://schema.org/InStock: The item is in stock.
