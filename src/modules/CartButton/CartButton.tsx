@@ -38,7 +38,7 @@ export default function CartButton() {
           disabled={!hasItemsInCart}
           position='bottom-end'
           color='#F39324'
-          size={10}
+          size={12}
           offset={5}
           inline
           classNames={{

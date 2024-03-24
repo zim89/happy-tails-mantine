@@ -12,15 +12,15 @@ export default function FavoriteButton() {
   return (
     <Link
       href={'/wishlist'}
-      className='group lg:hidden flex lg:items-center lg:justify-center'
-      aria-label="Go to Wishlist"
+      className='group flex items-center justify-center'
+      aria-label='Go to Wishlist'
     >
       <Indicator
         label={favorites.length}
         disabled={!hasFavorites}
         position='bottom-end'
         color='#F39324'
-        size={10}
+        size={12}
         offset={5}
         inline
         classNames={{
