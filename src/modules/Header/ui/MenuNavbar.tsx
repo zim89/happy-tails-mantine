@@ -1,52 +1,54 @@
-import { Category } from "@/shared/api/categoryApi";
-import { useDeviceSize } from "@/shared/lib/hooks";
-import { cn } from "@/shared/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
+import { Category } from '@/shared/api/categoryApi';
+import { useDeviceSize } from '@/shared/lib/hooks';
+import { cn } from '@/shared/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import { additionalLinks } from '../lib/data';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 type MenuNavbarProps = {
-    menu: Category[];
-    path: string;
-}
+  menu: Category[];
+  path: string;
+};
 function MenuNavbar({ menu, path }: MenuNavbarProps) {
-    const { isDesktop } = useDeviceSize();
+  const { isDesktop } = useDeviceSize();
+  const { isAuth } = useAuth();
 
-    return (
-        <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:mx-auto lg:w-[1280px] lg:flex-row lg:items-center lg:justify-between lg:px-14'>
-        {/*  Desktop Additional Menubar */}
-        <ul className='hidden lg:flex lg:flex-col lg:gap-6'>
-            <li>
-              <Link
-                href={'/contacts'}
-                className={cn('navLink', path === '/contacts' && 'font-bold')}
-              >
-                Contacts
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/delivery&returns'}
-                className={cn(
-                  'navLink',
-                  path === '/delivery&returns' && 'font-bold'
-                )}
-              >
-                Delivery & Returns
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/blog'}
-                className={cn('navLink', path === '/blog' && 'font-bold')}
-              >
-                Blog
-              </Link>
-            </li>
-          </ul>
+  return (
+    <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:mx-auto lg:w-[1280px] lg:flex-row lg:items-center lg:justify-between lg:px-14'>
+      {/*  Desktop Additional Menubar */}
+      <ul className='hidden lg:flex lg:flex-col lg:gap-6'>
+        <li>
+          <Link
+            href={'/contacts'}
+            className={cn('navLink', path === '/contacts' && 'font-bold')}
+          >
+            Contacts
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={'/delivery&returns'}
+            className={cn(
+              'navLink',
+              path === '/delivery&returns' && 'font-bold'
+            )}
+          >
+            Delivery & Returns
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={'/blog'}
+            className={cn('navLink', path === '/blog' && 'font-bold')}
+          >
+            Blog
+          </Link>
+        </li>
+      </ul>
 
-        <ul className='lg:flex lg:gap-3'>
+      <ul className='lg:flex lg:gap-3'>
         <li className='border-b border-b-brand-grey-300 lg:border-none'>
           <Link
             href={'/products'}
@@ -56,7 +58,7 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
             )}
           >
             <Image
-              src="https://i.imgur.com/4FsWarQ.png"
+              src='https://i.imgur.com/4FsWarQ.png'
               alt='all products page icon'
               height={isDesktop ? 42 : 32}
               width={isDesktop ? 42 : 32}
@@ -84,28 +86,33 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
                 width={isDesktop ? 42 : 32}
               />
               <p className='navLink'>
-                {item.name === 'Leads&harnesses'
-                  ? 'Leads'
-                  : item.name}
+                {item.name === 'Leads&harnesses' ? 'Leads' : item.name}
               </p>
             </Link>
           </li>
         ))}
       </ul>
 
-        {/*  Tablet/Mobile Additional Menubar */}
+      {/*  Tablet/Mobile Additional Menubar */}
 
       <ul className='flex flex-col gap-4 lg:hidden'>
-            {additionalLinks.map((link) => (
-              <li key={link.label}>
-                <Link href={link.href} className='text-base font-light'>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-      </div>
-    )
+        <li>
+          {!isAuth ? (
+            <Link href='/login' className='text-base font-light'>Log In</Link>
+          ) : (
+            <Link href='/profile' className='text-base font-light'>Profile</Link>
+          )}
+        </li>
+        {additionalLinks.map((link) => (
+          <li key={link.label}>
+            <Link href={link.href} className='text-base font-light'>
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default MenuNavbar;

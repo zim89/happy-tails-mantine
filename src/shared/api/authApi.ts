@@ -108,7 +108,7 @@ export const authApi = createApi({
         method: 'get',
       }),
     }),
-    updateDetails: builder.mutation<any, Partial<{ firstName: string, lastName: string, email: string }>>({
+    updateDetails: builder.mutation<any, Partial<{ firstName: string, lastName: string, email: string, attributes: { [P in string]: string[] } }>>({
       query: (payload) => ({
         url: "/users/update",
         method: 'put',

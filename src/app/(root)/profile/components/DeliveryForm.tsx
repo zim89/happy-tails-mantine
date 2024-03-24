@@ -4,8 +4,14 @@ import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
+import { useUpdateDetailsMutation } from '@/shared/api/authApi';
+import { dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 export const DeliveryForm = () => {
+  const { currentUser } = useAuth();
+  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
+
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -18,13 +24,6 @@ export const DeliveryForm = () => {
       addressTwo: '',
       contactNumber: '',
       county: '',
-    },
-
-    transformValues(values) {
-      return {
-        ...values,
-        addressTwo: values.addressOne,
-      };
     },
 
     validate: {
@@ -41,8 +40,24 @@ export const DeliveryForm = () => {
   return (
     <form
       className={classes.form}
-      onSubmit={form.onSubmit((values) => {
-        console.log(values);
+      onSubmit={form.onSubmit(async (values) => {
+        const [newAttributes, count] = dirtyFields(values);
+        // If there is no changes, omit the call to API
+        if (count === 0) return;
+        if (!currentUser) return;
+
+        const { registerDate, userId, roles, ...prevUser } = currentUser;  
+        
+        const formatedAttributes = formatUserAttributes(newAttributes);
+        
+        let request = {
+          ...prevUser,
+          attributes: formatedAttributes
+        };
+
+        const res = await updateUser(request);
+        console.log(res);
+
         form.clearErrors();
         form.reset();
       })}

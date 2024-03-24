@@ -5,6 +5,7 @@ import { useForm, hasLength, matchesField } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
 
 import classes from '../styles.module.css';
+import { dirtyFields } from '@/shared/lib/helpers';
 
 export const UpdatePasswordForm = () => {
   const form = useForm({
@@ -14,8 +15,30 @@ export const UpdatePasswordForm = () => {
     },
 
     validate: {
-      password: hasLength({ min: 6 }, 'Password must have 6 or more symbols'),
-      confirmPassword: matchesField('password', 'Passwords do not match'),
+      password: (val) => {
+        let error = null;
+
+        if (val.trim().length > 0) {
+          error = hasLength(
+            { min: 6 },
+            'Password must have 6 or more symbols'
+          )(val);
+        }
+
+        return error;
+      },
+      confirmPassword: (val, values) => {
+        let error = null;
+
+        if (val.trim().length > 0) {
+          error = matchesField('password', 'Passwords do not match')(
+            val,
+            values
+          );
+        }
+
+        return error;
+      },
     },
   });
 
@@ -23,7 +46,11 @@ export const UpdatePasswordForm = () => {
     <form
       className={cn('mt-8', classes.form)}
       onSubmit={form.onSubmit((values) => {
+        const [updatedPassword, count] = dirtyFields(values);
+          // If there is no changes, omit the call to API
+          if (count === 0) return;
         console.log(values);
+        
         form.clearErrors();
         form.reset();
       })}

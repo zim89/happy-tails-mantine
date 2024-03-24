@@ -10,7 +10,7 @@ import { useAuth } from '@/shared/hooks/useAuth';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
-  const [updateUser, { data, isLoading }] = useUpdateDetailsMutation();
+  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
 
   const form = useForm({
     initialValues: {
@@ -19,16 +19,7 @@ export const UpdateUserForm = () => {
       email: '',
     },
 
-    transformValues(values) {
-      return {
-        firstName: values.firstName.trim(),
-        email: values.email.trim(),
-        lastName: values.lastName.trim()
-      };
-    },
-
-    validate: {
-      
+    validate: {      
       firstName: val => {
         let error = null;
 

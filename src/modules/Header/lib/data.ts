@@ -53,10 +53,6 @@ export const categoryLinks = [
 
 export const additionalLinks = [
   {
-    label: 'Log in',
-    href: '/auth',
-  },
-  {
     label: 'Contacts',
     href: '/contacts',
   },

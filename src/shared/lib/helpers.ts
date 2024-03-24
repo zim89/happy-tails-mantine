@@ -13,6 +13,16 @@ export const formatRawPostDate = (raw: string) => {
   return dayjs(raw).format();
 }
 
+export const formatUserAttributes = (obj: { [P in string]: string }) => {
+  let res: { [P in string]: [string] } = {};
+
+  Object.entries(obj).forEach(([key, val]) => {
+    res[key] = [val];
+  })
+
+  return res;
+}
+
 // I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces 
 export const dirtyFields = (obj: { [P in string]: string }) => {
   let res: [{ [P in string]: string }, number] = [{}, 0];
