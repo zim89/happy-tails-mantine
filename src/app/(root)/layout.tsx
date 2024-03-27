@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 
 import Header from '@/modules/Header';
 import Footer from '@/modules/Footer';
-import Sitelinks from "./sitelinks";
 
 export const metadata: Metadata = {
   title:

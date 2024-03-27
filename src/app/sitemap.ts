@@ -1,10 +1,12 @@
+import { MetadataRoute } from 'next'
+
 import { getProducts } from '@/shared/api/productApi';
 import { getAllCategories } from "@/shared/api/categoryApi";
 import { fetchPostList } from '@/shared/api/postApi';
 
 const URL = "https://happy-tails-mantine.vercel.app";
 
-export default async function sitemap() {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productsRequest = await getProducts();
   const products = productsRequest || [];
   
@@ -21,12 +23,12 @@ export default async function sitemap() {
 
   const parsedProducts = products.map(({ id, updatedAt, createdAt }) => ({
     url: `${URL}/products/${id}`,
-    lastModified: new Date(updatedAt || createdAt!).toISOString()
+    lastModified: new Date(updatedAt || createdAt!).toISOString(),
   }));
 
   const parsedPosts = posts.map(({ id, createdAt,  updatedAt }) => ({
     url: `${URL}/blog/${id}`,
-    lastModified: new Date(updatedAt || createdAt).toISOString()
+    lastModified: new Date(updatedAt || createdAt).toISOString(),
   }));  
 
   const routes = [

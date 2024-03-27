@@ -1,6 +1,6 @@
 'use client';
+import dynamic from "next/dynamic";
 
-import RawProductList from '@/modules/ProductList';
 import { useFindManyQuery } from '@/shared/api/productApi';
 import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
@@ -13,6 +13,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Sort } from '@/shared/types/types';
 import { ProductCountContext } from './ProductCountContext';
 import { useDeviceSize } from '@/shared/lib/hooks';
+
+const RawProductList = dynamic(() => import('@/modules/ProductList'));
 
 const limit = 12;
 
@@ -57,7 +59,6 @@ export default function CatalogProductList({
     categoryId: category?.id,
     page: page - 1,
     limit,
-
     filter,
     name: searchParams.has('name') ? searchParams.get('name')! : '',
     sort: searchParams.get('sort')?.split('-') as Sort | undefined,

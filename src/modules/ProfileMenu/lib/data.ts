@@ -6,4 +6,4 @@ export const profileMenu = [
   { id: 2, label: "Update your details", href: "/profile/update-user", icon: BookUser },
   { id: 3, label: "Update your password", href: "/profile/update-password", icon: LockKeyhole },
   { id: 4, label: "Delivery addresses", href: "/profile/delivery", icon: Truck },
-]
+];

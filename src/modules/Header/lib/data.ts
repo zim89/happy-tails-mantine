@@ -17,7 +17,7 @@ export const categoryLinks = [
     label: 'Collars',
     short: 'Collars',
     href: '/collars',
-    icon: collarsIcon,
+    icon: "https://i.imgur.com/xxfcU4d.png",
   },
   {
     label: 'Toys',
@@ -52,10 +52,6 @@ export const categoryLinks = [
 ] as const;
 
 export const additionalLinks = [
-  {
-    label: 'Log in',
-    href: '/auth',
-  },
   {
     label: 'Contacts',
     href: '/contacts',

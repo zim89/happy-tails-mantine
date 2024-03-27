@@ -1,20 +1,25 @@
 'use client';
-import { Button, Tabs } from '@mantine/core';
+import { Tabs } from '@mantine/core';
 
 import Toolbar from '@/modules/OrderToolbar';
-import mock from '@/modules/OrderTable/mock.json';
+import { PaginationStateful } from '@/modules/PaginationBar';
+import { cn } from '@/shared/lib/utils';
+import OrdersList from '@/modules/OrdersList';
 
 import classes from '../styles.module.css';
-import OrdersList from '@/modules/OrdersList';
-import { PaginationStateful } from '@/modules/PaginationBar';
+import ProblemReport from '@/modules/ProblemReport';
+import { Order } from '@/shared/types/types';
 
-export const OrderTabs = () => {
+type Props = {
+  orders: Order[]
+}
+export const OrderTabs = ({ orders }: Props) => {
   return (
     <Tabs
       defaultValue='orders'
       color='orange'
       classNames={{
-        root: 'mt-9 md:lg-10 lg:mt-0',
+        root: classes.tabs,
         tab: classes.tab,
       }}
     >
@@ -25,12 +30,12 @@ export const OrderTabs = () => {
       <Tabs.Panel
         value='orders'
         classNames={{
-          panel: 'pt-6 flex flex-col min-h-[700px]',
+          panel: classes.ordersPanel,
         }}
       >
         <Toolbar />
 
-        <PaginationStateful initial={mock.content} maxPages={7}>
+        <PaginationStateful initial={orders} maxPages={7}>
           {(paginatedOrders, panel) => (
             <div className='mt-6'>
               <OrdersList orders={paginatedOrders} />
@@ -40,17 +45,17 @@ export const OrderTabs = () => {
         </PaginationStateful>
       </Tabs.Panel>
       <Tabs.Panel value='warranty-returns'>
-        <div className='mx-auto mt-14 flex flex-col md:max-w-[572px] md:items-center'>
-          <hgroup className='text-center'>
-            <h1 className='text-2xl font-light leading-9'>
+        <div className={classes.box}>
+          <hgroup>
+            <h1 className={cn(classes.boxHeading, 'heading')}>
               The Application List is Empty!
             </h1>
-            <p className='py-4 font-light'>
+            <p className={classes.boxParagraph}>
               No return or warranty requests have been made yet. Feel free to
               initiate one whenever needed. Your satisfaction is our priority!
             </p>
           </hgroup>
-          <Button className='bg-black font-bold'>Report a problem</Button>
+          <ProblemReport />
         </div>
       </Tabs.Panel>
     </Tabs>

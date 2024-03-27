@@ -1,0 +1,85 @@
+/* Form */
+.content {
+    @apply flex flex-col items-center;
+}
+
+.content>* {
+    @apply max-w-[572px];
+}
+
+.heading {
+    @apply mt-8 mb-12 text-center md:my-12;
+}
+
+.heading>h1 {
+    @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
+}
+
+.heading>p {
+    @apply leading-6;
+}
+
+.modalForm {
+    @apply py-9 px-12 bg-[#F7F7F7];
+}
+
+.modalForm label {
+    @apply text-sm mb-1 leading-[21px] max-w-52;
+}
+
+.modalForm input,
+.modalForm textarea {
+    @apply w-full;
+}
+
+.message {
+    @apply relative mb-[30px] mt-8;
+}
+
+.message svg {
+    @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
+}
+
+.message p {
+    @apply absolute;
+}
+
+.terms {
+    @apply flex relative;
+}
+
+.terms span {
+    @apply text-[14px] text-[#5A5A5A] leading-[21px];
+}
+
+.terms span a {
+    @apply border-b border-[#5A5A5A];
+}
+
+.modalForm button[type=submit] {
+    @apply mt-8 md:mt-12 bg-[#161616] px-[54px] py-[10px] text-base font-bold text-white;
+}
+
+.reportButton {
+    @apply bg-black font-bold;
+}
+
+.customScroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.customScroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.customScroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: .5em;
+}
+
+/* Handle on hover */
+.customScroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

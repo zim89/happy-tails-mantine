@@ -10,7 +10,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
   const path = usePathname();
 
   return (
-    <div className='hidden bg-brand-grey-300 md:block'>
+    <div className='hidden bg-brand-grey-300 lg:block'>
       <Container>
         <ul className='flex justify-between py-2'>
           <li>

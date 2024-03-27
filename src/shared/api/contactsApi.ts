@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from "@/shared/lib/interceptor";
 
 export type Credentials = {
   content: string;
   userName: string;
-  email: string;
+  userEmail: string;
   imageSrc: string;
 };
 
@@ -21,14 +21,16 @@ export type Response = {
 
 export const postRequest = async ({
   content,
-  email,
+  userEmail,
   userName,
+  imageSrc
 }: Credentials) => {
   try {
     const res = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
       content,
       userName,
-      email
+      userEmail,
+      imageSrc
     });
 
     return res;

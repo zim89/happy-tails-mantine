@@ -3,7 +3,15 @@ import { cn } from '@/shared/lib/utils';
 import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
+import classes from '../styles.module.css';
+import { useUpdateDetailsMutation } from '@/shared/api/authApi';
+import { dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
+import { useAuth } from '@/shared/hooks/useAuth';
+
 export const DeliveryForm = () => {
+  const { currentUser } = useAuth();
+  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
+
   const form = useForm({
     initialValues: {
       firstName: '',
@@ -16,13 +24,6 @@ export const DeliveryForm = () => {
       addressTwo: '',
       contactNumber: '',
       county: '',
-    },
-
-    transformValues(values) {
-      return {
-        ...values,
-        addressTwo: values.addressOne,
-      };
     },
 
     validate: {
@@ -38,22 +39,38 @@ export const DeliveryForm = () => {
 
   return (
     <form
-      className='flex flex-col gap-4 md:items-center'
-      onSubmit={form.onSubmit((values) => {
-        console.log(values);
+      className={classes.form}
+      onSubmit={form.onSubmit(async (values) => {
+        const [newAttributes, count] = dirtyFields(values);
+        // If there is no changes, omit the call to API
+        if (count === 0) return;
+        if (!currentUser) return;
+
+        const { registerDate, userId, roles, ...prevUser } = currentUser;  
+        
+        const formatedAttributes = formatUserAttributes(newAttributes);
+        
+        let request = {
+          ...prevUser,
+          attributes: formatedAttributes
+        };
+
+        const res = await updateUser(request);
+        console.log(res);
+
         form.clearErrors();
         form.reset();
       })}
     >
-      <Group className='flex-col justify-center md:w-full md:flex-row'>
+      <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.firstName && 'border-brand-red-400 text-secondary'
+              form?.errors?.firstName && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -64,11 +81,11 @@ export const DeliveryForm = () => {
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.lastName && 'border-brand-red-400 text-secondary'
+              form?.errors?.lastName && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -77,15 +94,15 @@ export const DeliveryForm = () => {
           placeholder='Enter Your Last Name'
         />
       </Group>
-      <Group className=' flex-col justify-center md:w-full md:flex-row'>
+      <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.country && 'border-brand-red-400 text-secondary'
+              form?.errors?.country && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -97,12 +114,9 @@ export const DeliveryForm = () => {
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
-            input: cn(
-              'form-input',
-              form?.errors?.city && 'border-brand-red-400 text-secondary'
-            ),
+            input: cn('form-input', form?.errors?.city && 'form-error--input'),
             error: 'form-error',
           }}
           label='Town / City'
@@ -110,15 +124,15 @@ export const DeliveryForm = () => {
           placeholder='Enter Town / City'
         />
       </Group>
-      <Group className=' flex-col justify-center  md:w-full md:flex-row'>
+      <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.postcode && 'border-brand-red-400 text-secondary'
+              form?.errors?.postcode && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -128,23 +142,24 @@ export const DeliveryForm = () => {
         />
         <TextInput
           classNames={{
-            root: 'w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
+            input: 'form-input'
           }}
           label='Company'
           {...form.getInputProps('company')}
           placeholder='Enter Company'
         />
       </Group>
-      <Group className=' flex-col justify-center  md:w-full md:flex-row'>
+      <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.addressOne && 'border-brand-red-400 text-secondary'
+              form?.errors?.addressOne && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -154,24 +169,24 @@ export const DeliveryForm = () => {
         />
         <TextInput
           classNames={{
-            root: 'w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
+            input: 'form-input'
           }}
           label='Address Line 2'
           {...form.getInputProps('addressTwo')}
           placeholder='Enter Address Line 2'
         />
       </Group>
-      <Group className='flex-col justify-center md:w-full md:flex-row'>
+      <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
           classNames={{
-            root: 'form-root w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
             input: cn(
               'form-input',
-              form?.errors?.contactNumber &&
-                'border-brand-red-400 text-secondary'
+              form?.errors?.contactNumber && 'form-error--input'
             ),
             error: 'form-error',
           }}
@@ -181,8 +196,9 @@ export const DeliveryForm = () => {
         />
         <TextInput
           classNames={{
-            root: 'w-full md:flex-1 lg:flex-initial lg:w-[275px]',
+            root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
+            input: 'form-input'
           }}
           label='County'
           {...form.getInputProps('county')}

@@ -207,6 +207,10 @@
   .form-error {
     @apply absolute -bottom-4 left-0 text-[10px]/[12px] text-brand-red-400;
   }
+
+  .form-error--input {
+    @apply border-brand-red-400 text-secondary;
+  }
 }
 
 /*noinspection CssInvalidFunction*/

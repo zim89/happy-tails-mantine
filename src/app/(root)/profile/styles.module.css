@@ -1,14 +1,69 @@
 /* OrderTabs */
+.tabs {
+    @apply mt-8 md:mt-10 lg:mt-6;
+}
+
 .tab[data-active] {
     color: orange;
 }
 
+.ordersPanel {
+    @apply pt-6 flex flex-col min-h-[700px];
+}
+
+.box {
+    @apply mx-auto mt-14 lg:mt-8 flex flex-col md:max-w-[572px] md:items-center text-center min-h-[50vh];
+}
+
+.boxHeading {
+    @apply font-light leading-9;
+}
+
+.boxParagraph {
+    @apply py-4 font-light;
+}
+
+/* Shared */
+.form {
+    @apply flex flex-col gap-4 md:items-center;
+}
+
+.inputSizing {
+    @apply md:w-[458px] lg:w-[315px];
+}
+
+.profileHeading {
+    @apply hidden text-center lg:block;
+}
+
+/* Delivery form */
+.fieldsGroup {
+    @apply flex-col justify-center md:w-full md:flex-row;
+}
+
+.fieldSizing {
+    @apply  w-full md:flex-1 lg:flex-initial lg:w-[275px];
+}
+
 /* Layout */
-.pageContent {
+.page {
     @media screen and (min-width: 1280px) {
         display: grid;
         grid-template-columns: min-content 1fr;
     }
 
     @apply p-0;
+}
+
+.content {
+    @apply py-0 lg:px-8 px-3 md:py-10 lg:mt-0;
+}
+
+/* Profile page */
+.profileParagraph {
+    @apply py-4 font-light;
+}
+
+.profileContent {
+    @apply mx-auto flex flex-col md:max-w-[572px] text-center min-h-[50vh];
 }

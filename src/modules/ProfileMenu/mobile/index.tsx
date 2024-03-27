@@ -13,7 +13,7 @@ export default function SliderMenu() {
   const moveForward = () => {
     const target = menuRef.current;
     if (target) {
-      target.scrollTo({ left: target.offsetWidth, behavior: "smooth" });
+      target.scrollTo({ left: target.offsetWidth * 2, behavior: "smooth" });
     } 
   }
 
@@ -27,7 +27,7 @@ export default function SliderMenu() {
 
   return (
     <div
-      className='md:hidden overflow-hidden relative'
+      className='lg:hidden overflow-hidden relative'
     >
       <div
         className={classes.menu}

@@ -50,23 +50,25 @@ export const categoriesApi = createApi({
       }},
       invalidatesTags: ["Categories"]
     }),
-    removeCategory: builder.mutation<void, ID>({
+    removeCategory: builder.mutation<void, {id: ID, access_token: string}>({
       query: payload => ({
-        url: `/category/${payload}`,
+        url: `/category/${payload.id}`,
         method: "DELETE",
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
+          'Authorization': `Bearer ${payload.access_token}`
         },
       }),
       invalidatesTags: ["Categories"]
     }),
-    updateCategory: builder.mutation<Category, Partial<Category>>({
+    updateCategory: builder.mutation<Category, { req: Partial<Category>, access_token: string }>({
       query: payload => ({
-        url: "/category/",
+        url: "/category",
         method: "PUT",
-        body: payload,
+        body: payload.req,
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
+          'Authorization': `Bearer ${payload.access_token}`
         },
       }),
       invalidatesTags: ["Categories"]

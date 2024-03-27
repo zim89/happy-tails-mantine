@@ -4,9 +4,11 @@ import { useRouter } from 'next/navigation';
 import { clearAuthData } from '@/shared/redux/auth/authSlice';
 import { useLogoutMutation } from '@/shared/api/authApi';
 import { useAppDispatch } from '@/shared/redux/store';
-import { Button } from '@mantine/core';
 
-export default function Logout() {
+type Props = {
+  children: (logout: () => void) => React.ReactNode;
+}
+export default function Logout({ children }: Props) {
 const dispatch = useAppDispatch();
   const router = useRouter();
   const [logout] = useLogoutMutation();
@@ -21,5 +23,7 @@ const dispatch = useAppDispatch();
     }
   };
 
-  return <Button onClick={handleLogout}>Logout</Button>;
+  return <>
+        {children(handleLogout)}
+    </>
 }

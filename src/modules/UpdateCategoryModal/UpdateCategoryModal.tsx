@@ -11,7 +11,6 @@ import { Info, UploadCloud, X, Check } from 'lucide-react';
 import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
 import Modal from '@/components/ModalWindow';
-// import { readImageAsPromise } from '@/shared/lib/utils';
 import { useForm } from '@mantine/form';
 
 import Notify from '@/components/Notify';
@@ -20,14 +19,18 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import Image from 'next/image';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 type Props = {
   categoryLine: Category & { image: { path: string; name: string } };
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
+  const { access_token } = useAuth();
   const [isNotified, setIsNotified] = useState(false);
   const [dispatch] = useUpdateCategoryMutation();
   const previewImage = useRef<(typeof categoryLine)['image']>();
+
+  console.log(categoryLine);
 
   const handleClose = () => {
     setIsNotified(false);
@@ -83,17 +86,13 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image,
   }: (typeof form)['values']) => {
     // TODO: image upload
-    // if (image && previewImage.current) {
-    //   let res = await readImageAsPromise(image);
 
-    // }
-
-    const updatedCategory: Category = {
+    const { image: thumbnail, ...requestBody } = {
       ...categoryLine,
       name: categoryName,
     };
 
-    await dispatch(updatedCategory);
+    await dispatch({ req: requestBody, access_token });
 
     clearAndClose();
     setIsNotified(true);

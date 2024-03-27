@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <Sitelinks />
-        <ColorSchemeScript />
+        <ColorSchemeScript defer/>
       </head>
       <body className={`${lato.variable} antialiased`}>
         <AppProviders>
