@@ -1,13 +1,18 @@
 'use client';
+import Link from 'next/link';
+import { useSearchParams } from "next/navigation";
+
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import Logout from '@/components/Logout';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@mantine/core';
+import { useEffect } from 'react';
 
 export default function UserAccount() {
   const { currentUser } = useAuth();
-  if (!currentUser) return null;
+
+  if (!currentUser) return null;  
 
   return (
     <div className={classes.profileContent}>

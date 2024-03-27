@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Minus } from 'lucide-react';
 import { Box, Collapse, Group, UnstyledButton, rem } from '@mantine/core';
 import Link from 'next/link';
+import { usePathname } from "next/navigation";
 
 import classes from './LinksGroup.module.css';
 
@@ -20,6 +21,7 @@ function Links({
 }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
+
   const items = (hasLinks ? links : []).map((link) => (
     <Link className={classes.link} href={link.link} key={link.label}>
       <Minus className='scale-x-50' />

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googleapis/searchconsole": "^1.0.3",
     "@mantine/carousel": "^7.3.2",
     "@mantine/core": "^7.3.2",
     "@mantine/form": "^7.3.2",
@@ -20,6 +21,7 @@
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",
+    "googleapis": "^134.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import LinksGroup from '@/modules/LinksGroup';
 import { Group } from "@mantine/core";
-import { LayoutList } from "lucide-react";
+import { LayoutList, SearchCheck } from "lucide-react";
 
 import classes from './AdminSidebar.module.css';
 import logo from '@/assets/logo/logo-footer.svg';
@@ -22,6 +22,11 @@ const data = [
     icon: LayoutList,
     links: [{ label: 'Orders', link: '/admin/orders' }],
   },
+  {
+    label: 'Seo',
+    icon: SearchCheck,
+    links: [{ label: 'Seo', link: '/admin/auth' }]
+  }
 ];
 
 export default function AdminSidebar() {

@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 
 import UserAccount from './components/UserAccount';
 
-
 export const metadata: Metadata = {
   title: 'Happy Tails | Profile Page',
   description: null,
@@ -13,6 +12,8 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <UserAccount />
+    <>
+      <UserAccount />
+    </>
   );
 }
