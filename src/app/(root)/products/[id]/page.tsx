@@ -14,6 +14,33 @@ type Props = {
   };
 };
 
+// export async function generateMetadata({params}: { params: { id: string } }) {
+//   try {
+//     const { data: product, isError, isLoading, error } = productApi.useFindOneQuery(
+//       params.id
+//     );
+  
+//     if (!product) {
+//       return {
+//         title: 'Not found',
+//         description: 'The product you are looking does not exist.',
+//       };
+//     }
+
+//     let meta = {
+//       title: `${product.quantity < 10 ? "Almost Out of Stock | " : "Buy Freely! | "} ${product.name} | Happy Tails`,
+//       description: `${(product.quantity < 10) ? "Almost Sold Out! " + "Grab This " + product.name + " Before It's Gone for Excellent Price: " + product.price + "$": "Spoil Your Pup! Shop This " + product.name + " Now! " + "Get Yours Almost For Nothing: " + product.price + "$ You Don't Want to Miss it Out!"}`
+//     }
+
+//     return {
+//       title: meta.title,
+//       description: meta.description
+//     }
+//   } catch (err) {
+//     if (err instanceof Error) throw err;
+//   }
+// }
+
 export default function ProductPage({ params }: Props) {
   const { data, isError, isLoading, error } = productApi.useFindOneQuery(
     params.id
@@ -38,7 +65,6 @@ export default function ProductPage({ params }: Props) {
       </section>
     );
 
-  console.log(data);
   ('processing: 3-10d');
   ('custom delivery: up to 21d');
   ('Countries: US, Canada');
