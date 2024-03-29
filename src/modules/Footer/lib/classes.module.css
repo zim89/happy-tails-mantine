@@ -1,0 +1,57 @@
+.wrapper {
+    @apply bg-secondary py-6 text-primary md:py-9;
+}
+
+.topFooter {
+    @apply flex flex-col gap-6 md:flex-row md:items-start md:justify-between;
+}
+
+.contactSection {
+    @apply flex flex-col gap-2 md:w-[324px] lg:w-[466px]; 
+}
+
+.heading {
+    @apply font-bold uppercase md:text-xl md:leading-normal;
+}
+
+.paragraph {
+    @apply text-xs leading-normal lg:text-base;
+}
+
+.logo {
+    @apply h-[33.6px] w-[189.6px] lg:h-12 lg:w-[228.91px];
+}
+
+.copyright {
+    @apply flex gap-3 text-xs leading-normal md:text-base;
+}
+
+.cookiePolicyLink {
+    @apply text-xs leading-normal md:text-base;
+}
+
+.email {
+    @apply relative self-start text-xs leading-normal text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full lg:text-base;
+}
+
+.links {
+display: grid;
+grid-template-areas: 
+        "link1 link2"
+        "link3 link3";
+    justify-content: space-between;
+
+    @media screen and (min-width: 768px) {
+        grid-template-areas: "link1 link2 link3";
+    }
+}
+
+.fullRow {
+    grid-area: link3;
+
+    @apply text-center mt-6 md:mt-0;
+}
+
+.author {
+    @apply relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal;
+}

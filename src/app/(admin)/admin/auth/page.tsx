@@ -6,7 +6,6 @@ export default function Page() {
     let verification = candidate ? JSON.parse(candidate) : null;
 
     // If there is no tokens, get the user's consent and get tokens
-    console.log(process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL);
     if (!verification) return redirect(`${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}`);
     // If there is an access token or refresh token (in case when the access token is expired)
     else return redirect("/admin/seo");

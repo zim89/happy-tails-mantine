@@ -1,0 +1,15 @@
+.section {
+    @apply mb-[32px];
+}
+
+.section > p + p {
+    @apply mt-4;
+}
+
+.headSection {
+    @apply text-xl font-bold mb-[24px];
+}
+
+.list {
+    @apply flex flex-col gap-4 px-7 pt-4;
+}
