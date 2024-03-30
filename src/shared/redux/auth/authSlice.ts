@@ -35,8 +35,8 @@ const authSlice = createSlice({
       state.user = null;
     },
     setAuthData: (state, { payload }) => {
-      state.access_token = payload.access_token;
-      state.refresh_token = payload.refresh_token;
+      state.access_token = payload.accessTokenResponse.access_token;
+      state.refresh_token = payload.accessTokenResponse.refresh_token;
       state.isAuth = true;
     },
     setUserData: (state, { payload }) => {
