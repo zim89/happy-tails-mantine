@@ -18,7 +18,7 @@ export default function Layout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuth) router.push("/");
+    if (!isAuth) router.push("/403");
   }, [isAuth, router]);
 
   if (!isAuth) return null;

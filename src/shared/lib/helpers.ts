@@ -40,10 +40,12 @@ export const dirtyFields = (obj: { [P in string]: string }) => {
 }
 
 export const availabilityMap: {
-  [P in NonNullable<Product["productType"]>]: string;
+  [P in NonNullable<Product["productStatus"]>]: string;
 } = {
-  "IN_STOCK": "https://schema.org/InStock",
-  "OUT OF STOCK": "https://schema.org/OutOfStock",
+  "IN STOCK": "https://schema.org/InStock",
+  "TEMPORARILY_ABSENT": "https://schema.org/OutOfStock",
+  "DELETE": "https://schema.org/Discontinued",
+  "ACTIVE": "https://schema.org/InStock"
 
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.
