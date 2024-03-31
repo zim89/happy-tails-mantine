@@ -23,6 +23,16 @@ export const formatUserAttributes = (obj: { [P in string]: string }) => {
   return res;
 }
 
+export const cleanPostcode = (input: string): string => {
+  // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
+  const regex = /^([A-Za-z0-9]+) \(.+\)$/;
+  
+  // Replace the matched group with just the postcode part
+  const cleanedInput = input.replace(regex, '$1');
+
+  return cleanedInput;
+}
+
 // I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces 
 export const dirtyFields = (obj: { [P in string]: string }) => {
   let res: [{ [P in string]: string }, number] = [{}, 0];

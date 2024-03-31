@@ -5,9 +5,10 @@ import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import { dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
+import { cleanPostcode, dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { AutoFields } from './AutoFields'
+import { PostalCodeField } from './PostalCodeField';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -26,6 +27,15 @@ export const DeliveryForm = () => {
       contactNumber: '',
       county: '',
     },
+
+    transformValues(values) {
+      const parsedPostcode = cleanPostcode(values.postcode);
+
+      return {
+        ...values,
+        postcode: parsedPostcode
+      }
+    },  
 
     validate: {
       firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
@@ -101,21 +111,7 @@ export const DeliveryForm = () => {
       </Group>
       
       <Group className={classes.fieldsGroup}>
-        <TextInput
-          withAsterisk
-          classNames={{
-            root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
-            input: cn(
-              'form-input',
-              form?.errors?.postcode && 'form-error--input'
-            ),
-            error: 'form-error',
-          }}
-          label='Postcode'
-          {...form.getInputProps('postcode')}
-          placeholder='Enter Postcode'
-        />
+        <PostalCodeField form={form}/>
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),

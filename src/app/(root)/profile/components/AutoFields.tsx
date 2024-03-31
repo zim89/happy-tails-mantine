@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { XCircle } from 'lucide-react';
-import { Autocomplete } from '@mantine/core';
+import { Autocomplete, Select } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Form, UseFormReturnType } from '@mantine/form';
 
@@ -27,82 +27,61 @@ type Props = {
     button?: string;
   };
 };
+
+const countries = ['Canada', 'United States'];
+
 export const AutoFields = ({ form, classNames }: Props) => {
-  const [debounced] = useDebouncedValue(form.values.country, 500);
   const [found, setFound] = useState(false);
   const [cities, setCities] = useState<string[]>([]);
-  const [countries, setCountries] = useState<string[]>([]);
-
-  const onResetCountry = () => {
-    form.setFieldValue('country', '');
-    setFound(false);
-    onResetCity();
-  };
 
   const onResetCity = () => {
     form.setFieldValue('city', '');
   };
 
-  useEffect(() => {
-    (async () => {
-      const res = await axios.get(
-        'http://api.geonames.org/searchJSON?username=dima5381&continentCode=NA&featureClass=A'
+  const findCountries = async (updated: string | null) => {
+    if (form.values.country === updated || !updated) return;
+
+    try {
+      setFound(false);
+      const res = await axios.post(
+        'https://countriesnow.space/api/v0.1/countries/cities',
+        {
+          country: updated
+        }
       );
-
-      const raw: { countryName: string }[] = res.data.geonames;
-      const transformed = raw.reduce(
-        (acc, curr) => acc.add(curr.countryName),
-        new Set<string>()
-      );
-      setCountries([...transformed.values()]);
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (!debounced.trim()) return;
-
-    (async () => {
-      try {
-        const res = await axios.post(
-          'https://countriesnow.space/api/v0.1/countries/cities',
-          {
-            country: debounced,
-            limit: 10,
-          }
-        );
-        setFound(true);
-        setCities(res.data.data);
-      } catch (err) {
-        if (err instanceof AxiosError) console.log(err.response?.data.msg);
-        setFound(false);
-      }
-    })();
-  }, [debounced]);
+      setFound(true);
+      setCities(res.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
-      <Autocomplete
+      <Select
+        mt='md'
         withAsterisk
-        label='Country'
+        comboboxProps={{ withinPortal: true }}
+        data={countries}
+        styles={{
+          root: {
+            margin: 0
+          }
+        }}
         classNames={{
           root: cn('form-root', classes.fieldSizing),
-          input: cn('form-input', form?.errors?.country && 'form-error--input'),
           label: 'form-label',
+          input: cn('form-input', form?.errors?.country && 'form-error--input'),
         }}
-        rightSection={
-          form.values.country && (
-            <button
-              className={cn('group absolute right-2', classNames?.button)}
-              onClick={onResetCountry}
-            >
-              <XCircle className='h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary' />
-            </button>
-          )
-        }
-        disabled={!countries.length}
         placeholder='Pick your country'
-        data={countries}
+        label='Country'
         {...form.getInputProps('country')}
+        onChange={(updated) => {
+          findCountries(updated);
+          form.getInputProps('country').onChange(updated);
+          onResetCity();
+          form.setFieldValue("postcode", "");
+        }}
       />
       <Autocomplete
         withAsterisk
@@ -113,6 +92,7 @@ export const AutoFields = ({ form, classNames }: Props) => {
           input: cn('form-input', form?.errors?.city && 'form-error--input'),
         }}
         {...form.getInputProps('city')}
+        limit={10}
         label='Town/City'
         rightSection={
           form.values.city &&
