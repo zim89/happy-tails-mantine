@@ -1,9 +1,11 @@
-import UnderConstruction from '@/components/UnderConstruction';
+import BestSellers from '@/modules/BestSellers';
+import HeroCarousel from '@/modules/HeroCarousel';
 
 export default function HomePage() {
   return (
     <>
-      <UnderConstruction />
+      <HeroCarousel />
+      <BestSellers />
     </>
   );
 }

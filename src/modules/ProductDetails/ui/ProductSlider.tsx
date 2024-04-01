@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { sliderData } from '@/modules/ProductDetails/lib/data';
 import '@mantine/carousel/styles.css';
 
-export default function ProductSlider() {
+export default function ProductSlider({ alt }: { alt?: boolean }) {
   const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
@@ -46,44 +46,53 @@ export default function ProductSlider() {
 
   return (
     <Container>
-      <div className='mb-9 flex items-center justify-between'>
-        <h2 className='text-xl font-bold leading-normal md:text-[28px]'>
-          You may also like
-        </h2>
-        <div className='flex gap-4 md:gap-6'>
-          <button
-            onClick={scrollPrev}
-            disabled={!hasPrevSlide}
-            className={clsx(
-              'navBtn pr-[2px]',
-              hasPrevSlide ? 'navBtn-primary' : 'navBtn-disabled'
-            )}
-          >
-            <ChevronLeft className='navBtn-icon' />
-          </button>
-          <button
-            onClick={scrollNext}
-            disabled={!hasNextSlide}
-            className={clsx(
-              'navBtn pl-[2px]',
-              hasNextSlide ? 'navBtn-primary' : 'navBtn-disabled'
-            )}
-          >
-            <ChevronRight className='navBtn-icon' />
-          </button>
+      {!alt && (
+        <div className='mb-9 flex items-center justify-between'>
+          <h2 className='text-xl font-bold leading-normal md:text-[28px]'>
+            You may also like
+          </h2>
+          <div className='flex gap-4 md:gap-6'>
+            <button
+              onClick={scrollPrev}
+              disabled={!hasPrevSlide}
+              className={clsx(
+                'navBtn pr-[2px]',
+                hasPrevSlide ? 'navBtn-primary' : 'navBtn-disabled'
+              )}
+            >
+              <ChevronLeft className='navBtn-icon' />
+            </button>
+            <button
+              onClick={scrollNext}
+              disabled={!hasNextSlide}
+              className={clsx(
+                'navBtn pl-[2px]',
+                hasNextSlide ? 'navBtn-primary' : 'navBtn-disabled'
+              )}
+            >
+              <ChevronRight className='navBtn-icon' />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       <Carousel
         getEmblaApi={setEmbla}
-        withControls={false}
-        draggable={false}
+        withControls={!!alt}
+        draggable={!!alt}
         align={'start'}
         slideGap={16}
         slideSize={{ base: '100%', md: '50%', lg: '33.33%' }}
-        slidesToScroll={slidesToScroll.current}
+        slidesToScroll={alt ? 'auto' : slidesToScroll.current}
         speed={4}
-        dragFree
+        dragFree={!alt}
+        controlsOffset={0}
+        classNames={{
+          controls:
+            '!hidden lg:!flex [--_controls-left:-22px_!important] [--_controls-right:-22px_!important]',
+          control:
+            'navBtn data-[inactive=true]:navBtn-disabled data-[inactive=false]:navBtn-primary',
+        }}
       >
         {sliderData.map((item) => (
           <Carousel.Slide key={item.id}>
