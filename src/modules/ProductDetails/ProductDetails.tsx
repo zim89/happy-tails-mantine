@@ -15,12 +15,16 @@ import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductSlider from './ui/ProductSlider';
 import { cn } from '@/shared/lib/utils';
+import { SizeGuide } from './components/SizeGuide';
+import { useDisclosure } from '@mantine/hooks';
 
 interface Props {
   product: Product;
 }
 
 export default function ProductDetails({ product }: Props) {
+  const [opened, { close, toggle, open }] = useDisclosure();
+
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
     product.quantity === 0 ? 0 : 1
@@ -87,14 +91,17 @@ export default function ProductDetails({ product }: Props) {
                 Please check the{' '}
                 <Anchor
                   href='#SizeGuide'
-                  target='_blank'
                   underline='never'
+                  onClick={open}
                   className='relative font-light text-secondary after:absolute after:bottom-0 after:left-0 after:block after:h-[0.5px] after:w-full after:bg-secondary'
                 >
                   Size Guide
                 </Anchor>{' '}
                 for your correct size before ordering
               </p>
+
+              {/* Size guiding table */}
+              <SizeGuide opened={opened} onClose={close} onToggle={toggle}/>
 
               {/*ProductDetails footer*/}
               <div className='mb-6 flex items-center justify-between md:mb-12'>
