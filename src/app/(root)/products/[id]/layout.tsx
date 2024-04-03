@@ -1,12 +1,11 @@
 import ProductAdditionalInfo from '@/components/ProductAdditionalInfo';
-import { getProductById } from "@/shared/api/productApi"; 
+import { getProductById } from '@/shared/api/productApi';
+import { AxiosError } from 'axios';
 
-export async function generateMetadata({params}: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
-    const product = await getProductById(
-      params.id
-    );
-  
+    const product = await getProductById(params.id);
+
     if (!product) {
       return {
         title: 'Not found',
@@ -15,16 +14,18 @@ export async function generateMetadata({params}: { params: { id: string } }) {
     }
 
     let meta = {
-      title: `${product.quantity < 10 ? "Almost Out of Stock | " : "Buy Freely! | "} ${product.name} | Happy Tails`,
-      description: `${(product.quantity < 10) ? "Almost Sold Out! " + "Grab This " + product.name + " Before It's Gone for Excellent Price: " + product.price + "$": "Spoil Your Pup! Shop This " + product.name + " Now! " + "Get Yours Almost For Nothing: " + product.price + "$ You Don't Want to Miss it Out!"}`
-    }
+      title: `${product.quantity < 10 ? 'Almost Out of Stock | ' : 'Buy Freely! | '} ${product.name} | Happy Tails`,
+      description: `${product.quantity < 10 ? 'Almost Sold Out! ' + 'Grab This ' + product.name + " Before It's Gone for Excellent Price: " + product.price + '$' : 'Spoil Your Pup! Shop This ' + product.name + ' Now! ' + 'Get Yours Almost For Nothing: ' + product.price + "$ You Don't Want to Miss it Out!"}`,
+    };
 
     return {
       title: meta.title,
-      description: meta.description
-    }
+      description: meta.description,
+    };
   } catch (err) {
-    if (err instanceof Error) throw err;
+    if (err instanceof AxiosError) {
+      console.log(err);
+    }
   }
 }
 export default function DashboardLayout({
@@ -32,10 +33,10 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-    return (
+  return (
     <>
       {children}
       <ProductAdditionalInfo />
     </>
   );
-};
+}

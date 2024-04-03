@@ -1,6 +1,14 @@
 import { Button, Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Unauthorized Access",
+    robots: {
+        index: false
+    }
+}
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
@@ -140,7 +140,7 @@ export const getProductById = async (id: string) => {
     const result = request.data;
     return result;
   } catch (err) {
-    if (err instanceof Error) {
+    if (err instanceof AxiosError) {
       throw err;
     }
   }

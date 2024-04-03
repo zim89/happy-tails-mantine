@@ -5,6 +5,7 @@ import { Container, Loader } from '@mantine/core';
 import { productApi } from '@/shared/api/productApi';
 import Script from 'next/script';
 import { availabilityMap } from '@/shared/lib/helpers';
+import { notFound } from 'next/navigation';
 
 const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
 
@@ -19,12 +20,14 @@ export default function ProductPage({ params }: Props) {
     params.id
   );
 
-  if (isLoading || !data)
+  if (isLoading)
     return (
       <div className='flex h-[calc(100vh-73px)] items-center justify-center lg:h-[calc(100vh-83px)] '>
         <Loader color='orange' />
       </div>
     );
+
+  if (!data) notFound();
 
   if (isError)
     return (
@@ -37,7 +40,7 @@ export default function ProductPage({ params }: Props) {
         </Container>
       </section>
     );
-      
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -49,7 +52,7 @@ export default function ProductPage({ params }: Props) {
       availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
       url: `https://happy-tails-mantine.vercel.app/products/${data.id}`,
       category: data.categoryName,
-      itemCondition: "https://schema.org/NewCondition",
+      itemCondition: 'https://schema.org/NewCondition',
       priceSpecification: {
         '@type': 'PriceSpecification',
         price: data.price,
