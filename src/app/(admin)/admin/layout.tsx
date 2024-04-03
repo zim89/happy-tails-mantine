@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { isAdmin } = useAuth();
 
   useEffect(() => {
-    if (!isAdmin) router.push("/"); 
+    if (!isAdmin) router.push("/403"); 
   }, [isAdmin]);
 
   if (!isAdmin) return null;  

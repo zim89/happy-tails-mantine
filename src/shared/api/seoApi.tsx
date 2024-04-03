@@ -1,5 +1,11 @@
 import axios, { AxiosError } from 'axios';
 
+type Verification = {
+  refresh_token: string;
+  access_token: string;
+  expires_in: number;
+};
+
 export const getAccessToken = async (code: string) => {
   try {
     const params = new URLSearchParams({
@@ -19,12 +25,10 @@ export const getAccessToken = async (code: string) => {
   }
 };
 
-export const refreshAccessToken = async (
-  refresh_token: string
-) => {
+export const refreshAccessToken = async (refresh_token: string) => {
   try {
     const params = new URLSearchParams({
-      refresh_token
+      refresh_token,
     });
 
     const res = await axios.get(
@@ -53,9 +57,9 @@ type DimensionFilterGroup = {
 };
 
 type AnalyticsQuery = {
+  verification: Verification;
   startDate: string;
   endDate: string;
-  access_token: string;
   aggregationType?: string;
   dataState?: string;
   type?: string;
@@ -66,10 +70,30 @@ type AnalyticsQuery = {
   dimensionFilterGroups?: Partial<DimensionFilterGroup>[];
 };
 export const getAnalytics = async ({
-  access_token,
+  verification,
   ...rest
 }: AnalyticsQuery) => {
   try {
+    let access_token = verification.access_token;
+    
+    
+    // If the token is expired, exchange refresh token to access one
+    if (verification.expires_in < Date.now()) {
+      const refresh_token = verification.refresh_token;
+      const res = await refreshAccessToken(refresh_token);
+
+      localStorage.setItem(
+        'google_verification',
+        JSON.stringify({
+          refresh_token,
+          access_token: res.data.accessToken,
+          expires_in: res.data.expiryDate,
+        })
+      );
+
+      access_token = res.data.accessToken;
+    }
+
     const res = await axios.post(
       process.env.NODE_ENV === 'production'
         ? `https://happy-tails-mantine.vercel.app/api/analytics`

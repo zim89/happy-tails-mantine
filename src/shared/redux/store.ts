@@ -18,6 +18,7 @@ import { authReducer } from '@/shared/redux/auth/authSlice';
 import { categoriesApi } from '@/shared/api/categoryApi';
 import { authApi } from '@/shared/api/authApi';
 import { ordersApi } from '@/shared/api/ordersApi';
+import { oauthApi } from '../api/oauthApi';
 
 const createNoopStorage = () => {
   return {
@@ -55,6 +56,10 @@ const authPersistConfig = {
   key: 'authHappyTails',
   storage,
 };
+const ouathApiPersistConfig = {
+  key: 'oauth_tokens',
+  storage,
+}
 
 const favoritesPersistedReducer = persistReducer(
   favoritesPersistConfig,
@@ -62,6 +67,7 @@ const favoritesPersistedReducer = persistReducer(
 );
 const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
 const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
+const oauthPerstistedReducer = persistReducer(ouathApiPersistConfig, oauthApi.reducer);
 
 export const store = configureStore({
   reducer: {
@@ -69,6 +75,7 @@ export const store = configureStore({
     [productApi.reducerPath]: productApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [oauthApi.reducerPath]: oauthPerstistedReducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,

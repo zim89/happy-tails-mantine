@@ -23,6 +23,16 @@ export const formatUserAttributes = (obj: { [P in string]: string }) => {
   return res;
 }
 
+export const cleanPostcode = (input: string): string => {
+  // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
+  const regex = /^([A-Za-z0-9]+) \(.+\)$/;
+  
+  // Replace the matched group with just the postcode part
+  const cleanedInput = input.replace(regex, '$1');
+
+  return cleanedInput;
+}
+
 // I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces 
 export const dirtyFields = (obj: { [P in string]: string }) => {
   let res: [{ [P in string]: string }, number] = [{}, 0];
@@ -40,10 +50,12 @@ export const dirtyFields = (obj: { [P in string]: string }) => {
 }
 
 export const availabilityMap: {
-  [P in NonNullable<Product["productType"]>]: string;
+  [P in NonNullable<Product["productStatus"]>]: string;
 } = {
-  "IN_STOCK": "https://schema.org/InStock",
-  "OUT OF STOCK": "https://schema.org/OutOfStock",
+  "IN STOCK": "https://schema.org/InStock",
+  "TEMPORARILY_ABSENT": "https://schema.org/OutOfStock",
+  "DELETE": "https://schema.org/Discontinued",
+  "ACTIVE": "https://schema.org/InStock"
 
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.

@@ -5,8 +5,10 @@ import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import { dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
+import { cleanPostcode, dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { AutoFields } from './AutoFields'
+import { PostalCodeField } from './PostalCodeField';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -26,6 +28,15 @@ export const DeliveryForm = () => {
       county: '',
     },
 
+    transformValues(values) {
+      const parsedPostcode = cleanPostcode(values.postcode);
+
+      return {
+        ...values,
+        postcode: parsedPostcode
+      }
+    },  
+
     validate: {
       firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       lastName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
@@ -43,20 +54,20 @@ export const DeliveryForm = () => {
       onSubmit={form.onSubmit(async (values) => {
         const [newAttributes, count] = dirtyFields(values);
         // If there is no changes, omit the call to API
+
         if (count === 0) return;
         if (!currentUser) return;
 
-        const { registerDate, userId, roles, ...prevUser } = currentUser;  
-        
+        const { registerDate, userId, roles, ...prevUser } = currentUser;
+
         const formatedAttributes = formatUserAttributes(newAttributes);
-        
+
         let request = {
           ...prevUser,
-          attributes: formatedAttributes
+          attributes: formatedAttributes,
         };
 
-        const res = await updateUser(request);
-        console.log(res);
+        await updateUser(request);
 
         form.clearErrors();
         form.reset();
@@ -94,57 +105,18 @@ export const DeliveryForm = () => {
           placeholder='Enter Your Last Name'
         />
       </Group>
+
       <Group className={classes.fieldsGroup}>
-        <TextInput
-          withAsterisk
-          classNames={{
-            root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
-            input: cn(
-              'form-input',
-              form?.errors?.country && 'form-error--input'
-            ),
-            error: 'form-error',
-          }}
-          type='country'
-          label='Country'
-          {...form.getInputProps('country')}
-          placeholder='Enter Country'
-        />
-        <TextInput
-          withAsterisk
-          classNames={{
-            root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
-            input: cn('form-input', form?.errors?.city && 'form-error--input'),
-            error: 'form-error',
-          }}
-          label='Town / City'
-          {...form.getInputProps('city')}
-          placeholder='Enter Town / City'
-        />
+        <AutoFields form={form} />
       </Group>
+      
       <Group className={classes.fieldsGroup}>
-        <TextInput
-          withAsterisk
-          classNames={{
-            root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
-            input: cn(
-              'form-input',
-              form?.errors?.postcode && 'form-error--input'
-            ),
-            error: 'form-error',
-          }}
-          label='Postcode'
-          {...form.getInputProps('postcode')}
-          placeholder='Enter Postcode'
-        />
+        <PostalCodeField form={form}/>
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
-            input: 'form-input'
+            input: 'form-input',
           }}
           label='Company'
           {...form.getInputProps('company')}
@@ -171,7 +143,7 @@ export const DeliveryForm = () => {
           classNames={{
             root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
-            input: 'form-input'
+            input: 'form-input',
           }}
           label='Address Line 2'
           {...form.getInputProps('addressTwo')}
@@ -198,7 +170,7 @@ export const DeliveryForm = () => {
           classNames={{
             root: cn('form-root', classes.fieldSizing),
             label: 'form-label',
-            input: 'form-input'
+            input: 'form-input',
           }}
           label='County'
           {...form.getInputProps('county')}

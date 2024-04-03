@@ -5,6 +5,7 @@ import { Container, Loader } from '@mantine/core';
 import { productApi } from '@/shared/api/productApi';
 import Script from 'next/script';
 import { availabilityMap } from '@/shared/lib/helpers';
+import { notFound } from 'next/navigation';
 
 const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
 
@@ -19,12 +20,14 @@ export default function ProductPage({ params }: Props) {
     params.id
   );
 
-  if (isLoading || !data)
+  if (isLoading)
     return (
       <div className='flex h-[calc(100vh-73px)] items-center justify-center lg:h-[calc(100vh-83px)] '>
         <Loader color='orange' />
       </div>
     );
+
+  if (!data) notFound();
 
   if (isError)
     return (
@@ -38,12 +41,6 @@ export default function ProductPage({ params }: Props) {
       </section>
     );
 
-  console.log(data);
-  ('processing: 3-10d');
-  ('custom delivery: up to 21d');
-  ('Countries: US, Canada');
-  ('30d return policy');
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -52,9 +49,10 @@ export default function ProductPage({ params }: Props) {
     description: data.description,
     offers: {
       '@type': 'Offer',
+      availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
       url: `https://happy-tails-mantine.vercel.app/products/${data.id}`,
       category: data.categoryName,
-      itemCondition: "https://schema.org/NewCondition",
+      itemCondition: 'https://schema.org/NewCondition',
       priceSpecification: {
         '@type': 'PriceSpecification',
         price: data.price,
@@ -84,6 +82,8 @@ export default function ProductPage({ params }: Props) {
         shippingRate: {
           '@type': 'MonetaryAmount',
           currency: 'USD',
+          minValue: 0,
+          maxValue: 30,
         },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',
@@ -102,7 +102,6 @@ export default function ProductPage({ params }: Props) {
         },
       },
     },
-    availability: availabilityMap[data.productType || 'OUT OF STOCK'],
   };
 
   return (
