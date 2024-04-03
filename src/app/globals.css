@@ -22,7 +22,7 @@
 
 @layer components {
   .section {
-    @apply py-8 md:py-10 lg:py-14;
+    @apply py-8 pt-[74px] md:py-10 lg:py-14;
   }
 
   .heading {

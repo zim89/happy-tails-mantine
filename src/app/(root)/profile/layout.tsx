@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Container } from '@mantine/core';
 
 import SliderMenu from '@/modules/ProfileMenu/mobile';
@@ -18,18 +18,20 @@ export default function Layout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuth) router.push("/403");
+    if (!isAuth) router.push('/403');
   }, [isAuth, router]);
 
   if (!isAuth) return null;
 
   return (
-    <Container className={classes.page}>
-      {/* Only on mobiles and tablets */}
-      <SliderMenu />
-      {/* From laptops and beyond */}
-      <SidebarMenu />
-      <div className={classes.content}>{children}</div>
-    </Container>
+    <section className='section'>
+      <Container className={classes.page}>
+        {/* Only on mobiles and tablets */}
+        <SliderMenu />
+        {/* From laptops and beyond */}
+        <SidebarMenu />
+        <div className={classes.content}>{children}</div>
+      </Container>
+    </section>
   );
 }
