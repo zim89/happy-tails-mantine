@@ -23,19 +23,6 @@
     @apply py-4 font-light;
 }
 
-/* Shared */
-.form {
-    @apply flex flex-col gap-4 md:items-center;
-}
-
-.inputSizing {
-    @apply md:w-[458px] lg:w-[315px];
-}
-
-.profileHeading {
-    @apply hidden text-center lg:block;
-}
-
 /* Delivery form */
 .fieldsGroup {
     @apply flex-col justify-center md:w-full md:flex-row;
@@ -43,6 +30,10 @@
 
 .fieldSizing {
     @apply  w-full md:flex-1 lg:flex-initial lg:w-[275px];
+}
+
+.submitAddress {
+    @apply mt-6 bg-black uppercase md:w-[380px] lg:w-[315px] mb-16 md:mb-28;
 }
 
 /* Layout */
@@ -66,4 +57,21 @@
 
 .profileContent {
     @apply mx-auto flex flex-col md:max-w-[572px] text-center min-h-[50vh];
+}
+
+/* Shared */
+.form {
+    @apply flex flex-col gap-4 md:items-center;
+}
+
+.inputSizing {
+    @apply md:w-[458px] lg:w-[315px];
+}
+
+.profileHeading {
+    @apply hidden text-center lg:block;
+}
+
+.clearField {
+    @apply h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary;
 }

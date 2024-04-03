@@ -5,9 +5,9 @@ import { Autocomplete } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
 import { XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
-type Postcode = { postal_code: string, place_name: string };
+type Postcode = { postal_code: string, place_name: string, country_code: string, state: string };
 
 type Props = {
   form: UseFormReturnType<{
@@ -34,19 +34,31 @@ export const PostalCodeField = ({ form }: Props) => {
   useEffect(() => {
     if (!form.values.city.trim()) {
       onResetValue();
+      setCodes([]);
       return;
     }
     (async () => {
-      const res = await axios.get(
-        `https://zip-api.eu/api/v1/codes/place_name=${form.values.city}`
-      );
-      
-      let raw: Postcode | Array<Postcode> = res.data;
-      // If there is only one postcode (single object instead of Array), will transform it to array with single element
-      !Array.isArray(raw) && (raw = [raw]);
+      try {
+        const country_code = form.values.country === "Canada" ? "CA" : "US";
+        const res = await axios.get(
+          `https://zip-api.eu/api/v1/codes/place_name=${country_code}-${form.values.city}`
+        );
 
-      const transformed = raw.map(({ postal_code, place_name }) => `${postal_code} (${place_name})`);
-      setCodes(transformed);
+        form.clearFieldError("postcode");
+        let raw: Postcode | Array<Postcode> = res.data;
+        // If there is only one postcode (single object instead of Array), will transform it to array with single element
+        !Array.isArray(raw) && (raw = [raw]);
+  
+          console.log(raw);
+          
+        const transformed = raw.map(({ postal_code, place_name, country_code, state }) => `${postal_code}, (${country_code}, ${state}, ${place_name})`);
+        setCodes(transformed);
+
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          form.setFieldError("postcode", `${err.response?.data.message}. Please, put the code yourself`);
+        }
+      }
     })();
   }, [form.values.city]);
 
@@ -57,6 +69,7 @@ export const PostalCodeField = ({ form }: Props) => {
         root: cn('form-root', classes.fieldSizing),
         label: 'form-label',
         input: cn('form-input', form?.errors?.city && 'form-error--input'),
+        error: 'form-error',
       }}
       {...form.getInputProps('postcode')}
       label='Postcode'
@@ -67,7 +80,7 @@ export const PostalCodeField = ({ form }: Props) => {
             className={cn('group absolute right-2', classes?.button)}
             onClick={onResetValue}
           >
-            <XCircle className='h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary' />
+            <XCircle className={classes.clearField} />
           </button>
         )
       }
