@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -24,10 +24,9 @@ import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 
 export default function AddCategoryModal() {
-  const { access_token, id_token, currentUser } = useAuth();
+  const { access_token } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
 
-  // const [isNotified, setIsNotified] = useState(false);
   const [isNotified, { open: openNotification, close: closeNotification }] =
     useDisclosure(false);
   const previewImage = useRef<{ image: string | null; name: string | null }>({
