@@ -129,6 +129,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         onClose={close}
       >
         <ModalHeader heading='Update Category' handleClose={close} />
+        
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <TextInput
             classNames={{
@@ -194,6 +195,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </div>
           )}
         </form>
+
         <ModalFooter
           singleBtn={false}
           secondaryBtnText='Cancel'

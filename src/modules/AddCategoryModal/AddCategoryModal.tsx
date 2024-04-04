@@ -13,27 +13,30 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
-import { useAuth } from "@/shared/hooks/useAuth";
+import { useAuth } from '@/shared/hooks/useAuth';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
-import { DEFAULT_CATEGORY_IMAGE } from "@/shared/lib/constants"; 
+import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
+import { cn } from '@/shared/lib/utils';
 
 export default function AddCategoryModal() {
   const { access_token, id_token, currentUser } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
 
-  const [isNotified, setIsNotified] = useState(false);
+  // const [isNotified, setIsNotified] = useState(false);
+  const [isNotified, { open: openNotification, close: closeNotification }] =
+    useDisclosure(false);
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
     name: null,
   });
 
   const handleClose = () => {
-    setIsNotified(false);
+    closeNotification();
   };
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -74,13 +77,12 @@ export default function AddCategoryModal() {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    // TODO: image upload
     let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
     if (image) {
       const form = new FormData();
       form.append('image', image);
-      form.append('title', 'CATEGORY: image deploy');
+      form.append('title', `CATEGORY: ${categoryName}`);
 
       const res = await axios.post('https://api.imgur.com/3/image/', form, {
         headers: {
@@ -96,13 +98,13 @@ export default function AddCategoryModal() {
       name: categoryName,
       productCount: 0,
       imgSrc,
-      access_token: access_token
+      access_token: access_token,
     };
 
     await dispatch(newCategory);
 
     clearAndClose();
-    setIsNotified(true);
+    openNotification();
   };
 
   return (
@@ -125,8 +127,8 @@ export default function AddCategoryModal() {
         size={694}
         opened={opened}
         classNames={{
-          header: 'hidden',
-          content: 'py-[14px] px-6',
+          header: styles.modalHeader,
+          content: styles.modalContent,
         }}
         onChange={() => {}}
         onClose={close}
@@ -135,7 +137,17 @@ export default function AddCategoryModal() {
 
         <form>
           <TextInput
-            classNames={{ input: 'ounded-sm', label: 'mb-1' }}
+            classNames={{
+              root: 'form-root',
+              label: 'form-label',
+              wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
+              section: 'static w-auto text-[#161616] whitespace-nowrap',
+              input: cn(
+                'form-input rounded-sm border-0 p-0 outline-none',
+                form?.errors?.categoryName && 'form-error--input'
+              ),
+              error: 'form-error',
+            }}
             withErrorStyles
             type='text'
             label='Category Name'
@@ -144,7 +156,7 @@ export default function AddCategoryModal() {
 
           <InputLabel
             classNames={{
-              label: 'flex gap-[10px] items-center mt-7 mb-1',
+              label: styles.fileLabel,
             }}
           >
             <span>Image</span>
@@ -164,17 +176,17 @@ export default function AddCategoryModal() {
                 className='pointer-events-none w-full'
                 placeholder='Max file size 500 kB'
                 {...form.getInputProps('image')}
-                accept='image/*'
+                accept='.png,.jpeg,.gif,.webp'
                 classNames={{
-                  wrapper: 'h-full',
-                  input: "h-full rounded-sm font-['Arial']",
+                  wrapper: styles.fileWrapper,
+                  input: cn("form-input", styles.fileInput),
                 }}
               />
             </div>
           ) : (
-            <div className='flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1'>
+            <div className={styles.previewWrapper}>
               <Image
-                className='h-8 w-8 object-contain'
+                className={styles.previewImage}
                 width={32}
                 height={32}
                 src={previewImage.current.image}
