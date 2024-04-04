@@ -9,13 +9,13 @@ import AdminHeader from '@/modules/AdminHeader';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { isAdmin } = useAuth();
+  // const { isAdmin } = useAuth();
 
-  useEffect(() => {
-    if (!isAdmin) router.push("/403"); 
-  }, [isAdmin]);
+  // useEffect(() => {
+  //   if (!isAdmin) router.push("/403"); 
+  // }, [isAdmin]);
 
-  if (!isAdmin) return null;  
+  // if (!isAdmin) return null;  
 
   return (
     <div className={classes.layoutWrapper}>

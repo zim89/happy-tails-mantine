@@ -1,5 +1,5 @@
 'use client';
-import { getAnalytics, refreshAccessToken } from '@/shared/api/seoApi';
+import { getAnalytics } from '@/shared/api/seoApi';
 import { useEffect, useState } from 'react';
 
 type Props = {
