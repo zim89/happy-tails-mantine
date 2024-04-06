@@ -107,9 +107,6 @@ export default function OrdersList({ orders }: Props) {
                 <FileText className='inline' size={12} /> Electronic check
               </p>
               <div className='ml-auto flex flex-col md:flex-row gap-4'>
-                <Button className='border-[#EEE] text-black'>
-                  Leave a review
-                </Button>
                 <Button className='bg-black'>Repeat the order</Button>
               </div>
             </div>

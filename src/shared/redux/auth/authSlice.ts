@@ -15,6 +15,7 @@ export interface AuthState {
   access_token: string;
   refresh_token: string;
   isAuth: boolean;
+  refresh_token_expired_in: number;
 }
 
 const initialState: AuthState = {
@@ -22,6 +23,7 @@ const initialState: AuthState = {
   access_token: '',
   refresh_token: '',
   isAuth: false,
+  refresh_token_expired_in: 0
 };
 
 const authSlice = createSlice({
@@ -32,11 +34,13 @@ const authSlice = createSlice({
       state.access_token = '';
       state.refresh_token = '';
       state.isAuth = false;
+      state.refresh_token_expired_in = 0;
       state.user = null;
     },
     setAuthData: (state, { payload }) => {
       state.access_token = payload.accessTokenResponse.access_token;
       state.refresh_token = payload.accessTokenResponse.refresh_token;
+      state.refresh_token_expired_in = Date.now() + (Number(payload.accessTokenResponse.refresh_expires_in) * 60);
       state.isAuth = true;
     },
     setUserData: (state, { payload }) => {

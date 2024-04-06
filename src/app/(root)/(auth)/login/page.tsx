@@ -19,7 +19,7 @@ export default function Page() {
         {/*<h2 className='mb-4 text-2xl/normal font-light'>Welcome !</h2>*/}
         <h1 className='text-[32px]/[1.2] font-bold'>Sign in</h1>
         <p className='flex justify-between text-base md:justify-start md:gap-1'>
-          <span>Don’t have an account? </span>
+          <span>{"Don’t have an account?"}</span>
           <Link href={'/register'} className='text-brand-orange-400'>
             Create an account
           </Link>

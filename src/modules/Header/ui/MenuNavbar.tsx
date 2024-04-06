@@ -13,7 +13,7 @@ type MenuNavbarProps = {
 };
 function MenuNavbar({ menu, path }: MenuNavbarProps) {
   const { isDesktop } = useDeviceSize();
-  const { isAuth } = useAuth();
+  const { isAuth, isAdmin } = useAuth();
 
   return (
     <div className='flex flex-col gap-8 pl-4 md:pl-9 lg:mx-auto lg:w-[1280px] lg:flex-row lg:items-center lg:justify-between lg:px-14'>
@@ -99,6 +99,8 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
         <li>
           {!isAuth ? (
             <Link href='/login' className='text-base font-light'>Log In</Link>
+          ) : isAdmin ? (
+            <Link href='/admin' className='text-base font-light'>Profile</Link>
           ) : (
             <Link href='/profile' className='text-base font-light'>Profile</Link>
           )}
