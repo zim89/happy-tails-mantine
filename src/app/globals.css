@@ -50,7 +50,7 @@
   }
 
   .btn-disabled {
-    @apply bg-secondary text-white opacity-40;
+    @apply bg-secondary text-white opacity-40 hover:bg-secondary hover:text-white;
   }
 
   /*NavBtn*/

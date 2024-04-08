@@ -1,18 +1,19 @@
 'use client';
 import { PasswordInput, TextInput } from '@mantine/core';
 import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import { useAppDispatch } from '@/shared/redux/store';
 import { useRouter } from 'next/navigation';
-import { useLoginMutation, useRegisterMutation } from '@/shared/api/authApi';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { toast } from 'react-toastify';
+import { useRegisterMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { useAppDispatch } from '@/shared/redux/store';
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [register, { isLoading: isLoadingRegister }] = useRegisterMutation();
-  const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const form = useForm({
     initialValues: {
@@ -35,18 +36,24 @@ export default function RegisterForm() {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const user = await register(values).unwrap();
+      const response = await register(values).unwrap();
 
-      if (user) {
-        const data = await login({
-          email: values.email,
-          password: values.password,
-        }).unwrap();
-        dispatch(setAuthData(data));
-        router.push('/');
+      if (response.accessTokenResponse && response.userDTO) {
+        toast.success(
+          'Account created successfully! Please verify your email later.'
+        );
+        dispatch(setAuthData(response));
+        router.push(APP_PAGES.HOME);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+
+      if (error.status === 409) {
+        toast.error('Email already exists. Please try another one.');
+        return;
+      }
+
+      toast.error('Oops! Something went wrong! Try again later.');
     }
   };
 
@@ -144,10 +151,17 @@ export default function RegisterForm() {
       />
 
       <button
-        className='btn btn-primary w-full'
-        disabled={isLoadingRegister || isLoadingLogin}
+        className={cn('btn btn-primary w-full', isLoading && 'btn-disabled')}
+        disabled={isLoading}
       >
-        Sign Up
+        {isLoading ? (
+          <span className='flex items-center justify-center gap-2'>
+            <Loader2 className='animate-spin text-primary' />
+            Loading ...
+          </span>
+        ) : (
+          'Sign Up'
+        )}
       </button>
     </form>
   );
