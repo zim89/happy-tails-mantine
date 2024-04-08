@@ -2,25 +2,20 @@
 import { getAnalytics } from '@/shared/api/seoApi';
 import { useEffect, useState } from 'react';
 
-type Props = {
-  verification: any
-}
-export default function Analitycs({ verification }: Props) {
+export default function Analitycs() {
   const [res, setRes] = useState<string>();
   
   useEffect(() => {
-    if (!verification.access_token) return;
     (async () => {
       const res = await getAnalytics({
         startDate: '2024-03-01',
-        endDate: '2024-03-25',
-        verification,
+        endDate: '2024-03-25'
       });
       
       setRes(JSON.stringify(res?.data));
     })();
 
-  }, [verification.access_token]);
+  }, []);
 
   return <pre>{res}</pre>;
 }

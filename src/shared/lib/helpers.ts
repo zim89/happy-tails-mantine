@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { Product } from '../types/types';
 
-export const formatDate = (date: number) => {
-  return dayjs.unix(date).format('MMMM D, YYYY');
+export const formatDate = (date: string | number) => {
+  return dayjs(date).format('MMMM D, YYYY');
 };
 
 export const formatRawOrderDate = (raw: string) => {

@@ -24,7 +24,7 @@ function PostCard({ post }: Props) {
         <Image
           src={post.posterImgSrc}
           alt={post.title}
-          width={308}
+          width={347}
           height={184}
           priority={true}
           className='mb-4'
@@ -37,7 +37,7 @@ function PostCard({ post }: Props) {
           width={523}
           height={246}
           priority={true}
-          className='mb-4'
+          className='mb-4 object-cover h-[246px]'
         />
       </div>
 
