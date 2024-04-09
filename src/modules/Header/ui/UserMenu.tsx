@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -9,8 +9,9 @@ import { useAppDispatch } from '@/shared/redux/store';
 
 import { cn } from '@/shared/lib/utils';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
-import { useGetUserInfoQuery, useLogoutMutation } from '@/shared/api/authApi';
-import { clearAuthData, setUserData } from '@/shared/redux/auth/authSlice';
+import { useLogoutMutation } from '@/shared/api/authApi';
+import { clearAuthData } from '@/shared/redux/auth/authSlice';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
@@ -19,19 +20,12 @@ export default function UserMenu() {
   const dispatch = useAppDispatch();
 
   const [logout, { isLoading }] = useLogoutMutation();
-  const { data: user } = useGetUserInfoQuery('', { skip: !isAuth });
-
-  useEffect(() => {
-    if (user) {
-      dispatch(setUserData(user));
-    }
-  }, [dispatch, user]);
 
   const handleLogout = async () => {
     try {
       await logout();
       dispatch(clearAuthData());
-      router.push('/');
+      router.push(APP_PAGES.LOGIN);
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +35,7 @@ export default function UserMenu() {
     <>
       {!isAuth ? (
         <Link
-          href={'/login'}
+          href={APP_PAGES.LOGIN}
           className='hidden items-center justify-center text-secondary lg:flex'
           aria-label={'Logout'}
         >

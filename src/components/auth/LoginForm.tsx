@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/shared/redux/store';
 import { useLoginMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { toast } from 'react-toastify';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -32,9 +34,10 @@ export default function LoginForm() {
     try {
       const data = await login(values).unwrap();
       dispatch(setAuthData(data));
-      router.push('/');
+      router.push(APP_PAGES.HOME);
     } catch (error) {
       console.log(error);
+      toast.error('Oops! Something went wrong! Try again later.');
     }
   };
 

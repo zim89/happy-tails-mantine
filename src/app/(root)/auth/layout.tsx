@@ -4,6 +4,7 @@ import Image from 'next/image';
 import dogImg from '@/assets/images/auth-dog.png';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { isAuth } = useAuth();
@@ -11,12 +12,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isAuth) {
-      router.push('/');
+      router.push(APP_PAGES.HOME);
     }
   }, [isAuth, router]);
 
   return (
-    <div className='h-full bg-auth-bg '>
+    <div className='h-full bg-auth-bg pt-[73px] lg:pt-[128px]'>
       <div className='container'>
         <div className='grid grid-cols-1 lg:grid-cols-2'>
           <Image
