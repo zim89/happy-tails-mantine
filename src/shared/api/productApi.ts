@@ -76,6 +76,9 @@ export const productApi = createApi({
     findOne: builder.query<Product, ID>({
       query: (id = 1) => `products/${id}`,
     }),
+    findBestSellers: builder.query<BackendResponse<Product[]>, void>({
+      query: () => 'products/best-sellers',
+    }),
     create: builder.mutation({
       query(body) {
         return {
@@ -117,6 +120,7 @@ export const productApi = createApi({
 export const {
   useFindManyQuery,
   useFindOneQuery,
+  useFindBestSellersQuery,
   useCreateMutation,
   useUpdateMutation,
   useRemoveMutation,
@@ -136,7 +140,6 @@ export const getProductById = async (id: string) => {
       }
     );
 
-    
     const result = request.data;
     return result;
   } catch (err) {

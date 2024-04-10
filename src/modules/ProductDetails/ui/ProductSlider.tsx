@@ -7,10 +7,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
 
-import { sliderData } from '@/modules/ProductDetails/lib/data';
 import '@mantine/carousel/styles.css';
+import { Product } from '@/shared/types/types';
 
-export default function ProductSlider({ alt }: { alt?: boolean }) {
+type ProductSliderProps = { alt?: boolean; data: Product[] };
+
+export default function ProductSlider({ alt, data }: ProductSliderProps) {
   const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
@@ -94,7 +96,7 @@ export default function ProductSlider({ alt }: { alt?: boolean }) {
             'navBtn data-[inactive=true]:navBtn-disabled data-[inactive=false]:navBtn-primary',
         }}
       >
-        {sliderData.map((item) => (
+        {data.map((item) => (
           <Carousel.Slide key={item.id}>
             <Card
               withBorder
@@ -108,6 +110,8 @@ export default function ProductSlider({ alt }: { alt?: boolean }) {
                 <Image
                   src={item.imagePath}
                   alt={item.name}
+                  width={304}
+                  height={287}
                   className='h-[287px] w-[284px] lg:w-[304px]'
                 />
                 <Box>

@@ -1,4 +1,5 @@
 import BestSellers from '@/modules/BestSellers';
+import Featured from '@/modules/Featured';
 import HeroCarousel from '@/modules/HeroCarousel';
 
 export default function HomePage() {
@@ -6,6 +7,7 @@ export default function HomePage() {
     <>
       <HeroCarousel />
       <BestSellers />
+      <Featured />
     </>
   );
 }
