@@ -12,14 +12,14 @@ export const useAuth = () => {
   const session = useAppSelector(selectSession);
 
   const isAdmin = currentUser?.roles.includes('ROLE_ADMIN') ?? false;
-  const accessToken = session?.access_token ?? '';
-  const refreshToken = session?.refresh_token ?? '';
+  const access_token = session?.access_token ?? '';
+  const refresh_token = session?.refresh_token ?? '';
 
   return {
     isAuth,
     currentUser,
     isAdmin,
-    accessToken,
-    refreshToken,
+    access_token,
+    refresh_token,
   };
 };

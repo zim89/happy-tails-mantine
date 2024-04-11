@@ -13,9 +13,9 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
-import { useAuth } from "@/shared/hooks/useAuth";
+import { useAuth } from '@/shared/hooks/useAuth';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
-import { DEFAULT_CATEGORY_IMAGE } from "@/shared/lib/constants"; 
+import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
@@ -23,7 +23,7 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
 export default function AddCategoryModal() {
-  const { access_token, id_token, currentUser } = useAuth();
+  const { access_token, currentUser } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
 
   const [isNotified, setIsNotified] = useState(false);
@@ -96,7 +96,7 @@ export default function AddCategoryModal() {
       name: categoryName,
       productCount: 0,
       imgSrc,
-      access_token: access_token
+      access_token: access_token,
     };
 
     await dispatch(newCategory);
