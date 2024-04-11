@@ -92,15 +92,8 @@ export const authApi = createApi({
         method: 'get',
       }),
     }),
-    updateDetails: builder.mutation<
-      any,
-      Partial<{
-        firstName: string;
-        lastName: string;
-        email: string;
-        attributes: { [P in string]: string[] };
-      }>
-    >({
+    // FIXME: Fix any type
+    updateDetails: builder.mutation<any, any>({
       query: (payload) => ({
         url: '/users/update',
         method: 'put',
