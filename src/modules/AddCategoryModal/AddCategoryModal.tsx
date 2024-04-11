@@ -23,7 +23,7 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 
 export default function AddCategoryModal() {
-  const { accessToken, currentUser } = useAuth();
+  const { access_token, currentUser } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
 
   const [isNotified, setIsNotified] = useState(false);
@@ -96,7 +96,7 @@ export default function AddCategoryModal() {
       name: categoryName,
       productCount: 0,
       imgSrc,
-      access_token: accessToken,
+      access_token: access_token,
     };
 
     await dispatch(newCategory);
