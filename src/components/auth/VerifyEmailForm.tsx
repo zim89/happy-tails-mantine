@@ -34,8 +34,8 @@ export default function VerifyEmailForm({ email }: { email: string }) {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const data = await verifyEmail(values).unwrap();
-      console.log(data);
+      // const data = await verifyEmail(values).unwrap();
+      // console.log(data);
       // if (data.error) {
       //   console.log(data.status);
       // }
@@ -44,18 +44,18 @@ export default function VerifyEmailForm({ email }: { email: string }) {
     } catch (error: any) {
       console.log(error);
 
-      if (error.status === 404) {
-        toast.error(
-          'The code has expired. Click resend code and enter the received code'
-        );
-      }
+      // if (error.status === 404) {
+      //   toast.error(
+      //     'The code has expired. Click resend code and enter the received code'
+      //   );
+      // }
 
-      if (
-        error.status === 500 &&
-        error.data.message === 'Index 0 out of bounds for length 0'
-      ) {
-        toast.error('Invalid email or password. Please try again');
-      }
+      // if (
+      //   error.status === 500 &&
+      //   error.data.message === 'Index 0 out of bounds for length 0'
+      // ) {
+      //   toast.error('Invalid email or password. Please try again');
+      // }
     }
   };
 
