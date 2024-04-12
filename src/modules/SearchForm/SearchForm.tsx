@@ -1,4 +1,4 @@
-import { Field } from "./ui/Field";
+import Field from "@/components/SearchField";
 
 export default function SearchForm() {
   return (

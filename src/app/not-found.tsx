@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 
-import Layout from '@/shared/lib/layout';
-import NotFoundComponent from "@/components/NotFound";
+import NotFoundComponent from '@/components/NotFound';
+import LayoutTemplate from "@/components/LayoutTemplate";
 
 export const metadata: Metadata = {
-  title: "Not Found | 404",
+  title: 'Not Found | 404',
   robots: {
     index: false,
   },
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <Layout>
+    <LayoutTemplate>
       <NotFoundComponent />
-    </Layout>
+    </LayoutTemplate>
   );
 }

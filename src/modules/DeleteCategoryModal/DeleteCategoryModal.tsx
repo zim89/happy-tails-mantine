@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import { Button } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import styles from './DeleteCategoryModal.module.css';
-import { useDisclosure } from '@mantine/hooks';
-import Modal from '@/components/ModalWindow';
-import Notify from '@/components/Notify';
 import { Category } from '@/shared/api/categoryApi';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import file_error from '@/assets/icons/categories/file_error.svg';
-import check_circle from '@/assets/icons/additional/check-circle.svg';
-import ModalFooter from '@/components/ModalFooter';
 
-import { useRemoveCategoryMutation } from "@/shared/api/categoryApi";
+import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import { useAuth } from '@/shared/hooks/useAuth';
+import DeleteModal from '@/components/DeleteModal';
 
 type Props = {
   categoryLine: Category;
@@ -36,7 +33,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
     }
   };
 
-  const handleClose = () => {
+  const closeNotification = () => {
     setIsNotified(false);
   };
 
@@ -46,90 +43,68 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
     useDisclosure(false);
 
   return (
-    <>
-      <Button className={styles.actionButton} onClick={openMain}>
-        Delete
-      </Button>
+    <DeleteModal>
+      {(Modal, Notification) => {
+        return (
+          <>
+            {/* Button to open main modal */}
+            <Button className={styles.actionButton} onClick={openMain}>Delete</Button>
 
-      <Modal
-        size={600}
-        opened={openedMain}
-        classNames={{
-          header: 'hidden',
-          content: 'p-10',
-          body: 'p-0',
-        }}
-        onClose={closeMain}
-      >
-        <>
-          <div className={styles.message}>
-            <Image src={file_attention.src} alt='' width={64} height={64} />
-            <hgroup>
-              <h2>{`Delete "${categoryLine.name}" category?`}</h2>
-              <p>
-                This action cannot be undone. Please confirm that you want to
-                proceed.
-              </p>
-            </hgroup>
-          </div>
+            <Modal
+              onClose={closeMain}
+              opened={openedMain}
+              footerProps={{
+                singleBtn: false,
+                secondaryBtnOnClick: closeMain,
+                secondaryBtnText: 'Cancel',
+                primaryBtnOnClick: handleDelete,
+                primaryBtnText: 'Delete',
+                containerStyles: { display: 'flex', justifyContent: 'end' },
+              }}
+            >
+              <div className={styles.message}>
+                <Image src={file_attention.src} alt='' width={64} height={64} />
+                <hgroup>
+                  <h2>{`Delete "${categoryLine.name}" category?`}</h2>
+                  <p>
+                    This action cannot be undone. Please confirm that you want
+                    to proceed.
+                  </p>
+                </hgroup>
+              </div>
+            </Modal>
 
-          <ModalFooter
-            singleBtn={false}
-            secondaryBtnOnClick={closeMain}
-            secondaryBtnText='Cancel'
-            primaryBtnOnClick={handleDelete}
-            primaryBtnText='Delete'
-            containerStyles={{ display: 'flex', justifyContent: 'end' }}
-          />
-        </>
-      </Modal>
+            <Modal
+              opened={openedError}
+              onClose={closeError}
+              footerProps={{
+                singleBtn: true,
+                primaryBtnOnClick: closeError,
+                primaryBtnText: 'OK',
+                containerStyles: { display: 'flex', justifyContent: 'end' },
+              }}
+            >
+              <div className={styles.message}>
+                <Image src={file_error.src} alt='' width={64} height={64} />
+                <hgroup>
+                  <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
+                  <p>
+                    This category cannot be deleted because it contains
+                    associated products. To delete the category, please remove
+                    or reassign the products associated with it.
+                  </p>
+                </hgroup>
+              </div>
+            </Modal>
 
-      <Modal
-        size={600}
-        opened={openedError}
-        classNames={{
-          header: 'hidden',
-          content: 'p-10',
-          body: 'p-0',
-        }}
-        onClose={closeError}
-      >
-        <div className={styles.message}>
-          <Image src={file_error.src} alt='' width={64} height={64} />
-          <hgroup>
-            <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
-            <p>
-              This category cannot be deleted because it contains associated
-              products. To delete the category, please remove or reassign the
-              products associated with it.
-            </p>
-          </hgroup>
-        </div>
-
-        <ModalFooter
-          singleBtn
-          primaryBtnOnClick={closeError}
-          primaryBtnText='OK'
-          containerStyles={{ display: 'flex', justifyContent: 'end' }}
-        />
-      </Modal>
-
-      <Notify
-        icon={
-          <Image
-            src={check_circle.src}
-            alt=''
-            width={24}
-            height={24}
-            className='h-6 w-6'
-          />
-        }
-        color='transparent'
-        visible={isNotified}
-        onClose={handleClose}
-        className=''
-        text='Category successfully deleted!'
-      />
-    </>
+            <Notification
+              text='Category successfully deleted!'
+              visible={isNotified}
+              onClose={closeNotification}
+            />
+          </>
+        );
+      }}
+    </DeleteModal>
   );
-};
+}

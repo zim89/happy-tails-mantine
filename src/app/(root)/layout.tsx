@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import LayoutTemplate from "@/shared/lib/layout";
+import LayoutTemplate from "@/components/LayoutTemplate";
 
 export const metadata: Metadata = {
   title:
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <LayoutTemplate>
+     <LayoutTemplate>
       {children}
-    </LayoutTemplate>
+   </LayoutTemplate>
   );
 }

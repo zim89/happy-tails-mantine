@@ -1,0 +1,72 @@
+.pageHeader {
+    @apply flex items-center justify-between;
+}
+
+.pageHeader h2 {
+    @apply mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal];
+}
+
+.formHeader {
+    @apply flex items-center justify-between;
+}
+
+.formHeader h2 {
+    @apply mt-6 text-[32px] font-bold leading-9;
+}
+
+.formHeader span {
+    @apply cursor-pointer;
+}
+
+.divider {
+    @apply my-7 rounded-sm border-[1px] border-t-0 border-[#5A5A5A];
+}
+
+.upload {
+    @apply flex mt-[48px] mb-[70px];
+}
+
+.upload label {
+    @apply flex cursor-pointer items-center justify-evenly gap-2 bg-[#5A5A5A] px-4 py-[10px];
+}
+
+.upload label span {
+    @apply whitespace-nowrap font-bold leading-4 text-white;
+}
+
+.controls {
+    @apply mt-12;
+}
+
+.previewWrapper {
+    @apply flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1 mt-[48px] mb-[70px];
+}
+
+.previewImage {
+    @apply h-8 w-8 object-contain;
+}
+
+.modalHeader {
+    @apply hidden;
+}
+
+.modalContent {
+    @apply py-[14px] px-6;
+}
+
+.fileWrapper {
+    @apply pointer-events-none h-full;
+}
+
+.fileInput {
+    @apply h-full rounded-sm;
+}
+
+.fileLabel {
+    @apply flex gap-[10px] items-center mt-7 mb-1;
+}
+
+.clearImage {
+    @apply ml-[42px];
+}
+

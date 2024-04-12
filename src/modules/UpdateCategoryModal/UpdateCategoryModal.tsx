@@ -10,11 +10,11 @@ import { Info, UploadCloud, X, Check } from 'lucide-react';
 
 import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
-import Modal from '@/components/ModalWindow';
 import { isNotEmpty, useForm } from '@mantine/form';
 
 import Notify from '@/components/Notify';
 
+import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
@@ -130,7 +130,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       >
         <ModalHeader heading='Update Category' handleClose={close} />
         
-        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+        <form>
           <TextInput
             classNames={{
               root: 'form-root',

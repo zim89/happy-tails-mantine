@@ -40,7 +40,8 @@ const authSlice = createSlice({
     setAuthData: (state, { payload }) => {
       state.access_token = payload.accessTokenResponse.access_token;
       state.refresh_token = payload.accessTokenResponse.refresh_token;
-      state.refresh_token_expired_in = Date.now() + (Number(payload.accessTokenResponse.refresh_expires_in) * 60);
+      // Сonvert seconds into milliseconds
+      state.refresh_token_expired_in = Date.now() + (Number(payload.accessTokenResponse.refresh_expires_in) * 1000);
       state.isAuth = true;
     },
     setUserData: (state, { payload }) => {

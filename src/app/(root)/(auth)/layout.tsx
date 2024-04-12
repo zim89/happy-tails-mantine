@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [isAuth, router]);
 
   return (
-    <div className='h-full bg-auth-bg '>
+    <div className='h-full bg-auth-bg pt-16'>
       <div className='container'>
         <div className='grid grid-cols-1 lg:grid-cols-2'>
           <Image

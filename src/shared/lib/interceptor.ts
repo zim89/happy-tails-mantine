@@ -51,6 +51,7 @@ axiosInstance.interceptors.response.use(
         window.location.replace("/login");
         store.dispatch(clearAuthData());
         store.dispatch(setUserData(null));
+        console.log("Expired refresh token", refresh_expires_in, Date.now() > refresh_expires_in);
         return;
       }
 
@@ -59,6 +60,8 @@ axiosInstance.interceptors.response.use(
 
       // Attempt to refresh the token
       const refresh = store.getState().auth.refresh_token;
+
+      console.log("Refreshing access token");
 
       const { access_token, refresh_token, refresh_expires_in: refreshExpiry } = await refreshToken(refresh);
 

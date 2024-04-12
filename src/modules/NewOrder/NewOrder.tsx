@@ -1,11 +1,14 @@
 'use client';
 
+import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
+import { Product } from '@/shared/types/types';
 import {
   Button,
   Card,
   Checkbox,
   Combobox,
   Divider,
+  InputBase,
   Radio,
   Select,
   SimpleGrid,
@@ -15,6 +18,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 type NewOrderFields = {
@@ -46,7 +50,6 @@ type NewOrderFields = {
 
 export default function NewOrder() {
   const combobox = useCombobox();
-  const [itemFilter, setItemFilter] = useState('');
 
   const form = useForm<NewOrderFields>({
     initialValues: {
@@ -83,6 +86,35 @@ export default function NewOrder() {
     },
   });
 
+  const products = useSelectProducts((res) => res.map(product => {
+    product.quantity = 0;
+    return product;
+  }));
+
+  const [value, setValue] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+
+  const shouldFilterOptions = products.every((item) => item.name !== search);
+  const filteredOptions = shouldFilterOptions
+    ? products.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase().trim())
+      )
+    : products;
+
+  const options = filteredOptions.map((item) => (
+    <Combobox.Option
+      value={JSON.stringify(item)}
+      key={item.name}
+      classNames={{ option: 'flex gap-6' }}
+    >
+      <Image width={64} height={64} src={item.imagePath} alt={item.name} />
+      <div>
+        <p className='mb-1 font-bold'>{item.name}</p>
+        <span>$ {item.price}</span>
+      </div>
+    </Combobox.Option>
+  ));
+
   return (
     <form className='space-y-12' onSubmit={form.onSubmit(console.log)}>
       <Card>
@@ -95,22 +127,27 @@ export default function NewOrder() {
           store={combobox}
         >
           <Combobox.Target>
-            {/*Input Item*/}
             <div className={'flex flex-col gap-2'}>
-              <label className={'text-sm/normal'}>Item</label>
-              <TextInput
+              {/* Search input */}
+              <InputBase
+                label='Item'
+                withAsterisk
+                value={search}
                 classNames={{
                   input: 'text-input max-w-[15.875rem]',
                 }}
-                value={itemFilter}
                 onChange={(event) => {
-                  setItemFilter(event.currentTarget.value);
                   combobox.openDropdown();
                   combobox.updateSelectedOptionIndex();
+                  setSearch(event.currentTarget.value);
                 }}
                 onClick={() => combobox.openDropdown()}
                 onFocus={() => combobox.openDropdown()}
-                onBlur={() => combobox.closeDropdown()}
+                onBlur={() => {
+                  combobox.closeDropdown();
+                  setSearch(value || '');
+                }}
+                rightSectionPointerEvents='none'
               />
               <p className='text-xs/normal'>
                 To search for a product, enter the article or name
@@ -118,9 +155,15 @@ export default function NewOrder() {
             </div>
           </Combobox.Target>
 
-          <Combobox.Dropdown>
-            <Combobox.Options>{/* TODO: add options */}</Combobox.Options>
+          <Combobox.Dropdown onSelect={console.log}>
+            <Combobox.Options>{options.length > 0 ? options : <Combobox.Empty>Nothing found</Combobox.Empty>}</Combobox.Options>
           </Combobox.Dropdown>
+
+          {form.values.items.length > 0 && form.values.items.map(item => {
+            const parsed: Product = JSON.parse(item);
+
+            return <span>{parsed.name}</span>
+          })}
         </Combobox>
       </Card>
       <Card>

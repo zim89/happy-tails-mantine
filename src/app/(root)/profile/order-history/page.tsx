@@ -3,9 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Button } from '@mantine/core';
 
-import mock from '@/modules/OrderTable/mock.json';
 import { cn } from '@/shared/lib/utils';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { OrderTabs } from '../components/OrderTabs';
 import classes from '../styles.module.css';
 import { BackendResponse, Order } from '@/shared/types/types';
@@ -13,7 +11,6 @@ import axios from "@/shared/lib/interceptor";
 
 function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const { access_token } = useAuth();
 
   useEffect(() => {
     (async () => {
