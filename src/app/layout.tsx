@@ -1,4 +1,4 @@
-import { Lato } from 'next/font/google';
+import { Lato, Ms_Madi } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
 
@@ -7,13 +7,21 @@ import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { AppProviders } from '@/shared/config/AppProviders';
-import Sitelinks from "./(root)/sitelinks";
+import Sitelinks from './(root)/sitelinks';
 
 const lato = Lato({
   weight: ['300', '400', '700'],
   subsets: ['latin'],
   style: ['normal'],
   variable: '--font-lato',
+  display: 'swap',
+});
+
+const msMadi = Ms_Madi({
+  weight: ['400'],
+  subsets: ['latin'],
+  style: ['normal'],
+  variable: '--font-madi',
   display: 'swap',
 });
 
@@ -26,9 +34,9 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <Sitelinks />
-        <ColorSchemeScript defer/>
+        <ColorSchemeScript defer />
       </head>
-      <body className={`${lato.variable} antialiased`}>
+      <body className={`${lato.variable} ${msMadi.variable} antialiased`}>
         <AppProviders>
           <MantineProvider theme={theme}>
             {children}
