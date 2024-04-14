@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { store } from '@/shared/redux/store';
-import { clearAuthData, setAuthData, setUserData } from '../redux/auth/authSlice';
+import { clearAuthData, setAuthData } from '../redux/auth/authSlice';
 
 const refreshToken = async (refreshToken: string) => {
   try {
@@ -28,7 +28,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = store.getState().auth.access_token;
+    const token = store.getState()?.auth?.session?.access_token;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -45,13 +46,11 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       // Handling when the refresh token is expired
-      const refresh_expires_in = store.getState().auth.refresh_token_expired_in;
+      const refresh_expires_in = store.getState().auth?.session?.refresh_expires_in!;
 
       if (Date.now() > refresh_expires_in) {
-        window.location.replace("/login");
+        window.location.replace("/auth/login");
         store.dispatch(clearAuthData());
-        store.dispatch(setUserData(null));
-        console.log("Expired refresh token", refresh_expires_in, Date.now() > refresh_expires_in);
         return;
       }
 
@@ -59,7 +58,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       // Attempt to refresh the token
-      const refresh = store.getState().auth.refresh_token;
+      const refresh = store.getState().auth.session?.refresh_token!;
 
       console.log("Refreshing access token");
 

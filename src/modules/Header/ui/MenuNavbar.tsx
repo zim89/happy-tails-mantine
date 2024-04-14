@@ -98,7 +98,7 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
       <ul className='flex flex-col gap-4 lg:hidden'>
         <li>
           {!isAuth ? (
-            <Link href='/login' className='text-base font-light'>Log In</Link>
+            <Link href='/auth/login' className='text-base font-light'>Log In</Link>
           ) : isAdmin ? (
             <Link href='/admin' className='text-base font-light'>Profile</Link>
           ) : (

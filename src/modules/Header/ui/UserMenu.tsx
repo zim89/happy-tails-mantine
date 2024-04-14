@@ -1,35 +1,24 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { useAppDispatch } from '@/shared/redux/store';
 
 import { cn } from '@/shared/lib/utils';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
-import { useGetUserInfoQuery } from '@/shared/api/authApi';
-import { setUserData } from '@/shared/redux/auth/authSlice';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 import Logout from '@/components/Logout';
 
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
   const { isAuth, isAdmin } = useAuth();
-  const dispatch = useAppDispatch();
-
-  const { data: user } = useGetUserInfoQuery('', { skip: !isAuth });
-
-  useEffect(() => {
-    if (user) {
-      dispatch(setUserData(user));
-    }
-  }, [dispatch, user]);
 
   return (
     <>
       {!isAuth ? (
         <Link
-          href={'/login'}
+          href={APP_PAGES.LOGIN}
           className='hidden items-center justify-center text-secondary lg:flex'
           aria-label={'Logout'}
         >
@@ -77,7 +66,7 @@ export default function UserMenu() {
 
             <Menu.Item>
               <Logout>
-                {(logOut) => <span onClick={logOut}>Log out</span>}
+                {(logOut) => <span is='button' onClick={logOut}>Log out</span>}
               </Logout>
             </Menu.Item>
           </Menu.Dropdown>
