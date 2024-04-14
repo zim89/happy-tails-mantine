@@ -18,7 +18,7 @@ import { authReducer } from '@/shared/redux/auth/authSlice';
 import { categoriesApi } from '@/shared/api/categoryApi';
 import { authApi } from '@/shared/api/authApi';
 import { ordersApi } from '@/shared/api/ordersApi';
-import { oauthApi } from '../api/oauthApi';
+import { oauthApi } from '@/shared/api/oauthApi';
 
 const createNoopStorage = () => {
   return {
@@ -43,9 +43,9 @@ const favoritesPersistConfig = {
   key: 'favoritesHappyTails',
   storage,
   blacklist: [
-    productApi.reducerPath,
     categoriesApi.reducerPath,
     ordersApi.reducerPath,
+    productApi.reducerPath,
   ],
 };
 const cartPersistConfig = {

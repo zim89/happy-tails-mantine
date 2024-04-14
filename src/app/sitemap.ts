@@ -1,17 +1,17 @@
 import { MetadataRoute } from 'next'
 
-import { getProducts } from '@/shared/api/productApi';
 import { getAllCategories } from "@/shared/api/categoryApi";
 import { fetchPostList } from '@/shared/api/postApi';
+import { getProductList } from '@/shared/lib/requests';
 
-const URL = "https://happy-tails-mantine.vercel.app";
+const URL = process.env.NEXT_PUBLIC_SITE_DOMAIN;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const productsRequest = await getProducts();
+  const productsRequest = await getProductList();
   const products = productsRequest || [];
   
   const categoriesRequest = await getAllCategories();
-  const categories = categoriesRequest.content || [];
+  const categories = categoriesRequest || [];
 
   const postsRequest = await fetchPostList();
   const posts = postsRequest.content || [];

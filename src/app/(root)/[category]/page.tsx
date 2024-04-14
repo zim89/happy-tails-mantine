@@ -8,24 +8,23 @@ import Overview from '@/components/Overview';
 import { getAllCategories, Category } from '@/shared/api/categoryApi';
 
 import { categoriesDesc } from './lib/seo';
-import { BackendResponse } from '@/shared/types/types';
 
 type Props = {
   params: { category: string };
 };
 
 // It's cached to avoid repetitions of requests
-let cachedCategories: BackendResponse<Category[]> | null = null;
+let cachedCategories: Category[] = [];
 
 async function memoizedGetAllCategories() {
-  if (!cachedCategories) {
+  if (!cachedCategories.length) {
     cachedCategories = await getAllCategories();
   }
   return cachedCategories;
 }
 
 export async function generateStaticParams() {
-  const { content: categories } = await memoizedGetAllCategories();
+  const categories = await memoizedGetAllCategories();
 
   return categories.map((category) => ({
     category: category.path,
@@ -34,19 +33,18 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   try {
-    const { content: categories } = await memoizedGetAllCategories();
+    const categories = await memoizedGetAllCategories();
 
     const found = categories.find(
       (cat) => cat.path === decodeURIComponent(params.category)
     );
 
+    
     const category = found && categoriesDesc[found.name];
 
-    if (!category)
-      return {
-        title: 'Not found',
-        description: 'The page you are looking does not exist.',
-      };
+    if (!category) {
+      return notFound();
+    }
 
     return {
       title: category.title,
@@ -54,17 +52,13 @@ export async function generateMetadata({ params }: Props) {
     };
   } catch (err) {
     console.error(err);
-    return {
-      title: 'Not found',
-      description: 'The page you are looking does not exist.',
-    };
   }
 }
 
 export const dynamicParams = false;
 
 export default async function CatalogPage({ params }: Props) {
-  const { content: categories } = await getAllCategories();
+  const categories = await getAllCategories();
 
   const category = categories.find(
     (cat) => cat.path === decodeURIComponent(params.category)

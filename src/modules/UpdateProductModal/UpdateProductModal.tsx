@@ -15,6 +15,7 @@ import axios from 'axios';
 import { useUpdateMutation } from '@/shared/api/productApi';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { getAllCategories } from '@/shared/api/categoryApi';
+import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 
 type Props = {
   productLine: Product;
@@ -28,7 +29,7 @@ type PreviewImage = {
 
 const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
   const { access_token } = useAuth();
-  const [categoryList, setCategoryList] = useState<typeof productLine["categoryName"][]>([]);
+  const categoryList = useSelectCategories(res => res.map(cat => cat.name)); 
 
   const form = useForm({
     initialValues: {
@@ -53,10 +54,6 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getAllCategories()
-        const categories = res.content.map(cat => cat.name);
-        setCategoryList(categories);
-
         form.initialize({
           name: productLine.name,
           code: productLine.article,

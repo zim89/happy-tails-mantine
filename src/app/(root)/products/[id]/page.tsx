@@ -1,8 +1,8 @@
-'use client';
+"use client";
 import dynamic from 'next/dynamic';
 
 import { Container, Loader } from '@mantine/core';
-import { productApi } from '@/shared/api/productApi';
+import { useFindOneQuery } from '@/shared/api/productApi';
 import Script from 'next/script';
 import { availabilityMap } from '@/shared/lib/helpers';
 import { notFound } from 'next/navigation';
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function ProductPage({ params }: Props) {
-  const { data, isError, isLoading, error } = productApi.useFindOneQuery(
+  const { data, isError, isLoading, error } = useFindOneQuery(
     params.id
   );
 

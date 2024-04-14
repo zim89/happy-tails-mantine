@@ -35,7 +35,7 @@ Ensure your dog's safety and style during walks with our exquisite collection of
 };
 
 export default async function AllProducts() {
-  const { content: categories } = await getAllCategories();
+  const categories = await getAllCategories();
   const { totalElements } = (await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + '/products?size=1'
   ).then((res) => res.json())) as BackendResponse<Product>;

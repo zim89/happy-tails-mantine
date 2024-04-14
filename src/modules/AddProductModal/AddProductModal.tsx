@@ -25,6 +25,7 @@ import { cn } from '@/shared/lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { Product } from '@/shared/types/types';
 import { getAllCategories, Category } from '@/shared/api/categoryApi';
+import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 
 type PreviewImage = {
   name: string | null;
@@ -34,6 +35,7 @@ type PreviewImage = {
 export default function AddProductModal() {
   const { access_token } = useAuth();
   const [dispatch] = useCreateMutation();
+  const categoryList = useSelectCategories(cats => cats);
 
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
   const [isNotified, { open: openNotification, close: closeNotification }] =
@@ -42,8 +44,6 @@ export default function AddProductModal() {
   const handleClose = () => {
     closeNotification();
   };
-
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -75,18 +75,6 @@ export default function AddProductModal() {
       description: isNotEmpty("Enter a description"),
     },
   });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getAllCategories();
-        setCategoryList(res.content);
-      } catch (err) {
-        console.log(err);
-        throw new Error("Failed load categories!")
-      }
-    })()
-  }, []);
 
   const clearFile = () => {
     previewImage.current = {

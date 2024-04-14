@@ -1,3 +1,4 @@
+"use client"
 import { Button } from '@mantine/core';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Link from 'next/link';
@@ -5,13 +6,14 @@ import Link from 'next/link';
 import { useAuth } from "@/shared/hooks/useAuth";
 import classes from './AdminHeader.module.css';
 import Logout from '@/components/Logout';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function AdminHeader() {
-  const router = useRouter();
   const { currentUser } = useAuth();
 
-  if (!currentUser) return router.replace("/403");
+  if (!currentUser) {
+    redirect("/403");
+  };
 
   return (
     <header>

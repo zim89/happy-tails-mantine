@@ -5,7 +5,6 @@ export const metadata: Metadata = {
     title: "Products Page",
     robots: {
         index: false,
-        indexifembedded: false,
     }
 }
 

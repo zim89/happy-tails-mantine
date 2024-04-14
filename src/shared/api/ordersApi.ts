@@ -1,3 +1,4 @@
+import axios from "@/shared/lib/interceptor";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BackendResponse, Order, Sort } from '../types/types';
 
@@ -43,3 +44,13 @@ export const ordersApi = createApi({
 });
 
 export const { useFindManyQuery } = ordersApi;
+
+export const getDiscount = async (code: string) => {
+  try {
+    // TODO: replace this with env var
+    const res = await axios.get("https://happytails-backend.lav.net.ua/happytails/api/discount/" + code);
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
+}

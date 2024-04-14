@@ -1,16 +1,18 @@
 import ProductAdditionalInfo from '@/components/ProductAdditionalInfo';
-import { getProductById } from '@/shared/api/productApi';
+import { getProductById } from '@/shared/lib/requests';
 import { AxiosError } from 'axios';
+import { notFound } from 'next/navigation';
+
+const getProduct = async (id: string) => {
+  return await getProductById(id);
+}
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
-    const product = await getProductById(params.id);
+    const product = await getProduct(params.id);
 
     if (!product) {
-      return {
-        title: 'Not found',
-        description: 'The product you are looking does not exist.',
-      };
+      return notFound();
     }
 
     let meta = {
@@ -29,10 +31,11 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   }
 }
 export default function DashboardLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <section className="section">
       {children}
