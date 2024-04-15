@@ -24,13 +24,13 @@ export default function Layout({ children }: Props) {
   if (!isAuth) return null;
 
   return (
-    <section className='section'>
+    <section className='py-8 pt-[74px] md:py-10 lg:py-[72px]'>
       <Container className={classes.page}>
         {/* Only on mobiles and tablets */}
         <SliderMenu />
         {/* From laptops and beyond */}
         <SidebarMenu />
-        <div className={classes.content}>{children}</div>
+        <div>{children}</div>
       </Container>
     </section>
   );

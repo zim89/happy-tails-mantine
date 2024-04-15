@@ -1,62 +1,121 @@
 'use client';
-import { cn } from '@/shared/lib/utils';
 import { Button, PasswordInput } from '@mantine/core';
-import { useForm, hasLength, matchesField } from '@mantine/form';
+import { useForm, hasLength, matchesField, isNotEmpty,  } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
 
+import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
-import { dirtyFields } from '@/shared/lib/helpers';
+import { useAuth } from '@/shared/hooks/useAuth';
+import { redirect } from 'next/navigation';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 export const UpdatePasswordForm = () => {
   const form = useForm({
     initialValues: {
+      code: '',
       password: '',
       confirmPassword: '',
     },
 
     validate: {
+      code: (val) => {
+        let error = null;
+
+        error = isNotEmpty("The code must be provisioned")(val);
+
+        if (error) return error;
+
+        const reg = /^\d+$/;
+        error = val.search(reg)
+
+        if (error === -1) return "Code must contain only numbers";
+
+        return null;
+      },
       password: (val) => {
         let error = null;
 
-        if (val.trim().length > 0) {
           error = hasLength(
             { min: 6 },
             'Password must have 6 or more symbols'
           )(val);
-        }
-
+        
         return error;
       },
       confirmPassword: (val, values) => {
         let error = null;
 
-        if (val.trim().length > 0) {
           error = matchesField('password', 'Passwords do not match')(
             val,
             values
           );
-        }
-
+        
         return error;
       },
-    },
+    }
   });
+
+  const { currentUser, access_token } = useAuth();
+
+  if (!currentUser) redirect(APP_PAGES.LOGIN);
+
+  const updatePassword = async ({ code, newPassword }: { code: string, newPassword: string }) => {
+    try {
+      const request = new URLSearchParams({
+        email: currentUser.email,
+        newPassword,
+        confirmPassword: newPassword,
+        code
+      });
+      
+      await axios.post(
+        process.env.NEXT_PUBLIC_BASE_URL! + '/users/reset-password/verify',
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <form
       className={cn('mt-8', classes.form)}
-      onSubmit={form.onSubmit((values) => {
-        const [updatedPassword, count] = dirtyFields(values);
-          // If there is no changes, omit the call to API
-          if (count === 0) return;
-        console.log(values);
-        
+      onSubmit={form.onSubmit(async (values) => {
+        const res = await updatePassword({ code: values.code, newPassword: values.password });
+        console.log(res);
         form.clearErrors();
         form.reset();
       })}
     >
       <PasswordInput
-        label='Password'
+        label='Verification code'
+        type='password'
+        classNames={{
+          root: 'form-root',
+          label: 'form-label',
+          input: cn(
+            'form-input',
+            classes.inputSizing,
+            form?.errors?.password && 'form-error--input'
+          ),
+          innerInput: 'form-input',
+          visibilityToggle: 'text-secondary',
+          error: 'form-error',
+        }}
+        visibilityToggleIcon={({ reveal }) =>
+          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
+        }
+        {...form.getInputProps('code')}
+        placeholder='Enter the code you found in email box'
+      />
+      <PasswordInput
+        label='New password'
         type='password'
         classNames={{
           root: 'form-root',
@@ -74,10 +133,10 @@ export const UpdatePasswordForm = () => {
           reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
         }
         {...form.getInputProps('password')}
-        placeholder='Enter your new password.'
+        placeholder='Enter your new password'
       />
       <PasswordInput
-        label='Confirm Password'
+        label='Repeat password'
         type='password'
         classNames={{
           root: 'form-root',
@@ -95,13 +154,13 @@ export const UpdatePasswordForm = () => {
           reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
         }
         {...form.getInputProps('confirmPassword')}
-        placeholder='Confirm your new password.'
+        placeholder='Confirm your new password'
       />
       <Button
         type='submit'
-        className={cn('btn mt-9 bg-black uppercase', classes.inputSizing)}
+        className={cn('btn mt-9 bg-black', classes.inputSizing)}
       >
-        Update
+        Update Password
       </Button>
     </form>
   );
