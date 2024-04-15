@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { store } from '@/shared/redux/store';
 import { clearAuthData, setAuthData } from '../redux/auth/authSlice';
+import { APP_PAGES } from '../config/pages-url.config';
 
 const refreshToken = async (refreshToken: string) => {
   try {
@@ -49,7 +50,7 @@ axiosInstance.interceptors.response.use(
       const refresh_expires_in = store.getState().auth?.session?.refresh_expires_in!;
 
       if (Date.now() > refresh_expires_in) {
-        window.location.replace("/auth/login");
+        window.location.replace(APP_PAGES.LOGIN);
         store.dispatch(clearAuthData());
         return;
       }
@@ -61,6 +62,7 @@ axiosInstance.interceptors.response.use(
       const refresh = store.getState().auth.session?.refresh_token!;
 
       console.log("Refreshing access token");
+      console.log(refresh);
 
       const { access_token, refresh_token, refresh_expires_in: refreshExpiry } = await refreshToken(refresh);
 

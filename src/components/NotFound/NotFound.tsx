@@ -17,7 +17,7 @@ export default function NotFound() {
         src='https://i.imgur.com/DxNCZvh.png'
         width={isDesktop ? 700 : 460}
         height={isDesktop ? 575 : 375}
-        alt='Dog faces 404 page'
+        alt='Dog looks on 404 page'
       />
       <div className={classes.rightSection}>
         <p className={cn(classes.primaryText, 'text-[rgb(22,22,22)]')}>
@@ -31,7 +31,7 @@ export default function NotFound() {
           go back to home page.`}
         </p>
         <Button classNames={{ root: classes.button }}>
-          <Link href={'/'}>Back to homepage</Link>
+          <Link href='/'>Back to homepage</Link>
         </Button>
       </div>
     </div>

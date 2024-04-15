@@ -16,9 +16,9 @@ const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     try {
-      router.push(APP_PAGES.LOGIN);
       await logout();
       dispatch(clearAuthData());
+      router.replace(APP_PAGES.LOGIN);
     } catch (error) {
       console.log(error);
     }

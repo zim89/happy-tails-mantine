@@ -1,18 +1,31 @@
-"use client"
+'use client';
 import { Button } from '@mantine/core';
 import { ChevronLeft, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
-import { useAuth } from "@/shared/hooks/useAuth";
 import classes from './AdminHeader.module.css';
-import Logout from '@/components/Logout';
-import { redirect } from 'next/navigation';
+import { User } from '@/shared/types/auth.types';
+import { clearAuthData } from '@/shared/redux/auth/authSlice';
+import { useAppDispatch } from '@/shared/redux/store';
+import { useLogoutMutation } from '@/shared/api/authApi';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
-export default function AdminHeader() {
-  const { currentUser } = useAuth();
+type Props = {
+  user: User;
+};
+export default function AdminHeader({ user }: Props) {
+  const dispatch = useAppDispatch();
+  const [logout] = useLogoutMutation();
 
-  if (!currentUser) {
-    redirect("/403");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      dispatch(clearAuthData());
+      // Forced to redirect by explicitly reloading the page cause otherwise the logout triggers malfunction
+      window.location.replace(APP_PAGES.LOGIN);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -23,16 +36,17 @@ export default function AdminHeader() {
       </Link>
       <div className={classes.controls}>
         <div className={classes.avatar}>
-          <span className={classes.avatarLogo}>{currentUser.firstName[0]}</span>
-          <span>{currentUser.firstName}</span>
+          <span className={classes.avatarLogo}>{user.firstName[0]}</span>
+          <span>{user.firstName}</span>
         </div>
-        <Logout>
-          {(handleLogout) => (
-            <Button onClick={handleLogout} leftSection={<LogOut size={14} />} variant='default'>
-              Log Out
-            </Button>
-          )}
-        </Logout>
+
+        <Button
+          onClick={handleLogout}
+          leftSection={<LogOut size={14} />}
+          variant='default'
+        >
+          Log Out
+        </Button>
       </div>
     </header>
   );
