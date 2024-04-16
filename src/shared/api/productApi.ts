@@ -1,14 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
-import axios, { AxiosError } from 'axios';
+import { axiosBaseQuery } from '@/shared/api/authApi';
 
 export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  }),
+  baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
     findMany: builder.query<
       BackendResponse<Product[]>,
@@ -48,19 +47,35 @@ export const productApi = createApi({
 
           params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
 
-          return `products/filter?${params}`;
+          return {
+            url: '/products/filter',
+            method: 'get',
+            params,
+          };
         }
 
         if (categoryId) {
-          return `product?${params}`;
+          return {
+            url: '/product',
+            method: 'get',
+            params,
+          };
         }
 
         if (name) {
           params.set('productStatus', '');
-          return `products/filter?${params}`;
+          return {
+            url: '/products/filter',
+            method: 'get',
+            params,
+          };
         }
 
-        return `products?${params}`;
+        return {
+          url: `/products`,
+          method: 'get',
+          params,
+        };
       },
       providesTags: (result) =>
         result
@@ -74,39 +89,50 @@ export const productApi = createApi({
           : [{ type: 'Products', id: 'LIST' }],
     }),
     findOne: builder.query<Product, ID>({
-      query: (id = 1) => `products/${id}`,
+      query: (id = 1) => ({
+        url: `/products/${id}`,
+        method: 'get',
+      }),
     }),
-    create: builder.mutation({
-      query(body) {
+    create: builder.mutation<
+      Product,
+      { req: Partial<Product>; access_token: string }
+    >({
+      query({ req, access_token }) {
         return {
-          url: 'products',
-          method: 'POST',
-          body,
+          url: '/products',
+          method: 'post',
+          data: req,
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${access_token}`,
           },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    update: builder.mutation({
-      query({ body }) {
+    update: builder.mutation<Product, { req: Product; access_token: string }>({
+      query({ req, access_token }) {
         return {
-          url: `products`,
-          method: 'PUT',
-          body,
+          url: `/products`,
+          method: 'put',
+          data: req,
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${access_token}`,
           },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    remove: builder.mutation({
-      query(id) {
+    remove: builder.mutation<void, { id: ID; access_token: string }>({
+      query({ id, access_token }) {
         return {
-          url: `products/${id}`,
-          method: 'DELETE',
+          url: `/products/${id}`,
+          method: 'delete',
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
@@ -123,45 +149,3 @@ export const {
 } = productApi;
 
 export const { findOne } = productApi.endpoints;
-
-// It's used on server components
-export const getProductById = async (id: string) => {
-  try {
-    const request = await axios.get<Product>(
-      process.env.NEXT_PUBLIC_BASE_URL + '/products/' + id,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    
-    const result = request.data;
-    return result;
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err;
-    }
-  }
-};
-
-export const getProducts = async () => {
-  try {
-    const request = await fetch(
-      process.env.NEXT_PUBLIC_BASE_URL + '/products',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    const result: BackendResponse<Product[]> = await request.json();
-    return result.content;
-  } catch (err) {
-    if (err instanceof Error) {
-      throw err;
-    }
-  }
-};

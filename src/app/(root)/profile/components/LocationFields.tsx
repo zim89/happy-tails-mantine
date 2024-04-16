@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { XCircle } from 'lucide-react';
 import { Autocomplete, Select } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
-import { Form, UseFormReturnType } from '@mantine/form';
+import { UseFormReturnType } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import classes from '../styles.module.css';
 
 type Props = {
@@ -20,17 +19,12 @@ type Props = {
     addressTwo: string;
     contactNumber: string;
     county: string;
-  }>;
-  classNames?: {
-    root?: string;
-    input?: string;
-    button?: string;
-  };
+  }>
 };
 
 const countries = ['Canada', 'United States'];
 
-export const AutoFields = ({ form, classNames }: Props) => {
+export const LocationFields = ({ form }: Props) => {
   const [found, setFound] = useState(false);
   const [cities, setCities] = useState<string[]>([]);
 
@@ -59,15 +53,9 @@ export const AutoFields = ({ form, classNames }: Props) => {
   return (
     <>
       <Select
-        mt='md'
         withAsterisk
         comboboxProps={{ withinPortal: true }}
         data={countries}
-        styles={{
-          root: {
-            margin: 0
-          }
-        }}
         classNames={{
           root: cn('form-root', classes.fieldSizing),
           label: 'form-label',
@@ -98,10 +86,10 @@ export const AutoFields = ({ form, classNames }: Props) => {
           form.values.city &&
           form.values.country && (
             <button
-              className={cn('group absolute right-2', classNames?.button)}
+              className='group absolute right-2'
               onClick={onResetCity}
             >
-              <XCircle className='h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary' />
+              <XCircle className={classes.clearField} />
             </button>
           )
         }

@@ -1,0 +1,23 @@
+.wrapper {
+    @apply flex items-center bg-[#f3f1ef] pt-20 md:pt-0;
+}
+
+.image {
+    @apply hidden md:block;
+}
+
+.rightSection {
+    @apply flex-1 px-4 py-24 text-center md:flex-initial md:text-left;
+}
+
+.primaryText {
+    @apply mb-2 text-4xl;
+}
+
+.secondaryText {
+    @apply mb-10;
+}
+
+.button {
+    @apply bg-black max-w-[414px] w-full;
+}

@@ -1,0 +1,7 @@
+.pageHeader {
+    @apply flex items-center justify-between;
+}
+
+.pageHeader h2 {
+    @apply mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal];
+}

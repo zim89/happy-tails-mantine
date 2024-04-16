@@ -11,6 +11,7 @@ import {
   Radio,
   TextInput,
 } from '@mantine/core';
+import { hasLength, isEmail, useForm, isNotEmpty } from '@mantine/form';
 
 import {
   selectCart,
@@ -25,32 +26,46 @@ export default function CheckoutForm() {
   const cart = useAppSelector(selectCart);
   const cartTotalPrice = useAppSelector(selectCartTotalPrice);
 
-  const [email, setEmail] = useState('');
-  const [isEmailSubscription, setIsEmailSubscription] = useState(false);
+  const form = useForm({
+    initialValues: {
+      email: '',
+      subscribe: false,
+      firstName: '',
+      secondName: '',
+      country: '',
+      city: '',
+      street: '',
+      apartment: '',
+      savedData: false,
+      shippingMethod: 'standard',
+      paymentMethod: 'cash',
+      sameDeliveryBillingAddress: true,
+      termsAgreed: true,
+      promoCode: '',
+    },
 
-  const [firstName, setFirstName] = useState('');
-  const [secondName, setSecondName] = useState('');
-  const [country, setCountry] = useState('');
-  const [city, setCity] = useState('');
-  const [street, setStreet] = useState('');
-  const [apartment, setApartment] = useState('');
-  const [isSaveEnteredData, setIsSaveEnteredData] = useState(false);
-
-  const [shippingMethod, setShippingMethod] = useState('standard');
-  const [paymentMethod, setPaymentMethod] = useState('cash');
-
-  const [isDelivery, setIsDelivery] = useState(true);
-  const [isTerms, setIsTerms] = useState(true);
-
-  const [promo, setPromo] = useState('');
+    validate: {
+      email: isEmail('Invalid email'),
+      firstName: hasLength({ min: 2 }, 'Enter your first name'),
+      secondName: hasLength({ min: 2 }, 'Enter your last name'),
+      street: isNotEmpty('Enter your street'),
+      apartment: isNotEmpty('Enter your apartment'),
+      termsAgreed: isNotEmpty('You must agree to accept the terms'),
+    },
+  });
 
   const additional = { discount: 10, tax: 0, shipping: 0 } as const;
-  const shipping = shippingMethod === 'fast' ? 8 : 4;
+  const shipping = form.values.shippingMethod === 'fast' ? 8 : 4;
   const totalPrice =
     cartTotalPrice - additional.discount + additional.tax + shipping;
 
   return (
-    <form className={'pb-[72px] pt-5 md:pb-[68px] md:pt-6 lg:pb-20'}>
+    <form
+      className={'pb-[72px] pt-5 md:pb-[68px] md:pt-6 lg:pb-20'}
+      onSubmit={form.onSubmit(async (values) => {
+        console.log(values);
+      })}
+    >
       <div className={'flex flex-col gap-12 lg:flex-row lg:gap-6'}>
         <div className={'flex flex-col gap-4 lg:w-[580px]'}>
           <h2
@@ -82,21 +97,20 @@ export default function CheckoutForm() {
             </div>
 
             <TextInput
-              value={email}
-              onChange={(event) => setEmail(event.currentTarget.value)}
+              {...form.getInputProps('email')}
               placeholder={'Enter your Email'}
               classNames={{
-                input: 'text-input',
+                root: 'form-root',
+                label: 'form-label',
+                input: 'form-input',
+                error: 'form-error',
               }}
             />
 
             <Checkbox
               mb={12}
-              checked={isEmailSubscription}
+              {...form.getInputProps('subscribe')}
               label='Email me with news and offers'
-              onChange={(event) =>
-                setIsEmailSubscription(event.currentTarget.checked)
-              }
               classNames={{
                 root: 'group',
                 body: 'checkbox-body',
@@ -130,11 +144,13 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>First name</label>
                 <TextInput
-                  value={firstName}
-                  onChange={(event) => setFirstName(event.currentTarget.value)}
+                  {...form.getInputProps('firstName')}
                   placeholder={'Enter your first name'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
@@ -143,11 +159,13 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>Second name</label>
                 <TextInput
-                  value={secondName}
-                  onChange={(event) => setSecondName(event.currentTarget.value)}
+                  {...form.getInputProps('secondName')}
                   placeholder={'Enter your second name'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
@@ -156,11 +174,13 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>Country</label>
                 <TextInput
-                  value={country}
-                  onChange={(event) => setCountry(event.currentTarget.value)}
+                  {...form.getInputProps('country')}
                   placeholder={'Enter your country'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
@@ -169,11 +189,13 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>City</label>
                 <TextInput
-                  value={city}
-                  onChange={(event) => setCity(event.currentTarget.value)}
+                  {...form.getInputProps('city')}
                   placeholder={'Enter your city'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
@@ -182,11 +204,13 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>Street</label>
                 <TextInput
-                  value={street}
-                  onChange={(event) => setStreet(event.currentTarget.value)}
+                  {...form.getInputProps('street')}
                   placeholder={'Enter your street'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
@@ -195,22 +219,21 @@ export default function CheckoutForm() {
               <div className={'flex flex-col gap-2'}>
                 <label className={'text-sm/normal'}>Apartment</label>
                 <TextInput
-                  value={apartment}
-                  onChange={(event) => setApartment(event.currentTarget.value)}
+                  {...form.getInputProps('apartment')}
                   placeholder={'Enter your apartment'}
                   classNames={{
-                    input: 'text-input',
+                    root: 'form-root',
+                    label: 'form-label',
+                    input: 'form-input',
+                    error: 'form-error',
                   }}
                 />
               </div>
             </div>
 
             <Checkbox
-              checked={isSaveEnteredData}
+              {...form.getInputProps('savedData')}
               label='Save the entered data for registration'
-              onChange={(event) =>
-                setIsSaveEnteredData(event.currentTarget.checked)
-              }
               classNames={{
                 root: 'group',
                 body: 'checkbox-body',
@@ -237,15 +260,15 @@ export default function CheckoutForm() {
 
             <Radio.Group
               mb={16}
-              value={shippingMethod}
-              onChange={setShippingMethod}
+              {...form.getInputProps('shippingMethod')}
               name='shippingMethod'
               withAsterisk
             >
               <div
                 className={clsx(
                   'mb-4 flex items-center justify-between border border-brand-grey-400 bg-primary px-4 py-2 text-base font-bold text-brand-grey-900',
-                  shippingMethod === 'standard' && 'border-secondary'
+                  form.values.shippingMethod === 'standard' &&
+                    'border-secondary'
                 )}
               >
                 <div className={'flex items-center gap-2'}>
@@ -273,7 +296,7 @@ export default function CheckoutForm() {
               <div
                 className={clsx(
                   'flex items-center justify-between border border-brand-grey-400 bg-primary px-4 py-2 text-base font-bold text-brand-grey-900',
-                  shippingMethod === 'fast' && 'border-secondary'
+                  form.values.shippingMethod === 'fast' && 'border-secondary'
                 )}
               >
                 <div className={'flex items-center gap-2'}>
@@ -285,7 +308,7 @@ export default function CheckoutForm() {
                       radio: 'radio-radio',
                     }}
                   />
-                  <label>Standard Shipping</label>
+                  <label>Fast Shipping</label>
                 </div>
 
                 <p
@@ -317,8 +340,7 @@ export default function CheckoutForm() {
 
             <Radio.Group
               mb={16}
-              value={paymentMethod}
-              onChange={setPaymentMethod}
+              {...form.getInputProps('paymentMethod')}
               name='paymentMethod'
               withAsterisk
             >
@@ -326,7 +348,7 @@ export default function CheckoutForm() {
                 <div
                   className={clsx(
                     'flex items-center justify-between border border-brand-grey-400 bg-primary px-4 py-2 text-base font-bold text-brand-grey-900',
-                    paymentMethod === 'card' && 'border-secondary'
+                    form.values.paymentMethod === 'card' && 'border-secondary'
                   )}
                 >
                   <div className={'flex items-center gap-2'}>
@@ -370,7 +392,7 @@ export default function CheckoutForm() {
                   </div>
                 </div>
 
-                {paymentMethod === 'card' && (
+                {form.values.paymentMethod === 'card' && (
                   <p
                     className={
                       'bg-brand-green-200 px-4 py-3 text-base text-brand-green-400'
@@ -384,7 +406,7 @@ export default function CheckoutForm() {
                 <div
                   className={clsx(
                     'mb-4 flex items-center border border-brand-grey-400 bg-primary px-4 py-2 text-base font-bold text-brand-grey-900',
-                    paymentMethod === 'cash' && 'border-secondary'
+                    form.values.paymentMethod === 'cash' && 'border-secondary'
                   )}
                 >
                   <div className={'flex items-center gap-2'}>
@@ -405,9 +427,8 @@ export default function CheckoutForm() {
 
           <div className={'flex flex-col gap-2'}>
             <Checkbox
-              checked={isDelivery}
+              {...form.getInputProps('sameDeliveryBillingAddress')}
               label='Billing Adress Same As Delivery'
-              onChange={(event) => setIsDelivery(event.currentTarget.checked)}
               classNames={{
                 root: 'group',
                 body: 'checkbox-body',
@@ -417,15 +438,16 @@ export default function CheckoutForm() {
               }}
             />
             <Checkbox
-              checked={isTerms}
+              {...form.getInputProps('termsAgreed')}
               label='By Clicking Place Order I Agree To The Terms'
-              onChange={(event) => setIsTerms(event.currentTarget.checked)}
               classNames={{
                 root: 'group',
                 body: 'checkbox-body',
                 inner: 'checkbox-inner',
                 input: 'checkbox-input',
                 label: 'checkbox-label',
+                labelWrapper: 'relative',
+                error: 'form-error',
               }}
             />
           </div>
@@ -503,11 +525,12 @@ export default function CheckoutForm() {
                 <Popover.Dropdown>
                   <div className={'px-2 pt-3'}>
                     <TextInput
-                      value={promo}
-                      onChange={(event) => setPromo(event.currentTarget.value)}
+                      {...form.getInputProps('promoCode')}
                       placeholder={'Enter promo code'}
                       classNames={{
-                        input: 'text-input',
+                        root: 'form-root',
+                        label: 'form-label',
+                        input: 'form-input',
                       }}
                     />
                   </div>
@@ -566,14 +589,14 @@ export default function CheckoutForm() {
               <p className={'uppercase'}>Total</p>
               <NumberFormatter
                 prefix='$ '
-                value={totalPrice}
+                value={Math.max(0, totalPrice)}
                 decimalScale={2}
                 className={'whitespace-nowrap'}
               />
             </div>
           </div>
           <button
-            type={'submit'}
+            type='submit'
             className={
               'btn btn-primary w-full md:mx-auto md:block md:w-[374px] lg:w-full'
             }

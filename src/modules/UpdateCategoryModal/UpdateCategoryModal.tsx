@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -10,30 +10,31 @@ import { Info, UploadCloud, X, Check } from 'lucide-react';
 
 import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
-import Modal from '@/components/ModalWindow';
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 
 import Notify from '@/components/Notify';
 
+import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import Image from 'next/image';
 import { useAuth } from '@/shared/hooks/useAuth';
+import axios from 'axios';
+import { cn } from '@/shared/lib/utils';
 
 type Props = {
   categoryLine: Category & { image: { path: string; name: string } };
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
   const { access_token } = useAuth();
-  const [isNotified, setIsNotified] = useState(false);
+  const [isNotified, { open: openNotification, close: closeNotification }] =
+    useDisclosure();
   const [dispatch] = useUpdateCategoryMutation();
   const previewImage = useRef<(typeof categoryLine)['image']>();
 
-  console.log(categoryLine);
-
   const handleClose = () => {
-    setIsNotified(false);
+    closeNotification();
   };
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -51,8 +52,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     },
 
     validate: {
-      categoryName: (value) =>
-        !value.trim() ? 'Entered a valid category name' : null,
+      categoryName: isNotEmpty("The category name should be filled")
     },
   });
 
@@ -61,7 +61,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       path: categoryLine.image.path,
       name: categoryLine.image.name,
     };
-  }
+  };
 
   // When the list of categories is changed, change the form values respectively
   useEffect(() => {
@@ -85,17 +85,32 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    // TODO: image upload
-
-    const { image: thumbnail, ...requestBody } = {
+    let requestBody = {
       ...categoryLine,
       name: categoryName,
     };
 
+    // Uploading an image
+    if (image) {
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('type', 'image');
+      formData.append('title', `Category image: ${categoryName}`);
+
+      const res = await axios.post('https://api.imgur.com/3/image/', formData, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      requestBody.imgSrc = res.data.data.link;
+    }
+
     await dispatch({ req: requestBody, access_token });
 
     clearAndClose();
-    setIsNotified(true);
+    openNotification();
   };
 
   return (
@@ -108,19 +123,25 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         size={694}
         opened={opened}
         classNames={{
-          header: 'hidden',
-          content: 'py-[14px] px-6',
+          header: styles.modalHeader,
+          content: styles.modalContent,
         }}
         onClose={close}
       >
         <ModalHeader heading='Update Category' handleClose={close} />
-        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+        
+        <form>
           <TextInput
             classNames={{
-              input: 'rounded-sm outline-none border-0 p-0',
-              label: 'mb-1',
+              root: 'form-root',
+              label: 'form-label',
               wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
               section: 'static w-auto text-[#161616] whitespace-nowrap',
+              input: cn(
+                'form-input rounded-sm outline-none border-0 p-0',
+                form?.errors?.categoryName && 'form-error--input'
+              ),
+              error: 'form-error',
             }}
             withErrorStyles
             type='text'
@@ -131,7 +152,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
           <InputLabel
             classNames={{
-              label: 'flex gap-[10px] items-center mt-7 mb-1',
+              label: styles.fileLabel,
             }}
           >
             <span>Image</span>
@@ -148,32 +169,33 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               </label>
               <FileInput
                 id='file'
-                className='pointer-events-none w-full'
+                w="100%"
                 placeholder='Max file size 500 kB'
                 {...form.getInputProps('image')}
-                accept='image/*'
+                accept='.png,.jpeg,.gif,.webp'
                 classNames={{
-                  wrapper: 'h-full',
-                  input: "h-full rounded-sm font-['Arial']",
+                  wrapper: styles.fileWrapper,
+                  input: cn("form-input", styles.fileInput),
                 }}
               />
             </div>
           ) : (
-            <div className='flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1'>
+            <div className={styles.previewWrapper}>
               <Image
-                className='h-8 w-8 object-contain'
+                className={styles.previewImage}
                 width={32}
                 height={32}
                 src={previewImage.current.path}
                 alt={previewImage.current.name}
               />
               <p>{previewImage.current.name}</p>
-              <button onClick={clearFile} className='ml-[42px]'>
+              <button onClick={clearFile} className={styles.clearImage}>
                 <X size={14} alignmentBaseline='central' />
               </button>
             </div>
           )}
         </form>
+
         <ModalFooter
           singleBtn={false}
           secondaryBtnText='Cancel'
@@ -192,4 +214,4 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       />
     </>
   );
-};
+}

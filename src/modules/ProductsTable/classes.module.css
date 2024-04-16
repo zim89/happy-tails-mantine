@@ -1,0 +1,11 @@
+.columnSpacing {
+    @apply py-[14.5px] px-[16px];
+}
+
+.columnSpacing + .columnSpacing {
+    @apply pl-8;
+}
+
+.columnCell {
+    @apply text-sm/[21px] text-[#161616] overflow-ellipsis; 
+}

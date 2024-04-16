@@ -10,8 +10,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
 import {
-  Badge,
   Button,
   Group,
   Input,
@@ -29,6 +29,8 @@ import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
+import { CustomBadge } from '@/components/Badge';
+import UpdateStatus from './UpdateStatus';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -61,22 +63,13 @@ const columns = [
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
-      <Badge
-        bg={
-          {
-            'in progress': '#fbbc04',
-            new: '#4285f4',
-            cancelled: '#c63129',
-            shipped: '#2a7436',
-            completed: '#b4b4b4',
-            'return processing': '#84201c',
-            processing: '#389b48',
-          }[info.getValue().toLowerCase()]
+      <UpdateStatus orderRow={info.cell.row.original}>
+        {(toggle) => 
+        <Button onClick={toggle} classNames={{ root: "p-0" }}>
+          <CustomBadge color={info.getValue().toLowerCase()} name={info.getValue()} />
+        </Button>
         }
-        className='h-[1.375rem] px-2'
-      >
-        {info.getValue()}
-      </Badge>
+      </UpdateStatus>
     ),
     header: () => 'Status',
     filterFn: 'equalsString',

@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { Field } from '@/modules/SearchForm/ui/Field';
+import SearchField from '@/components/SearchField';
 import { Group, Menu, UnstyledButton } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
@@ -57,7 +57,7 @@ export default function OrderToolbar() {
   return (
     <div className='flex items-center gap-4'>
       <div className='flex-1'>
-        <Field placeholder='Search by all orders' />
+        <SearchField placeholder='Search by all orders' />
       </div>
       <div className='ml-auto'>
         <Menu onOpen={open} onClose={close} radius='md' withinPortal>

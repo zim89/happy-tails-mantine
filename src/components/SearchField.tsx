@@ -14,7 +14,7 @@ type Props = {
     button?: string;
   };
 };
-export const Field = ({
+const SearchField = ({
   placeholder = 'What are you looking for?',
   classNames,
 }: Props) => {
@@ -78,3 +78,5 @@ export const Field = ({
     </div>
   );
 };
+
+export default SearchField;

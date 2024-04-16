@@ -5,9 +5,13 @@ import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import { cleanPostcode, dirtyFields, formatUserAttributes } from '@/shared/lib/helpers';
+import {
+  cleanPostcode,
+  dirtyFields,
+  formatUserAttributes,
+} from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { AutoFields } from './AutoFields'
+import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
 
 export const DeliveryForm = () => {
@@ -33,9 +37,9 @@ export const DeliveryForm = () => {
 
       return {
         ...values,
-        postcode: parsedPostcode
-      }
-    },  
+        postcode: parsedPostcode,
+      };
+    },
 
     validate: {
       firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
@@ -53,7 +57,7 @@ export const DeliveryForm = () => {
       className={classes.form}
       onSubmit={form.onSubmit(async (values) => {
         const [newAttributes, count] = dirtyFields(values);
-        // If there is no changes, omit the call to API
+        // If there are no changes, omit the call to API
 
         if (count === 0) return;
         if (!currentUser) return;
@@ -107,11 +111,11 @@ export const DeliveryForm = () => {
       </Group>
 
       <Group className={classes.fieldsGroup}>
-        <AutoFields form={form} />
+        <LocationFields form={form} />
       </Group>
-      
+
       <Group className={classes.fieldsGroup}>
-        <PostalCodeField form={form}/>
+        <PostalCodeField form={form} />
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
@@ -179,7 +183,7 @@ export const DeliveryForm = () => {
       </Group>
       <Button
         type='submit'
-        className='mt-6 bg-black uppercase md:w-[380px] lg:w-[315px]'
+        className={classes.submitAddress}
       >
         Add Address
       </Button>

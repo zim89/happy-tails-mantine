@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     if (err instanceof Error)
       return Response.json(
-        { message: `Something went wrong. It's all what we know. DETAILS: ${err.message}` },
+        { message: err.message },
         { status: 500 }
       );
   }
