@@ -53,6 +53,7 @@ const columns = [
       </span>
     ),
     header: () => 'Product(s)',
+    minSize: 200,
     enableSorting: false,
   }),
   columnHelper.accessor('createdDate', {

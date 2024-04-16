@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Product } from '../types/types';
+import { Order, Product } from '../types/types';
 
 export const formatDate = (date: string | number) => {
   return dayjs(date).format('MMMM D, YYYY');
@@ -67,4 +67,14 @@ export const availabilityMap: {
   // https://schema.org/PreOrder: The item is available for pre-order.
   // https://schema.org/PreSale: The item is available for ordering and delivery before general availability.
   // https://schema.org/SoldOut: The item has been sold out.
+}
+
+export const calculateOrders = (orders: Order[]) => {
+  let kinds: {[P in string]: number} = {};
+  
+  orders.forEach(order => {
+    kinds[order.orderStatus] = (kinds[order.orderStatus] || 0) + 1;
+  });
+
+  return kinds;
 }

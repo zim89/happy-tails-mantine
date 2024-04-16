@@ -1,5 +1,4 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
-import OrderCounter from '@/components/OrderCounter';
 import OrderTable from '@/modules/OrderTable';
 import { Button } from '@mantine/core';
 import { Download, PlusCircle } from 'lucide-react';
@@ -38,13 +37,6 @@ export default function Page() {
             Add a new order
           </Button>
         </div>
-        <OrderCounter
-          className='mb-[1.875rem]'
-          newOrders={0}
-          inProgress={0}
-          completed={0}
-          canceled={0}
-        />
         <OrderTable />
       </section>
     </div>

@@ -2,6 +2,7 @@ import { Order } from '@/shared/types/types';
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
 import { Eye, MoreHorizontal, Trash } from 'lucide-react';
+import Link from 'next/link';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
   return (
@@ -17,7 +18,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
           leftSection={<Eye />}
           className='mb-1 rounded-none hover:bg-brand-grey-200'
         >
-          View
+          <Link href={`/admin/orders/${ctx.row.original.number.toLowerCase()}`}>View</Link>
         </Menu.Item>
         <Menu.Item
           leftSection={<Trash />}
