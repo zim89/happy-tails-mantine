@@ -11,6 +11,8 @@ class PAGES {
   CART = `/cart`;
   CHECKOUT = `/checkout`;
   CONFIRMATION = `${this.CHECKOUT}/confirmation`;
+  // Auxiliaries
+  UNAUTHORIZED = `/403`;
 }
 
 export const APP_PAGES = new PAGES();

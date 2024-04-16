@@ -1,0 +1,57 @@
+import { Button, Popover, Select } from '@mantine/core';
+import { useState } from 'react';
+import { Check, X, ChevronDown } from 'lucide-react';
+
+import { Order } from '@/shared/types/types';
+
+type Props = {
+  children(toggle: () => void): React.ReactNode;
+  orderRow: Order;
+};
+export default function UpdateStatus({ children, orderRow }: Props) {
+  const [opened, setOpened] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<
+    (typeof orderRow)['orderStatus']
+  >(orderRow.orderStatus);
+
+  const toggle = () => {
+    setOpened((o) => !o);
+  };
+
+  const close = () => {
+      setOpened(false);
+    };
+
+  return (
+    <Popover
+      opened={opened}
+      onChange={setOpened}
+      closeOnClickOutside={false}
+      position='left'
+      withArrow
+      arrowSize={15}
+      shadow='md'
+    >
+      <Popover.Target>{children(toggle)}</Popover.Target>
+      <Popover.Dropdown classNames={{ dropdown: 'flex gap-4' }}>
+        <Select
+          value={selectedOption}
+          classNames={{
+            input: "form-input"
+          }}
+          onChange={(option) => setSelectedOption((prev) => option || prev)}
+          data={['SHIPPED', 'IN PROGRESS', 'NEW', 'CANCELLED', 'COMPLETED', 'RETURN PROCESSING', 'PROCESSING']}
+          rightSection={<ChevronDown size={16} color="black" />}
+        />
+        <div>
+          <Button classNames={{ root: 'bg-black mr-2' }}>
+            <Check size={16} />
+          </Button>
+          <Button classNames={{ root: 'border-[1px] border-[#EEE]' }} onClick={close}>
+            <X size={16} color='black' />
+          </Button>
+        </div>
+      </Popover.Dropdown>
+    </Popover>
+  );
+}

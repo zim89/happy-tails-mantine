@@ -1,4 +1,5 @@
 import { Badge } from '@mantine/core';
+import { useMemo } from 'react';
 
 const colorPalette = {
   'in progress': '#fbbc04',
@@ -16,11 +17,11 @@ type Props = {
   palette?: { [P in string]: string }
 };
 export const CustomBadge = ({ name, color, palette = colorPalette }: Props) => {
-    const isPalette = (
+    const isPalette = useMemo(() => (
       candidate: string
     ): candidate is keyof typeof palette => {
       return candidate in palette ? true : false;
-    };
+    }, []);
 
   const type = isPalette(color) ? palette[color] : 'completed';
 

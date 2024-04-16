@@ -8,6 +8,7 @@ import classes from './styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 type Props = {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export default function Layout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuth) router.push('/403');
+    if (!isAuth) router.push(APP_PAGES.UNAUTHORIZED);
   }, [isAuth, router]);
 
   if (!isAuth) return null;

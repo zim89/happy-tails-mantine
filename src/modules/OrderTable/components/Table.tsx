@@ -30,6 +30,7 @@ import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge';
+import UpdateStatus from './UpdateStatus';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -62,7 +63,13 @@ const columns = [
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
-      <CustomBadge color={info.getValue().toLowerCase()} name={info.getValue()} />
+      <UpdateStatus orderRow={info.cell.row.original}>
+        {(toggle) => 
+        <Button onClick={toggle} classNames={{ root: "p-0" }}>
+          <CustomBadge color={info.getValue().toLowerCase()} name={info.getValue()} />
+        </Button>
+        }
+      </UpdateStatus>
     ),
     header: () => 'Status',
     filterFn: 'equalsString',
