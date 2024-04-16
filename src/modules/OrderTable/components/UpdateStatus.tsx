@@ -26,10 +26,9 @@ export default function UpdateStatus({ children, orderRow }: Props) {
     <Popover
       opened={opened}
       onChange={setOpened}
-      closeOnClickOutside={false}
       position='left'
       withArrow
-      arrowSize={15}
+      arrowSize={18}
       shadow='md'
     >
       <Popover.Target>{children(toggle)}</Popover.Target>
@@ -42,6 +41,10 @@ export default function UpdateStatus({ children, orderRow }: Props) {
             value={selectedOption}
             classNames={{
               input: 'form-input',
+            }}
+            // To prevent closing of the popover while clicking over combobox
+            comboboxProps={{
+                withinPortal: false
             }}
             onChange={(option) => setSelectedOption((prev) => option || prev)}
             data={[
