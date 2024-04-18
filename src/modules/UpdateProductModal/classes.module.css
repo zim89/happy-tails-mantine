@@ -1,0 +1,62 @@
+.actionButton {
+  @apply p-0 text-black block;
+}
+
+.divider {
+  @apply my-7 rounded-sm border-[1px] border-t-0 border-[#5A5A5A];
+}
+
+.controls {
+  @apply mt-12;
+}
+
+.modalHeader {
+  @apply hidden;
+}
+
+.modalContent {
+  @apply py-[14px] px-6;
+}
+
+.textarea {
+  @apply border-2 px-2 resize-none overflow-hidden rounded-sm outline-none;
+}
+
+.fileWrapper {
+  @apply pointer-events-none h-full;
+}
+
+.fileInput {
+  @apply h-full rounded-sm whitespace-pre;
+}
+
+.fileLabel {
+  @apply flex gap-[10px] items-center mt-7 mb-1;
+}
+
+.clearImage {
+  @apply ml-[42px];
+}
+
+.previewWrapper {
+  @apply flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1 mt-[48px] mb-[70px];
+}
+
+.previewImage {
+  @apply h-8 w-8 object-contain;
+}
+
+.upload {
+  /* 2/3 - two gaps (42px each) */
+  max-width: 50%;
+
+  @apply flex mt-[48px] mb-[70px];
+}
+
+.upload label {
+  @apply flex cursor-pointer items-center justify-evenly gap-2 bg-[#5A5A5A] px-4 py-[10px];
+}
+
+.upload label span {
+  @apply whitespace-nowrap font-bold leading-4 text-white;
+}

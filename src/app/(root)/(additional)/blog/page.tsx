@@ -9,7 +9,7 @@ export default async function BlogPage() {
   const posts = await fetchAllPosts();
 
   return (
-    <div className='lg:pt-4'>
+    <>
       <Container>
         <Breadcrumbs crumbs={[{ href: '/', text: 'Home' }, { text: 'Blog' }]} />
 
@@ -22,6 +22,6 @@ export default async function BlogPage() {
           <PostList posts={posts} />
         </div>
       </Container>
-    </div>
+    </>
   );
 }

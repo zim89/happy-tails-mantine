@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Strict mode forces components render twice, it breaks some of functionality
+  // Strict mode forces components render twice, it breaks some functionality
   reactStrictMode: false,
   images: {
     remotePatterns: [
@@ -13,7 +13,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
-  },
+  }
 };
 
 module.exports = nextConfig;

@@ -7,7 +7,7 @@ type CommonProps = {
   primaryBtnText: string;
   primaryBtnOnClick: () => void;
   primaryBtnClassName?: string;
-  containerStyles?: CSSProperties
+  containerStyles?: CSSProperties;
 };
 
 type SingleButtonProps = {
@@ -21,42 +21,42 @@ type DoubleButtonProps = {
   secondaryBtnClassName?: string;
 };
 
-type Props = CommonProps & (SingleButtonProps | DoubleButtonProps);
+export type Props = CommonProps & (SingleButtonProps | DoubleButtonProps);
 
 export default function ModalFooter(props: Props) {
   if (props.singleBtn) {
     return (
       <div className={styles.controls} style={props.containerStyles}>
-        <Button
-          classNames={{
-            root: props.primaryBtnClassName || 'bg-black px-12 rounded-sm',
-          }}
+        <span
+          is='button'
+          className={props.primaryBtnClassName || 'rounded-sm bg-black px-12 text-white py-2 cursor-pointer'}
           onClick={props.primaryBtnOnClick}
         >
           {props.primaryBtnText}
-        </Button>
+        </span>
       </div>
     );
   } else
     return (
       <div className={styles.controls} style={props.containerStyles}>
-        <Button
+        <span
+          is='button'
           onClick={props.secondaryBtnOnClick}
-          classNames={{
-            root: props.secondaryBtnClassName || 'text-black border-1 border-[#EEE] px-12 mr-[42px] rounded-sm',
-          }}
+          className={
+            props.secondaryBtnClassName ||
+            'mr-[42px] rounded-sm border-2 border-[#EEE] px-12 py-2 text-black cursor-pointer'
+          }
         >
           {props.secondaryBtnText}
-        </Button>
+        </span>
 
-        <Button
-          classNames={{
-            root: props.primaryBtnClassName || 'bg-black px-12 rounded-sm',
-          }}
+        <span
+          is='button'
+          className={props.primaryBtnClassName || 'rounded-sm bg-black px-12 text-white py-2 cursor-pointer'}
           onClick={props.primaryBtnOnClick}
         >
           {props.primaryBtnText}
-        </Button>
+        </span>
       </div>
     );
-};
+}

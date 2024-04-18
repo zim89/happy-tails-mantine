@@ -1,17 +1,30 @@
+"use client";
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Button } from '@mantine/core';
 
-import mock from '@/modules/OrderTable/mock.json';
+import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';
 import classes from '../styles.module.css';
-import { Button } from '@mantine/core';
-import { cn } from '@/shared/lib/utils';
+import { BackendResponse, Order } from '@/shared/types/types';
+import axios from "@/shared/lib/interceptor";
 
 function OrderPage() {
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await axios<BackendResponse<Order[]>>("https://happytails-backend.lav.net.ua/happytails/api/orders?page=0&size=10");
+
+      setOrders(res.data.content);
+    })(); 
+  }, []);
+
   return (
     <>
-      {/* <h1 className='heading text-center hidden lg:block'>Order History</h1> */}
-      {mock.content.length > 0 ? (
-        <OrderTabs orders={mock.content} />
+      <h1 className='heading hidden lg:block'>Order History</h1>
+      {orders.length > 0 ? (
+        <OrderTabs orders={orders} />
       ) : (
         <div className={classes.box}>
           <hgroup>

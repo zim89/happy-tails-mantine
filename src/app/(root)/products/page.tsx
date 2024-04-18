@@ -31,11 +31,11 @@ Ensure your dog's safety and style during walks with our exquisite collection of
   productCount: 0,
   imgSrc: null,
   createdAt: 0,
-  updatedAt: null
+  updatedAt: null,
 };
 
 export default async function AllProducts() {
-  const { content: categories } = await getAllCategories();
+  const categories = await getAllCategories();
   const { totalElements } = (await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + '/products?size=1'
   ).then((res) => res.json())) as BackendResponse<Product>;
@@ -43,27 +43,29 @@ export default async function AllProducts() {
   category.productCount = totalElements;
 
   return (
-    <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
-      <div className='container text-center'>
-        <Breadcrumbs
-          crumbs={[{ href: '/', text: 'Home' }, { text: 'All Products' }]}
+    <section className='section'>
+      <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
+        <div className='container text-center'>
+          <Breadcrumbs
+            crumbs={[{ href: '/', text: 'Home' }, { text: 'All Products' }]}
           />
-        <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
-          Premium Dog Products
-        </h2>
-        <p className='mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
-          We understand that your furry friend deserves nothing but the best.
-          Discover a delightful array of high-quality products designed to
-          enhance your dog&apos;s comfort, happiness, and well-being
-        </p>
-        <ProductCountContextProvider>
-          <Toolbar category={category} categories={categories} />
-          <ProductList />
-        </ProductCountContextProvider>
-        <Overview>
-          <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
-        </Overview>
+          <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
+            Premium Dog Products
+          </h2>
+          <p className='mx-auto mb-8 font-light md:max-w-[28.625rem] lg:max-w-[35.75rem]'>
+            We understand that your furry friend deserves nothing but the best.
+            Discover a delightful array of high-quality products designed to
+            enhance your dog&apos;s comfort, happiness, and well-being
+          </p>
+          <ProductCountContextProvider>
+            <Toolbar category={category} categories={categories} />
+            <ProductList />
+          </ProductCountContextProvider>
+          <Overview>
+            <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
+          </Overview>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

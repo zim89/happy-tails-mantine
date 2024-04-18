@@ -3,39 +3,13 @@ import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import type { AxiosError, AxiosRequestConfig } from 'axios';
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface RegisterResponse {
-  userId: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  registerDate: number[];
-  roles: string[];
-}
-
-export interface LoginResponse {
-  access_token: string;
-  expires_in: number;
-  refresh_expires_in: number;
-  refresh_token: string;
-  token_type: string;
-  'not-before-policy': number;
-  session_state: string;
-  scope: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+import {
+  LoginData,
+  LoginResponse,
+  RegisterData,
+  RegisterResponse,
+  VerifyEmailData,
+} from '@/shared/types/auth.types';
 
 export const axiosBaseQuery =
   (
@@ -79,14 +53,24 @@ export const authApi = createApi({
   tagTypes: ['Auth'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    register: builder.mutation<RegisterResponse, RegisterRequest>({
+    register: builder.mutation<RegisterResponse, RegisterData>({
       query: (payload) => ({
         url: '/users/register',
         method: 'post',
         data: payload,
       }),
     }),
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    verifyEmail: builder.mutation<LoginResponse, VerifyEmailData>({
+      query: (payload) => ({
+        url: '/users/verify-email',
+        method: 'post',
+        data: payload,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }),
+    }),
+    login: builder.mutation<LoginResponse, LoginData>({
       query: (payload) => ({
         url: '/users/token',
         method: 'post',
@@ -108,21 +92,23 @@ export const authApi = createApi({
         method: 'get',
       }),
     }),
-    updateDetails: builder.mutation<any, Partial<{ firstName: string, lastName: string, email: string, attributes: { [P in string]: string[] } }>>({
+    // FIXME: Fix any type
+    updateDetails: builder.mutation<any, any>({
       query: (payload) => ({
-        url: "/users/update",
+        url: '/users/update',
         method: 'put',
-        data: payload
+        data: payload,
       }),
-      invalidatesTags: ["Auth"]
-    })
+      invalidatesTags: ['Auth'],
+    }),
   }),
 });
 
 export const {
   useRegisterMutation,
+  useVerifyEmailMutation,
   useLoginMutation,
   useLogoutMutation,
   useGetUserInfoQuery,
-  useUpdateDetailsMutation
+  useUpdateDetailsMutation,
 } = authApi;

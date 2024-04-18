@@ -40,7 +40,9 @@ next-env.d.ts
 .vscode/
 .env
 
+resources.md
 links.md
 
 https_cert
 server.ts
+.env.production

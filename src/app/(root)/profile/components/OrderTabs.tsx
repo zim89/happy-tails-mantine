@@ -35,7 +35,7 @@ export const OrderTabs = ({ orders }: Props) => {
       >
         <Toolbar />
 
-        <PaginationStateful initial={orders} maxPages={7}>
+        <PaginationStateful initial={orders} maxItems={7}>
           {(paginatedOrders, panel) => (
             <div className='mt-6'>
               <OrdersList orders={paginatedOrders} />

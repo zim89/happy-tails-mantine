@@ -7,6 +7,8 @@ import FooterNav from './ui/FooterNav';
 import SocialLinks from './ui/SocialLinks';
 import logoImg from '@/assets/logo/logo-footer.svg';
 
+// Forced to move styles externally cause 404 page doesn't load styles from a file 😕
+
 export default function Footer(): React.JSX.Element {
   return (
     <footer className='bg-secondary py-6 text-primary md:py-9'>
@@ -43,19 +45,29 @@ export default function Footer(): React.JSX.Element {
 
         <FooterNav />
 
-        <div className='flex items-baseline justify-between'>
-          <p className='flex gap-3 text-xs leading-normal md:text-base'>
-            <span>© 2023</span>
-            <span>Happy Tails</span>
-          </p>
-          <a
-            href={'#Team'}
-            className={
-              'relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal'
-            }
+        <div className='md:flex md:justify-between'>
+          <div className="flex justify-between md:w-3/5">
+            <p className='flex gap-3 text-xs leading-normal md:text-base'>
+              <span>© 2023</span>
+              <span>Happy Tails</span>
+            </p>
+            <Link
+              className='ml-auto text-xs leading-normal md:text-base'
+              href='/privacy&cookies'
+            >
+              Privacy & Cookies Policy
+            </Link>
+          </div>
+          <div
+            className='mt-6 block text-center md:mt-0'
           >
-            Website by Team
-          </a>
+            <a
+              href={'#Team'}
+              className='relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal'
+            >
+              Website by Team
+            </a>
+          </div>
         </div>
       </Container>
     </footer>

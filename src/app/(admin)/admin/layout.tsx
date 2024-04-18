@@ -1,6 +1,5 @@
 "use client";
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import classes from './layout.module.css';
@@ -8,19 +7,14 @@ import AdminSidebar from '@/modules/AdminSidebar';
 import AdminHeader from '@/modules/AdminHeader';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const { isAdmin } = useAuth();
+  const { isAdmin, currentUser } = useAuth();
 
-  useEffect(() => {
-    if (!isAdmin) router.push("/"); 
-  }, [isAdmin]);
-
-  if (!isAdmin) return null;  
+  if (!isAdmin || !currentUser) notFound();  
 
   return (
     <div className={classes.layoutWrapper}>
       <AdminSidebar />
-      <AdminHeader />
+      <AdminHeader user={currentUser}/>
       <div className={classes.content}>{children}</div>
     </div>
   );

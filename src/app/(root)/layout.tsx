@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
-import Header from '@/modules/Header';
-import Footer from '@/modules/Footer';
+import LayoutTemplate from "@/components/LayoutTemplate";
 
 export const metadata: Metadata = {
   title:
@@ -13,12 +12,8 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <Header />
-      <div className='grid h-screen grid-rows-[_1fr_auto] pt-[4.625rem] lg:pt-32'>
-        <main>{children}</main>
-        <Footer />
-      </div>
-    </>
+     <LayoutTemplate>
+      {children}
+   </LayoutTemplate>
   );
 }

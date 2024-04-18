@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { BackendResponse } from '../types/types';
 
 type ID = string | number;
@@ -91,15 +92,12 @@ export const {
   useUpdateCategoryMutation,
 } = categoriesApi;
 
-// TODO: Implement fetch to the server
-export const getAllCategories = async (): Promise<
-  BackendResponse<Category[]>
-> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category`);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch categories');
+export const getAllCategories = async () => {
+  try {
+    const res = await axios.get<BackendResponse<Category[]>>(`${process.env.NEXT_PUBLIC_BASE_URL}/category`);
+    const categories: Category[] = res.data.content;
+    return categories;
+  } catch (err) {
+     throw err;
   }
-
-  return res.json();
 };

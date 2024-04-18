@@ -15,7 +15,7 @@ export default function Page() {
 
   useEffect(() => {
     (async () => {
-      const { content: categories } = await getAllCategories();
+      const categories = await getAllCategories();
       setCategories(categories);
     })();
   }, []);

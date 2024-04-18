@@ -24,10 +24,11 @@ export async function GET(req: NextRequest) {
       expiryDate: credentials.expiry_date,
     });
   } catch (err) {
-    if (err instanceof Error)
+    if (err instanceof Error) {
       return Response.json(
         { message: 'Error refreshing access token: ', err },
         { status: 500 }
       );
+    }
   }
 }

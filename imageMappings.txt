@@ -1,7 +1,0 @@
-All products: "https://i.imgur.com/4FsWarQ.png"
-Care category: "https://i.imgur.com/Rb7fGOo.png"
-Clothing category: "https://i.imgur.com/epyUE1A.png"
-Collars category: "https://i.imgur.com/xxfcU4d.png"
-Furniture category: "https://i.imgur.com/UKzxOow.png"
-Leads category: "https://i.imgur.com/XapxewI.png"
-Toys category: "https://i.imgur.com/FM7KA2G.png"

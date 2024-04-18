@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Container } from '@mantine/core';
 
 import SliderMenu from '@/modules/ProfileMenu/mobile';
@@ -8,6 +8,7 @@ import classes from './styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 type Props = {
   children: React.ReactNode;
@@ -18,18 +19,20 @@ export default function Layout({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuth) router.push("/");
+    if (!isAuth) router.push(APP_PAGES.UNAUTHORIZED);
   }, [isAuth, router]);
 
   if (!isAuth) return null;
 
   return (
-    <Container className={classes.page}>
-      {/* Only on mobiles and tablets */}
-      <SliderMenu />
-      {/* From laptops and beyond */}
-      <SidebarMenu />
-      <div className={classes.content}>{children}</div>
-    </Container>
+    <section className='py-8 pt-[74px] md:py-10 lg:py-[72px]'>
+      <Container className={classes.page}>
+        {/* Only on mobiles and tablets */}
+        <SliderMenu />
+        {/* From laptops and beyond */}
+        <SidebarMenu />
+        <div>{children}</div>
+      </Container>
+    </section>
   );
 }
