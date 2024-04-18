@@ -94,6 +94,9 @@ export const productApi = createApi({
         method: 'get',
       }),
     }),
+    findBestSellers: builder.query<BackendResponse<Product[]>, void>({
+      query: () => ({ url: 'products/best-sellers' }),
+    }),
     create: builder.mutation<
       Product,
       { req: Partial<Product>; access_token: string }
@@ -143,6 +146,7 @@ export const productApi = createApi({
 export const {
   useFindManyQuery,
   useFindOneQuery,
+  useFindBestSellersQuery,
   useCreateMutation,
   useUpdateMutation,
   useRemoveMutation,

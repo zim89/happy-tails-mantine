@@ -32,6 +32,8 @@ Ensure your dog's safety and style during walks with our exquisite collection of
   imgSrc: null,
   createdAt: 0,
   updatedAt: null,
+  coordinateOnBannerX: 0,
+  coordinateOnBannerY: 0,
 };
 
 export default async function AllProducts() {
