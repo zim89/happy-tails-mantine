@@ -95,7 +95,7 @@ export const productApi = createApi({
       }),
     }),
     findBestSellers: builder.query<BackendResponse<Product[]>, void>({
-      query: () => 'products/best-sellers',
+      query: () => ({ url: 'products/best-sellers' }),
     }),
     create: builder.mutation<
       Product,
