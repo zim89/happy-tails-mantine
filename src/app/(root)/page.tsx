@@ -3,6 +3,7 @@ import Blog from '@/modules/Blog';
 import Categories from '@/modules/Categories';
 import Featured from '@/modules/Featured';
 import HeroCarousel from '@/modules/HeroCarousel';
+import WhyUs from '@/modules/WhyUs';
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <Featured />
       <Categories />
       <Blog />
+      <WhyUs />
     </>
   );
 }

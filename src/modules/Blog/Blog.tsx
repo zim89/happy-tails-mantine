@@ -17,7 +17,7 @@ export default async function Blog() {
         <Button
           component={Link}
           href='/blog'
-          className='mt-6 h-11 min-w-full rounded-sm border border-brand-grey-400 bg-white text-[hsl(0,0%,9%)] md:mt-9 md:min-w-[232px]'
+          className='mt-6 h-11 min-w-full rounded-sm border border-brand-grey-400 bg-brand-grey-100 text-[hsl(0,0%,9%)] md:mt-9 md:min-w-[232px]'
         >
           Read more
         </Button>
