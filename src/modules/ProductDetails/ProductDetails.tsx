@@ -15,6 +15,7 @@ import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductSlider from './ui/ProductSlider';
 import { cn } from '@/shared/lib/utils';
+import { sliderData } from './lib/data';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -170,7 +171,7 @@ export default function ProductDetails({ product }: Props) {
             </div>
           </div>
 
-          <ProductSlider />
+          <ProductSlider data={sliderData as unknown as Product[]} />
         </Container>
       </section>
     </>
