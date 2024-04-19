@@ -26,7 +26,7 @@ export default function OrderTable() {
         completed={calculated["Completed"] || 0}
         canceled={calculated["Cancelled"] || 0}
       />
-      <Table data={mock.content} />;
+      <Table data={mock.content} />
     </>
   );
 

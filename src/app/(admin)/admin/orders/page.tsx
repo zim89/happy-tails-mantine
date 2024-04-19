@@ -1,10 +1,14 @@
+"use client";
 import Breadcrumbs from '@/components/Breadcrumbs';
 import OrderTable from '@/modules/OrderTable';
-import { Button } from '@mantine/core';
-import { Download, PlusCircle } from 'lucide-react';
+import { Button, Menu } from '@mantine/core';
+import { Download, File, Files, PlusCircle, Printer } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Page() {
+  const [opened, setOpened] = useState(false);
+
   return (
     <div>
       <div className='mb-8'>
@@ -20,13 +24,34 @@ export default function Page() {
             </h2>
             <p>View and check all orders registered on your store</p>
           </hgroup>
-          <Button
-            leftSection={<Download size={20} />}
-            size='md'
-            variant='default'
-          >
-            Export
-          </Button>
+          <Menu opened={opened} onChange={setOpened} width={148} position="bottom-start" offset={1} radius={2} classNames={{
+            dropdown: "p-0",
+            item: "py-[10p] px-4 hover:bg-[#F7F7F7] cursor-pointer"
+          }}>
+            <Menu.Target>
+              <Button
+                leftSection={<Download size={20} />}
+                size='md'
+                variant='default'
+                radius={2}
+              >
+                Export
+              </Button>
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Menu.Item>
+                <Printer size={16} className='inline-block mr-2'/> Print
+              </Menu.Item>
+              <Menu.Item>
+              <File size={16} className='inline-block mr-2'/> Csv
+              </Menu.Item>
+              <Menu.Item>
+              <Files size={16} className='inline-block mr-2'/> Copy
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+
           <Button
             component={Link}
             href='/admin/orders/new'

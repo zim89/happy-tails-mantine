@@ -42,9 +42,9 @@ export const categoriesApi = createApi({
           body: JSON.stringify({
             name: payload.name,
             title: payload.name,
-            path: 'testing',
-            description: 'Test description',
-            overview: 'Test overview',
+            path: `/${payload.name}`,
+            description: `Category name: ${payload.name}`,
+            overview: '',
             imgSrc: null,
           }),
 

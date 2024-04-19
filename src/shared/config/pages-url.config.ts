@@ -2,6 +2,7 @@ class PAGES {
   private root = '/';
 
   HOME = this.root;
+  ADMIN = `/admin`;
   // AUTH
   REGISTER = `/auth/register`;
   LOGIN = `/auth/login`;

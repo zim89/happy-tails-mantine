@@ -53,7 +53,7 @@ export default function UpdateStatus({ children, orderRow }: Props) {
               'New',
               'Cancelled',
               'Completed',
-              'Return',
+              'Return Processing',
               'Processing',
             ]}
             rightSection={<ChevronDown size={16} color='black' />}

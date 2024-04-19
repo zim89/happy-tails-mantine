@@ -13,7 +13,6 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 import Link from 'next/link';
 
 export default function UpdatePassword() {
-  const [isSent, setIsSent] = useState(false);
   const { currentUser, access_token } = useAuth();
   const [step, setStep] = useState(0);
 
@@ -21,8 +20,6 @@ export default function UpdatePassword() {
 
   const nextStep = () =>
     setStep((current) => (current < 2 ? current + 1 : current));
-  const prevStep = () =>
-    setStep((current) => (current > 0 ? current - 1 : current));
 
   const proceedCode = async () => {
     try {
@@ -30,18 +27,17 @@ export default function UpdatePassword() {
         email: currentUser.email,
       });
 
-      // await axios.post(
-      //   process.env.NEXT_PUBLIC_BASE_URL! + '/users/reset-password',
-      //   request,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${access_token}`,
-      //     },
-      //   }
-      // );
+      await axios.post(
+        process.env.NEXT_PUBLIC_BASE_URL! + '/users/reset-password',
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
 
       nextStep();
-      setIsSent(true);
     } catch (err) {
       console.error(err);
     }
@@ -59,7 +55,7 @@ export default function UpdatePassword() {
     >
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className='heading'>Update your password</h1>
+          <h1 className='text-[32px]/[38.4px]'>Update your password</h1>
           <p className={cn(classes.profileParagraph)}>
             <span className='inline-block max-w-[360px]'>
               To change your password, we will send you verification code to{' '}
@@ -78,7 +74,7 @@ export default function UpdatePassword() {
       </Stepper.Step>
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className={cn(classes.profileHeading, 'heading')}>
+          <h1 className='text-[32px]/[38.4px]'>
             Update your password
           </h1>
           <p className={classes.profileParagraph}>
@@ -92,8 +88,18 @@ export default function UpdatePassword() {
       </Stepper.Step>
       <Stepper.Completed>
         <div className='flex flex-col'>
-          <p className={cn(classes.profileParagraph, "text-3xl")}>The password has changed!</p>
-          <Button classNames={{ root: 'bg-black' }}>
+          <hgroup className='text-center'>
+            <h1 className='text-[32px]/[38.4px] whitespace-pre font-black'>
+              <span>Password Updated</span>
+              <Check className='inline-block ml-4' size={36}/>
+            </h1>
+            <p className={classes.profileParagraph}>
+              <span className='inline-block max-w-[360px]'>
+                Your password has been successfully updated
+              </span>
+            </p>
+          </hgroup>
+          <Button classNames={{ root: 'bg-black mt-8' }}>
             <Link href='/profile'>Return to my account</Link>
           </Button>
         </div>
