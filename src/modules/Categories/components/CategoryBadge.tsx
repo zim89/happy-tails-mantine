@@ -18,9 +18,9 @@ export default function CategoryBadge({
     <Link
       style={
         {
-          '--x': position.x,
-          '--y': position.y,
-        } as React.CSSProperties
+          top: position.y,
+          left: position.x
+        }
       }
       className='group absolute left-[--x] top-[--y] flex rounded-full bg-brand-grey-100/60 disabled:opacity-60'
       href={path}

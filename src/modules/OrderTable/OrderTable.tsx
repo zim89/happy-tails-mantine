@@ -8,12 +8,12 @@ import OrderCounter from '@/components/OrderCounter';
 import { calculateOrders } from '@/shared/lib/helpers';
 
 export default function OrderTable() {
-  const { access_token } = useAuth();
-  const { data, error, isLoading } = useFindManyQuery({
-    page: 0,
-    limit: 10,
-    token: access_token,
-  });
+  // const { access_token } = useAuth();
+  // const { data, error, isLoading } = useFindManyQuery({
+  //   page: 0,
+  //   limit: 10,
+  //   token: access_token,
+  // });
 
   const calculated = calculateOrders(mock.content);
   
