@@ -1,3 +1,5 @@
+import OrderDetails from '@/modules/OrderDetails';
+
 export default function Page() {
-  return <div>Order Page</div>;
+  return <OrderDetails />;
 }

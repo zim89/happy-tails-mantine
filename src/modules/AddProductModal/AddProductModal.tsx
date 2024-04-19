@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -24,7 +24,6 @@ import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { Product } from '@/shared/types/types';
-import { getAllCategories, Category } from '@/shared/api/categoryApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 
 type PreviewImage = {

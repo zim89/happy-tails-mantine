@@ -56,7 +56,7 @@
 }
 
 .profileContent {
-    @apply mx-auto flex flex-col md:max-w-[572px] text-center min-h-[50vh];
+    @apply mx-auto mt-10 flex flex-col md:max-w-[572px] text-center min-h-[50vh];
 }
 
 /* Shared */

@@ -48,13 +48,13 @@ export default function UpdateStatus({ children, orderRow }: Props) {
             }}
             onChange={(option) => setSelectedOption((prev) => option || prev)}
             data={[
-              'SHIPPED',
-              'IN PROGRESS',
-              'NEW',
-              'CANCELLED',
-              'COMPLETED',
-              'RETURN PROCESSING',
-              'PROCESSING',
+              'Shipped',
+              'In Progress',
+              'New',
+              'Cancelled',
+              'Completed',
+              'Return Processing',
+              'Processing',
             ]}
             rightSection={<ChevronDown size={16} color='black' />}
           />

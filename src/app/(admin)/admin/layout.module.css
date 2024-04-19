@@ -4,7 +4,6 @@
                         "nav body";
     grid-template-columns: 257px 1fr;
     grid-template-rows: 76px 1fr;
-    background-color: #FAFAFA;
 }
 
 .layoutWrapper > header {
@@ -15,5 +14,5 @@
 
 .content {
     grid-area: body;
-    padding: 16px 24px;
+    @apply py-4 px-6 bg-[#FAFAFA];
 }

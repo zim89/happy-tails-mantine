@@ -10,7 +10,10 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { redirect } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 
-export const UpdatePasswordForm = () => {
+type Props = {
+  nextStep: () => void;
+}
+export const UpdatePasswordForm = ({ nextStep }: Props) => {
   const form = useForm({
     initialValues: {
       code: '',
@@ -87,8 +90,9 @@ export const UpdatePasswordForm = () => {
     <form
       className={cn('mt-8', classes.form)}
       onSubmit={form.onSubmit(async (values) => {
-        const res = await updatePassword({ code: values.code, newPassword: values.password });
-        console.log(res);
+        // const res = await updatePassword({ code: values.code, newPassword: values.password });
+        // console.log(res);
+        nextStep();
         form.clearErrors();
         form.reset();
       })}

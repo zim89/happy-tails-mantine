@@ -18,7 +18,7 @@ export default function CategoryRow(category: Category) {
   return (
     <Table.Tr className={styles.categoryRow}>
       <Table.Td>
-        <Image src={noImage.src} width={24} height={24} alt={category.name} />
+        <Image src={category.imgSrc || noImage.src} width={24} height={24} alt={category.name} />
       </Table.Td>
       <Table.Td>{category.name}</Table.Td>
       <Table.Td>{category.productCount}</Table.Td>

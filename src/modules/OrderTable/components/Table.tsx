@@ -53,6 +53,7 @@ const columns = [
       </span>
     ),
     header: () => 'Product(s)',
+    minSize: 200,
     enableSorting: false,
   }),
   columnHelper.accessor('createdDate', {
@@ -171,7 +172,10 @@ export default function Table({ data }: { data: Order[] }) {
           of {table.getCoreRowModel().rows.length} entries
         </p>
         <Input
-          className='ml-auto'
+          classNames={{
+            wrapper: "ml-auto",
+            input: "form-input pl-8"
+          }}
           placeholder='Search Order'
           leftSection={<Search size={16} />}
           defaultValue={globalFilter}
@@ -251,13 +255,13 @@ export default function Table({ data }: { data: Order[] }) {
           rightSection={<ChevronDown className='text-secondary' />}
           value={table.getState().pagination.pageSize.toString()}
           onChange={(value) => {
-            table.setPageSize(Number(value));
+            table.setPageSize(Number(value))
           }}
           data={['10', '20', '30', '40', '50']}
           classNames={{
             root: 'flex items-center',
             label: 'text-base font-bold mr-2',
-            input: 'w-[4.3125rem] font-bold',
+            input: 'w-[4.3125rem] font-bold form-input',
           }}
         />
         <Pagination.Root
@@ -283,5 +287,5 @@ export default function Table({ data }: { data: Order[] }) {
         </Pagination.Root>
       </div>
     </div>
-  );
+  )
 }
