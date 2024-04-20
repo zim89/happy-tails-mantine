@@ -1,9 +1,9 @@
 'use client';
 
-import { useFindManyQuery } from '@/shared/api/ordersApi';
+// import { useFindManyQuery } from '@/shared/api/ordersApi';
 import Table from './components/Table';
 import mock from './mock.json';
-import { useAuth } from '@/shared/hooks/useAuth';
+// import { useAuth } from '@/shared/hooks/useAuth';
 import OrderCounter from '@/components/OrderCounter';
 import { calculateOrders } from '@/shared/lib/helpers';
 
