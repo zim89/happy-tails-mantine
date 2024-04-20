@@ -7,7 +7,6 @@ export default function CategoriesPresentation() {
   const { data } = useCategoriesQuery();
 
   if (!data) return null;
-  console.log("Category: ",data);
 
   return (
     <div className='relative mx-auto h-[721px] w-full max-w-screen-lg'>

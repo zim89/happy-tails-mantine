@@ -4,22 +4,21 @@ import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
+type ProductBodyRequest = {
+  page: number;
+  limit: number;
+  categoryId?: number;
+  filter?: FilterFormValues;
+  sort?: Sort;
+  name?: string;
+};
+
 export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    findMany: builder.query<
-      BackendResponse<Product[]>,
-      {
-        page: number;
-        limit: number;
-        categoryId?: number;
-        filter?: FilterFormValues;
-        sort?: Sort;
-        name?: string;
-      }
-    >({
+    findMany: builder.query<BackendResponse<Product[]>, ProductBodyRequest>({
       query: ({ page, limit, categoryId, filter, sort, name }) => {
         const params = new URLSearchParams({
           page: page.toString(),

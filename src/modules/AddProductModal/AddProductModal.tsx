@@ -1,3 +1,4 @@
+"use client";
 import { useRef } from 'react';
 import {
   Button,
@@ -119,8 +120,6 @@ export default function AddProductModal() {
 
     const candidate = categoryList.find(cat => cat.name === newProduct.categoryName);
     candidate && (newProduct.categoryId = candidate.id);
-
-    console.log("REQUEST BODY: ",newProduct);
 
     await dispatch({ req: newProduct, access_token });
     
