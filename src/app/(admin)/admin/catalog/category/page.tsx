@@ -14,8 +14,6 @@ export default function CategoryPage() {
 
   if (isError) return <p>Oops, something went wrong</p>;
 
-  console.log("RES:", data.content);
-
   return (
     <>
       <div className={styles.pageWrapper} style={{ position: 'relative' }}>

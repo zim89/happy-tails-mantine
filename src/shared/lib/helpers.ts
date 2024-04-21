@@ -78,3 +78,17 @@ export const calculateOrders = (orders: Order[]) => {
 
   return kinds;
 }
+
+export  const mockLongRequest = (value?: boolean) => new Promise<void>((resolve, reject) => {
+  let success;
+
+  setTimeout(() => {
+    success = value != null ? value : Math.random() < 0.5 ? true : false;
+
+    if (success) {
+      resolve();
+    } else {
+      reject();
+    }
+  }, 5000);
+});

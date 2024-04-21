@@ -1,6 +1,23 @@
 import axios from "@/shared/lib/interceptor";
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { BackendResponse, Order, Sort } from '../types/types';
+import type { BackendResponse, Order, Product, Sort } from '../types/types';
+
+type OrderPayload = {
+  token: string;
+  shippingAddress: string;
+  billingAddress: string;
+  shippingMethod: string;
+  items: string[];
+  paymentMethod: string;
+  email: string;
+  count: number;
+  discountCode?: string;
+}
+
+type DeleteOrderProps = {
+  token: string;
+  number: string;
+}
 
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
@@ -40,10 +57,40 @@ export const ordersApi = createApi({
             ]
           : [{ type: 'Orders', id: 'LIST' }],
     }),
+    createOrder: builder.mutation<Order, OrderPayload>({ 
+      query: ({ token, count, items,  ...params }) => ({
+        url: 'orders',
+        method: 'post',
+        params,
+        body: items.map(str => {
+          const orderItem: Product = JSON.parse(str);
+          
+          return {
+            productId: orderItem.id,
+            count: orderItem.quantity
+          }
+        }),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Orders"]
+    }),
+    deleteOrder: builder.mutation<void, DeleteOrderProps>({
+      query: ({ number, token }) => ({
+        url: `order/${number}`,
+        method: "delete",
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    })
   }),
 });
 
-export const { useFindManyQuery } = ordersApi;
+export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {

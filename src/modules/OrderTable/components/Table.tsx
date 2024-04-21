@@ -39,7 +39,7 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Order Id',
   }),
-  columnHelper.accessor('userId', {
+  columnHelper.accessor('email', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Customers',
   }),
@@ -65,11 +65,14 @@ const columns = [
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
       <UpdateStatus orderRow={info.cell.row.original}>
-        {(toggle) => 
-        <Button onClick={toggle} classNames={{ root: "p-0" }}>
-          <CustomBadge color={info.getValue().toLowerCase()} name={info.getValue()} />
-        </Button>
-        }
+        {(toggle) => (
+          <Button onClick={toggle} classNames={{ root: 'p-0' }}>
+            <CustomBadge
+              color={info.getValue().toLowerCase()}
+              name={info.getValue()}
+            />
+          </Button>
+        )}
       </UpdateStatus>
     ),
     header: () => 'Status',
@@ -173,8 +176,8 @@ export default function Table({ data }: { data: Order[] }) {
         </p>
         <Input
           classNames={{
-            wrapper: "ml-auto",
-            input: "form-input pl-8"
+            wrapper: 'ml-auto',
+            input: 'form-input pl-8',
           }}
           placeholder='Search Order'
           leftSection={<Search size={16} />}
@@ -235,17 +238,24 @@ export default function Table({ data }: { data: Order[] }) {
           ))}
         </MantineTable.Thead>
         <MantineTable.Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <MantineTable.Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <MantineTable.Td key={cell.id}>
-                  <span className='line-clamp-1'>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </span>
-                </MantineTable.Td>
-              ))}
-            </MantineTable.Tr>
-          ))}
+          {table.getRowModel().rows.length > 0 &&
+            table.getRowModel().rows.map((row) => (
+              <MantineTable.Tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <MantineTable.Td key={cell.id}>
+                    <span className='line-clamp-1'>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </span>
+                  </MantineTable.Td>
+                ))}
+              </MantineTable.Tr>
+            ))}
+          {table.getRowModel().rows.length === 0 && (
+            <p className='whitespace-pre p-4'>There are no orders yet</p>
+          )}
         </MantineTable.Tbody>
       </MantineTable>
       <div className='flex justify-between'>
@@ -255,7 +265,7 @@ export default function Table({ data }: { data: Order[] }) {
           rightSection={<ChevronDown className='text-secondary' />}
           value={table.getState().pagination.pageSize.toString()}
           onChange={(value) => {
-            table.setPageSize(Number(value))
+            table.setPageSize(Number(value));
           }}
           data={['10', '20', '30', '40', '50']}
           classNames={{
@@ -264,28 +274,30 @@ export default function Table({ data }: { data: Order[] }) {
             input: 'w-[4.3125rem] font-bold form-input',
           }}
         />
-        <Pagination.Root
-          value={table.getState().pagination.pageIndex + 1}
-          onChange={(value) => table.setPageIndex(value - 1)}
-          total={table.getPageCount()}
-          classNames={{
-            control: 'pagination-control',
-            dots: 'pagination-dots',
-          }}
-        >
-          <Group gap={0} justify='center'>
-            <div
-              className={
-                'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-              }
-            >
-              <Pagination.Previous icon={PaginationPrevBtn} />
-              <Pagination.Items />
-              <Pagination.Next icon={PaginationNextBtn} />
-            </div>
-          </Group>
-        </Pagination.Root>
+        {table.getRowModel().rows.length > 0 && (
+          <Pagination.Root
+            value={table.getState().pagination.pageIndex + 1}
+            onChange={(value) => table.setPageIndex(value - 1)}
+            total={table.getPageCount()}
+            classNames={{
+              control: 'pagination-control',
+              dots: 'pagination-dots',
+            }}
+          >
+            <Group gap={0} justify='center'>
+              <div
+                className={
+                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
+                }
+              >
+                <Pagination.Previous icon={PaginationPrevBtn} />
+                <Pagination.Items />
+                <Pagination.Next icon={PaginationNextBtn} />
+              </div>
+            </Group>
+          </Pagination.Root>
+        )}
       </div>
     </div>
-  )
+  );
 }

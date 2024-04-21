@@ -21,27 +21,38 @@ export interface Product {
 }
 
 export interface Order {
-  number: string;
-  orderStatus: string;
+  billingAddress: string;
   createdDate: string;
-  price: number;
-  count: number;
-  userId: string;
+  discountCode: string | null;
+  email: string;
+  id: string;
+  number: string;
   orderProductDTOList: {
     id: number;
     orderNumber: string;
     productId: number;
     productName: string;
+    productImagePath: string;
     productPrice: number;
     onSale: boolean;
     salePrice: number;
     count: number;
   }[];
+  orderStatus: string;
+  paymentMethod: string;
+  price: number;
   purchasedDate: string;
   shippingAddress: string;
   shippingMethod: string;
-  paymentMethod: string;
-  discountCode: string;
+}
+
+export type ParsedShippingAddress = {
+  firstName: string;
+  secondName: string;
+  country: string;
+  city: string;
+  street: string;
+  apartment: string;
 }
 
 export type BackendSort = {

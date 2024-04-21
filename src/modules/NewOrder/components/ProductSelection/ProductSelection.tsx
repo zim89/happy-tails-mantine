@@ -54,7 +54,7 @@ export default function ProductSelection({ form }: Props) {
       <Image width={64} height={64} src={item.imagePath} alt={item.name} />
       <div>
         <p className='mb-1 font-bold'>{item.name}</p>
-        <span>$ {item.price}</span>
+        <span>$ {item.price.toFixed(2)}</span>
       </div>
     </Combobox.Option>
   ));
@@ -143,7 +143,7 @@ export default function ProductSelection({ form }: Props) {
                   alt={parsed.name}
                 />
                 <div>
-                  <p className='text-xs'>
+                  <div className='text-xs'>
                     <span className='mr-2'>{parsed.article}</span>
                     <CustomBadge
                       palette={{
@@ -153,7 +153,7 @@ export default function ProductSelection({ form }: Props) {
                       color={parsed.productStatus.toLowerCase()}
                       name={parsed.productStatus}
                     />
-                  </p>
+                  </div>
                   <p className='py-1 font-bold'>{parsed.name}</p>
                   {parsed.productStatus === 'IN STOCK' && (
                     <p className='text-sm'>Price: ${parsed.price}</p>
@@ -167,7 +167,7 @@ export default function ProductSelection({ form }: Props) {
                       <Plus size={16} />
                     </button>
                     <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                      {parsed.quantity}
+                      {parsed.productStatus === 'IN STOCK' ? parsed.quantity : 0}
                     </span>
                     <button
                       disabled={!(parsed.productStatus === 'IN STOCK')}
@@ -187,7 +187,7 @@ export default function ProductSelection({ form }: Props) {
                   </button>
                   {parsed.productStatus === 'IN STOCK' && (
                     <span className='whitespace-pre text-xl font-bold'>
-                      $ {parsed.price * parsed.quantity}
+                      $ {(parsed.price * parsed.quantity).toFixed(2)}
                     </span>
                   )}
                 </div>

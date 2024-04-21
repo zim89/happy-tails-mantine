@@ -114,7 +114,7 @@ export default function DeliveryForm({ form }: Props) {
         {/*Input Street*/}
         <div>
           <TextInput
-            label='street'
+            label='Street'
             classNames={{
               input: cn(
                 'form-input h-full max-w-[26rem]',

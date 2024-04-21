@@ -1,5 +1,8 @@
 import axios from 'axios';
+
+import authorizedAxios from "@/shared/lib/interceptor";
 import { BackendResponse, Product } from '../types/types';
+import { User } from '../types/auth.types';
 
 export const getProductById = async (id: string) => {
   try {
@@ -36,3 +39,13 @@ export const getProductList = async () => {
     throw err;
   }
 };
+
+export const getUserByUUID = async (uuid: string) => {
+  try {
+    const res = await authorizedAxios<User>(`/users/${uuid}`);
+
+    return res.data;
+  } catch (err) {
+    throw err;
+  }
+}
