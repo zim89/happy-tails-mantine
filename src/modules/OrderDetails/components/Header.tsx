@@ -44,7 +44,7 @@ export const Header = ({ order }: Props) => {
         ? {
             kind: 'fail',
             classNames: { icon: 'bg-transparent' },
-            color: '#DC362E',
+            color: 'transparent',
             visible: true,
             icon: <AlertTriangle size={20} fill='#DC362E' />,
             text: 'Error Resending Order Confirmation Email!',

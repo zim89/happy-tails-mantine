@@ -1,8 +1,11 @@
+'use client';
 import { useState } from 'react';
 import { Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { Check, AlertTriangle } from 'lucide-react';
 
+import type { NotifyProps } from '@/components/Notify';
 import styles from './DeleteCategoryModal.module.css';
 import { Category } from '@/shared/api/categoryApi';
 
@@ -19,22 +22,27 @@ type Props = {
 export default function DeleteCategoryModal({ categoryLine }: Props) {
   const { access_token } = useAuth();
   const [dispatch] = useRemoveCategoryMutation();
-  const [isNotified, setIsNotified] = useState(false);
+  const [notificationType, setNotificationType] = useState('');
 
   const handleDelete = async () => {
-    if (categoryLine.productCount > 0) {
-      closeMain();
-      openError();
-    } else {
-      await dispatch({ id: categoryLine.id, access_token });
+    try {
+      if (categoryLine.productCount > 0) {
+        closeMain();
+        openError();
+      } else {
+        await dispatch({ id: categoryLine.id, access_token });
 
-      closeMain();
-      setIsNotified(true);
+        closeMain();
+        setNotificationType('Success');
+      }
+    } catch (err) {
+      setNotificationType('Failed');
+      console.error(err);
     }
   };
 
   const closeNotification = () => {
-    setIsNotified(false);
+    setNotificationType('');
   };
 
   const [openedMain, { open: openMain, close: closeMain }] =
@@ -42,13 +50,34 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [openedError, { open: openError, close: closeError }] =
     useDisclosure(false);
 
+  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
+    notificationType === 'Success'
+      ? {
+          kind: 'success',
+          text: 'Category successfully deleted!',
+          icon: <Check size={15} />,
+          visible: true,
+          color: '#389B48',
+        }
+      : notificationType === 'Failed'
+        ? {
+            kind: 'fail',
+            text: 'Category deletion failed!',
+            visible: true,
+            color: 'transparent',
+            icon: <AlertTriangle size={20} fill='#DC362E' />,
+          }
+        : null;
+
   return (
     <DeleteModal>
       {(Modal, Notification) => {
         return (
           <>
             {/* Button to open main modal */}
-            <Button className={styles.actionButton} onClick={openMain}>Delete</Button>
+            <Button className={styles.actionButton} onClick={openMain}>
+              Delete
+            </Button>
 
             <Modal
               onClose={closeMain}
@@ -97,11 +126,9 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               </div>
             </Modal>
 
-            <Notification
-              text='Category successfully deleted!'
-              visible={isNotified}
-              onClose={closeNotification}
-            />
+            {notifyProps && (
+              <Notification {...notifyProps} onClose={closeNotification} />
+            )}
           </>
         );
       }}

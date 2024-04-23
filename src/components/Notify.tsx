@@ -23,6 +23,7 @@ export default function Notify({
       pos='fixed'
       bottom={12}
       left={12}
+      classNames={{ root: "z-10" }}
     >
       <p className={cn('mr-8 text-base', kind === "success" ? 'text-lime-500' : "text-red-500")}>{text}</p>
       <div className='absolute bottom-0 left-0 h-1 w-full'>

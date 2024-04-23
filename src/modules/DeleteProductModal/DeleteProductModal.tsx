@@ -11,7 +11,7 @@ import { useRemoveMutation } from '@/shared/api/productApi';
 
 type Props = {
   productLine: Product;
-  setIsNotified: Dispatch<SetStateAction<boolean>>
+  setIsNotified: Dispatch<SetStateAction<string>>
 };
 
 export default function DeleteProductModal({ productLine, setIsNotified }: Props) {
@@ -19,9 +19,14 @@ export default function DeleteProductModal({ productLine, setIsNotified }: Props
   const [dispatch] = useRemoveMutation();
 
   const handleDelete = async () => {
-    await dispatch({ id: productLine.id, access_token });
-    closeMain();
-    setIsNotified(true);
+    try {
+      await dispatch({ id: productLine.id, access_token });
+      closeMain();
+      setIsNotified('Delete_Success');
+    } catch (err) {
+      setIsNotified('Delete_Error');
+      console.error(err);
+    }
   };
 
   const [openedMain, { open: openMain, close: closeMain }] =

@@ -1,19 +1,68 @@
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
-import { Eye, MoreHorizontal, Trash, Edit2, Check } from 'lucide-react';
+import {
+  Eye,
+  MoreHorizontal,
+  Trash,
+  Edit2,
+  Check,
+  AlertTriangle,
+} from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
 import DeleteProductModal from '@/modules/DeleteProductModal';
 import UpdateProductModal from '@/modules/UpdateProductModal';
 import { Product } from '@/shared/types/types';
-import Notify from '@/components/Notify';
+import Notify, { NotifyProps } from '@/components/Notify';
 import check_circle from '@/assets/icons/additional/check-circle.svg';
 
 export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isUpdated, setIsUpdated] = useState(false);
+  const [notificationType, setNotificationType] = useState('');
   const productLine = ctx.row.original;
+
+  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
+    notificationType === 'Delete_Success'
+      ? {
+          text: 'Product successfully deleted!',
+          kind: 'success',
+          visible: true,
+          icon: (
+            <Image
+              src={check_circle.src}
+              alt='Notification'
+              width={24}
+              height={24}
+              className='h-6 w-6'
+            />
+          ),
+          color: 'transparent',
+        }
+      : notificationType === 'Delete_Failed'
+        ? {
+            text: 'Product deletion failed!',
+            kind: 'fail',
+            visible: true,
+            icon: <AlertTriangle size={20} />,
+            color: '#DC362E',
+          }
+        : notificationType === 'Update_Success'
+          ? {
+              kind: 'success',
+              icon: <Check size={15} />,
+              color: 'transparent',
+              visible: true,
+              text: 'Changes saved!',
+            }
+          : notificationType === 'Update_Failed'
+            ? {
+                kind: 'fail',
+                icon: <AlertTriangle size={20} />,
+                color: '#DC362E',
+                visible: true,
+                text: 'Failed to update!',
+              }
+            : null;
 
   return (
     <>
@@ -37,7 +86,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             className='rounded-none hover:bg-brand-grey-200'
           >
             <UpdateProductModal
-              setIsNotified={setIsUpdated}
+              setIsNotified={setNotificationType}
               productLine={productLine}
             />
           </Menu.Item>
@@ -46,7 +95,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             className='rounded-none hover:bg-brand-grey-200'
           >
             <DeleteProductModal
-              setIsNotified={setIsDeleted}
+              setIsNotified={setNotificationType}
               productLine={productLine}
             />
           </Menu.Item>
@@ -55,8 +104,9 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
 
       {/* Forced to move notifications here, cause I don't want them appear only in opened dropdown menu */}
       {/* --- DELETE --- */}
-      <Notify
+      {/* <Notify
         text='Product successfully deleted!'
+        kind='success'
         visible={isDeleted}
         onClose={() => setIsDeleted(false)}
         icon={
@@ -69,15 +119,19 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
           />
         }
         color='transparent'
-      />
+      /> */}
       {/* --- UPDATE --- */}
-      <Notify
+      {/* <Notify
+        kind="fail"
         icon={<Check size={15} />}
         color='#389B48'
         visible={isUpdated}
         onClose={() => setIsUpdated(false)}
         text='Changes saved!'
-      />
+      /> */}
+      {notifyProps && (
+        <Notify {...notifyProps} onClose={() => setNotificationType('')} />
+      )}
     </>
   );
 };

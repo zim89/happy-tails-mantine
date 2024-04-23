@@ -102,7 +102,6 @@ const columns = [
 export default function Table({ data }: { data: Order[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useDebouncedState('', 200);
-  console.log('🚀 ~ Table ~ globalFilter:', globalFilter);
 
   const table = useReactTable({
     columns,
@@ -117,7 +116,6 @@ export default function Table({ data }: { data: Order[] }) {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugAll: true,
   });
 
   return (
@@ -193,7 +191,6 @@ export default function Table({ data }: { data: Order[] }) {
         border={1}
         borderColor='#EEE'
         withTableBorder
-        className='mb-12'
       >
         <MantineTable.Thead>
           {table.getHeaderGroups().map((group) => (
@@ -253,12 +250,14 @@ export default function Table({ data }: { data: Order[] }) {
                 ))}
               </MantineTable.Tr>
             ))}
-          {table.getRowModel().rows.length === 0 && (
-            <p className='whitespace-pre p-4'>There are no orders yet</p>
-          )}
         </MantineTable.Tbody>
       </MantineTable>
-      <div className='flex justify-between'>
+      {table.getRowModel().rows.length === 0 && (
+        <p className='border-[1px] border-[#EEE] p-4 text-sm/[21px] text-[#787878]'>
+          You have no any orders yet
+        </p>
+      )}
+      <div className='mt-12 flex justify-between'>
         <Select
           label='Results Per Page'
           withCheckIcon={false}

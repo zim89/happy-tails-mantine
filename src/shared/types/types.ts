@@ -1,6 +1,15 @@
 type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
 type ProductType = 'IN_STOCK' | 'OUT OF STOCK';
 
+type OrderStatus =
+  | 'NEW'
+  | 'IN_PROGRESS'
+  | 'PROCESSING'
+  | 'CANCELLED'
+  | 'SHIPPED'
+  | 'RETURN_PROCESSING'
+  | 'COMPLETED';
+
 export interface Product {
   id: number;
   article: string;
@@ -15,7 +24,7 @@ export interface Product {
   unitsSold?: number;
   onSale?: boolean;
   salePrice?: number;
-  productType?: ProductType; 
+  productType?: ProductType;
   updatedAt: number | null;
   createdAt: number;
 }
@@ -38,7 +47,7 @@ export interface Order {
     salePrice: number;
     count: number;
   }[];
-  orderStatus: string;
+  orderStatus: OrderStatus;
   paymentMethod: string;
   price: number;
   purchasedDate: string;
@@ -53,7 +62,7 @@ export type ParsedShippingAddress = {
   city: string;
   street: string;
   apartment: string;
-}
+};
 
 export type BackendSort = {
   empty: boolean;
@@ -84,6 +93,19 @@ export type BackendResponse<T> = {
   empty: boolean;
 };
 
-export type ID = number | string; 
+export type ErrorData = {
+  status: number;
+  error: string;
+  path: string;
+  timestamp: number;
+  message: string;
+}
+
+export type AxiosQueryError = {
+  status?: number;
+  data: ErrorData | string;
+}
+
+export type ID = number | string;
 
 export type Sort = [string, 'asc' | 'desc'];

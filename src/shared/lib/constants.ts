@@ -1,5 +1,5 @@
 import type { Category } from '@/shared/api/categoryApi';
-import { Order } from '../types/types';
+import { ErrorData, Order } from '../types/types';
 
 export const DEFAULT_CATEGORY_IMAGE = 'https://i.imgur.com/dhBg9XH.png';
 
@@ -31,32 +31,35 @@ Ensure your dog's safety and style during walks with our exquisite collection of
   coordinateOnBannerY: 0,
 };
 
-export const populateOrders = (): Order[] => {
-  return Array(15)
-    .fill(0)
-    .map(() => ({
-      count: Math.floor(Math.random() * 45),
-      createdDate: Date.now().toLocaleString(),
-      discountCode: '10%',
-      price: Math.floor(Math.random() * 75) + 25,
-      purchasedDate: Date.now().toLocaleString(),
-      shippingAddress: '',
-      number: '13',
-      orderProductDTOList: [
-        {
-          id: 1,
-          orderNumber: '1',
-          productId: 1,
-          productName: 'Test Product',
-          productPrice: 100,
-          onSale: false,
-          salePrice: 100,
-          count: 1,
-        },
-      ],
-      orderStatus: 'Shipped',
-      paymentMethod: 'Debit Card',
-      shippingMethod: 'Courier',
-      userId: '1',
-    }));
+export const orderStatusList: Order['orderStatus'][] = [
+  'NEW',
+  'IN_PROGRESS',
+  'PROCESSING',
+  'CANCELLED',
+  'SHIPPED',
+  'RETURN_PROCESSING',
+  'COMPLETED',
+];
+
+export const isOrderStatus = (param: any): param is Order['orderStatus'] => {
+  return orderStatusList.includes(param);
 };
+
+export const orderPalette = {
+  in_progress: '#fbbc04',
+  new: '#4285f4',
+  cancelled: '#c63129',
+  shipped: '#2a7436',
+  completed: '#b4b4b4',
+  return_processing: '#84201c',
+  processing: '#389b48',
+};
+
+export class ErrorResponse extends Error {
+  status: number = 500;
+
+  constructor(public data: ErrorData) {
+    super(data.message);
+    this.status = data.status;
+  }
+}

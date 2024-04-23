@@ -19,7 +19,7 @@ import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 
 type Props = {
   productLine: Product;
-  setIsNotified: Dispatch<SetStateAction<boolean>>;
+  setIsNotified: Dispatch<SetStateAction<string>>;
 };
 
 type PreviewImage = {
@@ -110,8 +110,9 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
       
       await dispatch({ req: requestBody, access_token });
       clearAndClose();
-      setIsNotified(true);
+      setIsNotified("Update_Success");
     } catch (err) {
+      setIsNotified("Update_Failed");
       console.log(err);
     }
   };

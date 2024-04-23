@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { Order, Product } from '../types/types';
+
+import { Order, Product, AxiosQueryError } from '../types/types';
 
 export const formatDate = (date: string | number) => {
   return dayjs(date).format('MMMM D, YYYY');
@@ -70,16 +71,24 @@ export const availabilityMap: {
 }
 
 export const calculateOrders = (orders: Order[]) => {
-  let kinds: {[P in string]: number} = {};
+  let kinds: {[P in Order["orderStatus"]]: number} = {
+    CANCELLED: 0,
+    COMPLETED: 0,
+    IN_PROGRESS: 0,
+    NEW: 0,
+    PROCESSING: 0,
+    RETURN_PROCESSING: 0,
+    SHIPPED: 0
+  };
   
   orders.forEach(order => {
-    kinds[order.orderStatus] = (kinds[order.orderStatus] || 0) + 1;
+    kinds[order.orderStatus] = kinds[order.orderStatus] + 1;
   });
 
   return kinds;
 }
 
-export  const mockLongRequest = (value?: boolean) => new Promise<void>((resolve, reject) => {
+export const mockLongRequest = (value?: boolean) => new Promise<void>((resolve, reject) => {
   let success;
 
   setTimeout(() => {
@@ -92,3 +101,11 @@ export  const mockLongRequest = (value?: boolean) => new Promise<void>((resolve,
     }
   }, 5000);
 });
+
+export function isAxiosQueryError(error: any): error is AxiosQueryError {
+  return typeof error === 'object' && 'data' in error;
+}
+
+export const isErrorDataString = (payload: AxiosQueryError["data"]): payload is string => {
+  return typeof payload === "string";
+}

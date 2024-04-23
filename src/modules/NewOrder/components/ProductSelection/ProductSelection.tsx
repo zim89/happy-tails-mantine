@@ -8,6 +8,7 @@ import { CustomBadge } from '@/components/Badge';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { Product } from '@/shared/types/types';
+import { cn } from '@/shared/lib/utils';
 
 type Props = {
   form: UseFormReturnType<
@@ -99,13 +100,17 @@ export default function ProductSelection({ form }: Props) {
               withAsterisk
               value={search}
               classNames={{
-                input: 'text-input max-w-[15.875rem]',
+                input: cn('text-input max-w-[15.875rem]', form?.errors?.items && 'form-error--input'),
+                root: 'form-root',
+                label: 'form-label',
+                error: 'form-error -bottom-[1em]',
               }}
               onChange={(event) => {
                 combobox.openDropdown();
                 combobox.updateSelectedOptionIndex();
                 setSearch(event.currentTarget.value);
               }}
+              error={form?.errors?.items}
               onClick={() => combobox.openDropdown()}
               onFocus={() => combobox.openDropdown()}
               onBlur={() => {
@@ -120,7 +125,7 @@ export default function ProductSelection({ form }: Props) {
           </div>
         </Combobox.Target>
 
-        <Combobox.Dropdown onSelect={console.log}>
+        <Combobox.Dropdown>
           <Combobox.Options>
             {options.length > 0 ? (
               options

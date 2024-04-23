@@ -1,6 +1,7 @@
 import axios from "@/shared/lib/interceptor";
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BackendResponse, Order, Product, Sort } from '../types/types';
+import { axiosBaseQuery } from '@/shared/api/authApi';
 
 type OrderPayload = {
   token: string;
@@ -22,15 +23,13 @@ type DeleteOrderProps = {
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
   tagTypes: ['Orders'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  }),
+  baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
     findMany: builder.query<
       BackendResponse<Order[]>,
-      { page: number; limit: number; token: string; sort?: Sort }
+      { page: number; limit: number; sort?: Sort }
     >({
-      query: ({ page, limit, token, sort }) => {
+      query: ({ page, limit, sort }) => {
         const params = new URLSearchParams({
           page: page.toString(),
           size: limit.toString(),
@@ -39,10 +38,9 @@ export const ordersApi = createApi({
         if (sort) params.append('sort', sort.join(','));
 
         return {
-          url: `orders/all?${params}`,
+          url: `/orders/all?${params}`,
           headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            'Content-type': 'application/json'
           },
         };
       },
@@ -57,9 +55,9 @@ export const ordersApi = createApi({
             ]
           : [{ type: 'Orders', id: 'LIST' }],
     }),
-    createOrder: builder.mutation<Order, OrderPayload>({ 
+    createOrder: builder.mutation<Order, OrderPayload>({
       query: ({ token, count, items,  ...params }) => ({
-        url: 'orders',
+        url: '/orders',
         method: 'post',
         params,
         body: items.map(str => {
@@ -77,20 +75,36 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["Orders"]
     }),
+    changeStatus: builder.mutation<Order, { number: string, status: Order["orderStatus"] }>({
+      query: ({ number, status }) => {
+        const params = new URLSearchParams({
+          orderStatus: status
+        });
+
+        return {url: `/order/${number}/status`,
+        method: "put",
+        params,
+        headers: {
+          'Content-type': 'application/json',
+        }
+      }},
+      invalidatesTags: ["Orders"]
+    }),
     deleteOrder: builder.mutation<void, DeleteOrderProps>({
       query: ({ number, token }) => ({
-        url: `order/${number}`,
+        url: `/order/${number}`,
         method: "delete",
         headers: {
           'Content-type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      })
+      }),
+      invalidatesTags: ["Orders"]
     })
   }),
 });
 
-export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation } = ordersApi;
+export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {

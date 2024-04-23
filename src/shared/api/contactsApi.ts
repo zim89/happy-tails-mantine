@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import axios from "@/shared/lib/interceptor";
 
 export type Credentials = {
@@ -35,7 +36,8 @@ export const postRequest = async ({
 
     return res;
   } catch (err) {
-    if (err instanceof Error)
-      throw new Error("Failed request, see what's happened: ", err);
+    if (err instanceof AxiosError) {
+      throw new Error(err?.response?.data.error);
+    }
   }
 };
