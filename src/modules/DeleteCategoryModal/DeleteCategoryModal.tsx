@@ -1,28 +1,37 @@
 'use client';
-import { useState } from 'react';
 import { Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 import { Check, AlertTriangle } from 'lucide-react';
 
-import type { NotifyProps } from '@/components/Notify';
 import styles from './DeleteCategoryModal.module.css';
-import { Category } from '@/shared/api/categoryApi';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import file_error from '@/assets/icons/categories/file_error.svg';
 
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
-import { useAuth } from '@/shared/hooks/useAuth';
 import DeleteModal from '@/components/DeleteModal';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { Category } from '@/shared/types/types';
 
 type Props = {
   categoryLine: Category;
 };
 export default function DeleteCategoryModal({ categoryLine }: Props) {
-  const { access_token } = useAuth();
   const [dispatch] = useRemoveCategoryMutation();
-  const [notificationType, setNotificationType] = useState('');
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      text: 'Category deletion failed!',
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+    },
+    success: {
+      text: 'Category successfully deleted!',
+      icon: <Check size={24} />,
+      color: '#389B48',
+    }
+  })
 
   const handleDelete = async () => {
     try {
@@ -30,44 +39,27 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
-        await dispatch({ id: categoryLine.id, access_token });
+        await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
-        setNotificationType('Success');
+        setNotification('Success');
       }
     } catch (err) {
-      setNotificationType('Failed');
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
       console.error(err);
     }
   };
 
   const closeNotification = () => {
-    setNotificationType('');
+    clear();
   };
 
   const [openedMain, { open: openMain, close: closeMain }] =
     useDisclosure(false);
   const [openedError, { open: openError, close: closeError }] =
     useDisclosure(false);
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          text: 'Category successfully deleted!',
-          icon: <Check size={15} />,
-          visible: true,
-          color: '#389B48',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            text: 'Category deletion failed!',
-            visible: true,
-            color: 'transparent',
-            icon: <AlertTriangle size={20} fill='#DC362E' />,
-          }
-        : null;
 
   return (
     <DeleteModal>
@@ -126,9 +118,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               </div>
             </Modal>
 
-            {notifyProps && (
-              <Notification {...notifyProps} onClose={closeNotification} />
-            )}
+            <Notification {...props} onClose={closeNotification} />
           </>
         );
       }}

@@ -9,7 +9,9 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
 import { HistoryModal } from './HistoryModal';
 import { mockLongRequest } from '@/shared/lib/helpers';
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   order: Order;
@@ -17,39 +19,33 @@ type Props = {
 
 export const Header = ({ order }: Props) => {
   const [isResending, setIsResending] = useState(false);
-  const [notificationType, setNotificationType] = useState('');
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+      text: 'Error Resending Order Confirmation Email!',
+    },
+    success: {
+      color: '#389B48',
+      icon: <Check size={24} />,
+      text: 'Order Confirmation Email has been successfully resent',
+    }
+  });
 
   const resend = async () => {
     try {
       setIsResending(true);
       await mockLongRequest();
       setIsResending(false);
-      setNotificationType('Success');
+      setNotification('Success');
     } catch (err) {
       setIsResending(false);
-      setNotificationType('Failed');
+      if (isAxiosQueryError(err)) {
+        console.error(err);
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          color: '#389B48',
-          visible: true,
-          icon: <Check size={20} />,
-          text: 'Order Confirmation Email has been successfully resent',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            classNames: { icon: 'bg-transparent' },
-            color: 'transparent',
-            visible: true,
-            icon: <AlertTriangle size={20} fill='#DC362E' />,
-            text: 'Error Resending Order Confirmation Email!',
-          }
-        : null;
 
   return (
     <>
@@ -98,9 +94,8 @@ export const Header = ({ order }: Props) => {
         <HistoryModal />
       </div>
 
-      {notifyProps && (
-        <Notify {...notifyProps} onClose={() => setNotificationType('')} />
-      )}
+        <Notify {...props} onClose={clear} />
+      
     </>
   );
 };

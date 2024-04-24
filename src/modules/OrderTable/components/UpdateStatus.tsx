@@ -10,8 +10,6 @@ import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { useChangeStatusMutation } from '@/shared/api/ordersApi';
 import { useNotification } from '@/shared/hooks/useNotification';
 
-import { ErrorResponse } from '@/shared/lib/constants';
-
 type Props = {
   children(toggle: () => void): React.ReactNode;
   orderRow: Order;

@@ -1,5 +1,6 @@
 'use client';
-import { useRef, useState } from 'react';
+
+import { useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -15,17 +16,18 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddProductModal.module.css';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
+import { DEFAULT_CATEGORY_IMAGE, productStatusList } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { Product } from '@/shared/types/types';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type PreviewImage = {
   name: string | null;
@@ -33,16 +35,22 @@ type PreviewImage = {
 };
 
 export default function AddProductModal() {
-  const { access_token } = useAuth();
   const [dispatch] = useCreateMutation();
   const categoryList = useSelectCategories((cats) => cats);
-  const [notificationType, setNotificationType] = useState('');
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      text: 'Category adding failed!',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Category successfully added!',
+    }
+  });
 
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
-
-  const handleClose = () => {
-    setNotificationType("");
-  };
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -74,25 +82,6 @@ export default function AddProductModal() {
       description: isNotEmpty('Enter a description'),
     },
   });
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          icon: <Check size={15} />,
-          color: '#389B48',
-          visible: true,
-          text: 'Category successfully added!',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            icon: <AlertTriangle size={15} />,
-            color: '#DC362E',
-            visible: true,
-            text: 'Category adding failed!',
-          }
-        : null;
 
   const clearFile = () => {
     previewImage.current = {
@@ -135,20 +124,26 @@ export default function AddProductModal() {
         ...rest,
         article: code,
         imagePath,
+        productType: "INDOORS",
+        salePrice: 0
       };
   
       const candidate = categoryList.find(
         (cat) => cat.name === newProduct.categoryName
       );
       candidate && (newProduct.categoryId = candidate.id);
-  
-      await dispatch({ req: newProduct, access_token });
+        
+      await dispatch({ req: newProduct }).unwrap();
   
       clearAndClose();
-      setNotificationType("Success");
+      setNotification("Success");
     } catch (err) {
-      console.error("Failed");
-      setNotificationType("Failed");
+      clearAndClose();
+      console.error(err);
+
+      if (isAxiosQueryError(err)) {
+        setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 
@@ -282,7 +277,7 @@ export default function AddProductModal() {
                   ),
                   error: 'form-error',
                 }}
-                data={['DELETE', 'ACTIVE', 'TEMPORARILY_ABSENT', 'IN STOCK']}
+                data={productStatusList}
                 type='text'
                 label='Status'
               ></Select>
@@ -348,7 +343,7 @@ export default function AddProductModal() {
         />
       </Modal>
 
-      {notifyProps && <Notify {...notifyProps} onClose={handleClose} />}
+      <Notify {...props} onClose={clear} />
     </>
   );
 }

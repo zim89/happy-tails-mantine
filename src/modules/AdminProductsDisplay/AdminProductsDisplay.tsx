@@ -1,7 +1,7 @@
 "use client";
 import { useFindManyQuery } from '@/shared/api/productApi';
-import AddProductModal from '../AddProductModal/AddProductModal';
-import { ProductsTable } from '../ProductsTable/ProductsTable';
+import AddProductModal from '@/modules/AddProductModal';
+import ProductsTable from '@/modules/ProductsTable';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
@@ -16,7 +16,7 @@ export default function AdminProductsDisplay() {
   return (
     <>
       <AddProductModal />
-      <ProductsTable data={data.content}/>
+      <ProductsTable data={data.content} />
     </>
   );
 }

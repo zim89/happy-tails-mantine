@@ -4,7 +4,6 @@ import type { BackendResponse, Order, Product, Sort } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
 type OrderPayload = {
-  token: string;
   shippingAddress: string;
   billingAddress: string;
   shippingMethod: string;
@@ -16,7 +15,6 @@ type OrderPayload = {
 }
 
 type DeleteOrderProps = {
-  token: string;
   number: string;
 }
 
@@ -56,11 +54,11 @@ export const ordersApi = createApi({
           : [{ type: 'Orders', id: 'LIST' }],
     }),
     createOrder: builder.mutation<Order, OrderPayload>({
-      query: ({ token, count, items,  ...params }) => ({
+      query: ({ count, items, ...params }) => ({
         url: '/orders',
         method: 'post',
         params,
-        body: items.map(str => {
+        data: items.map(str => {
           const orderItem: Product = JSON.parse(str);
           
           return {
@@ -70,7 +68,6 @@ export const ordersApi = createApi({
         }),
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       }),
       invalidatesTags: ["Orders"]
@@ -91,12 +88,11 @@ export const ordersApi = createApi({
       invalidatesTags: ["Orders"]
     }),
     deleteOrder: builder.mutation<void, DeleteOrderProps>({
-      query: ({ number, token }) => ({
+      query: ({ number }) => ({
         url: `/order/${number}`,
         method: "delete",
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       }),
       invalidatesTags: ["Orders"]

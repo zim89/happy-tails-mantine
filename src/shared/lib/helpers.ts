@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Order, Product, AxiosQueryError } from '../types/types';
+import { ErrorResponse } from './constants';
 
 export const formatDate = (date: string | number) => {
   return dayjs(date).format('MMMM D, YYYY');
@@ -97,7 +98,7 @@ export const mockLongRequest = (value?: boolean) => new Promise<void>((resolve, 
     if (success) {
       resolve();
     } else {
-      reject();
+      reject(new ErrorResponse({ path: "/", timestamp: Date.now(), status: 418, error: "Exprected Error", message: "The error is emitted successfully!" }));
     }
   }, 5000);
 });

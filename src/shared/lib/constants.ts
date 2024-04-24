@@ -1,5 +1,4 @@
-import type { Category } from '@/shared/api/categoryApi';
-import { ErrorData, Order } from '../types/types';
+import { Category, ErrorData, Order, Product } from '../types/types';
 
 export const DEFAULT_CATEGORY_IMAGE = 'https://i.imgur.com/dhBg9XH.png';
 
@@ -39,6 +38,13 @@ export const orderStatusList: Order['orderStatus'][] = [
   'SHIPPED',
   'RETURN_PROCESSING',
   'COMPLETED',
+];
+
+export const productStatusList: Product['productStatus'][] = [
+  'ACTIVE',
+  'DELETE',
+  'IN STOCK',
+  'TEMPORARILY_ABSENT'
 ];
 
 export const isOrderStatus = (param: any): param is Order['orderStatus'] => {

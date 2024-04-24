@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Minus } from 'lucide-react';
 import { Box, Collapse, Group, UnstyledButton, rem } from '@mantine/core';
 import Link from 'next/link';
-import { usePathname } from "next/navigation";
 
 import classes from './LinksGroup.module.css';
 

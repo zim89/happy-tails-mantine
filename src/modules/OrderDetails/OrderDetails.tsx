@@ -7,15 +7,13 @@ import { ProductTable } from './components/ProductTable';
 import { ShippingDetails } from './components/ShippingDetails';
 import { ClientDetails } from './components/ClientDetails';
 import { CommentSection } from './components/CommentSection';
-import { useAuth } from '@/shared/hooks/useAuth';
 
 export default function OrdersDetails() {
   const { id } = useParams();
-  const { access_token } = useAuth();
-  const order = useSelectOrders((state) => state.find(ord => ord.number.toLowerCase() === id), access_token);
+  const order = useSelectOrders((state) => state.find(ord => ord.number.toLowerCase() === id));
 
   if (!order) return null;
-  
+
   return (  
     <div className='mb-8'>
       <Header order={order} />

@@ -17,12 +17,12 @@ export const CommentSection = () => {
 
   const [setNotification, { props, clear }] = useNotification({
     failed: {
-      text: 'Error',
+      text: 'Failed to add comment.',
       color: 'transparent',
       icon: <AlertTriangle size={24} fill='#DC362E' />,
     },
     success: {
-      text: 'Success',
+      text: 'Comment posted!',
       icon: <Check size={24} />,
       color: '#389B48',
     },

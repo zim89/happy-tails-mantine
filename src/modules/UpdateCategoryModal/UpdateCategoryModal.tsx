@@ -1,5 +1,5 @@
-"use client";
-import { useEffect, useRef, useState } from 'react';
+'use client';
+import { useEffect, useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -13,29 +13,37 @@ import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
 import { isNotEmpty, useForm } from '@mantine/form';
 
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
 
 import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
+import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import Image from 'next/image';
-import { useAuth } from '@/shared/hooks/useAuth';
 import axios from 'axios';
 import { cn } from '@/shared/lib/utils';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { Category } from '@/shared/types/types';
 
 type Props = {
-  categoryLine: Category & { image: { path: string; name: string } };
+  categoryLine: Category;
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
-  const { access_token } = useAuth();
   const [dispatch] = useUpdateCategoryMutation();
-  const [notificationType, setNotificationType] = useState('');
-  const previewImage = useRef<(typeof categoryLine)['image']>();
-
-  const handleClose = () => {
-    setNotificationType('');
-  };
+  const previewImage = useRef<{ path: string; name: string }>();
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      icon: <AlertTriangle size={24} fill="#DC362E"/>,
+      color: 'transparent',
+      text: 'Failed to update!',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Changes saved!',
+    },
+  });
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -58,8 +66,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
   const changeThumbnail = () => {
     previewImage.current = {
-      path: categoryLine.image.path,
-      name: categoryLine.image.name,
+      path: categoryLine.imgSrc!,
+      name: categoryLine.name,
     };
   };
 
@@ -88,54 +96,47 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     try {
       let requestBody = {
         ...categoryLine,
-        name: categoryName,
+        nam: categoryName,
       };
-  
+
       // Uploading an image
       if (image) {
         const formData = new FormData();
         formData.append('image', image);
         formData.append('type', 'image');
         formData.append('title', `Category image: ${categoryName}`);
-  
-        const res = await axios.post('https://api.imgur.com/3/image/', formData, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-  
+
+        const res = await axios.post(
+          'https://api.imgur.com/3/image/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
         requestBody.imgSrc = res.data.data.link;
       }
-  
-      await dispatch({ req: requestBody, access_token });
-  
+
+      await dispatch({ req: {} }).unwrap();
+
       clearAndClose();
-      setNotificationType('Success');
+      setNotification('Success');
     } catch (err) {
-      setNotificationType('Failed');
-      console.error(err);
+      clearAndClose();
+      debugger;
+      console.log("Check: ",err);
+      if (isAxiosQueryError(err)) {
+        console.error("Error", err);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
     }
   };
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          icon: <Check size={15} />,
-          color: '#389B48',
-          visible: true,
-          text: 'Changes saved!',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            icon: <AlertTriangle size={15} />,
-            color: '#DC362E',
-            visible: true,
-            text: 'Failed to update!',
-          }
-        : null;
 
   return (
     <>
@@ -185,7 +186,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </Tooltip>
           </InputLabel>
 
-          {!previewImage.current?.path || !previewImage.current?.name ? (
+          {!previewImage.current?.path ? (
             <div className={styles.upload}>
               <label htmlFor='file'>
                 <UploadCloud color='white' />
@@ -225,11 +226,11 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit((values) => handleSubmit(values))}
+          primaryBtnOnClick={form.onSubmit(handleSubmit)}
         />
       </Modal>
 
-      {notifyProps && <Notify {...notifyProps} onClose={handleClose} />}
+      <Notify {...props} onClose={clear} />
     </>
   );
 }

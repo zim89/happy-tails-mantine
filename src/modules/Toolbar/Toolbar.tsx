@@ -1,6 +1,5 @@
 'use client';
 
-import { Category } from '@/shared/api/categoryApi';
 import { useForm } from '@mantine/form';
 import { useCallback, useContext, useEffect, useId } from 'react';
 import Filter from './components/Filter';
@@ -10,6 +9,7 @@ import Badges from './components/Badges';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductCountContext } from '../CatalogProductList/ProductCountContext';
 import { useDisclosure } from '@mantine/hooks';
+import { Category } from '@/shared/types/types';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },

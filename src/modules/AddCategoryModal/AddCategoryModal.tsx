@@ -1,5 +1,6 @@
 'use client';
-import { useRef, useState } from 'react';
+
+import { useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -21,20 +22,31 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
 
 export default function AddCategoryModal() {
-  const { access_token } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
-  const [notificationType, setNotificationType] = useState('');
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+      color: 'transparent',
+      text: 'Category creating failed',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Category successfully added!',
+    }
+  })
 
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
@@ -42,7 +54,7 @@ export default function AddCategoryModal() {
   });
 
   const handleClose = () => {
-    setNotificationType('');
+    clear();
   };
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -86,6 +98,8 @@ export default function AddCategoryModal() {
     try {
       let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
+      debugger;
+
       if (image) {
         const form = new FormData();
         form.append('image', image);
@@ -105,37 +119,22 @@ export default function AddCategoryModal() {
         name: categoryName,
         productCount: 0,
         imgSrc,
-        access_token: access_token,
+        coordinateOnBannerX: 0,
+        coordinateOnBannerY: 0
       };
 
-      await dispatch(newCategory);
+      await dispatch(newCategory).unwrap();
 
       clearAndClose();
-      setNotificationType('Success');
+      setNotification('Success');
     } catch (err) {
-      setNotificationType('Failed');
+      clearAndClose();
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
       console.error(err);
     }
   };
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          icon: <Check size={15} />,
-          color: '#389B48',
-          text: 'Category successfully added!',
-          visible: true,
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            icon: <AlertTriangle size={20} fill='#DC362E' />,
-            color: 'transparent',
-            visible: true,
-            text: 'Category creating is failed',
-          }
-        : null;
 
   return (
     <>
@@ -239,7 +238,7 @@ export default function AddCategoryModal() {
         />
       </Modal>
 
-      {notifyProps && <Notify {...notifyProps} onClose={handleClose} />}
+      <Notify {...props} onClose={handleClose} />
     </>
   );
 }

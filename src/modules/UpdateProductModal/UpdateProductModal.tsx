@@ -1,6 +1,10 @@
+"use client";
 import { UploadCloud, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
+import Image from 'next/image';
+import axios from 'axios';
+import { useEffect, useRef } from 'react';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
@@ -8,18 +12,14 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
-import Image from 'next/image';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Product } from '@/shared/types/types';
-import axios from 'axios';
 import { useUpdateMutation } from '@/shared/api/productApi';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { getAllCategories } from '@/shared/api/categoryApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   productLine: Product;
-  setIsNotified: Dispatch<SetStateAction<string>>;
+  setNotification: (type: "Success" | "Failed", text?: string) => void;
 };
 
 type PreviewImage = {
@@ -27,8 +27,7 @@ type PreviewImage = {
   path: string;
 };
 
-const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
-  const { access_token } = useAuth();
+const UpdateProductModal = ({ productLine, setNotification }: Props) => {
   const categoryList = useSelectCategories(res => res.map(cat => cat.name)); 
 
   const form = useForm({
@@ -73,7 +72,7 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
 
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
 
-  const [dispatch, { isError, isLoading }] = useUpdateMutation();
+  const [dispatch] = useUpdateMutation();
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -108,11 +107,13 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
         requestBody.imagePath = res.data.data.link;
       }
       
-      await dispatch({ req: requestBody, access_token });
+      await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setIsNotified("Update_Success");
+      setNotification("Success");
     } catch (err) {
-      setIsNotified("Update_Failed");
+      if (isAxiosQueryError(err)) {
+        setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
+      }
       console.log(err);
     }
   };

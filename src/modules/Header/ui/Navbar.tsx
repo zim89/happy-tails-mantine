@@ -3,8 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Container } from '@mantine/core';
 import { usePathname } from 'next/navigation';
-import { Category } from '@/shared/api/categoryApi';
 import { cn } from '@/shared/lib/utils';
+import { Category } from '@/shared/types/types';
 
 export default function Navbar({ categories }: { categories: Category[] }) {
   const path = usePathname();

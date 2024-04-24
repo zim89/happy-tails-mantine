@@ -1,30 +1,31 @@
 'use client';
 import { useDisclosure } from '@mantine/hooks';
-import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
-import { useAuth } from '@/shared/hooks/useAuth';
 
 import DeleteModal from '@/components/DeleteModal';
 import { Product } from '@/shared/types/types';
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { useRemoveMutation } from '@/shared/api/productApi';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   productLine: Product;
-  setIsNotified: Dispatch<SetStateAction<string>>
+  setNotification: (type: "Success" | "Failed", text?: string) => void;
 };
 
-export default function DeleteProductModal({ productLine, setIsNotified }: Props) {
-  const { access_token } = useAuth();  
+export default function DeleteProductModal({ productLine, setNotification }: Props) { 
   const [dispatch] = useRemoveMutation();
 
   const handleDelete = async () => {
     try {
-      await dispatch({ id: productLine.id, access_token });
+      await dispatch({ id: productLine.id }).unwrap();
       closeMain();
-      setIsNotified('Delete_Success');
+      setNotification('Success');
     } catch (err) {
-      setIsNotified('Delete_Error');
+      closeMain();
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
       console.error(err);
     }
   };

@@ -1,49 +1,42 @@
 'use client';
-import Notify, { NotifyProps } from '@/components/Notify';
-import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { Order } from '@/shared/types/types';
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
 import { AlertTriangle, Check, Eye, MoreHorizontal, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+
+import Notify from '@/components/Notify';
+import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
+import { Order } from '@/shared/types/types';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { useNotification } from '@/shared/hooks/useNotification';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
-  const [notificationType, setNotificationType] = useState('');
-  const { access_token } = useAuth();
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      text: 'Deleting is failed!',
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+      color: 'transparent',
+    },
+    success: {
+      text: 'Successfully deleted!',
+      icon: <Check size={24} />,
+      color: '#389B48',
+    }
+  })
   const [dispatch] = useDeleteOrderMutation();
   const order = ctx.row.original;
 
   const handleDelete = async () => {
     try {
-      const res = await dispatch({ token: access_token, number: order.number });
-      console.log(res);
-      setNotificationType('Success');
+      await dispatch({ number: order.number }).unwrap();
+      setNotification('Success');
     } catch (err) {
-      setNotificationType('Failed');
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
       console.error(err);
     }
   };
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          text: 'Successfully deleted!',
-          visible: true,
-          icon: <Check size={15} />,
-          color: '#389B48',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            text: 'Deleting is failed!',
-            visible: true,
-            icon: <AlertTriangle size={20} fill='#DC362E' />,
-            color: 'transparent',
-          }
-        : null;
 
   return (
     <>
@@ -75,9 +68,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
         </Menu.Dropdown>
       </Menu>
 
-      {notifyProps && (
-        <Notify {...notifyProps} onClose={() => setNotificationType('')} />
-      )}
+      <Notify {...props} onClose={clear} />      
     </>
   );
 };

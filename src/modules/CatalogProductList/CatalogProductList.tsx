@@ -8,11 +8,10 @@ import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import { useScrollIntoView } from '@mantine/hooks';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { FilterX } from 'lucide-react';
-import { Category } from '@/shared/api/categoryApi';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductCountContext } from './ProductCountContext';
 import { useDeviceSize } from '@/shared/lib/hooks';
-import type { Sort } from '@/shared/types/types';
+import type { Category, Sort } from '@/shared/types/types';
 
 const RawProductList = dynamic(() => import('@/modules/ProductList'));
 

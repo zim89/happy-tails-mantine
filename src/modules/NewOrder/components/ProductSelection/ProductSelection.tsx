@@ -19,7 +19,7 @@ type Props = {
 export default function ProductSelection({ form }: Props) {
   const combobox = useCombobox();
 
-  const [value, setValue] = useState<string | null>(null);
+  const [value] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
   const addItem = (value: string) => {

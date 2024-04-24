@@ -1,5 +1,5 @@
 type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
-type ProductType = 'IN_STOCK' | 'OUT OF STOCK';
+type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =
   | 'NEW'
@@ -107,5 +107,20 @@ export type AxiosQueryError = {
 }
 
 export type ID = number | string;
+
+export type Category = {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  overview: string;
+  path: string;
+  productCount: number;
+  imgSrc: null | string;
+  updatedAt: number | null;
+  createdAt: number;
+  coordinateOnBannerX: number;
+  coordinateOnBannerY: number;
+};
 
 export type Sort = [string, 'asc' | 'desc'];

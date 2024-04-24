@@ -1,6 +1,5 @@
 'use client';
 import { Button } from '@mantine/core';
-import { useState } from 'react';
 import { AlertTriangle, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -12,22 +11,25 @@ import OrderTotal from './components/OrderTotal';
 import AddComments from './components/AddComments';
 import { useCreateOrderMutation } from '@/shared/api/ordersApi';
 import { useAuth } from '@/shared/hooks/useAuth';
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
 import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { ErrorResponse } from '@/shared/lib/constants';
 
 export default function NewOrder() {
   const [dispatch] = useCreateOrderMutation();
   const form = useModel();
-  const { access_token, currentUser } = useAuth();
+  const { currentUser } = useAuth();
   const [setNotification, { props, clear }] = useNotification({
     failed: {
+      color: "transparent",
       icon: <AlertTriangle size={24} fill='#DC362E' />,
       text: 'Order creation failed!',
     },
     success: {
       color: '#389B48',
-      icon: <Check size={20} />,
-      text: 'Order Creation Succeeded!',
+      icon: <Check size={24} />,
+      text: 'Order creation succeeded!',
     },
   });
 
@@ -35,13 +37,12 @@ export default function NewOrder() {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      if (!currentUser || !access_token)
-        throw new Error('Unauthorized request!');
+      if (!currentUser)
+        throw new ErrorResponse({ status: 401, message: "You're not allowed to do this.", error: "Unauthorized", timestamp: Date.now(), path: "/admin/orders/new" });
       const { sameAsDelivery, ...billing } = values.billingAddress;
 
       await dispatch({
         items: values.items,
-        token: access_token,
         count: 1,
         billingAddress: sameAsDelivery
           ? JSON.stringify(values.address)
@@ -50,13 +51,15 @@ export default function NewOrder() {
         paymentMethod: values.paymentMethod,
         shippingAddress: JSON.stringify(values.address),
         shippingMethod: values.shippingMethod,
-      });
+      }).unwrap();
 
       setNotification('Success');
       form.reset();
     } catch (err) {
-      setNotification('Failed');
-      console.log(err);
+      if (isAxiosQueryError(err)) {
+        console.error(err);
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 

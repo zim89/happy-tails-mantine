@@ -9,9 +9,10 @@ import { Form, useForm } from '@mantine/form';
 import { Order, ParsedShippingAddress } from '@/shared/types/types';
 import { dirtyFields, mockLongRequest } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Checkbox from '@/components/Checkbox';
-import Notify, { NotifyProps } from '@/components/Notify';
+import Notify from '@/components/Notify';
+import { useNotification } from '@/shared/hooks/useNotification';
 
 type Props = {
   order: Order;
@@ -19,9 +20,18 @@ type Props = {
 
 export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
-  const [notificationType, setNotificationType] = useState<
-    'Success' | 'Failed' | ''
-  >('');
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+      text: 'Delivery options update failed. Please try again later.',
+    },
+    success: {
+      color: '#389B48',
+      icon: <Check size={24} />,
+      text: 'Changes saved!',
+    },
+  });
 
   const billingAddress: ParsedShippingAddress = JSON.parse(
     order.billingAddress
@@ -51,13 +61,13 @@ export const ShippingModal = ({ order }: Props) => {
 
   const handleUpdate = async (values: typeof form.values) => {
     try {
-      await mockLongRequest(true);
+      await mockLongRequest(false);
       close();
-      setNotificationType('Success');
+      setNotification('Success');
     } catch (err) {
       console.error(err);
       close();
-      setNotificationType('Failed');
+      setNotification('Failed');
     }
   };
 
@@ -72,25 +82,6 @@ export const ShippingModal = ({ order }: Props) => {
           sameAsDelivery: form.values.billingAddress.sameAsDelivery,
         });
   }, [form.values.billingAddress.sameAsDelivery]);
-
-  const notifyProps: Omit<NotifyProps, 'onClose'> | null =
-    notificationType === 'Success'
-      ? {
-          kind: 'success',
-          visible: true,
-          color: '#389B48',
-          icon: <Check size={24} />,
-          text: 'Changes saved!',
-        }
-      : notificationType === 'Failed'
-        ? {
-            kind: 'fail',
-            visible: true,
-            color: 'transparent',
-            icon: <AlertTriangle size={24} fill='#DC362E' />,
-            text: 'Delivery options update failed. Please try again later.',
-          }
-        : null;
 
   return (
     <>
@@ -332,9 +323,8 @@ export const ShippingModal = ({ order }: Props) => {
           primaryBtnOnClick={form.onSubmit(handleUpdate)}
         />
       </Modal>
-      {notifyProps && (
-        <Notify {...notifyProps} onClose={() => setNotificationType('')} />
-      )}
+
+      <Notify {...props} onClose={clear} />
     </>
   );
 };

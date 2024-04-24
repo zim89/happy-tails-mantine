@@ -109,7 +109,7 @@ const columns = [
 type Props = {
   data: Product[];
 };
-export const ProductsTable = ({ data }: Props) => {
+export default function ProductsTable({ data }: Props) {
   const [search, setSearch] = useDebouncedState('', 200);
   const categories = useSelectCategories((res) => res.map(cat => ({ name: cat.name, title: cat.title })));
 
