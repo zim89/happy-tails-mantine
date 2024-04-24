@@ -1,22 +1,14 @@
 import { Badge } from '@mantine/core';
 import { useMemo } from 'react';
 
-const colorPalette = {
-  'in progress': '#fbbc04',
-  new: '#4285f4',
-  cancelled: '#c63129',
-  shipped: '#2a7436',
-  completed: '#b4b4b4',
-  'return processing': '#84201c',
-  processing: '#389b48',
-};
+import { orderPalette } from "@/shared/lib/constants";
 
 type Props = {
   name: string;
   color: string;
   palette?: { [P in string]: string }
 };
-export const CustomBadge = ({ name, color, palette = colorPalette }: Props) => {
+export const CustomBadge = ({ name, color, palette = orderPalette }: Props) => {
     const isPalette = useMemo(() => (
       candidate: string
     ): candidate is keyof typeof palette => {

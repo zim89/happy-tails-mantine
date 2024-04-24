@@ -6,10 +6,10 @@ import { AlignLeft, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
-import { type Category } from '@/shared/api/categoryApi';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import logoImg from '@/assets/logo/logo-tablet.svg';
 import MenuNavbar from './MenuNavbar';
+import { Category } from '@/shared/types/types';
 
 export default function BurgerMenu({ categories }: { categories: Category[] }) {
   const [opened, { close, toggle }] = useDisclosure(false);

@@ -8,7 +8,7 @@ export default async function Page() {
         crumbs={[{ href: '/admin/', text: 'Dashboard' }, { text: 'Products' }]}
       />
 
-     <AdminProductsDisplay />
+      <AdminProductsDisplay />
     </div>
   );
 }

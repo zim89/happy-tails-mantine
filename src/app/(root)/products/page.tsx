@@ -5,8 +5,8 @@ import ProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Overview from '@/components/Overview';
 import Toolbar from '@/modules/Toolbar';
-import { Category, getAllCategories } from '@/shared/api/categoryApi';
-import { BackendResponse, Product } from '@/shared/types/types';
+import { BackendResponse, Category, Product } from '@/shared/types/types';
+import { getAllCategories } from '@/shared/lib/requests';
 
 const category: Category = {
   id: 0,

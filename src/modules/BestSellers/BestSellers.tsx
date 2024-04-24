@@ -6,7 +6,7 @@ import ProductSlider from '../ProductDetails/ui/ProductSlider';
 export default function BestSellers() {
   const { data } = useFindBestSellersQuery();
 
-  if (!data) return;
+  if (!data) return null;
 
   return (
     <section className='pt-12 md:pt-16 lg:pt-[5.5rem]'>

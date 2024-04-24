@@ -2,7 +2,7 @@
 import { Button, PasswordInput } from '@mantine/core';
 import { useForm, hasLength, matchesField, isNotEmpty,  } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
-import axios from 'axios';
+import axios from '@/shared/lib/interceptor';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
@@ -59,7 +59,7 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
     }
   });
 
-  const { currentUser, access_token } = useAuth();
+  const { currentUser } = useAuth();
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
 
@@ -73,13 +73,8 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
       });
       
       await axios.post(
-        process.env.NEXT_PUBLIC_BASE_URL! + '/users/reset-password/verify',
+        '/users/reset-password/verify',
         request,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
       );
     } catch (err) {
       console.error(err);

@@ -15,6 +15,8 @@ export default function Header() {
 
   if (!data || isLoading) return null;
 
+  console.log(data);
+
   return (
     <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-40 border-b border-b-brand-grey-300 bg-primary'>
       <Container>

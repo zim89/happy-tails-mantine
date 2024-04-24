@@ -1,5 +1,14 @@
 type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
-type ProductType = 'IN_STOCK' | 'OUT OF STOCK';
+type ProductType = 'INDOORS' | 'OUTDOORS';
+
+type OrderStatus =
+  | 'NEW'
+  | 'IN_PROGRESS'
+  | 'PROCESSING'
+  | 'CANCELLED'
+  | 'SHIPPED'
+  | 'RETURN_PROCESSING'
+  | 'COMPLETED';
 
 export interface Product {
   id: number;
@@ -15,34 +24,45 @@ export interface Product {
   unitsSold?: number;
   onSale?: boolean;
   salePrice?: number;
-  productType?: ProductType; 
+  productType?: ProductType;
   updatedAt: number | null;
   createdAt: number;
 }
 
 export interface Order {
-  number: string;
-  orderStatus: string;
+  billingAddress: string;
   createdDate: string;
-  price: number;
-  count: number;
-  userId: string;
+  discountCode: string | null;
+  email: string;
+  id: string;
+  number: string;
   orderProductDTOList: {
     id: number;
     orderNumber: string;
     productId: number;
     productName: string;
+    productImagePath: string;
     productPrice: number;
     onSale: boolean;
     salePrice: number;
     count: number;
   }[];
+  orderStatus: OrderStatus;
+  paymentMethod: string;
+  price: number;
   purchasedDate: string;
   shippingAddress: string;
   shippingMethod: string;
-  paymentMethod: string;
-  discountCode: string;
 }
+
+export type ParsedShippingAddress = {
+  firstName: string;
+  secondName: string;
+  country: string;
+  city: string;
+  street: string;
+  apartment: string;
+};
 
 export type BackendSort = {
   empty: boolean;
@@ -73,6 +93,34 @@ export type BackendResponse<T> = {
   empty: boolean;
 };
 
-export type ID = number | string; 
+export type ErrorData = {
+  status: number;
+  error: string;
+  path: string;
+  timestamp: number;
+  message: string;
+}
+
+export type AxiosQueryError = {
+  status?: number;
+  data: ErrorData | string;
+}
+
+export type ID = number | string;
+
+export type Category = {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  overview: string;
+  path: string;
+  productCount: number;
+  imgSrc: null | string;
+  updatedAt: number | null;
+  createdAt: number;
+  coordinateOnBannerX: number;
+  coordinateOnBannerY: number;
+};
 
 export type Sort = [string, 'asc' | 'desc'];

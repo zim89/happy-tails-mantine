@@ -1,19 +1,48 @@
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
-import { Eye, MoreHorizontal, Trash, Edit2, Check } from 'lucide-react';
-import { useState } from 'react';
-import Image from 'next/image';
+import {
+  Eye,
+  MoreHorizontal,
+  Trash,
+  Edit2,
+  Check,
+  AlertTriangle,
+} from 'lucide-react';
 
 import DeleteProductModal from '@/modules/DeleteProductModal';
 import UpdateProductModal from '@/modules/UpdateProductModal';
 import { Product } from '@/shared/types/types';
 import Notify from '@/components/Notify';
-import check_circle from '@/assets/icons/additional/check-circle.svg';
+import { useNotification } from "@/shared/hooks/useNotification";
 
 export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isUpdated, setIsUpdated] = useState(false);
   const productLine = ctx.row.original;
+
+  const [setDeleteNotification, { props: deleteNotification, clear: clearDeleteNotification }] = useNotification({
+    failed: {
+      text: 'Product deletion failed!',
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      color: 'transparent',
+    },
+    success: {
+      text: 'Product successfully deleted!',
+      icon: <Check size={24} />,
+      color: '#389B48',
+    }
+  });
+
+  const [setUpdateNotification, { props: updateNotification, clear: clearUpdateNotification }] = useNotification({
+    failed: {
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      color: 'transparent',
+      text: 'Failed to update!',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Changes saved!',
+    }
+  });
 
   return (
     <>
@@ -37,7 +66,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             className='rounded-none hover:bg-brand-grey-200'
           >
             <UpdateProductModal
-              setIsNotified={setIsUpdated}
+              setNotification={setUpdateNotification}
               productLine={productLine}
             />
           </Menu.Item>
@@ -46,7 +75,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             className='rounded-none hover:bg-brand-grey-200'
           >
             <DeleteProductModal
-              setIsNotified={setIsDeleted}
+              setNotification={setDeleteNotification}
               productLine={productLine}
             />
           </Menu.Item>
@@ -54,30 +83,8 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
       </Menu>
 
       {/* Forced to move notifications here, cause I don't want them appear only in opened dropdown menu */}
-      {/* --- DELETE --- */}
-      <Notify
-        text='Product successfully deleted!'
-        visible={isDeleted}
-        onClose={() => setIsDeleted(false)}
-        icon={
-          <Image
-            src={check_circle.src}
-            alt='Notification'
-            width={24}
-            height={24}
-            className='h-6 w-6'
-          />
-        }
-        color='transparent'
-      />
-      {/* --- UPDATE --- */}
-      <Notify
-        icon={<Check size={15} />}
-        color='#389B48'
-        visible={isUpdated}
-        onClose={() => setIsUpdated(false)}
-        text='Changes saved!'
-      />
+      <Notify {...deleteNotification} onClose={clearDeleteNotification} />
+      <Notify {...updateNotification} onClose={clearUpdateNotification} />
     </>
   );
 };

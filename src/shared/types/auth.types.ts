@@ -1,14 +1,3 @@
-export interface Session {
-  access_token: string;
-  expires_in: number;
-  refresh_expires_in: number;
-  refresh_token: string;
-  token_type: string;
-  'not-before-policy': number;
-  session_state: string;
-  scope: string;
-}
-
 export type Attributes = { [P in string]: string[] } | null;
 
 export interface User {
@@ -29,20 +18,15 @@ export interface RegisterData {
   lastName: string;
 }
 
-export interface RegisterResponse {
-  accessTokenResponse: Session;
-  userDTO: User;
-}
+export interface RegisterResponse extends User {}
 
 export interface LoginData {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
-  accessTokenResponse: Session;
-  userDTO: User;
-}
+export interface LoginResponse extends User {};
+
 
 export interface VerifyEmailData extends LoginData {
   code: number | string;

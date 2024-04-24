@@ -2,7 +2,6 @@ import { Table } from '@mantine/core';
 import Image from 'next/image';
 
 import type { Order } from "@/shared/types/types";
-import noImage from '@/assets/icons/no-image.512x512.png';
 
 type Props = {
     order: Order
@@ -52,11 +51,11 @@ export const ProductTable = ({ order }: Props) => {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {order.orderProductDTOList.map((product) => (
-              <Table.Tr key={product.id}>
+            {order.orderProductDTOList.map((product, index) => (
+              <Table.Tr key={index}>
                 <Table.Td>
                   <Image
-                    src={noImage.src}
+                    src={product.productImagePath}
                     width={50}
                     height={50}
                     alt={product.productName}
@@ -68,14 +67,14 @@ export const ProductTable = ({ order }: Props) => {
                   {order.discountCode ? `$ ${discount}` : 'None'}
                 </Table.Td>
                 <Table.Td>{product.count}</Table.Td>
-                <Table.Td>${product.productPrice * product.count}</Table.Td>
+                <Table.Td>${(product.productPrice * product.count).toFixed(2)}</Table.Td>
                 <Table.Td>${tax}</Table.Td>
                 {/* If there is a discount code, cut off subtotal by 10 percent */}
                 <Table.Td>
                   $
-                  {product.productPrice * product.count -
+                  {(product.productPrice * product.count -
                     (order.discountCode ? discount : 0) +
-                    tax}
+                    tax).toFixed(2)}
                 </Table.Td>
               </Table.Tr>
             ))}

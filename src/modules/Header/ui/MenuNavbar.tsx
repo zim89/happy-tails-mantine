@@ -1,4 +1,3 @@
-import { Category } from '@/shared/api/categoryApi';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
@@ -6,6 +5,7 @@ import Link from 'next/link';
 
 import { additionalLinks } from '../lib/data';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { Category } from '@/shared/types/types';
 
 type MenuNavbarProps = {
   menu: Category[];

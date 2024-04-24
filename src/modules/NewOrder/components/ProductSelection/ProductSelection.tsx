@@ -8,6 +8,7 @@ import { CustomBadge } from '@/components/Badge';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { Product } from '@/shared/types/types';
+import { cn } from '@/shared/lib/utils';
 
 type Props = {
   form: UseFormReturnType<
@@ -18,7 +19,7 @@ type Props = {
 export default function ProductSelection({ form }: Props) {
   const combobox = useCombobox();
 
-  const [value, setValue] = useState<string | null>(null);
+  const [value] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
   const addItem = (value: string) => {
@@ -54,7 +55,7 @@ export default function ProductSelection({ form }: Props) {
       <Image width={64} height={64} src={item.imagePath} alt={item.name} />
       <div>
         <p className='mb-1 font-bold'>{item.name}</p>
-        <span>$ {item.price}</span>
+        <span>$ {item.price.toFixed(2)}</span>
       </div>
     </Combobox.Option>
   ));
@@ -99,13 +100,17 @@ export default function ProductSelection({ form }: Props) {
               withAsterisk
               value={search}
               classNames={{
-                input: 'text-input max-w-[15.875rem]',
+                input: cn('text-input max-w-[15.875rem]', form?.errors?.items && 'form-error--input'),
+                root: 'form-root',
+                label: 'form-label',
+                error: 'form-error -bottom-[1em]',
               }}
               onChange={(event) => {
                 combobox.openDropdown();
                 combobox.updateSelectedOptionIndex();
                 setSearch(event.currentTarget.value);
               }}
+              error={form?.errors?.items}
               onClick={() => combobox.openDropdown()}
               onFocus={() => combobox.openDropdown()}
               onBlur={() => {
@@ -120,7 +125,7 @@ export default function ProductSelection({ form }: Props) {
           </div>
         </Combobox.Target>
 
-        <Combobox.Dropdown onSelect={console.log}>
+        <Combobox.Dropdown>
           <Combobox.Options>
             {options.length > 0 ? (
               options
@@ -143,7 +148,7 @@ export default function ProductSelection({ form }: Props) {
                   alt={parsed.name}
                 />
                 <div>
-                  <p className='text-xs'>
+                  <div className='text-xs'>
                     <span className='mr-2'>{parsed.article}</span>
                     <CustomBadge
                       palette={{
@@ -153,7 +158,7 @@ export default function ProductSelection({ form }: Props) {
                       color={parsed.productStatus.toLowerCase()}
                       name={parsed.productStatus}
                     />
-                  </p>
+                  </div>
                   <p className='py-1 font-bold'>{parsed.name}</p>
                   {parsed.productStatus === 'IN STOCK' && (
                     <p className='text-sm'>Price: ${parsed.price}</p>
@@ -167,7 +172,7 @@ export default function ProductSelection({ form }: Props) {
                       <Plus size={16} />
                     </button>
                     <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                      {parsed.quantity}
+                      {parsed.productStatus === 'IN STOCK' ? parsed.quantity : 0}
                     </span>
                     <button
                       disabled={!(parsed.productStatus === 'IN STOCK')}
@@ -187,7 +192,7 @@ export default function ProductSelection({ form }: Props) {
                   </button>
                   {parsed.productStatus === 'IN STOCK' && (
                     <span className='whitespace-pre text-xl font-bold'>
-                      $ {parsed.price * parsed.quantity}
+                      $ {(parsed.price * parsed.quantity).toFixed(2)}
                     </span>
                   )}
                 </div>

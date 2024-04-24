@@ -35,7 +35,7 @@ export default function OrdersList({ orders }: Props) {
               className='rounded-se-lg rounded-ss-lg py-1 text-center text-xs font-bold uppercase text-white md:hidden'
               style={{
                 backgroundColor:
-                  order.orderStatus === 'Shipped' ? '#389B48' : '#FBBC04',
+                  order.orderStatus === 'SHIPPED' ? '#389B48' : '#FBBC04',
               }}
             >
               {order.orderStatus}
@@ -72,7 +72,7 @@ export default function OrdersList({ orders }: Props) {
             {/* Only from laptops */}
             <Badge
               className='ml-4 hidden md:block'
-              color={order.orderStatus === 'Shipped' ? '#389B48' : '#FBBC04'}
+              color={order.orderStatus === 'SHIPPED' ? '#389B48' : '#FBBC04'}
             >
               {order.orderStatus}
             </Badge>

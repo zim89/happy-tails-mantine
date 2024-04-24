@@ -101,7 +101,7 @@ const columns = [
   }),
   columnHelper.display({
     id: "actions",
-    cell: (info) => <Actions ctx={info}/>,
+    cell: (info) => <Actions ctx={info} />,
     size: 50
   })
 ];
@@ -109,7 +109,7 @@ const columns = [
 type Props = {
   data: Product[];
 };
-export const ProductsTable = ({ data }: Props) => {
+export default function ProductsTable({ data }: Props) {
   const [search, setSearch] = useDebouncedState('', 200);
   const categories = useSelectCategories((res) => res.map(cat => ({ name: cat.name, title: cat.title })));
 
@@ -148,7 +148,7 @@ export const ProductsTable = ({ data }: Props) => {
           >
             All Products
           </Button>
-          {categories.map(({ name, title }, index) => (
+          {categories.length > 0 && categories.map(({ name, title }, index) => (
             <Button
               onClick={() =>
                 table.getColumn('categoryName')?.setFilterValue(name)
@@ -223,7 +223,7 @@ export const ProductsTable = ({ data }: Props) => {
           ))}
         </Table.Thead>
         <Table.Tbody>
-          {table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.length > 0 && table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className={classes.columnSpacing}>
@@ -232,6 +232,7 @@ export const ProductsTable = ({ data }: Props) => {
               ))}
             </tr>
           ))}
+          {table.getRowModel().rows.length === 0 && <p className="p-4">There are no products yet</p>}
         </Table.Tbody>
       </Table>
 

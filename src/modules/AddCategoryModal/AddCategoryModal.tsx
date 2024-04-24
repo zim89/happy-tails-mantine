@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 import {
   Button,
@@ -6,14 +8,20 @@ import {
   TextInput,
   Tooltip,
 } from '@mantine/core';
-import { Info, PlusCircle, UploadCloud, X, Check } from 'lucide-react';
+import {
+  Info,
+  PlusCircle,
+  UploadCloud,
+  X,
+  Check,
+  AlertTriangle,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
@@ -22,20 +30,31 @@ import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
 
 export default function AddCategoryModal() {
-  const { access_token } = useAuth();
   const [dispatch] = useAddNewCategoryMutation();
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+      color: 'transparent',
+      text: 'Category creating failed',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Category successfully added!',
+    }
+  })
 
-  const [isNotified, { open: openNotification, close: closeNotification }] =
-    useDisclosure(false);
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
     name: null,
   });
 
   const handleClose = () => {
-    closeNotification();
+    clear();
   };
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -76,34 +95,45 @@ export default function AddCategoryModal() {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    let imgSrc = DEFAULT_CATEGORY_IMAGE;
+    try {
+      let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
-    if (image) {
-      const form = new FormData();
-      form.append('image', image);
-      form.append('title', `CATEGORY: ${categoryName}`);
+      debugger;
 
-      const res = await axios.post('https://api.imgur.com/3/image/', form, {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      if (image) {
+        const form = new FormData();
+        form.append('image', image);
+        form.append('title', `CATEGORY: ${categoryName}`);
 
-      imgSrc = res.data.data.link;
+        const res = await axios.post('https://api.imgur.com/3/image/', form, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        imgSrc = res.data.data.link;
+      }
+
+      const newCategory = {
+        name: categoryName,
+        title: categoryName,
+        imgSrc,
+        coordinateOnBannerX: 0,
+        coordinateOnBannerY: 0
+      };
+
+      await dispatch(newCategory).unwrap();
+
+      clearAndClose();
+      setNotification('Success');
+    } catch (err) {
+      clearAndClose();
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
+      console.error(err);
     }
-
-    const newCategory = {
-      name: categoryName,
-      productCount: 0,
-      imgSrc,
-      access_token: access_token,
-    };
-
-    await dispatch(newCategory);
-
-    clearAndClose();
-    openNotification();
   };
 
   return (
@@ -178,7 +208,7 @@ export default function AddCategoryModal() {
                 accept='.png,.jpeg,.gif,.webp'
                 classNames={{
                   wrapper: styles.fileWrapper,
-                  input: cn("form-input", styles.fileInput),
+                  input: cn('form-input', styles.fileInput),
                 }}
               />
             </div>
@@ -208,13 +238,7 @@ export default function AddCategoryModal() {
         />
       </Modal>
 
-      <Notify
-        icon={<Check size={15} />}
-        color='#389B48'
-        visible={isNotified}
-        onClose={handleClose}
-        text='Category successfully added!'
-      />
+      <Notify {...props} onClose={handleClose} />
     </>
   );
 }

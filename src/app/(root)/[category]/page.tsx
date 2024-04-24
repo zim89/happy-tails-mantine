@@ -5,9 +5,10 @@ import ProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Toolbar from '@/modules/Toolbar';
 import Overview from '@/components/Overview';
-import { getAllCategories, Category } from '@/shared/api/categoryApi';
 
 import { categoriesDesc } from './lib/seo';
+import { getAllCategories } from '@/shared/lib/requests';
+import { Category } from '@/shared/types/types';
 
 type Props = {
   params: { category: string };
