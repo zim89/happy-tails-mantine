@@ -56,7 +56,7 @@ export const UpdateUserForm = () => {
       onSubmit={form.onSubmit(async (values) => {
         try {
           const [updatedUser, count] = dirtyFields(values);
-          // If there is no changes, omit the call to API
+          // If there are no changes, omit the call to API
           if (count === 0) return;
           if (!currentUser) return;
 

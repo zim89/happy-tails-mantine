@@ -17,7 +17,6 @@ export const categoriesApi = createApi({
       Partial<Category>
     >({
       query: (payload) => {
-        debugger;
         return {
           url: '/category',
           method: 'POST',

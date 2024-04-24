@@ -23,7 +23,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { cn } from '@/shared/lib/utils';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 
 type Props = {
@@ -126,15 +126,13 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       setNotification('Success');
     } catch (err) {
       clearAndClose();
-      debugger;
-      console.log("Check: ",err);
       if (isAxiosQueryError(err)) {
-        console.error("Error", err);
         setNotification(
           'Failed',
           isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+          );
+        }
+        console.error(err);
     }
   };
 

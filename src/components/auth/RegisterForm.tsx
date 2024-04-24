@@ -38,7 +38,7 @@ export default function RegisterForm() {
     try {
       const response = await register(values).unwrap();
 
-      if (response.accessTokenResponse && response.userDTO) {
+      if (response.userId) {
         toast.success(
           'Account created successfully! Please verify your email later.'
         );

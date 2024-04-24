@@ -12,7 +12,7 @@ import file_error from '@/assets/icons/categories/file_error.svg';
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 
 type Props = {
@@ -45,6 +45,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         setNotification('Success');
       }
     } catch (err) {
+      closeMain();
       if (isAxiosQueryError(err)) {
         setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
       }

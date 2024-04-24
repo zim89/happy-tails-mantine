@@ -111,6 +111,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
       clearAndClose();
       setNotification("Success");
     } catch (err) {
+      clearAndClose();
       if (isAxiosQueryError(err)) {
         setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
       }
