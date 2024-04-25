@@ -4,7 +4,7 @@ import { Button, Loader } from '@mantine/core';
 import { Check, Mail, AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 
-import { CustomBadge } from '@/components/Badge';
+import { CustomBadge } from '@/components/Badge/Badge';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
 import { HistoryModal } from './HistoryModal';

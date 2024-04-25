@@ -1,0 +1,14 @@
+.header {
+    @apply mb-6 flex;
+}
+
+.dropdown {
+    @apply p-0;
+}
+
+@media print {
+    .header,
+    .dropdown {
+        display: none !important;
+    }
+}

@@ -12,7 +12,6 @@ export default function Categories() {
       <h2 className='mb-6 text-center text-[1.75rem] uppercase md:mb-9 lg:text-4xl'>
         Our Product Categories
       </h2>
-
       {isDesktop ? <CategoriesPresentation /> : <CategoriesSlider />}
     </section>
   );

@@ -31,7 +31,7 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -98,8 +98,6 @@ export default function AddCategoryModal() {
     try {
       let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
-      debugger;
-
       if (image) {
         const form = new FormData();
         form.append('image', image);
@@ -120,7 +118,7 @@ export default function AddCategoryModal() {
         title: categoryName,
         imgSrc,
         coordinateOnBannerX: 0,
-        coordinateOnBannerY: 0
+        coordinateOnBannerY: 0,
       };
 
       await dispatch(newCategory).unwrap();

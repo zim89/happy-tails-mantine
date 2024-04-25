@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
-import { CustomBadge } from '@/components/Badge';
+import { CustomBadge } from '@/components/Badge/Badge';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { Product } from '@/shared/types/types';
@@ -42,7 +42,7 @@ export default function ProductSelection({ form }: Props) {
   const shouldFilterOptions = products.every((item) => item.name !== search);
   const filteredOptions = shouldFilterOptions
     ? products.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase().trim())
+        item.productStatus === "IN STOCK" && item.name.toLowerCase().includes(search.toLowerCase().trim())
       )
     : products;
 

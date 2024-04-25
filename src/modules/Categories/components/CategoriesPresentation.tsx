@@ -8,6 +8,8 @@ export default function CategoriesPresentation() {
 
   if (!data) return null;
 
+  console.log(data);
+
   return (
     <div className='relative mx-auto h-[721px] w-full max-w-screen-lg'>
       <Image
@@ -21,7 +23,7 @@ export default function CategoriesPresentation() {
         <CategoryBadge
           key={category.path}
           name={category.name}
-          path={category.path}
+          path={`/${category.path}`}
           position={{
             x: category.coordinateOnBannerX,
             y: category.coordinateOnBannerY,

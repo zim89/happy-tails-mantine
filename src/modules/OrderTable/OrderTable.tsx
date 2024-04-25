@@ -3,6 +3,7 @@ import { useFindManyQuery } from '@/shared/api/ordersApi';
 import Table from './components/Table';
 import OrderCounter from '@/components/OrderCounter';
 import { calculateOrders } from '@/shared/lib/helpers';
+import styles from "./styles.module.css";
 
 export default function OrderTable() {
   const { data, error, isLoading } = useFindManyQuery({
@@ -21,7 +22,7 @@ export default function OrderTable() {
   return (
     <>
       <OrderCounter
-        className='mb-[1.875rem]'
+        className={styles.counter}
         newOrders={calculated['NEW']}
         inProgress={calculated['IN_PROGRESS']}
         completed={calculated['COMPLETED']}

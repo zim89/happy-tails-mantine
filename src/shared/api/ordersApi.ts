@@ -78,7 +78,7 @@ export const ordersApi = createApi({
           orderStatus: status
         });
 
-        return {url: `/order/${number}/status`,
+        return {url: `/order/${number}`,
         method: "put",
         params,
         headers: {

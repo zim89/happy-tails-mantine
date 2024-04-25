@@ -22,9 +22,8 @@ export const categoriesApi = createApi({
           method: 'POST',
           data: JSON.stringify({
             ...payload,
-            path: `/${payload.name}`,
             description: `Category name: ${payload.name}`,
-            overview: '',
+            overview: `Category name: ${payload.name}`
           }),
 
           headers: {

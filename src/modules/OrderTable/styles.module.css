@@ -1,0 +1,37 @@
+.counter {
+    @apply mb-[1.875rem];
+}
+
+.orderCategories {
+    @apply flex items-center border border-b-0 border-brand-grey-300 p-4;
+}
+
+.orderHUD {
+    @apply flex items-center border border-b-0 border-brand-grey-300 p-4;
+}
+
+.paginationBar {
+    @apply mt-12 flex justify-between;
+}
+
+.actions {
+    @apply flex justify-center;
+}
+
+.printText {}
+
+@media print {
+    .counter,
+    .orderCategories,
+    .orderHUD, 
+    .paginationBar,
+    .actions
+    {
+        display: none !important;
+    }
+
+    .printText {
+        font-size: 1rem !important;
+        white-space: pre !important;
+    }
+}

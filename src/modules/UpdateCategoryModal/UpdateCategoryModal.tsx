@@ -96,7 +96,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     try {
       let requestBody = {
         ...categoryLine,
-        nam: categoryName,
+        name: categoryName,
       };
 
       // Uploading an image
@@ -120,7 +120,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         requestBody.imgSrc = res.data.data.link;
       }
 
-      await dispatch({ req: {} }).unwrap();
+      await dispatch({ req: requestBody }).unwrap();
 
       clearAndClose();
       setNotification('Success');

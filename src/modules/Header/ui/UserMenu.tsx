@@ -14,6 +14,8 @@ export default function UserMenu() {
   const [opened, setOpened] = useState(false);
   const { isAuth, isAdmin } = useAuth();
 
+  console.log(APP_PAGES.LOGIN);
+  
   return (
     <>
       {!isAuth ? (
