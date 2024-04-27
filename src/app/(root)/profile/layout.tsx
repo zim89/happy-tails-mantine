@@ -21,7 +21,7 @@ export default function Layout({ children }: Props) {
   useEffect(() => {
     if (!isAuth) router.push(APP_PAGES.UNAUTHORIZED);
     else if (isAdmin) router.push(APP_PAGES.ADMIN);
-  }, [isAuth, router]);
+  }, [isAuth, isAdmin, router]);
 
   if (!isAuth) return null;
 

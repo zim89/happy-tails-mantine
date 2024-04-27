@@ -1,7 +1,7 @@
 import { Card, Combobox, Divider, InputBase, useCombobox } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
 import { CustomBadge } from '@/components/Badge/Badge';
@@ -39,10 +39,17 @@ export default function ProductSelection({ form }: Props) {
     })
   );
 
-  const shouldFilterOptions = products.every((item) => item.name !== search);
+  const shouldFilterOptions = useMemo<boolean>(() => {
+    return products.every(
+      (item) => item.name.toLocaleLowerCase() !== search.toLowerCase()
+    );
+  }, [products.length, search]);
+
   const filteredOptions = shouldFilterOptions
-    ? products.filter((item) =>
-        item.productStatus === "IN STOCK" && item.name.toLowerCase().includes(search.toLowerCase().trim())
+    ? products.filter(
+        (item) =>
+          item.productStatus === 'IN STOCK' &&
+          item.name.toLowerCase().includes(search.toLowerCase().trim())
       )
     : products;
 
@@ -88,7 +95,7 @@ export default function ProductSelection({ form }: Props) {
   };
 
   return (
-    <Card classNames={{ root: "mt-8" }}>
+    <Card classNames={{ root: 'mt-8' }}>
       <h3 className='mb-2 text-xl/6 font-bold'>Product Options</h3>
       <Divider className='mb-6' />
       <Combobox onOptionSubmit={addItem} store={combobox}>
@@ -100,7 +107,10 @@ export default function ProductSelection({ form }: Props) {
               withAsterisk
               value={search}
               classNames={{
-                input: cn('text-input max-w-[15.875rem]', form?.errors?.items && 'form-error--input'),
+                input: cn(
+                  'text-input max-w-[15.875rem]',
+                  form?.errors?.items && 'form-error--input'
+                ),
                 root: 'form-root',
                 label: 'form-label',
                 error: 'form-error -bottom-[1em]',
@@ -135,71 +145,82 @@ export default function ProductSelection({ form }: Props) {
           </Combobox.Options>
         </Combobox.Dropdown>
 
-        {form.values.items.length > 0 && <div className="mt-6">
-          {form.values.items.map((item) => {
-            const parsed: Product = JSON.parse(item);
+        {form.values.items.length > 0 && (
+          <div className='mt-6'>
+            {form.values.items.map((item) => {
+              const parsed: Product = JSON.parse(item);
 
-            return (
-              <div key={parsed.id} className='flex items-center gap-6 bg-[#F7F7F7] p-4'>
-                <Image
-                  src={parsed.imagePath}
-                  height={115}
-                  width={104}
-                  alt={parsed.name}
-                />
-                <div>
-                  <div className='text-xs'>
-                    <span className='mr-2'>{parsed.article}</span>
-                    <CustomBadge
-                      palette={{
-                        'in stock': '#389B48',
-                        'out of stock': '#B4B4B4',
-                      }}
-                      color={parsed.productStatus.toLowerCase()}
-                      name={parsed.productStatus}
-                    />
+              return (
+                <div
+                  key={parsed.id}
+                  className='flex items-center gap-6 bg-[#F7F7F7] p-4'
+                >
+                  <Image
+                    src={parsed.imagePath}
+                    height={115}
+                    width={104}
+                    alt={parsed.name}
+                  />
+                  <div>
+                    <div className='text-xs'>
+                      <span className='mr-2'>{parsed.article}</span>
+                      <CustomBadge
+                        palette={{
+                          'in stock': '#389B48',
+                          'out of stock': '#B4B4B4',
+                        }}
+                        color={parsed.productStatus.toLowerCase()}
+                        name={parsed.productStatus}
+                      />
+                    </div>
+                    <p className='py-1 font-bold'>{parsed.name}</p>
+                    {parsed.productStatus === 'IN STOCK' && (
+                      <p className='text-sm'>Price: ${parsed.price}</p>
+                    )}
+                    <div className='mt-3 flex font-bold'>
+                      <button
+                        disabled={!(parsed.productStatus === 'IN STOCK')}
+                        className='border-gray flex w-8 items-center justify-center border-[1px]'
+                        onClick={() =>
+                          changeItemQuantity('INCREASE', parsed.id)
+                        }
+                      >
+                        <Plus size={16} />
+                      </button>
+                      <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
+                        {parsed.productStatus === 'IN STOCK'
+                          ? parsed.quantity
+                          : 0}
+                      </span>
+                      <button
+                        disabled={!(parsed.productStatus === 'IN STOCK')}
+                        className='border-gray flex w-8 items-center justify-center border-[1px]'
+                        onClick={() =>
+                          changeItemQuantity('DECREASE', parsed.id)
+                        }
+                      >
+                        <Minus size={16} />
+                      </button>
+                    </div>
                   </div>
-                  <p className='py-1 font-bold'>{parsed.name}</p>
-                  {parsed.productStatus === 'IN STOCK' && (
-                    <p className='text-sm'>Price: ${parsed.price}</p>
-                  )}
-                  <div className='mt-3 flex font-bold'>
+                  <div className='ml-auto flex flex-col items-end justify-between self-stretch'>
                     <button
-                      disabled={!(parsed.productStatus === 'IN STOCK')}
-                      className='border-gray flex w-8 items-center justify-center border-[1px]'
-                      onClick={() => changeItemQuantity('INCREASE', parsed.id)}
+                      className='text-xs text-[#DC362E]'
+                      onClick={() => removeItem(item)}
                     >
-                      <Plus size={16} />
+                      Remove
                     </button>
-                    <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                      {parsed.productStatus === 'IN STOCK' ? parsed.quantity : 0}
-                    </span>
-                    <button
-                      disabled={!(parsed.productStatus === 'IN STOCK')}
-                      className='border-gray flex w-8 items-center justify-center border-[1px]'
-                      onClick={() => changeItemQuantity('DECREASE', parsed.id)}
-                    >
-                      <Minus size={16} />
-                    </button>
+                    {parsed.productStatus === 'IN STOCK' && (
+                      <span className='whitespace-pre text-xl font-bold'>
+                        $ {(parsed.price * parsed.quantity).toFixed(2)}
+                      </span>
+                    )}
                   </div>
                 </div>
-                <div className='ml-auto flex flex-col items-end justify-between self-stretch'>
-                  <button
-                    className='text-xs text-[#DC362E]'
-                    onClick={() => removeItem(item)}
-                  >
-                    Remove
-                  </button>
-                  {parsed.productStatus === 'IN STOCK' && (
-                    <span className='whitespace-pre text-xl font-bold'>
-                      $ {(parsed.price * parsed.quantity).toFixed(2)}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-          </div>}
+              );
+            })}
+          </div>
+        )}
       </Combobox>
     </Card>
   );

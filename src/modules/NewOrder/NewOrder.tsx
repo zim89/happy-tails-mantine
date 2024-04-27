@@ -54,7 +54,7 @@ export default function NewOrder() {
       }).unwrap();
 
       setNotification('Success');
-      form.reset();
+      handleTurningBack();
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);
@@ -63,7 +63,7 @@ export default function NewOrder() {
     }
   };
 
-  const handleCancel = () => {
+  const handleTurningBack = () => {
     form.reset();
     router.replace('/admin/orders');
   };
@@ -78,7 +78,7 @@ export default function NewOrder() {
         <AddComments form={form} />
 
         <div>
-          <Button size='md' variant='default' onClick={handleCancel}>
+          <Button size='md' variant='default' onClick={handleTurningBack}>
             Cancel
           </Button>
           <Button size='md' className='ml-6 bg-black' type='submit'>

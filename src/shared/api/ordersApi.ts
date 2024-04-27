@@ -18,6 +18,13 @@ type DeleteOrderProps = {
   number: string;
 }
 
+type UpdateOrderProps = {
+  orderNumber: string;
+  shippingAddress: string;
+  billingAddress: string;
+  shippingMethod: string;
+}
+
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
   tagTypes: ['Orders'],
@@ -96,11 +103,23 @@ export const ordersApi = createApi({
         },
       }),
       invalidatesTags: ["Orders"]
-    })
+    }),
+    updateOrder: builder.mutation<Order, UpdateOrderProps>({
+      query: (payload) => ({
+        url: `/order`,
+        method: 'put',
+        data: payload,
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }),
+      invalidatesTags: ["Orders"]
+    }),
+
   }),
 });
 
-export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation } = ordersApi;
+export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {

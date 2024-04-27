@@ -21,7 +21,7 @@ import {
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -31,7 +31,7 @@ import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';
 import UpdateStatus from './UpdateStatus';
-import classes from "../styles.module.css";
+import classes from '../styles.module.css';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -118,6 +118,25 @@ export default function Table({ data }: { data: Order[] }) {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  // While printing it reveals all table records
+  useEffect(() => {
+    const beforePrintHandler = () => {
+      table.setPageSize(Infinity);
+    };
+
+    const afterPrintHandler = () => {
+      table.setPageSize(table.getState().pagination.pageSize);
+    };
+
+    window.addEventListener('beforeprint', beforePrintHandler);
+    window.addEventListener('afterprint', afterPrintHandler);
+
+    return () => {
+      window.removeEventListener('beforeprint', beforePrintHandler);
+      window.removeEventListener('afterprint', afterPrintHandler);
+    };
+  }, []);
 
   return (
     <div>

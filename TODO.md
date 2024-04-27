@@ -2,3 +2,4 @@
 - Get a user for Order Details page
 - Import orders as CSV, copy to clipboard and print
 - Fix console alerts
+- Add a context for printing between OrderHeader and OrderTable

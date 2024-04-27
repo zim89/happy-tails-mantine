@@ -11,7 +11,7 @@ import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
 import UserMenu from '@/modules/Header/ui/UserMenu';
 
 export default function Header() {
-  const { data, isLoading } = useCategoriesQuery();
+  const { data, isLoading } = useCategoriesQuery({});
 
   if (!data || isLoading) return null;
 

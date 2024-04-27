@@ -5,7 +5,7 @@ import ProductsTable from '@/modules/ProductsTable';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
-    limit: Infinity,
+    limit: 1000000,
     page: 0,
   });
 

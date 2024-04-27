@@ -7,19 +7,20 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Form, useForm } from '@mantine/form';
 import { Order, ParsedShippingAddress } from '@/shared/types/types';
-import { dirtyFields, mockLongRequest } from '@/shared/lib/helpers';
+import { mockLongRequest } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import { useEffect } from 'react';
 import Checkbox from '@/components/Checkbox';
 import Notify from '@/components/Notify';
 import { useNotification } from '@/shared/hooks/useNotification';
+import { useUpdateOrderMutation } from "@/shared/api/ordersApi";
 
 type Props = {
   order: Order;
 };
-
 export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
+  const [dispatch] = useUpdateOrderMutation();
   const [setNotification, { props, clear }] = useNotification({
     failed: {
       color: 'transparent',
@@ -62,6 +63,12 @@ export const ShippingModal = ({ order }: Props) => {
   const handleUpdate = async (values: typeof form.values) => {
     try {
       await mockLongRequest(false);
+      // let request = {
+      //   billingAddress: JSON.stringify(values.billingAddress),
+      //   shippingAddress: JSON.stringify(values.shippingAddress),
+      //   shippingMethod: values.shippingMethod,
+      // }
+      // await dispatch(request)
       close();
       setNotification('Success');
     } catch (err) {
@@ -320,7 +327,9 @@ export const ShippingModal = ({ order }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={close}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit(handleUpdate)}
+          primaryBtnOnClick={form.onSubmit(values => {
+            if (form.isDirty()) handleUpdate(values);
+          })}
         />
       </Modal>
 
