@@ -39,6 +39,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
+        debugger;
         await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
@@ -49,7 +50,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
       if (isAxiosQueryError(err)) {
         setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
       }
-      console.error(err);
+      console.error("Deleting failed: ",err);
     }
   };
 

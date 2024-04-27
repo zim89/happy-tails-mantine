@@ -4,7 +4,7 @@ import CategoriesTable from './ui/CategoriesTable';
 import { useCategoriesQuery } from '@/shared/api/categoryApi';
 
 export default function CategoriesDisplay() {
-  const { data, isError, isLoading, isUninitialized } = useCategoriesQuery();
+  const { data, isError, isLoading, isUninitialized } = useCategoriesQuery({ limit: 100000 });
 
   if (isLoading || isUninitialized) return <p>Loading, please wait</p>;
 

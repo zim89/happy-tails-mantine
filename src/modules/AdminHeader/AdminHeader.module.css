@@ -13,3 +13,13 @@
 .avatarLogo {
     @apply flex h-6 w-6 items-center justify-center rounded-full bg-[black] text-sm text-white font-black select-none;
 }
+
+.wrapper {
+    @apply bg-[#FDFDFD];
+}
+
+@media print {
+    .wrapper {
+        display: none !important;
+    }
+}

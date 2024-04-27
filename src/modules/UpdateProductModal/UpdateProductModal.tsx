@@ -1,10 +1,10 @@
-"use client";
+'use client';
 import { UploadCloud, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
 import Image from 'next/image';
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
@@ -19,7 +19,7 @@ import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   productLine: Product;
-  setNotification: (type: "Success" | "Failed", text?: string) => void;
+  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 type PreviewImage = {
@@ -28,7 +28,7 @@ type PreviewImage = {
 };
 
 const UpdateProductModal = ({ productLine, setNotification }: Props) => {
-  const categoryList = useSelectCategories(res => res.map(cat => cat.name)); 
+  const categoryList = useSelectCategories((res) => res.map((cat) => cat.name));
 
   const form = useForm({
     initialValues: {
@@ -61,20 +61,36 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
           quantity: productLine.quantity,
           productStatus: productLine.productStatus,
           description: productLine.description,
-          image: null
-        })
-         
+          image: null,
+        });
       } catch (err) {
         console.log(err);
       }
     })();
-  }, []);
+  }, [
+    productLine.article,
+    productLine.categoryName,
+    productLine.description,
+    productLine.name,
+    productLine.price,
+    productLine.productStatus,
+    productLine.quantity,
+  ]);
 
+  
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
-
+  
   const [dispatch] = useUpdateMutation();
-
+  
   const [opened, { open, close }] = useDisclosure(false);
+
+  // Initialize previewImage until the modal is opened
+  useEffect(() => {
+    if (!opened) {
+      previewImage.current.path = productLine.imagePath;
+      previewImage.current.name = productLine.name;
+    }
+  }, [opened, productLine]);
 
   const clearAndClose = () => {
     form.clearErrors();
@@ -89,31 +105,38 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
         ...rest,
         article: code,
       };
-  
+
       // Uploading an image
       if (image) {
         const formData = new FormData();
         formData.append('image', image);
         formData.append('type', 'image');
         formData.append('title', `Product image: ${rest.name}`);
-  
-        const res = await axios.post('https://api.imgur.com/3/image/', formData, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-  
+
+        const res = await axios.post(
+          'https://api.imgur.com/3/image/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
         requestBody.imagePath = res.data.data.link;
       }
-      
+
       await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setNotification("Success");
+      setNotification('Success');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
       console.log(err);
     }
@@ -271,23 +294,23 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
           </div>
           {!previewImage.current?.path || !previewImage.current?.name ? (
             <>
-            <div className={styles.upload}>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id='file'
-                w='100%'
-                placeholder='Max file size 500 kB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput)
-                }}
-              />
-            </div>
+              <div className={styles.upload}>
+                <label htmlFor='file'>
+                  <UploadCloud color='white' />
+                  <span>Select Image</span>
+                </label>
+                <FileInput
+                  id='file'
+                  w='100%'
+                  placeholder='Max file size 500 kB'
+                  {...form.getInputProps('image')}
+                  accept='.png,.jpeg,.gif,.webp'
+                  classNames={{
+                    wrapper: styles.fileWrapper,
+                    input: cn('form-input', styles.fileInput),
+                  }}
+                />
+              </div>
             </>
           ) : (
             <div className={styles.previewWrapper}>

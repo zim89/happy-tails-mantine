@@ -11,7 +11,7 @@ type Props = {
 };
 export default function AdminHeader({ user }: Props) {
   return (
-    <header className="bg-[#FDFDFD]">
+    <header className={classes.wrapper}>
       <Link href='/' className={classes.returnLink}>
         <ChevronLeft />
         View your store

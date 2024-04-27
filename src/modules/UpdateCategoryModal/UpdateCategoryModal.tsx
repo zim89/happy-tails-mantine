@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -64,17 +64,19 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     },
   });
 
-  const changeThumbnail = () => {
-    previewImage.current = {
-      path: categoryLine.imgSrc!,
-      name: categoryLine.name,
-    };
-  };
+  const changeThumbnail = useCallback(() => {
+    if (categoryLine.imgSrc) {
+      previewImage.current = {
+        path: categoryLine.imgSrc,
+        name: categoryLine.name,
+      };
+    }
+  }, [categoryLine.id]);
 
   // When the list of categories is changed, change the form values respectively
   useEffect(() => {
-    changeThumbnail();
-  }, [categoryLine.id]);
+    if (!opened) changeThumbnail();
+  }, [categoryLine.id, opened]);
 
   const clearFile = () => {
     previewImage.current = {
@@ -96,7 +98,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     try {
       let requestBody = {
         ...categoryLine,
-        nam: categoryName,
+        name: categoryName,
       };
 
       // Uploading an image
@@ -120,7 +122,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         requestBody.imgSrc = res.data.data.link;
       }
 
-      await dispatch({ req: {} }).unwrap();
+      await dispatch({ req: requestBody }).unwrap();
 
       clearAndClose();
       setNotification('Success');

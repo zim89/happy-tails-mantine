@@ -4,7 +4,7 @@ import classes from '../styles.module.css';
 import { Autocomplete } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
 import { XCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
 type Postcode = { postal_code: string, place_name: string, country_code: string, state: string };
@@ -27,9 +27,9 @@ type Props = {
 export const PostalCodeField = ({ form }: Props) => {
   const [codes, setCodes] = useState<string[]>([]);
 
-  const onResetValue = () => {
+  const onResetValue = useCallback(() => {
     form.setFieldValue('postcode', '');
-  };
+  }, []);
 
   useEffect(() => {
     if (!form.values.city.trim()) {
@@ -60,7 +60,7 @@ export const PostalCodeField = ({ form }: Props) => {
         }
       }
     })();
-  }, [form.values.city]);
+  }, [form.values.city, form]);
 
   return (
     <Autocomplete

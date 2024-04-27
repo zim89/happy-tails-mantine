@@ -11,11 +11,9 @@ import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
 import UserMenu from '@/modules/Header/ui/UserMenu';
 
 export default function Header() {
-  const { data, isLoading } = useCategoriesQuery();
+  const { data, isLoading } = useCategoriesQuery({});
 
   if (!data || isLoading) return null;
-
-  console.log(data);
 
   return (
     <header className='width-before-scroll-bar fixed left-0 right-0 top-0 z-40 border-b border-b-brand-grey-300 bg-primary'>

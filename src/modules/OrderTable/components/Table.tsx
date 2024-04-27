@@ -21,7 +21,7 @@ import {
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -29,8 +29,9 @@ import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
-import { CustomBadge } from '@/components/Badge';
+import { CustomBadge } from '@/components/Badge/Badge';
 import UpdateStatus from './UpdateStatus';
+import classes from '../styles.module.css';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -45,7 +46,7 @@ const columns = [
   }),
   columnHelper.accessor('orderProductDTOList', {
     cell: (info) => (
-      <span className='text-[0.625rem]'>
+      <span className={cn('text-[0.625rem]', classes.printText)}>
         {info
           .getValue()
           .map(({ productName }) => productName)
@@ -92,7 +93,7 @@ const columns = [
   columnHelper.display({
     id: 'actions',
     cell: (info) => (
-      <div className='flex justify-center'>
+      <div className={classes.actions}>
         <RowActions ctx={info} />
       </div>
     ),
@@ -118,9 +119,28 @@ export default function Table({ data }: { data: Order[] }) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  // While printing it reveals all table records
+  useEffect(() => {
+    const beforePrintHandler = () => {
+      table.setPageSize(Infinity);
+    };
+
+    const afterPrintHandler = () => {
+      table.setPageSize(table.getState().pagination.pageSize);
+    };
+
+    window.addEventListener('beforeprint', beforePrintHandler);
+    window.addEventListener('afterprint', afterPrintHandler);
+
+    return () => {
+      window.removeEventListener('beforeprint', beforePrintHandler);
+      window.removeEventListener('afterprint', afterPrintHandler);
+    };
+  }, []);
+
   return (
     <div>
-      <div className='flex items-center border border-b-0 border-brand-grey-300 p-4'>
+      <div className={classes.orderCategories}>
         <h3 className='mr-3 flex-1 text-xl font-bold'>Orders</h3>
         <ul className='flex space-x-3'>
           <li>
@@ -160,7 +180,7 @@ export default function Table({ data }: { data: Order[] }) {
           ))}
         </ul>
       </div>
-      <div className='flex items-center border border-b-0 border-brand-grey-300 p-4'>
+      <div className={classes.orderHUD}>
         <p>
           Displaying{' '}
           {table.getState().pagination.pageIndex *
@@ -237,7 +257,7 @@ export default function Table({ data }: { data: Order[] }) {
         <MantineTable.Tbody>
           {table.getRowModel().rows.length > 0 &&
             table.getRowModel().rows.map((row) => (
-              <MantineTable.Tr key={row.id}>
+              <MantineTable.Tr key={row.id} className={classes.printText}>
                 {row.getVisibleCells().map((cell) => (
                   <MantineTable.Td key={cell.id}>
                     <span className='line-clamp-1'>
@@ -257,7 +277,7 @@ export default function Table({ data }: { data: Order[] }) {
           You have no any orders yet
         </p>
       )}
-      <div className='mt-12 flex justify-between'>
+      <div className={classes.paginationBar}>
         <Select
           label='Results Per Page'
           withCheckIcon={false}

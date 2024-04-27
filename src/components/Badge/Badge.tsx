@@ -2,6 +2,7 @@ import { Badge } from '@mantine/core';
 import { useMemo } from 'react';
 
 import { orderPalette } from "@/shared/lib/constants";
+import classes from "./classes.module.css";
 
 type Props = {
   name: string;
@@ -13,14 +14,14 @@ export const CustomBadge = ({ name, color, palette = orderPalette }: Props) => {
       candidate: string
     ): candidate is keyof typeof palette => {
       return candidate in palette ? true : false;
-    }, []);
+    }, [palette]);
 
   const type = isPalette(color) ? palette[color] : 'completed';
 
   return (
     <Badge
       bg={type}
-      className='h-[1.375rem] px-2'
+      className={classes.badge}
     >
       {name}
     </Badge>
