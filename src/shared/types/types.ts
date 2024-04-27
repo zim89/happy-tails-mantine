@@ -32,6 +32,8 @@ export interface Product {
 export interface Order {
   billingAddress: string;
   createdDate: string;
+  statusLastUpdatedAt: number | null;
+  commentOfManager: string | null;
   discountCode: string | null;
   email: string;
   id: string;

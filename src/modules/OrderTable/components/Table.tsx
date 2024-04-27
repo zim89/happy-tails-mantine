@@ -21,7 +21,7 @@ import {
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -120,13 +120,14 @@ export default function Table({ data }: { data: Order[] }) {
   });
 
   // While printing it reveals all table records
-  useEffect(() => {
+  useLayoutEffect(() => {
     const beforePrintHandler = () => {
-      table.setPageSize(Infinity);
+      console.log("Expanded")
+      table.setPageSize(50);
     };
 
     const afterPrintHandler = () => {
-      table.setPageSize(table.getState().pagination.pageSize);
+      table.setPageSize(10);
     };
 
     window.addEventListener('beforeprint', beforePrintHandler);

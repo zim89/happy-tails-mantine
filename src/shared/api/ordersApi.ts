@@ -25,6 +25,11 @@ type UpdateOrderProps = {
   shippingMethod: string;
 }
 
+type CommentOrder = {
+  orderNumber: string;
+  comment: string;
+}
+
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
   tagTypes: ['Orders'],
@@ -115,11 +120,26 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["Orders"]
     }),
+    addComment: builder.mutation<void, CommentOrder>({
+      query: ({ orderNumber, comment }) => {
+        const params = new URLSearchParams({
+          comment
+        });
 
+        return {url: `/order/${orderNumber}/comment`,
+        method: 'put',
+        params,
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }
+      },
+      invalidatesTags: ["Orders"]
+    }),
   }),
 });
 
-export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation } = ordersApi;
+export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation, useAddCommentMutation } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {

@@ -14,14 +14,16 @@ export default function OrdersDetails() {
 
   if (!order) return null;
 
+  console.log(order);
+
   return (  
     <div className='mb-8'>
       <Header order={order} />
       <ProductTable order={order} />
       <section className='mt-8 grid grid-cols-3 gap-6'>
         <ShippingDetails order={order} />
-        <ClientDetails />
-        <CommentSection />
+        <ClientDetails userEmail={order.email} />
+        <CommentSection commentOfManager={order.commentOfManager || ""} orderNumber={order.number} />
       </section>
     </div>
   );

@@ -52,7 +52,7 @@ export const Header = ({ order }: Props) => {
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Admin' },
-          { href: '/admin/orders', text: 'Order' },
+          { href: '/admin/orders', text: 'Orders' },
           { text: 'Details' },
         ]}
       />

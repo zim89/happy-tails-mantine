@@ -7,7 +7,6 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Form, useForm } from '@mantine/form';
 import { Order, ParsedShippingAddress } from '@/shared/types/types';
-import { mockLongRequest } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import { useEffect } from 'react';
 import Checkbox from '@/components/Checkbox';
@@ -62,13 +61,13 @@ export const ShippingModal = ({ order }: Props) => {
 
   const handleUpdate = async (values: typeof form.values) => {
     try {
-      await mockLongRequest(false);
-      // let request = {
-      //   billingAddress: JSON.stringify(values.billingAddress),
-      //   shippingAddress: JSON.stringify(values.shippingAddress),
-      //   shippingMethod: values.shippingMethod,
-      // }
-      // await dispatch(request)
+      let request = {
+        orderNumber: order.number,
+        billingAddress: JSON.stringify(values.billingAddress),
+        shippingAddress: JSON.stringify(values.shippingAddress),
+        shippingMethod: values.shippingMethod,
+      }
+      await dispatch(request)
       close();
       setNotification('Success');
     } catch (err) {
