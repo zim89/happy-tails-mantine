@@ -18,7 +18,7 @@ export default function AdminHeader({ user }: Props) {
       </Link>
       <div className={classes.controls}>
         <div className={classes.avatar}>
-          <span className={classes.avatarLogo}>{user.firstName[0]}</span>
+          <span className={classes.avatarLogo}>{user.firstName[0].toUpperCase()}</span>
           <span>{user.firstName}</span>
         </div>
 

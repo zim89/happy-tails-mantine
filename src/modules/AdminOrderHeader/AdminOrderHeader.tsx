@@ -1,18 +1,27 @@
 'use client';
 import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import { Button, Menu } from '@mantine/core';
-import { AlertTriangle, Check, Download, File, Files, PlusCircle, Printer } from 'lucide-react';
+import {
+  AlertTriangle,
+  Check,
+  Download,
+  File,
+  Files,
+  PlusCircle,
+  Printer,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { json2csv } from 'json-2-csv';
 
 import { useNotification } from '@/shared/hooks/useNotification';
-import Notification from "@/components/Notify";
-import classes from "./classes.module.css";
+import Notification from '@/components/Notify';
+import classes from './classes.module.css';
 
 export default function AdminOrderHeader() {
   const [opened, setOpened] = useState(false);
-  const orders = useSelectOrders(state => state);
+  const orders = useSelectOrders((state) => state);
+
   const [setNotification, { props, clear }] = useNotification({
     failed: {
       icon: <AlertTriangle size={24} fill='#DC362E' />,
@@ -23,7 +32,7 @@ export default function AdminOrderHeader() {
       icon: <Check size={24} />,
       color: '#389B48',
       text: 'Copied!',
-    }
+    },
   });
 
   const copyToClipboard = async () => {
@@ -37,12 +46,12 @@ export default function AdminOrderHeader() {
         document.execCommand('copy', true, data);
       }
 
-      setNotification("Success");
+      setNotification('Success');
     } catch (err) {
-     console.log(err);
-     setNotification("Failed");
+      console.log(err);
+      setNotification('Failed');
     }
-  }
+  };
 
   return (
     <div className={classes.header}>
@@ -76,11 +85,16 @@ export default function AdminOrderHeader() {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item onClick={() => window.print()}>
+          <Menu.Item onClick={() => {
+            window.print();
+          }}>
             <Printer size={16} className='mr-2 inline-block' /> Print
           </Menu.Item>
           <Menu.Item>
-            <a href={`${process.env.NEXT_PUBLIC_BASE_URL}/orders/export`} download>
+            <a
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/orders/export`}
+              download
+            >
               <File size={16} className='mr-2 inline-block' /> Csv
             </a>
           </Menu.Item>

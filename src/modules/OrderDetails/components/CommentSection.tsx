@@ -4,16 +4,20 @@ import { Textarea, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2, AlertTriangle, Check } from 'lucide-react';
 
-import { useAuth } from '@/shared/hooks/useAuth';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { postRequest } from '@/shared/api/contactsApi';
 import Notify from '@/components/Notify';
+import { useAddCommentMutation } from "@/shared/api/ordersApi";
 
-export const CommentSection = () => {
+type Props = {
+  orderNumber: string;
+  commentOfManager: string;
+}
+
+export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
   const [comment, setComment] = useState('');
-  const { currentUser } = useAuth();
   const [areCommentsOpened, { close: closeComments, toggle: toggleComments }] =
     useDisclosure(false);
+  const [dispatch] = useAddCommentMutation();
 
   const [setNotification, { props, clear }] = useNotification({
     failed: {
@@ -35,16 +39,7 @@ export const CommentSection = () => {
 
   const sendFeedback = async () => {
     try {
-      if (!currentUser) return;
-
-      let request = {
-        userEmail: currentUser.email,
-        userName: `${currentUser.firstName} ${currentUser.lastName}`,
-        imageSrc: '',
-        content: comment,
-      };
-
-      await postRequest(request);
+      await dispatch({ comment, orderNumber }).unwrap();
       closeSection();
       setNotification('Success');
     } catch (err) {
@@ -65,7 +60,7 @@ export const CommentSection = () => {
           <Edit2 size={16} color='black' />
         </Button>
       </div>
-      {areCommentsOpened && (
+      {areCommentsOpened ? (
         <div className='p-4'>
           <Textarea
             value={comment}
@@ -87,6 +82,10 @@ export const CommentSection = () => {
           <Button px={50} radius={2} bg='black' onClick={sendFeedback}>
             Save
           </Button>
+        </div>
+      ) : (
+        <div className="p-4">
+          {commentOfManager}
         </div>
       )}
       <Notify {...props} onClose={clear} />

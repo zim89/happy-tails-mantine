@@ -21,7 +21,8 @@ import {
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,  } from 'react';
+import { flushSync } from "react-dom";
 import { cn } from '@/shared/lib/utils';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -122,11 +123,12 @@ export default function Table({ data }: { data: Order[] }) {
   // While printing it reveals all table records
   useEffect(() => {
     const beforePrintHandler = () => {
-      table.setPageSize(Infinity);
+      // Used to update the state before revealing a printing modal 
+      flushSync(() => table.setPageSize(Number.MAX_SAFE_INTEGER));
     };
 
     const afterPrintHandler = () => {
-      table.setPageSize(table.getState().pagination.pageSize);
+      table.setPageSize(10);
     };
 
     window.addEventListener('beforeprint', beforePrintHandler);
