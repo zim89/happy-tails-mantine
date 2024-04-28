@@ -123,6 +123,7 @@ export default function Table({ data }: { data: Order[] }) {
   // While printing it reveals all table records
   useEffect(() => {
     const beforePrintHandler = () => {
+      // Used to update the state before revealing a printing modal 
       flushSync(() => table.setPageSize(Number.MAX_SAFE_INTEGER));
     };
 

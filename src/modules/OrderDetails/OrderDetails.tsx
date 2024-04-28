@@ -14,8 +14,6 @@ export default function OrdersDetails() {
 
   if (!order) return null;
 
-  console.log(order);
-
   return (  
     <div className='mb-8'>
       <Header order={order} />
