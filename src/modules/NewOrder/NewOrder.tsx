@@ -54,7 +54,6 @@ export default function NewOrder() {
       }).unwrap();
 
       setNotification('Success');
-      handleTurningBack();
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);

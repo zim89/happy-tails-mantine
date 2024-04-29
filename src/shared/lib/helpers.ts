@@ -8,34 +8,52 @@ export const formatDate = (date: string | number) => {
 };
 
 export const formatRawOrderDate = (raw: string) => {
-  return dayjs(raw).format("DD.MM.YY");
-}
+  return dayjs(raw).format('DD.MM.YY');
+};
 
 export const formatRawPostDate = (raw: string) => {
   return dayjs(raw).format();
-}
+};
 
 export const formatUserAttributes = (obj: { [P in string]: string }) => {
   let res: { [P in string]: [string] } = {};
 
   Object.entries(obj).forEach(([key, val]) => {
     res[key] = [val];
-  })
+  });
 
   return res;
-}
+};
+
+export const formatArrayToDate = (array: number[]) => {
+  const dateArray = array;
+  const date = dayjs(
+    new Date(
+      dateArray[0],
+      dateArray[1] - 1,
+      dateArray[2],
+      dateArray[3],
+      dateArray[4],
+      dateArray[5],
+      dateArray[6] / 1000
+    )
+  );
+  const formattedDate = date.format('MMM DD, YYYY (HH:mm)');
+
+  return formattedDate;
+};
 
 export const cleanPostcode = (input: string): string => {
   // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
   const regex = /^([A-Za-z0-9]+) \(.+\)$/;
-  
+
   // Replace the matched group with just the postcode part
   const cleanedInput = input.replace(regex, '$1');
 
   return cleanedInput;
-}
+};
 
-// I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces 
+// I wrote my own implementation of isDirty, cause the embedded one doesn't take into account white spaces
 export const dirtyFields = (obj: { [P in string]: string }) => {
   let res: [{ [P in string]: string }, number] = [{}, 0];
 
@@ -49,15 +67,15 @@ export const dirtyFields = (obj: { [P in string]: string }) => {
   });
 
   return res;
-}
+};
 
 export const availabilityMap: {
-  [P in NonNullable<Product["productStatus"]>]: string;
+  [P in NonNullable<Product['productStatus']>]: string;
 } = {
-  "IN STOCK": "https://schema.org/InStock",
-  "TEMPORARILY_ABSENT": "https://schema.org/OutOfStock",
-  "DELETE": "https://schema.org/Discontinued",
-  "ACTIVE": "https://schema.org/InStock"
+  'IN STOCK': 'https://schema.org/InStock',
+  TEMPORARILY_ABSENT: 'https://schema.org/OutOfStock',
+  DELETE: 'https://schema.org/Discontinued',
+  ACTIVE: 'https://schema.org/InStock',
 
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.
@@ -69,44 +87,55 @@ export const availabilityMap: {
   // https://schema.org/PreOrder: The item is available for pre-order.
   // https://schema.org/PreSale: The item is available for ordering and delivery before general availability.
   // https://schema.org/SoldOut: The item has been sold out.
-}
+};
 
 export const calculateOrders = (orders: Order[]) => {
-  let kinds: {[P in Order["orderStatus"]]: number} = {
+  let kinds: { [P in Order['orderStatus']]: number } = {
     CANCELLED: 0,
     COMPLETED: 0,
     IN_PROGRESS: 0,
     NEW: 0,
     PROCESSING: 0,
     RETURN_PROCESSING: 0,
-    SHIPPED: 0
+    SHIPPED: 0,
   };
-  
-  orders.forEach(order => {
+
+  orders.forEach((order) => {
     kinds[order.orderStatus] = kinds[order.orderStatus] + 1;
   });
 
   return kinds;
-}
+};
 
-export const mockLongRequest = (value?: boolean) => new Promise<void>((resolve, reject) => {
-  let success;
+export const mockLongRequest = (value?: boolean) =>
+  new Promise<void>((resolve, reject) => {
+    let success;
 
-  setTimeout(() => {
-    success = value != null ? value : Math.random() < 0.5 ? true : false;
+    setTimeout(() => {
+      success = value != null ? value : Math.random() < 0.5 ? true : false;
 
-    if (success) {
-      resolve();
-    } else {
-      reject(new ErrorResponse({ path: "/", timestamp: Date.now(), status: 418, error: "Exprected Error", message: "The error is emitted successfully!" }));
-    }
-  }, 5000);
-});
+      if (success) {
+        resolve();
+      } else {
+        reject(
+          new ErrorResponse({
+            path: '/',
+            timestamp: Date.now(),
+            status: 418,
+            error: 'Exprected Error',
+            message: 'The error is emitted successfully!',
+          })
+        );
+      }
+    }, 5000);
+  });
 
 export function isAxiosQueryError(error: any): error is AxiosQueryError {
   return typeof error === 'object' && 'data' in error;
 }
 
-export const isErrorDataString = (payload: AxiosQueryError["data"]): payload is string => {
-  return typeof payload === "string";
-}
+export const isErrorDataString = (
+  payload: AxiosQueryError['data']
+): payload is string => {
+  return typeof payload === 'string';
+};

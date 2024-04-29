@@ -7,7 +7,7 @@ export default function Page() {
       <div className='mb-8'>
         <Breadcrumbs
           crumbs={[
-            { href: '/admin/', text: 'Admin' },
+            { href: '/admin/', text: 'Dashboard' },
             { href: '/admin/orders', text: 'Order' },
             { text: 'Add an order' },
           ]}

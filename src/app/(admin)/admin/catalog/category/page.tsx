@@ -9,7 +9,7 @@ export default function CategoryPage() {
     <>
       <div className={styles.pageWrapper} style={{ position: 'relative' }}>
         <Breadcrumbs
-          crumbs={[{ href: '/admin/', text: 'Admin' }, { text: 'category' }]}
+          crumbs={[{ href: '/admin/', text: 'Dashboard' }, { text: 'category' }]}
         />
 
         <AddCategory />

@@ -1,5 +1,5 @@
-- Update shipping and billing options of an order
-- Get a user for Order Details page
-- Import orders as CSV, copy to clipboard and print
+- Users pages (Admin)
+
+- Add pagination search params in URL 
+- Make Admin Panel adaptive
 - Fix console alerts
-- Add a context for printing between OrderHeader and OrderTable
