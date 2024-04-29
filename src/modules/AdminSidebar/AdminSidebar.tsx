@@ -2,7 +2,7 @@
 import Image from "next/image";
 import LinksGroup from '@/modules/LinksGroup';
 import { Group } from "@mantine/core";
-import { LayoutList, SearchCheck } from "lucide-react";
+import { LayoutList, SearchCheck, FileText, UsersRound } from "lucide-react";
 
 import classes from './AdminSidebar.module.css';
 import logo from '@/assets/logo/logo-footer.svg';
@@ -19,13 +19,18 @@ const data = [
   },
   {
     label: 'Orders',
-    icon: LayoutList,
+    icon: FileText,
     links: [{ label: 'Orders', link: '/admin/orders' }],
   },
   {
     label: 'Seo',
     icon: SearchCheck,
     links: [{ label: 'Seo', link: '/admin/auth' }]
+  },
+  {
+    label: 'Users',
+    icon: UsersRound,
+    links: [{ label: "Users", link: '/admin/users' }]
   }
 ];
 

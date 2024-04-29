@@ -29,7 +29,7 @@ export const Header = ({ order }: Props) => {
       color: '#389B48',
       icon: <Check size={24} />,
       text: 'Order Confirmation Email has been successfully resent',
-    }
+    },
   });
 
   const resend = async () => {
@@ -42,7 +42,10 @@ export const Header = ({ order }: Props) => {
       setIsResending(false);
       if (isAxiosQueryError(err)) {
         console.error(err);
-        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
     }
   };
@@ -51,7 +54,7 @@ export const Header = ({ order }: Props) => {
     <>
       <Breadcrumbs
         crumbs={[
-          { href: '/admin/', text: 'Admin' },
+          { href: '/admin/', text: 'Dashboard' },
           { href: '/admin/orders', text: 'Orders' },
           { text: 'Details' },
         ]}
@@ -94,8 +97,7 @@ export const Header = ({ order }: Props) => {
         <HistoryModal />
       </div>
 
-        <Notify {...props} onClose={clear} />
-      
+      <Notify {...props} onClose={clear} />
     </>
   );
 };

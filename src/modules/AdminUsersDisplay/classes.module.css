@@ -1,0 +1,3 @@
+.cell {
+    @apply inline-block whitespace-nowrap overflow-hidden text-ellipsis;
+}

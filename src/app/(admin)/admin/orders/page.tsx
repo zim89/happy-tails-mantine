@@ -8,7 +8,7 @@ export default function Page() {
     <div>
       <div className={classes.breadCrumbs}>
         <Breadcrumbs
-          crumbs={[{ href: '/admin/', text: 'Admin' }, { text: 'Orders' }]}
+          crumbs={[{ href: '/admin/', text: 'Dashboard' }, { text: 'Orders' }]}
         />
       </div>
       <section>

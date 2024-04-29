@@ -121,8 +121,8 @@ export default function ProductsTable({ data }: Props) {
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   const paginate = (value: number) => {
