@@ -28,7 +28,7 @@ const columnHelper = createColumnHelper<Order>();
 const columns = [
   columnHelper.accessor('number', {
     cell: (info) => <span className={classes.cell}>{info.getValue()}</span>,
-    header: () => 'ORDER ID',
+    header: () => 'Order id',
   }),
   columnHelper.accessor('orderProductDTOList', {
     cell: (info) => (
@@ -39,30 +39,30 @@ const columns = [
           .join(', ')}
       </span>
     ),
-    header: () => 'PRODUCT(S)',
+    header: () => 'Product(s)',
     minSize: 200,
     enableSorting: false,
   }),
   columnHelper.accessor('createdDate', {
     cell: (info) => <span>{formatOrderDate(info.getValue())}</span>,
-    header: 'DATE',
+    header: 'Date',
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => <CustomBadge
     color={info.getValue().toLowerCase()}
     name={info.getValue()}
   />,
-    header: 'STATUS',
+    header: 'Status',
     enableSorting: false
   }),
   columnHelper.accessor('price', {
     cell: (info) => <span>$ {info.getValue()}</span>,
-    header: 'TOTAL PAID',
+    header: 'Total paid',
     enableSorting: false
   }),
   columnHelper.accessor('paymentMethod', {
     cell: (info) => <span>{info.getValue()}</span>,
-    header: 'PAYMENT',
+    header: 'Payment',
     enableSorting: false
   }),
 ];
@@ -170,7 +170,7 @@ export default function OrderHistoryTable({ email }: Props) {
               classNames={{ tr: 'bg-[#EEEEEE] text-[#787878]' }}
             >
               {group.headers.map((header) => (
-                <Table.Th key={header.id} classNames={{ th: 'p-4 whitespace-nowrap' }}>
+                <Table.Th key={header.id} classNames={{ th: 'p-4 whitespace-nowrap uppercase' }}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
