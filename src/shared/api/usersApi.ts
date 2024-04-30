@@ -45,7 +45,8 @@ export const userApi = createApi({
             method: "delete"
           }
         },
-        providesTags: ['User'],
+        invalidatesTags: ["User"]
+
       }),
     }),
   });
