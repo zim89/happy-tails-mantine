@@ -21,8 +21,8 @@ import {
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useEffect, useState,  } from 'react';
-import { flushSync } from "react-dom";
+import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { cn } from '@/shared/lib/utils';
 import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
@@ -33,6 +33,8 @@ import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';
 import UpdateStatus from './UpdateStatus';
 import classes from '../styles.module.css';
+import { EntriesCount } from '@/components/EntriesCount';
+import { SearchEntry } from '@/components/SearchEntry';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -123,7 +125,7 @@ export default function Table({ data }: { data: Order[] }) {
   // While printing it reveals all table records
   useEffect(() => {
     const beforePrintHandler = () => {
-      // Used to update the state before revealing a printing modal 
+      // Used to update the state before revealing a printing modal
       flushSync(() => table.setPageSize(Number.MAX_SAFE_INTEGER));
     };
 
@@ -183,7 +185,22 @@ export default function Table({ data }: { data: Order[] }) {
         </ul>
       </div>
       <div className={classes.orderHUD}>
-        <p>
+        <EntriesCount
+          current={
+            table.getState().pagination.pageIndex *
+              table.getState().pagination.pageSize +
+            1
+          }
+          pageSize={
+            table.getState().pagination.pageIndex *
+              table.getState().pagination.pageSize +
+            table.getRowModel().rows.length
+          }
+          size={table.getCoreRowModel().rows.length}
+        />
+
+        <SearchEntry value={globalFilter} handleChange={setGlobalFilter} />
+        {/* <p>
           Displaying{' '}
           {table.getState().pagination.pageIndex *
             table.getState().pagination.pageSize +
@@ -203,7 +220,7 @@ export default function Table({ data }: { data: Order[] }) {
           leftSection={<Search size={16} />}
           defaultValue={globalFilter}
           onChange={(value) => setGlobalFilter(value.target.value)}
-        />
+        /> */}
       </div>
 
       <MantineTable
