@@ -10,6 +10,10 @@ type UsersQueryParams = {
     sort?: Sort;
 }
 
+type DeleteUserParams = {
+  userId: string;
+}
+
 export const userApi = createApi({
     reducerPath: 'userApi',
     tagTypes: ['User'],
@@ -34,9 +38,19 @@ export const userApi = createApi({
         },
         providesTags: ['User'],
       }),
+      deleteUser: builder.mutation<void, { userId: string }>({
+        query: ({ userId }) => {
+          return {
+            url: `/users/${userId}`,
+            method: "delete"
+          }
+        },
+        providesTags: ['User'],
+      }),
     }),
   });
 
   export const {
-    useFindManyQuery
+    useFindManyQuery,
+    useDeleteUserMutation
   } = userApi;
