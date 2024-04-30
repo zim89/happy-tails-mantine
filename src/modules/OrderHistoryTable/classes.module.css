@@ -1,0 +1,7 @@
+.orderCategories {
+    @apply flex items-center border border-b-0 border-brand-grey-300 p-4;
+}
+
+.cell {
+    @apply inline-block whitespace-nowrap overflow-hidden text-ellipsis;
+}

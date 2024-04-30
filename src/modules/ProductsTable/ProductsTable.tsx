@@ -27,6 +27,8 @@ import { cn } from '@/shared/lib/utils';
 import classes from './classes.module.css';
 import { Actions } from './ui/Actions';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { EntriesCount } from '@/components/EntriesCount';
+import { SearchEntry } from '@/components/SearchEntry';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -43,7 +45,7 @@ const columns = [
       <Image width={50} height={50} src={info.getValue()} alt='' />
     ),
     header: 'Image',
-    size: 112
+    size: 112,
   }),
   columnHelper.accessor('name', {
     cell: (info) => (
@@ -56,14 +58,14 @@ const columns = [
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Code',
-    size: 89
+    size: 89,
   }),
   columnHelper.accessor('categoryName', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Category',
-    size: 89
+    size: 89,
   }),
   columnHelper.accessor('price', {
     cell: (info) => (
@@ -72,21 +74,21 @@ const columns = [
       </span>
     ),
     header: 'Price',
-    size: 89
+    size: 89,
   }),
   columnHelper.accessor('quantity', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Quantity',
-    size: 89
+    size: 89,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
       <Badge
         bg={badgePalette[info.getValue().toLowerCase()]}
         classNames={{
-          root: cn(classes.columnCell, 'h-[1.375rem] px-2 overflow-ellipsis'),
+          root: cn(classes.columnCell, 'h-[1.375rem] overflow-ellipsis px-2'),
           label: 'text-xs',
         }}
         styles={{
@@ -97,13 +99,13 @@ const columns = [
       </Badge>
     ),
     header: 'Status',
-    size: 89
+    size: 89,
   }),
   columnHelper.display({
-    id: "actions",
+    id: 'actions',
     cell: (info) => <Actions ctx={info} />,
-    size: 50
-  })
+    size: 50,
+  }),
 ];
 
 type Props = {
@@ -111,7 +113,9 @@ type Props = {
 };
 export default function ProductsTable({ data }: Props) {
   const [search, setSearch] = useDebouncedState('', 200);
-  const categories = useSelectCategories((res) => res.map(cat => ({ name: cat.name, title: cat.title })));
+  const categories = useSelectCategories((res) =>
+    res.map((cat) => ({ name: cat.name, title: cat.title }))
+  );
 
   const table = useReactTable({
     data,
@@ -148,55 +152,43 @@ export default function ProductsTable({ data }: Props) {
           >
             All Products
           </Button>
-          {categories.length > 0 && categories.map(({ name, title }, index) => (
-            <Button
-              onClick={() =>
-                table.getColumn('categoryName')?.setFilterValue(name)
-              }
-              key={index}
-              classNames={{
-                root: cn(
-                  'rounded-sm px-3 py-2 text-sm text-[#161616]',
-                  table.getColumn('categoryName')?.getFilterValue() === name &&
-                    'bg-gray-300'
-                ),
-              }}
-            >
-              {title}
-            </Button>
-          ))}
+          {categories.length > 0 &&
+            categories.map(({ name, title }, index) => (
+              <Button
+                onClick={() =>
+                  table.getColumn('categoryName')?.setFilterValue(name)
+                }
+                key={index}
+                classNames={{
+                  root: cn(
+                    'rounded-sm px-3 py-2 text-sm text-[#161616]',
+                    table.getColumn('categoryName')?.getFilterValue() ===
+                      name && 'bg-gray-300'
+                  ),
+                }}
+              >
+                {title}
+              </Button>
+            ))}
         </div>
       </div>
 
       <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
-        <p className='text-sm/[21px]'>
-          Displaying{' '}
-          {table.getState().pagination.pageIndex *
-            table.getState().pagination.pageSize +
-            1}{' '}
-          to{' '}
-          {table.getState().pagination.pageIndex *
-            table.getState().pagination.pageSize +
-            table.getRowModel().rows.length}{' '}
-          of {table.getCoreRowModel().rows.length} entries
-        </p>
-
-        <TextInput
-          placeholder='Search'
-          width={297}
-          leftSection={<Search className='h-4 w-4' />}
-          defaultValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          classNames={{
-            root: 'form-root',
-            label: 'form-label',
-            input: cn(
-              'form-input',
-              'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary'
-            ),
-            section: 'text-brand-grey-600',
-          }}
+        <EntriesCount
+          current={
+            table.getState().pagination.pageIndex *
+              table.getState().pagination.pageSize +
+            1
+          }
+          pageSize={
+            table.getState().pagination.pageIndex *
+              table.getState().pagination.pageSize +
+            table.getRowModel().rows.length
+          }
+          size={table.getCoreRowModel().rows.length}
         />
+
+        <SearchEntry value={search} handleChange={setSearch} />
       </div>
 
       <Table bgcolor='white' withTableBorder borderColor='#EEE'>
@@ -223,16 +215,19 @@ export default function ProductsTable({ data }: Props) {
           ))}
         </Table.Thead>
         <Table.Tbody>
-          {table.getRowModel().rows.length > 0 && table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className={classes.columnSpacing}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-          {table.getRowModel().rows.length === 0 && <p className="p-4">There are no products yet</p>}
+          {table.getRowModel().rows.length > 0 &&
+            table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className={classes.columnSpacing}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          {table.getRowModel().rows.length === 0 && (
+            <p className='p-4'>There are no products yet</p>
+          )}
         </Table.Tbody>
       </Table>
 
@@ -279,4 +274,4 @@ export default function ProductsTable({ data }: Props) {
       )}
     </>
   );
-};
+}

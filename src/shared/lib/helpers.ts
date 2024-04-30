@@ -25,6 +25,10 @@ export const formatUserAttributes = (obj: { [P in string]: string }) => {
   return res;
 };
 
+export const formatOrderDate = (raw: string | number) => {
+  return dayjs(raw).format('MMM DD, YYYY (HH:mm)')
+}
+
 export const formatArrayToDate = (array: number[]) => {
   const dateArray = array;
   const date = dayjs(

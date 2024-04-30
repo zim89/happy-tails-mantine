@@ -6,6 +6,7 @@ import DeleteModal from '@/components/DeleteModal';
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { User } from '@/shared/types/auth.types';
+import { useDeleteUserMutation } from '@/shared/api/usersApi';
 
 type Props = {
   user: User;
@@ -13,9 +14,11 @@ type Props = {
 };
 
 export default function DeleteUserModal({ user, setNotification }: Props) { 
+  const [dispatch] = useDeleteUserMutation();
+
   const handleDelete = async () => {
     try {
-
+      await dispatch({ userId: user.userId }).unwrap();
       closeMain();
       setNotification('Success');
     } catch (err) {
