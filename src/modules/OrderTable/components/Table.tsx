@@ -200,27 +200,6 @@ export default function Table({ data }: { data: Order[] }) {
         />
 
         <SearchEntry value={globalFilter} handleChange={setGlobalFilter} />
-        {/* <p>
-          Displaying{' '}
-          {table.getState().pagination.pageIndex *
-            table.getState().pagination.pageSize +
-            1}{' '}
-          to{' '}
-          {table.getState().pagination.pageIndex *
-            table.getState().pagination.pageSize +
-            table.getRowModel().rows.length}{' '}
-          of {table.getCoreRowModel().rows.length} entries
-        </p>
-        <Input
-          classNames={{
-            wrapper: 'ml-auto',
-            input: 'form-input pl-8',
-          }}
-          placeholder='Search Order'
-          leftSection={<Search size={16} />}
-          defaultValue={globalFilter}
-          onChange={(value) => setGlobalFilter(value.target.value)}
-        /> */}
       </div>
 
       <MantineTable

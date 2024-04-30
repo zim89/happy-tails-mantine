@@ -30,7 +30,7 @@ export default function UserDetails({ id }: Props) {
         <Profile user={user} />
         <DeliveryDetails user={user} />
       </div>
-      <OrderHistoryTable />
+      <OrderHistoryTable email={user.email} />
     </>
   );
 }

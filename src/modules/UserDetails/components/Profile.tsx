@@ -7,7 +7,7 @@ type Props = {
 export const Profile = ({ user }: Props) => {
   return (
     <div className='grid grid-cols-[114px_1fr] grid-rows-[56px_1fr_1fr_1fr] bg-white border-[1px] border-[#EEE]'>
-      <h2 className='col-span-2 border-b-[1px] border-[#f9f2f2] p-4 font-black'>
+      <h2 className='col-span-2 border-b-[1px] text-xl border-[#f9f2f2] p-4 font-black'>
         Personal information
       </h2>
 

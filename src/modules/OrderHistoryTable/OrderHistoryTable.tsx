@@ -39,7 +39,7 @@ const columns = [
           .join(', ')}
       </span>
     ),
-    header: () => 'PRODUCT(s)',
+    header: () => 'PRODUCT(S)',
     minSize: 200,
     enableSorting: false,
   }),
@@ -67,9 +67,12 @@ const columns = [
   }),
 ];
 
-export default function OrderHistoryTable() {
+type Props = {
+  email: string
+}
+export default function OrderHistoryTable({ email }: Props) {
   const orders = useSelectOrders((state) =>
-    state.filter((order) => order.email === 'admin@example.com')
+    state.filter((order) => order.email === email)
   );
 
   const [search, setSearch] = useDebouncedState('', 200);
@@ -94,7 +97,7 @@ export default function OrderHistoryTable() {
   return (
     <div className='mt-8 bg-white'>
       <div className={classes.orderCategories}>
-        <h3 className='mr-3 flex-1 text-xl font-bold'>Orders</h3>
+        <h3 className='mr-3 flex-1 text-xl font-bold'>Order history</h3>
         <ul className='flex space-x-3'>
           <li>
             <Button

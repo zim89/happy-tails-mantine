@@ -37,7 +37,7 @@ const columns = [
         </span>
       );
     },
-    header: 'USER ID',
+    header: 'User id',
   }),
   columnHelper.accessor('firstName', {
     cell: (info) => {
@@ -47,18 +47,18 @@ const columns = [
         </span>
       );
     },
-    header: 'NAME',
+    header: 'Name',
   }),
   columnHelper.accessor('email', {
     cell: (info) => <span>{info.getValue()}</span>,
-    header: 'EMAIL',
+    header: 'Email',
     enableSorting: false,
   }),
   columnHelper.accessor('attributes', {
     cell: (info) => (
       <span>{info.row.original.attributes?.phone || 'None'}</span>
     ),
-    header: 'PHONE',
+    header: 'Phone',
     enableSorting: false,
   }),
   columnHelper.accessor('registerDate', {
@@ -71,13 +71,13 @@ const columns = [
         <span>{splittedDate[2]}</span>
       </div>;
     },
-    header: 'DATE',
+    header: 'Date',
   }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info} />,
     size: 50,
-    header: 'ACTION',
+    header: 'Action',
     enableSorting: false,
   }),
 ];
@@ -104,11 +104,11 @@ export const Table = ({ data }: Props) => {
 
   return (
     <>
-      <div className='mt-10 flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
+      <div className='mt-10 flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
         <h2 className='mr-6 text-xl/[24px] font-bold'>Users</h2>
       </div>
 
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
+      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *
@@ -133,7 +133,7 @@ export const Table = ({ data }: Props) => {
               {group.headers.map((header) => (
                 <MantineTable.Th
                   key={header.id}
-                  classNames={{ th: 'p-4 text-[#787878]' }}
+                  classNames={{ th: 'p-4 text-[#787878] uppercase' }}
                 >
                     {header.isPlaceholder
                       ? null
