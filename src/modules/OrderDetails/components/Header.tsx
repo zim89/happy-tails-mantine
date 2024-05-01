@@ -58,10 +58,13 @@ export const Header = ({ order }: Props) => {
           { href: '/admin/orders', text: 'Orders' },
           { text: 'Details' },
         ]}
+        classNames={{
+          root: "p-0 m-0 mb-8"
+        }}
       />
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-[32px] font-bold'>Order #{order.number}</h1>
+          <h1 className='text-[32px]/[38.4px] mb-1 font-bold'>Order #{order.number}</h1>
           <div className='flex items-center gap-1'>
             <span className='whitespace-pre'>
               {dayjs(order.createdDate).format('MMM DD, YYYY HH:mm:ss A')}

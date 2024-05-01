@@ -138,8 +138,8 @@ export default function AddCategoryModal() {
     <>
       <div className={styles.pageHeader}>
         <hgroup>
-          <h2>Category</h2>
-          <p>Manage your product category</p>
+          <h2>Categories</h2>
+          <p>Manage your product categories</p>
         </hgroup>
         <Button
           leftSection={<PlusCircle size={20} />}

@@ -56,7 +56,7 @@ export default function AdminOrderHeader() {
   return (
     <div className={classes.header}>
       <hgroup className='mr-auto'>
-        <h2 className='mb-2 text-[1.75rem]/[normal] font-bold lg:text-4xl/[normal]'>
+        <h2>
           Order List
         </h2>
         <p>View and check all orders registered on your store</p>

@@ -13,8 +13,8 @@ const data = [
     icon: LayoutList,
     initiallyOpened: true,
     links: [
-      { label: 'Category', link: '/admin/catalog/category' },
-      { label: 'Products', link: '/admin/catalog/products' },
+      { label: 'Categories', link: '/admin/categories' },
+      { label: 'Products', link: '/admin/products' },
     ],
   },
   {

@@ -151,7 +151,7 @@ export default function AddProductModal() {
     <>
       <div className={styles.pageHeader}>
         <hgroup className='pb-6'>
-          <h1 className='text-[32px] font-bold'>Products</h1>
+          <h2>Products</h2>
           <p>Manage your product catalog</p>
         </hgroup>
         <Button className='bg-black' onClick={open}>

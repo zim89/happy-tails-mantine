@@ -1,14 +1,13 @@
 import { useDebouncedState } from '@mantine/hooks';
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Table as MantineTable, Pagination, Select, Group } from '@mantine/core';
+import { Table as MantineTable } from '@mantine/core';
 
 import { User } from '@/shared/types/auth.types';
 import { EntriesCount } from '@/components/EntriesCount';
@@ -18,9 +17,10 @@ import { formatArrayToDate } from '@/shared/lib/helpers';
 
 import classes from '../classes.module.css';
 import { Actions } from './Actions';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
+import { TableHead } from '@/components/TableHead';
+import { TableBody } from '@/components/TableBody';
+import { EmptyRow } from '@/components/EmptyRow';
+import { TablePagination } from '@/components/TablePagination';
 
 type Props = {
   data: User[];
@@ -98,10 +98,6 @@ export const Table = ({ data }: Props) => {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const paginate = (value: number) => {
-    table.setPageIndex(value - 1);
-  };
-
   return (
     <>
       <div className='mt-10 flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
@@ -127,103 +123,13 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <MantineTable highlightOnHover bgcolor='white' withTableBorder borderColor='#EEE'>
-        <MantineTable.Thead>
-          {table.getHeaderGroups().map((group) => (
-            <MantineTable.Tr key={group.id} classNames={{ tr: 'bg-[#EEE]' }}>
-              {group.headers.map((header) => (
-                <MantineTable.Th
-                  key={header.id}
-                  classNames={{ th: 'p-4 text-[#787878] uppercase' }}
-                >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {header.column.getCanSort() ? (
-                      <button className="relative ml-2 -translate-y-1" onClick={header.column.getToggleSortingHandler()}>
-                        <ChevronUp
-                          size={12}
-                          className={cn(
-                            "absolute bottom-0",
-                            header.column.getIsSorted() === 'desc' && 'hidden'
-                          )}
-                        />
-                        <ChevronDown
-                          size={12}
-                          className={cn(
-                            "absolute top-0",
-                            header.column.getIsSorted() === 'asc' && 'hidden'
-                          )}
-                        />
-                      </button>
-                    ) : null}
-                </MantineTable.Th>
-              ))}
-            </MantineTable.Tr>
-          ))}
-        </MantineTable.Thead>
-        <MantineTable.Tbody>
-          {table.getRowModel().rows.length > 0 &&
-            table.getRowModel().rows.map((row) => (
-              <MantineTable.Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <MantineTable.Td key={cell.id} classNames={{ td: 'p-4' }}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </MantineTable.Td>
-                ))}
-              </MantineTable.Tr>
-            ))}
-        </MantineTable.Tbody>
+        <TableHead headerGroup={table.getHeaderGroups()}/>
+        <TableBody rowModel={table.getRowModel()} />
       </MantineTable>
 
-      {table.getRowModel().rows.length === 0 && (
-        <p className='border-[1px] border-[#EEE] p-4 text-sm/[21px] text-[#787878]'>
-          You have no any users yet
-        </p>
-      )}
+      <EmptyRow visible={table.getRowModel().rows.length === 0} message="You have no any users yet" />
 
-      {table.getPageCount() > 1 && (
-        <div className='mt-[46px] flex items-center justify-between'>
-          <Select
-            label='Results Per Page'
-            withCheckIcon={false}
-            rightSection={<ChevronDown className='text-secondary' />}
-            value={table.getState().pagination.pageSize.toString()}
-            onChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-            data={['10', '20', '30', '40', '50']}
-            classNames={{
-              root: 'form-root flex items-center',
-              label: 'form-label mr-2',
-              input: 'form-input w-[4.3125rem] font-bold',
-            }}
-          />
-
-          <Pagination.Root
-            value={table.getState().pagination.pageIndex + 1}
-            onChange={paginate}
-            total={table.getPageCount()}
-            classNames={{
-              control: 'pagination-control',
-              dots: 'pagination-dots',
-            }}
-          >
-            <Group gap={0} justify='center'>
-              <div
-                className={
-                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                }
-              >
-                <Pagination.Previous icon={PaginationPrevBtn} />
-                <Pagination.Items />
-                <Pagination.Next icon={PaginationNextBtn} />
-              </div>
-            </Group>
-          </Pagination.Root>
-        </div>)}
+      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>
   );
 };

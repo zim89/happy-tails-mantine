@@ -22,6 +22,10 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { CustomBadge } from '@/components/Badge';
+import { TableHead } from '@/components/TableHead';
+import { TableBody } from '@/components/TableBody';
+import { EmptyRow } from '@/components/EmptyRow';
+import { TablePagination } from '@/components/TablePagination';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -89,10 +93,6 @@ export default function OrderHistoryTable({ email }: Props) {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-
-  const paginate = (value: number) => {
-    table.setPageIndex(value - 1);
-  };
 
   return (
     <div className='mt-8 bg-white'>
@@ -163,106 +163,13 @@ export default function OrderHistoryTable({ email }: Props) {
         borderColor='#EEE'
         withTableBorder
       >
-        <Table.Thead>
-          {table.getHeaderGroups().map((group) => (
-            <Table.Tr
-              key={group.id}
-              classNames={{ tr: 'bg-[#EEEEEE] text-[#787878]' }}
-            >
-              {group.headers.map((header) => (
-                <Table.Th key={header.id} classNames={{ th: 'p-4 whitespace-nowrap uppercase' }}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                  {header.column.getCanSort() ? (
-                    <button
-                      className='relative ml-2 -translate-y-1'
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <ChevronUp
-                        size={12}
-                        className={cn(
-                          'absolute bottom-0',
-                          header.column.getIsSorted() === 'desc' && 'hidden'
-                        )}
-                      />
-                      <ChevronDown
-                        size={12}
-                        className={cn(
-                          'absolute top-0',
-                          header.column.getIsSorted() === 'asc' && 'hidden'
-                        )}
-                      />
-                    </button>
-                  ) : null}
-                </Table.Th>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Thead>
-        <Table.Tbody>
-        {table.getRowModel().rows.length > 0 &&
-            table.getRowModel().rows.map((row) => (
-              <Table.Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Td key={cell.id} classNames={{ td: 'p-4' }}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Td>
-                ))}
-              </Table.Tr>
-            ))}
-        </Table.Tbody>
+        <TableHead headerGroup={table.getHeaderGroups()} />
+        <TableBody rowModel={table.getRowModel()} />
       </Table>
 
-      {table.getRowModel().rows.length === 0 && (
-        <p className='border-[1px] border-[#EEE] p-4 text-sm/[21px] text-[#787878]'>
-          User has not made any orders in the store yet
-        </p>
-      )}
+      <EmptyRow visible={table.getRowModel().rows.length === 0} message='User has not made any orders in the store yet'/>
 
-      {table.getPageCount() > 1 && (
-        <div className='mt-[46px] flex items-center justify-between'>
-          <Select
-            label='Results Per Page'
-            withCheckIcon={false}
-            rightSection={<ChevronDown className='text-secondary' />}
-            value={table.getState().pagination.pageSize.toString()}
-            onChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-            data={['10', '20', '30', '40', '50']}
-            classNames={{
-              root: 'form-root flex items-center',
-              label: 'form-label mr-2',
-              input: 'form-input w-[4.3125rem] font-bold',
-            }}
-          />
-
-          <Pagination.Root
-            value={table.getState().pagination.pageIndex + 1}
-            onChange={paginate}
-            total={table.getPageCount()}
-            classNames={{
-              control: 'pagination-control',
-              dots: 'pagination-dots',
-            }}
-          >
-            <Group gap={0} justify='center'>
-              <div
-                className={
-                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                }
-              >
-                <Pagination.Previous icon={PaginationPrevBtn} />
-                <Pagination.Items />
-                <Pagination.Next icon={PaginationNextBtn} />
-              </div>
-            </Group>
-          </Pagination.Root>
-        </div>)}
+      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </div>
   );
 }
