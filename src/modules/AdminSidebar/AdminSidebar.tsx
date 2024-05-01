@@ -9,9 +9,16 @@ import logo from '@/assets/logo/logo-footer.svg';
 
 const data = [
   {
-    label: 'Catalog',
+    label: "Dashboard",
     icon: LayoutList,
     initiallyOpened: true,
+    links: [
+      { label: "Dashboard", link: "/admin/" }
+    ]
+  },
+  {
+    label: 'Catalog',
+    icon: LayoutList,
     links: [
       { label: 'Categories', link: '/admin/categories' },
       { label: 'Products', link: '/admin/products' },

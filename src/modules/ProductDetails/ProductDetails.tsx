@@ -39,7 +39,7 @@ export default function ProductDetails({ product }: Props) {
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
-              { href: '/products', text: 'Catalog' },
+              { href: `/${product.categoryName.toLowerCase()}`, text: product.categoryName },
               { text: product.name },
             ]}
           />

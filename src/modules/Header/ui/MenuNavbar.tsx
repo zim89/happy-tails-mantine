@@ -72,11 +72,11 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
             className='border-b border-b-brand-grey-300 lg:border-none'
           >
             <Link
-              href={'/' + item.path}
+              href={'/' + item.name.toLowerCase()}
               onClick={close}
               className={cn(
                 'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                path === '/' + item.path && 'font-bold'
+                path === '/' + item.name && 'font-bold'
               )}
             >
               <Image
