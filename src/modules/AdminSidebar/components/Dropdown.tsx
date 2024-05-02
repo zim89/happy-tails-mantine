@@ -19,7 +19,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
   const areThereLinksSelected = linksGroup.links.find(
     (l) => l.label === openedLink
   );
-
+    
   useEffect(() => {
     if (areThereLinksSelected) {
       setIsOpened(true);
