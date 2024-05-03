@@ -1,5 +1,5 @@
 import PostList from '@/app/(root)/(additional)/blog/ui/PostList';
-import { fetchAllPosts } from '@/shared/api/postApi';
+import { fetchAllPosts } from '@/shared/lib/requests';
 import { Container } from '@mantine/core';
 
 export default async function Blog() {

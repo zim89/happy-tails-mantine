@@ -1,5 +1,6 @@
-import { BackendResponse } from '@/shared/types/types';
-import { unstable_noStore as noStore } from 'next/cache';
+import { BackendResponse, Sort } from '@/shared/types/types';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { axiosBaseQuery } from './authApi';
 
 export interface Post {
   id: number;
@@ -7,65 +8,42 @@ export interface Post {
   slug: string;
   authorName: string;
   posterImgSrc: string;
-  blogStatus: string;
+  postStatus: string;
   content: string;
   createdAt: number;
   updatedAt: number | null;
   publishedAt: number;
+  hero: boolean;
 }
 
-export const fetchAllPosts = async (
-  page = 0,
-  size = 6
-): Promise<BackendResponse<Post[]>> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published?page=${page}&size=${size}`
-    );
-    return res.json();
-  } catch (error) {
-    throw new Error('Failed to fetch posts');
-  }
+type PostRequest = {
+  page?: number;
+  size?: number;
+  sort?: Sort;
 };
 
-export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published`
-    );
-    return res.json();
-  } catch (error) {
-    throw new Error('Failed to fetch posts');
-  }
-};
+export const postApi = createApi({
+  reducerPath: 'postApi',
+  tagTypes: ['Posts'],
+  baseQuery: axiosBaseQuery(),
+  endpoints: (builder) => ({
+    findMany: builder.query<BackendResponse<Post[]>, PostRequest>({
+      query: ({ page = 0, size = 1000000, sort }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          size: size.toString(),
+        });
 
-export const fetchOnePost = async (id: string): Promise<Post | null> => {
-  noStore();
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
-    if (res.status === 404) return null;
-    return res.json();
-  } catch (error) {
-    throw new Error('Failed to fetch post');
-  }
-};
+        if (sort) params.append('sort', sort.join(','));
 
-export const fetchHeroPost = async (): Promise<Post> => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/hero`);
-    return res.json();
-  } catch (error) {
-    throw new Error('Failed to fetch hero post');
-  }
-};
+        return {
+          url: '/posts',
+          params,
+        };
+      },
+      providesTags: ['Posts'],
+    }),
+  }),
+});
 
-export const fetchLastFivePosts = async (): Promise<Post[]> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/last-five`
-    );
-    return res.json();
-  } catch (error) {
-    throw new Error('Failed to fetch last posts');
-  }
-};
+export const { useFindManyQuery } = postApi;

@@ -11,14 +11,13 @@ type Props<T> = {
 };
 
 export const TablePagination = <T,>({ visible, table }: Props<T>) => {
-  if (!visible) return;
 
   const paginate = (value: number) => {
     table.setPageIndex(value - 1);
   };
 
   return (
-    <div className='mt-[46px] flex items-center justify-between'>
+    <div className='mt-[46px] flex flex-col gap-4 md:items-center md:flex-row justify-between'>
       <Select
         label='Results Per Page'
         withCheckIcon={false}
@@ -35,11 +34,12 @@ export const TablePagination = <T,>({ visible, table }: Props<T>) => {
         }}
       />
 
-      <Pagination.Root
+      {visible && <Pagination.Root
         value={table.getState().pagination.pageIndex + 1}
         onChange={paginate}
         total={table.getPageCount()}
         classNames={{
+          root: "self-start",
           control: 'pagination-control',
           dots: 'pagination-dots',
         }}
@@ -55,7 +55,7 @@ export const TablePagination = <T,>({ visible, table }: Props<T>) => {
             <Pagination.Next icon={PaginationNextBtn} />
           </div>
         </Group>
-      </Pagination.Root>
+      </Pagination.Root>}
     </div>
   );
 };

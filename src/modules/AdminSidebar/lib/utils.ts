@@ -1,4 +1,4 @@
-import { LayoutList, SearchCheck, FileText, UsersRound, LucideIcon } from 'lucide-react';
+import { LayoutList, LayoutDashboard, FileText, UsersRound, Newspaper, LucideIcon } from 'lucide-react';
 
 type SharedLinkProps = {
   label: string;
@@ -22,7 +22,7 @@ export const links: SidebarLinks = [
   {
     id: 'link',
     label: 'Dashboard',
-    icon: LayoutList,
+    icon: LayoutDashboard,
     initiallyOpened: true,
     link: '/admin/',
   },
@@ -53,4 +53,10 @@ export const links: SidebarLinks = [
     icon: UsersRound,
     link: '/admin/users',
   },
+  {
+    id: "link",
+    label: "Blogs",
+    icon: Newspaper,
+    link: '/admin/blogs'
+  }
 ] as const;

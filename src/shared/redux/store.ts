@@ -20,6 +20,7 @@ import { authApi } from '@/shared/api/authApi';
 import { ordersApi } from '@/shared/api/ordersApi';
 import { oauthApi } from '@/shared/api/oauthApi';
 import { userApi } from '@/shared/api/usersApi';
+import { postApi } from '@/shared/api/postApi';
 
 const createNoopStorage = () => {
   return {
@@ -77,6 +78,7 @@ export const store = configureStore({
     [productApi.reducerPath]: productApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [postApi.reducerPath]: postApi.reducer,
     [oauthApi.reducerPath]: oauthPerstistedReducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
@@ -93,7 +95,8 @@ export const store = configureStore({
       .concat(categoriesApi.middleware)
       .concat(ordersApi.middleware)
       .concat(oauthApi.middleware)
-      .concat(userApi.middleware),
+      .concat(userApi.middleware)
+      .concat(postApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

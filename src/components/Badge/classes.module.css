@@ -1,5 +1,5 @@
 .badge {
-    @apply h-[1.375rem] px-2;
+    @apply h-[1.375rem] px-2 text-xs;
 }
 
 @media print {
