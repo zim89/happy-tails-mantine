@@ -35,6 +35,9 @@ import UpdateStatus from './UpdateStatus';
 import classes from '../styles.module.css';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
+import { EmptyRow } from '@/components/EmptyRow';
+import { TablePagination } from '@/components/TablePagination';
+import { TableHead } from '@/components/TableHead';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -210,48 +213,7 @@ export default function Table({ data }: { data: Order[] }) {
         borderColor='#EEE'
         withTableBorder
       >
-        <MantineTable.Thead>
-          {table.getHeaderGroups().map((group) => (
-            <MantineTable.Tr
-              className='h-[3.5rem] bg-brand-grey-300 text-xs uppercase text-brand-grey-800'
-              key={group.id}
-            >
-              {group.headers.map((header) => (
-                <MantineTable.Th key={header.id}>
-                  <div className='flex items-center'>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {header.column.getCanSort() ? (
-                      <button
-                        className='relative ml-2 h-6 w-3'
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <ChevronUp
-                          size={12}
-                          className={cn(
-                            'absolute top-0',
-                            header.column.getIsSorted() === 'desc' && 'hidden'
-                          )}
-                        />
-                        <ChevronDown
-                          size={12}
-                          className={cn(
-                            'absolute bottom-0',
-                            header.column.getIsSorted() === 'asc' && 'hidden'
-                          )}
-                        />
-                      </button>
-                    ) : null}
-                  </div>
-                </MantineTable.Th>
-              ))}
-            </MantineTable.Tr>
-          ))}
-        </MantineTable.Thead>
+        <TableHead headerGroup={table.getHeaderGroups()} />
         <MantineTable.Tbody>
           {table.getRowModel().rows.length > 0 &&
             table.getRowModel().rows.map((row) => (
@@ -270,51 +232,10 @@ export default function Table({ data }: { data: Order[] }) {
             ))}
         </MantineTable.Tbody>
       </MantineTable>
-      {table.getRowModel().rows.length === 0 && (
-        <p className='border-[1px] border-[#EEE] p-4 text-sm/[21px] text-[#787878]'>
-          You have no any orders yet
-        </p>
-      )}
-      <div className={classes.paginationBar}>
-        <Select
-          label='Results Per Page'
-          withCheckIcon={false}
-          rightSection={<ChevronDown className='text-secondary' />}
-          value={table.getState().pagination.pageSize.toString()}
-          onChange={(value) => {
-            table.setPageSize(Number(value));
-          }}
-          data={['10', '20', '30', '40', '50']}
-          classNames={{
-            root: 'flex items-center',
-            label: 'text-base font-bold mr-2',
-            input: 'w-[4.3125rem] font-bold form-input',
-          }}
-        />
-        {table.getRowModel().rows.length > 0 && (
-          <Pagination.Root
-            value={table.getState().pagination.pageIndex + 1}
-            onChange={(value) => table.setPageIndex(value - 1)}
-            total={table.getPageCount()}
-            classNames={{
-              control: 'pagination-control',
-              dots: 'pagination-dots',
-            }}
-          >
-            <Group gap={0} justify='center'>
-              <div
-                className={
-                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                }
-              >
-                <Pagination.Previous icon={PaginationPrevBtn} />
-                <Pagination.Items />
-                <Pagination.Next icon={PaginationNextBtn} />
-              </div>
-            </Group>
-          </Pagination.Root>
-        )}
-      </div>
+
+      <EmptyRow visible={table.getRowModel().rows.length === 0} message='You have no any orders yet'/>
+      
+      <TablePagination visible={table.getPageCount() > 1} table={table}/>
     </div>
   );
 }

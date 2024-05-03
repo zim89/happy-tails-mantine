@@ -27,10 +27,10 @@ export default function Navbar({ categories }: { categories: Category[] }) {
           {categories.map((category) => (
             <li key={category.id}>
               <Link
-                href={'/' + category.path}
+                href={'/' + category.name.toLowerCase()}
                 className={cn(
                   'relative text-lg after:absolute after:-bottom-1 after:left-0 after:h-[1px] after:w-0 after:bg-secondary after:transition-all after:duration-500 after:hover:w-full',
-                  path === '/' + category.path && 'font-bold'
+                  path === '/' + category.name && 'font-bold'
                 )}
               >
                 {category.name}

@@ -28,7 +28,7 @@ export async function generateStaticParams() {
   const categories = await memoizedGetAllCategories();
 
   return categories.map((category) => ({
-    category: category.path,
+    category: category.name.toLowerCase(),
   }));
 }
 
@@ -37,10 +37,9 @@ export async function generateMetadata({ params }: Props) {
     const categories = await memoizedGetAllCategories();
 
     const found = categories.find(
-      (cat) => cat.path === decodeURIComponent(params.category)
+      (cat) => cat.name.toLowerCase() === decodeURIComponent(params.category)
     );
 
-    
     const category = found && categoriesDesc[found.name];
 
     if (!category) {
@@ -61,8 +60,10 @@ export const dynamicParams = false;
 export default async function CatalogPage({ params }: Props) {
   const categories = await getAllCategories();
 
+  // Used category.name because in product there is only a name of a category, not its path
+  // It's used for breadcrumbs' links in product details page
   const category = categories.find(
-    (cat) => cat.path === decodeURIComponent(params.category)
+    (cat) => cat.name.toLowerCase() === decodeURIComponent(params.category)
   );
 
   if (!category) notFound();

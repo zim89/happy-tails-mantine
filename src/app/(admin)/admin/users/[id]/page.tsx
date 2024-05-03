@@ -13,6 +13,9 @@ export default function Page({ params: { id } }: Props) {
           { text: 'Users', href: '/admin/users/' },
           { text: 'Profile' },
         ]}
+        classNames={{
+          root: "p-0 m-0 mb-8"
+        }}
       />
 
       <UserDetails id={id}/>

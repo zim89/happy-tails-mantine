@@ -1,16 +1,12 @@
 'use client';
+
 import {
   Button,
-  Group,
-  Pagination,
   Table,
-  TextInput,
   Badge,
-  Select,
 } from '@mantine/core';
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
   getFilteredRowModel,
@@ -18,17 +14,18 @@ import {
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
-import { ChevronDown, Search } from 'lucide-react';
 
 import { Product } from '@/shared/types/types';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { cn } from '@/shared/lib/utils';
 import classes from './classes.module.css';
 import { Actions } from './ui/Actions';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
+import { TableHead } from '@/components/TableHead';
+import { TableBody } from '@/components/TableBody';
+import { TablePagination } from '@/components/TablePagination';
+import { EmptyRow } from '@/components/EmptyRow';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -129,10 +126,6 @@ export default function ProductsTable({ data }: Props) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  const paginate = (value: number) => {
-    table.setPageIndex(value - 1);
-  };
-
   return (
     <>
       <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
@@ -192,86 +185,13 @@ export default function ProductsTable({ data }: Props) {
       </div>
 
       <Table bgcolor='white' withTableBorder borderColor='#EEE'>
-        <Table.Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className='bg-[#eee]'>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className={cn(
-                    'text-left text-xs/[14.4px] font-bold uppercase',
-                    classes.columnSpacing
-                  )}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </Table.Thead>
-        <Table.Tbody>
-          {table.getRowModel().rows.length > 0 &&
-            table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className={classes.columnSpacing}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          {table.getRowModel().rows.length === 0 && (
-            <p className='p-4'>There are no products yet</p>
-          )}
-        </Table.Tbody>
+        <TableHead headerGroup={table.getHeaderGroups()}/>
+        <TableBody rowModel={table.getRowModel()} />
       </Table>
 
-      {table.getPageCount() > 1 && (
-        <div className='mt-[46px] flex items-center justify-between'>
-          <Select
-            label='Results Per Page'
-            withCheckIcon={false}
-            rightSection={<ChevronDown className='text-secondary' />}
-            value={table.getState().pagination.pageSize.toString()}
-            onChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-            data={['10', '20', '30', '40', '50']}
-            classNames={{
-              root: 'form-root flex items-center',
-              label: 'form-label mr-2',
-              input: 'form-input w-[4.3125rem] font-bold',
-            }}
-          />
+      <EmptyRow visible={table.getRowModel().rows.length === 0} message="You have no any product yet" />
 
-          <Pagination.Root
-            value={table.getState().pagination.pageIndex + 1}
-            onChange={paginate}
-            total={table.getPageCount()}
-            classNames={{
-              control: 'pagination-control',
-              dots: 'pagination-dots',
-            }}
-          >
-            <Group gap={0} justify='center'>
-              <div
-                className={
-                  'flex justify-center gap-0 rounded-0.5 border border-brand-grey-400'
-                }
-              >
-                <Pagination.Previous icon={PaginationPrevBtn} />
-                <Pagination.Items />
-                <Pagination.Next icon={PaginationNextBtn} />
-              </div>
-            </Group>
-          </Pagination.Root>
-        </div>
-      )}
+      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>
   );
 }

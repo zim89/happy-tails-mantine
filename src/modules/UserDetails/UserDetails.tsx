@@ -22,7 +22,7 @@ export default function UserDetails({ id }: Props) {
   return (
     <>
       <hgroup>
-        <h1 className='text-[32px] font-black whitespace-nowrap overflow-hidden text-ellipsis max-w-[217px]'>User #{user.userId}</h1>
+        <h2 className='text-[32px]/[38.4px] mb-1 font-black whitespace-nowrap overflow-hidden text-ellipsis max-w-[217px]'>User #{user.userId}</h2>
         <p>Registered since {day + year}</p>
       </hgroup>
 
