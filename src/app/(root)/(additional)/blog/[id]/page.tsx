@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareInSocial from './ui/ShareInSocial';
 import PopularPosts from './ui/PopularPosts';
-import { fetchOnePost } from '@/shared/api/postApi';
+import { fetchOnePost } from '@/shared/lib/requests';
 import { formatDate, formatRawPostDate } from '@/shared/lib/helpers';
 import Script from 'next/script';
 

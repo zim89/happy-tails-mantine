@@ -47,6 +47,10 @@ export const formatArrayToDate = (array: number[]) => {
   return formattedDate;
 };
 
+export const formatPostDateFromNumber = (date: number) => {
+  return dayjs(new Date(date)).format("MMMM D, YYYY");
+}
+
 export const cleanPostcode = (input: string): string => {
   // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
   const regex = /^([A-Za-z0-9]+) \(.+\)$/;

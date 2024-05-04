@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchLastFivePosts } from '@/shared/api/postApi';
+import { fetchLastFivePosts } from '@/shared/lib/requests';
 import { formatDate } from '@/shared/lib/helpers';
 import noImage from '@/assets/icons/no-image.512x512.png';
 

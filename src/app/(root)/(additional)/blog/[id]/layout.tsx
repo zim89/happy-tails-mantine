@@ -1,4 +1,4 @@
-import { fetchOnePost } from '@/shared/api/postApi';
+import { fetchOnePost } from '@/shared/lib/requests';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
     try {
