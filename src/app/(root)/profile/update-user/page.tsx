@@ -5,11 +5,11 @@ import classes from "../styles.module.css";
 
 export default function UpdateUser() {
   return (
-    <>
-      <h1 className={cn(classes.profileHeading, "heading")}>
+    <div className={classes.box}>
+      <h1 className={classes.boxHeading}>
         Update your details
       </h1>
       <UpdateUserForm />
-    </>
+    </div>
   );
 }

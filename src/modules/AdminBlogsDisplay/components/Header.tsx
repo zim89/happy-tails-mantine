@@ -21,6 +21,7 @@ export const Header = () => {
           <h2>Blogs</h2>
           <p>Streamlining content management on your store</p>
         </hgroup>
+
         <Button
           component={Link}
           href='/admin/blogs/new'

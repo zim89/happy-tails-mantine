@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className='lg:pt-4'>
+      <>
         <Container>
           <Breadcrumbs
             crumbs={[
@@ -42,6 +42,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               { href: '/blog', text: 'Blog' },
               { text: post.title },
             ]}
+
+            classNames={{ root: "p-0 pt-4" }}
           />
         </Container>
 
@@ -82,7 +84,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </Container>
           </>
         )}
-      </div>
+      </>
     </>
   );
 }

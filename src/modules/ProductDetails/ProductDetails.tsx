@@ -34,7 +34,7 @@ export default function ProductDetails({ product }: Props) {
 
   return (
     <>
-      <section className='pb-16 pt-2 md:pt-2.5 lg:pb-28 lg:pt-4'>
+      <section className='pb-16 lg:pb-28'>
         <Container>
           <Breadcrumbs
             crumbs={[
@@ -42,6 +42,8 @@ export default function ProductDetails({ product }: Props) {
               { href: `/${product.categoryName.toLowerCase()}`, text: product.categoryName },
               { text: product.name },
             ]}
+
+            classNames={{ root: "p-0 pt-4" }}
           />
           <div className='mb-16 block md:mb-20 lg:mb-28 lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
@@ -132,7 +134,7 @@ export default function ProductDetails({ product }: Props) {
                     onChange={setQuantity}
                     readOnly
                     classNames={{
-                      input: 'px-4 py-2 text-center text-base font-bold',
+                      input: 'form-input border-0 px-4 py-2 text-center text-base font-bold',
                     }}
                   />
                   <button

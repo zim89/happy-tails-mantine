@@ -13,6 +13,7 @@ export default function DeliveryAndReturnsPage() {
       <Container>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'Shipping & Returns' }]}
+          classNames={{ root: "p-0 pt-4" }}
         />
 
         <Tabs
