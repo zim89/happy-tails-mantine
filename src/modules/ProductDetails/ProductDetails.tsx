@@ -1,5 +1,7 @@
 'use client';
+
 import React, { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Anchor,
   Container,
@@ -13,11 +15,12 @@ import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import ProductSlider from './ui/ProductSlider';
 import { cn } from '@/shared/lib/utils';
-import { sliderData } from './lib/data';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
+import { useSelectProducts } from "@/shared/hooks/useSelectProducts";
+
+const ProductSlider = dynamic(() => import("./ui/ProductSlider"));
 
 interface Props {
   product: Product;
@@ -25,6 +28,9 @@ interface Props {
 
 export default function ProductDetails({ product }: Props) {
   const [opened, { close, toggle, open }] = useDisclosure();
+  const sliderData = useSelectProducts(state => state
+    .filter(prod => prod.id !== product.id && product.categoryId === prod.categoryId && prod.productStatus === "IN STOCK")
+  );
 
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
@@ -173,7 +179,7 @@ export default function ProductDetails({ product }: Props) {
             </div>
           </div>
 
-          <ProductSlider data={sliderData as unknown as Product[]} />
+          {sliderData.length > 0 && <ProductSlider data={sliderData} targetCategory={product.categoryName}/>}
         </Container>
       </section>
     </>

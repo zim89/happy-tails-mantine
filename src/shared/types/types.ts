@@ -23,7 +23,7 @@ export interface Product {
   imagePath: string;
   unitsSold?: number;
   onSale?: boolean;
-  salePrice?: number;
+  salePrice: number | null;
   productType?: ProductType;
   updatedAt: number | null;
   createdAt: number;
