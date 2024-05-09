@@ -5,7 +5,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <div className='grid h-screen grid-rows-[_1fr_auto] lg:pt-14 pt-8'>
+      {/* Padding top equals size of top navbar */}
+      <div className='grid h-screen grid-rows-[_1fr_auto] pt-[74px] md:pt-[128px]'>
         <main>{children}</main>
         <Footer />
       </div>

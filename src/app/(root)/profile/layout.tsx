@@ -26,7 +26,7 @@ export default function Layout({ children }: Props) {
   if (!isAuth) return null;
 
   return (
-    <section className='py-8 pt-[74px] md:py-10 lg:py-[72px]'>
+    <>
       <Container className={classes.page}>
         {/* Only on mobiles and tablets */}
         <SliderMenu />
@@ -34,6 +34,6 @@ export default function Layout({ children }: Props) {
         <SidebarMenu />
         <div>{children}</div>
       </Container>
-    </section>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 .dragContainer {
     animation: exit .5s forwards;
-    @apply absolute left-[--x] top-[--y] flex rounded-full bg-brand-grey-100/60 disabled:opacity-60;
+    /* Helen doesn't like a rounded image  */
+    @apply absolute left-[--x] top-[--y] flex bg-brand-grey-100/60 disabled:opacity-60;
 }
 
 .dragContainer.animated {

@@ -13,6 +13,7 @@ export default function PrivacyAndCookiesPage() {
           { href: '/', text: 'Home' },
           { text: 'Privacy & Cookies Policy', href: '/privacy&cookies' },
         ]}
+        classNames={{ root: "p-0 pt-4" }}
       />
       <hgroup className='mb-8 mt-5 flex items-center justify-center gap-6'>
         <span className='w-full flex-1 border-b-2 border-[#C8C8C8]'></span>

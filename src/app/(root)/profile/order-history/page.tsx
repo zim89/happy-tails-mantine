@@ -22,13 +22,13 @@ function OrderPage() {
 
   return (
     <>
-      <h1 className='heading hidden lg:block'>Order History</h1>
+      <h1 className={cn('heading hidden lg:block mt-10 px-6', orders.length === 0 && "text-center")}>Order History</h1>
       {orders.length > 0 ? (
         <OrderTabs orders={orders} />
       ) : (
         <div className={classes.box}>
           <hgroup>
-            <h1 className={cn(classes.boxHeading, "text-2xl md:whitespace-pre")}>
+            <h1 className="text-2xl md:whitespace-pre font-light">
               Your Order History is Currently Empty, <span className="text-[#925816]">Start Shopping now</span>
             </h1>
             <p className={classes.boxParagraph}>

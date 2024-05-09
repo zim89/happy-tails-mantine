@@ -60,14 +60,14 @@ export const PostalCodeField = ({ form }: Props) => {
         }
       }
     })();
-  }, [form.values.city, form]);
+  }, [form.values.city]);
 
   return (
     <Autocomplete
       withAsterisk
       classNames={{
         root: cn('form-root', classes.fieldSizing),
-        label: 'form-label',
+        label: 'form-label block text-left',
         input: cn('form-input', form?.errors?.city && 'form-error--input'),
         error: 'form-error',
       }}

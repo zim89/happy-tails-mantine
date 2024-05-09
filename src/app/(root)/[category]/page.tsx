@@ -69,11 +69,14 @@ export default async function CatalogPage({ params }: Props) {
   if (!category) notFound();
 
   return (
-    <section className="section">
+    <>
       <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
         <div className='container text-center'>
           <Breadcrumbs
             crumbs={[{ href: '/', text: 'Home' }, { text: category.name }]}
+            classNames={{
+              root: "p-0 pt-2"
+            }}
           />
           <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
             {category.title}
@@ -90,6 +93,6 @@ export default async function CatalogPage({ params }: Props) {
           </Overview>
         </div>
       </div>
-    </section>
+    </>
   );
 }

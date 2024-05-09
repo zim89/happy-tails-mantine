@@ -82,7 +82,7 @@ export const DeliveryForm = () => {
           withAsterisk
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: cn(
               'form-input',
               form?.errors?.firstName && 'form-error--input'
@@ -97,7 +97,7 @@ export const DeliveryForm = () => {
           withAsterisk
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: cn(
               'form-input',
               form?.errors?.lastName && 'form-error--input'
@@ -119,7 +119,7 @@ export const DeliveryForm = () => {
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: 'form-input',
           }}
           label='Company'
@@ -132,7 +132,7 @@ export const DeliveryForm = () => {
           withAsterisk
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: cn(
               'form-input',
               form?.errors?.addressOne && 'form-error--input'
@@ -146,7 +146,7 @@ export const DeliveryForm = () => {
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: 'form-input',
           }}
           label='Address Line 2'
@@ -159,7 +159,7 @@ export const DeliveryForm = () => {
           withAsterisk
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: cn(
               'form-input',
               form?.errors?.contactNumber && 'form-error--input'
@@ -173,7 +173,7 @@ export const DeliveryForm = () => {
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
-            label: 'form-label',
+            label: 'form-label block text-left',
             input: 'form-input',
           }}
           label='County'

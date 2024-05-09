@@ -58,7 +58,7 @@ export const LocationFields = ({ form }: Props) => {
         data={countries}
         classNames={{
           root: cn('form-root', classes.fieldSizing),
-          label: 'form-label',
+          label: 'form-label block text-left',
           input: cn('form-input', form?.errors?.country && 'form-error--input'),
         }}
         placeholder='Pick your country'
@@ -76,7 +76,7 @@ export const LocationFields = ({ form }: Props) => {
         disabled={!found}
         classNames={{
           root: cn('form-root', classes.fieldSizing),
-          label: 'form-label',
+          label: 'form-label block text-left',
           input: cn('form-input', form?.errors?.city && 'form-error--input'),
         }}
         {...form.getInputProps('city')}

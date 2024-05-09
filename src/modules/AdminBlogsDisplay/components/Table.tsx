@@ -6,7 +6,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Button, Table as MantineTable } from '@mantine/core';
+import { Button, Table as MantineTable, Select } from '@mantine/core';
 
 import { Post } from '@/shared/api/postApi';
 import { EntriesCount } from '@/components/EntriesCount';
@@ -21,6 +21,7 @@ import { formatPostDateFromNumber } from '@/shared/lib/helpers';
 import { Actions } from './Actions';
 import React from 'react';
 import { TableBody } from '@/components/TableBody';
+import { ChevronDown } from 'lucide-react';
 
 type Props = {
   data: Post[];
@@ -129,7 +130,7 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <div className='flex items-center justify-between border-[1px] bg-white p-4'>
-        <EntriesCount
+        {/* <EntriesCount
           current={
             table.getState().pagination.pageIndex *
               table.getState().pagination.pageSize +
@@ -141,6 +142,18 @@ export const Table = ({ data }: Props) => {
             table.getRowModel().rows.length
           }
           size={table.getCoreRowModel().rows.length}
+        /> */}
+        <Select
+          label="Sort By"
+          allowDeselect={false}
+          rightSection={<ChevronDown size={16} />} 
+          defaultValue="Date (new to old)"
+          classNames={{
+            input: "border-0 form-input font-bold user-select-none",
+            root: "flex items-center",
+            section: "right-8"
+          }}
+          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"]}
         />
 
         <SearchEntry value={search} handleChange={setSearch} />

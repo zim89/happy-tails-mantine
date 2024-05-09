@@ -7,17 +7,15 @@ import Link from 'next/link';
 
 export default function Page() {
   return (
-    <Container
-      classNames={{
-        root: 'md:mt-12 lg:mt-0',
-      }}
-    >
+    <Container>
       <Breadcrumbs
         crumbs={[
           { text: 'Home', href: '/' },
           { text: 'Contacts', href: '/contacts' },
           { text: 'Thank You', href: '/thank-you' },
         ]}
+
+        classNames={{ root: "p-0 pt-4 m-0 mb-6 lg:mb-8" }}
       />
       <Group
         classNames={{

@@ -45,11 +45,12 @@ export default async function AllProducts() {
   category.productCount = totalElements;
 
   return (
-    <section className='section'>
+    <>
       <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
         <div className='container text-center'>
           <Breadcrumbs
             crumbs={[{ href: '/', text: 'Home' }, { text: 'All Products' }]}
+            classNames={{ root: "p-0 pt-2" }}
           />
           <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
             Premium Dog Products
@@ -68,6 +69,6 @@ export default async function AllProducts() {
           </Overview>
         </div>
       </div>
-    </section>
+    </>
   );
 }

@@ -27,8 +27,6 @@ export default function ProductPage({ params }: Props) {
 
   if (!data) notFound();
 
-  console.log('Product: ', data);
-
   if (isError)
     return (
       <section className='section'>

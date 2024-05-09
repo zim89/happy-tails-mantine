@@ -10,6 +10,6 @@ type Props = {
 }
 export default function Layout({ children }: Props) {
     return (
-        <section className="section">{children}</section>
+        <>{children}</>
     );
 }

@@ -12,11 +12,11 @@
 }
 
 .box {
-    @apply mx-auto mt-14 lg:mt-8 flex flex-col md:max-w-[572px] md:items-center text-center min-h-[50vh];
+    @apply mx-auto mt-10 flex flex-col md:max-w-[572px] md:items-center text-center min-h-[70vh] md:min-h-[50vh] pb-10;
 }
 
 .boxHeading {
-    @apply font-light leading-9;
+    @apply leading-9 text-[36px];
 }
 
 .boxParagraph {
@@ -56,7 +56,7 @@
 }
 
 .profileContent {
-    @apply mx-auto mt-10 flex flex-col md:max-w-[572px] text-center min-h-[50vh];
+    @apply mx-auto mt-[56px] md:mt-[72px] lg:mt-[56px] flex flex-col md:max-w-[572px] text-center min-h-[70vh] md:min-h-[50vh];
 }
 
 /* Shared */
@@ -69,7 +69,7 @@
 }
 
 .profileHeading {
-    @apply hidden text-center lg:block;
+    @apply text-center;
 }
 
 .clearField {

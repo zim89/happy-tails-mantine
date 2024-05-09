@@ -15,7 +15,7 @@ export default function AdminBlogsDisplay() {
     update((prev) => ({ ...prev, openedLink: 'Blogs' }));
   }, []);
 
-  if (!data || isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (error)
     return (
       <p>
@@ -28,7 +28,7 @@ export default function AdminBlogsDisplay() {
   return (
     <>
       <Header />
-      <Table data={data.content} />
+      <Table data={data?.content || []} />
     </>
   );
 }
