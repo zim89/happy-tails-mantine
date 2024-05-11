@@ -59,7 +59,7 @@ export default function BlockLink({ children, ...props }: Props) {
                                         alt={"Attention, your changes aren't saved!"}
                                         width={64}
                                         height={64}
-                                      />
+                                    />
                                     <hgroup>
                                         <h2 className="mb-3 font-bold">You have unsaved changes!</h2>
                                         <p className="text-sm text-[#A0A0A0]">Are you sure you want to leave?</p>

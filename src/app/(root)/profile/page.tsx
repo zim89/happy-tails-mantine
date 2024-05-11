@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 export default function ProfilePage() {
   return (
     <>
-      <p>Hello</p>
       <UserAccount />
     </>
   );

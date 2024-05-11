@@ -10,7 +10,7 @@ import { AdminPanelProvider, UnsavedChangesProvider } from '@/shared/lib/context
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { isAdmin, currentUser } = useAuth();
 
-  if (!isAdmin || !currentUser) notFound();  
+  if (!isAdmin || !currentUser) notFound();
 
   return (
     <AdminPanelProvider>
@@ -22,5 +22,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </UnsavedChangesProvider>
     </AdminPanelProvider>
-    );
+  );
 }

@@ -20,13 +20,13 @@ export const Dropdown = ({ linksGroup }: Props) => {
   const areThereLinksSelected = linksGroup.links.find(
     (l) => l.label === openedLink
   );
-    
+
   useEffect(() => {
     if (areThereLinksSelected) {
       setIsOpened(true);
     } else if (openedLink !== linksGroup.label) {
       setIsOpened(false);
-    } 
+    }
   }, [openedLink]);
 
   const setOpened = (label: string) => {
@@ -39,13 +39,13 @@ export const Dropdown = ({ linksGroup }: Props) => {
         // It's highlighted when it's clicked or when the page to which child link forwards is opened
         className={cn('w-full py-2 pl-10 text-[#C8C8C8]', (isOpened && areThereLinksSelected) && 'bg-[#F39324] text-[#FDFDFD]')}
         onClick={() => {
-            setIsOpened(!isOpened);
+          setIsOpened(!isOpened);
         }}
       >
         <Group>
           <Box className='flex'>
             <Box ml='md' className='text-xl font-bold leading-6 inline-flex gap-3 items-center'>
-              <linksGroup.icon size={20}/>
+              <linksGroup.icon size={20} />
               {linksGroup.label}
             </Box>
           </Box>
