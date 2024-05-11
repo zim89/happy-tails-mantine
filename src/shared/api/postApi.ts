@@ -22,6 +22,14 @@ type PostRequest = {
   sort?: Sort;
 };
 
+type PutRequest = {
+  id: string;
+  title: string;
+  authorName: string;
+  posterImgSrc: string;
+  content: string;
+}
+
 export const postApi = createApi({
   reducerPath: 'postApi',
   tagTypes: ['Posts'],
@@ -43,7 +51,29 @@ export const postApi = createApi({
       },
       providesTags: ['Posts'],
     }),
+    findOne: builder.query<Post, { id: string }>({
+      query: ({ id }) => ({
+        url: `/posts/${id}`
+      })
+    }),
+    updatePost: builder.mutation<Post, PutRequest>({
+      query: ({ id, title, authorName, posterImgSrc, content }) => ({
+        url: `/posts`,
+        method: "put",
+        data: {
+          id: id,
+          title: title,
+          authorName: authorName,
+          posterImgSrc: posterImgSrc,
+          content: content
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }),
+      invalidatesTags: ["Posts"]
+    })
   }),
 });
 
-export const { useFindManyQuery } = postApi;
+export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation } = postApi;

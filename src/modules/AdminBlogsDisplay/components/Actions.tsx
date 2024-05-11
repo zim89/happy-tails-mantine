@@ -3,13 +3,20 @@ import { Eye, Edit2, MoreHorizontal, Trash2, FolderDown } from 'lucide-react';
 import { Button } from '@mantine/core';
 import Link from 'next/link';
 
-export const Actions = () => {
+import { Post } from "@/shared/api/postApi";
+
+type Props = {
+  ctx: Post
+}
+export const Actions = ({ ctx }: Props) => {
   return (
     <div className='flex justify-end gap-4'>
       <Button
         classNames={{ root: 'border border-black w-9 p-0 rounded-[2px]' }}
       >
-        <Eye size={16} color='black' />
+        <Link href={`/admin/blogs/${ctx.id}`}>
+          <Eye size={16} color='black' />
+        </Link>
       </Button>
       <Button
         classNames={{ root: 'border border-black w-9 p-0 rounded-[2px]' }}

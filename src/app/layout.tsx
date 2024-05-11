@@ -1,10 +1,13 @@
 import { Lato, Ms_Madi, Inter } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
+import { useRouter } from "next/navigation";
 
 import theme from '@/shared/config/theme';
 import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
+// Styles for rich text editor
+import '@mantine/tiptap/styles.css';
 
 import { AppProviders } from '@/shared/config/AppProviders';
 import Sitelinks from './(root)/sitelinks';
@@ -38,7 +41,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang='en'>
       <head>

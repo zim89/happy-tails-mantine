@@ -8,6 +8,7 @@ import { Minus } from "lucide-react";
 import { LinksGroup } from '../lib/utils';
 import { AdminPanelContext } from '@/shared/lib/context';
 import { cn } from '@/shared/lib/utils';
+import BlockLink from '@/modules/BlockLink';
 
 type Props = {
   linksGroup: LinksGroup;
@@ -66,7 +67,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
             classNames={{ root: "pl-14" }}
             key={linkKey}
           >
-            <Link href={link.link} className='pt-2 inline-flex text-lg'><Minus width={7} className='mr-3' /> {link.label}</Link>
+            <BlockLink href={link.link} className='pt-2 inline-flex text-lg'><Minus width={7} className='mr-3' /> {link.label}</BlockLink>
           </Text>
         ))}
       </Collapse>

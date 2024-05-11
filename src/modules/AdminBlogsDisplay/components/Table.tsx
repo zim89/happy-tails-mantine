@@ -70,7 +70,7 @@ const columns = [
   }),
   columnHelper.display({
     id: 'actions',
-    cell: (info) => <Actions />,
+    cell: (info) => <Actions ctx={info.row.original} />,
   }),
 ];
 
@@ -130,19 +130,6 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <div className='flex items-center justify-between border-[1px] bg-white p-4'>
-        {/* <EntriesCount
-          current={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            1
-          }
-          pageSize={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            table.getRowModel().rows.length
-          }
-          size={table.getCoreRowModel().rows.length}
-        /> */}
         <Select
           label="Sort By"
           allowDeselect={false}
@@ -174,6 +161,7 @@ export const Table = ({ data }: Props) => {
         visible={table.getRowModel().rows.length === 0}
         message='You have no written blog yet'
       />
+
 
       <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>

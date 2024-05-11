@@ -16,6 +16,7 @@ export default function AdminBlogsDisplay() {
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
+
   if (error)
     return (
       <p>
