@@ -1,9 +1,5 @@
 import { expect, test } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { MantineProvider } from '@mantine/core';
-
-import { AppProviders } from '@/shared/config/AppProviders';
-import theme from '@/shared/config/theme';
 
 import Notify from "./";
 import { TestWrapper } from '../TestWrapper';
