@@ -1,7 +1,6 @@
 import { Lato, Ms_Madi, Inter } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
-import { useRouter } from "next/navigation";
 
 import theme from '@/shared/config/theme';
 import '@/app/globals.css';
