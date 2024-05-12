@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 import Link from 'next/link';
 
 export default function CategoriesSlider() {
-  const { data } = useCategoriesQuery();
+  const { data } = useCategoriesQuery({});
 
   if (!data) return null;
 

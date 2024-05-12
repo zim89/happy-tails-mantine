@@ -53,7 +53,7 @@ export const ContactForm = () => {
       };
 
       if (file) {
-        // It works only in secured connection and not in localhost domain //
+        // It works only in secured connection and does not in localhost domain //
         const payload = new FormData();
         payload.append('image', file);
         payload.append('type', 'image');

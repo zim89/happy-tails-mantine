@@ -1,40 +1,61 @@
-import { useState } from 'react';
+'use client';
 import { Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { Check, AlertTriangle } from 'lucide-react';
 
 import styles from './DeleteCategoryModal.module.css';
-import { Category } from '@/shared/api/categoryApi';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import file_error from '@/assets/icons/categories/file_error.svg';
 
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
-import { useAuth } from '@/shared/hooks/useAuth';
 import DeleteModal from '@/components/DeleteModal';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
+import { Category } from '@/shared/types/types';
 
 type Props = {
   categoryLine: Category;
 };
 export default function DeleteCategoryModal({ categoryLine }: Props) {
-  const { access_token } = useAuth();
   const [dispatch] = useRemoveCategoryMutation();
-  const [isNotified, setIsNotified] = useState(false);
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      text: 'Category deletion failed!',
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
+    },
+    success: {
+      text: 'Category successfully deleted!',
+      icon: <Check size={24} />,
+      color: '#389B48',
+    }
+  })
 
   const handleDelete = async () => {
-    if (categoryLine.productCount > 0) {
-      closeMain();
-      openError();
-    } else {
-      await dispatch({ id: categoryLine.id, access_token });
+    try {
+      if (categoryLine.productCount > 0) {
+        closeMain();
+        openError();
+      } else {
+        debugger;
+        await dispatch({ id: categoryLine.id }).unwrap();
 
+        closeMain();
+        setNotification('Success');
+      }
+    } catch (err) {
       closeMain();
-      setIsNotified(true);
+      if (isAxiosQueryError(err)) {
+        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+      }
+      console.error("Deleting failed: ",err);
     }
   };
 
   const closeNotification = () => {
-    setIsNotified(false);
+    clear();
   };
 
   const [openedMain, { open: openMain, close: closeMain }] =
@@ -48,7 +69,9 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         return (
           <>
             {/* Button to open main modal */}
-            <Button className={styles.actionButton} onClick={openMain}>Delete</Button>
+            <Button className={styles.actionButton} onClick={openMain}>
+              Delete
+            </Button>
 
             <Modal
               onClose={closeMain}
@@ -97,11 +120,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               </div>
             </Modal>
 
-            <Notification
-              text='Category successfully deleted!'
-              visible={isNotified}
-              onClose={closeNotification}
-            />
+            <Notification {...props} onClose={closeNotification} />
           </>
         );
       }}

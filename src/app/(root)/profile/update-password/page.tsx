@@ -1,7 +1,7 @@
 'use client';
 import { Button, Stepper } from '@mantine/core';
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '@/shared/lib/interceptor';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
 
@@ -13,7 +13,7 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 import Link from 'next/link';
 
 export default function UpdatePassword() {
-  const { currentUser, access_token } = useAuth();
+  const { currentUser } = useAuth();
   const [step, setStep] = useState(0);
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
@@ -28,13 +28,8 @@ export default function UpdatePassword() {
       });
 
       await axios.post(
-        process.env.NEXT_PUBLIC_BASE_URL! + '/users/reset-password',
-        request,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
+        '/users/reset-password',
+        request
       );
 
       nextStep();

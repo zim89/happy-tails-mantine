@@ -1,40 +1,42 @@
-'use client';
+"use client";
 
-// import { useFindManyQuery } from '@/shared/api/ordersApi';
+import { useContext, useEffect } from 'react';
+
+import { useFindManyQuery } from '@/shared/api/ordersApi';
 import Table from './components/Table';
-import mock from './mock.json';
-// import { useAuth } from '@/shared/hooks/useAuth';
 import OrderCounter from '@/components/OrderCounter';
 import { calculateOrders } from '@/shared/lib/helpers';
+import styles from "./styles.module.css";
+import { AdminPanelContext } from '@/shared/lib/context';
 
 export default function OrderTable() {
-  // const { access_token } = useAuth();
-  // const { data, error, isLoading } = useFindManyQuery({
-  //   page: 0,
-  //   limit: 10,
-  //   token: access_token,
-  // });
+  const { data, error, isLoading } = useFindManyQuery({
+    page: 0,
+    limit: 1000000
+  });
 
-  const calculated = calculateOrders(mock.content);
-  
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update(prev => ({ ...prev, openedLink: "Orders" }));
+  }, []);
+
+  if (error) return <p>{"This shouldn't have happened, our experts are already solving the issue. Stay tuned."}</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <Table data={[]} />
+
+  const calculated = calculateOrders(data.content);
+
   return (
     <>
       <OrderCounter
-        className='mb-[1.875rem]'
-        newOrders={calculated["New"] || 0}
-        inProgress={calculated["In Progress"] || 0}
-        completed={calculated["Completed"] || 0}
-        canceled={calculated["Cancelled"] || 0}
+        className={styles.counter}
+        newOrders={calculated['NEW']}
+        inProgress={calculated['IN_PROGRESS']}
+        completed={calculated['COMPLETED']}
+        canceled={calculated['CANCELLED']}
       />
-      <Table data={mock.content} />
+      <Table data={data.content} />
     </>
   );
-
-  // if (isLoading) return;
-
-  // if (error) return;
-
-  // if (data) return <Table data={data.content} />;
-
-  // return 'No data';
 }

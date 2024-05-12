@@ -3,8 +3,10 @@ import Image from 'next/image';
 import bgImage from '@/assets/images/categories-dog.png';
 import CategoryBadge from './CategoryBadge';
 
+import classes from "../classes.module.css";
+
 export default function CategoriesPresentation() {
-  const { data } = useCategoriesQuery();
+  const { data } = useCategoriesQuery({});
 
   if (!data) return null;
 
@@ -14,14 +16,14 @@ export default function CategoriesPresentation() {
         src={bgImage}
         alt='big photo of a dog with variety of things around. Including leads, toys, cosmetics, collars, clothing and furniture.'
         fill
+        className={classes.dragContainer}
       />
-
 
       {data.content.map((category) => (
         <CategoryBadge
           key={category.path}
           name={category.name}
-          path={category.path}
+          path={`/${category.path}`}
           position={{
             x: category.coordinateOnBannerX,
             y: category.coordinateOnBannerY,

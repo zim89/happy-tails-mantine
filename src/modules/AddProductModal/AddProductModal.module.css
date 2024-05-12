@@ -3,7 +3,7 @@
 }
 
 .pageHeader h2 {
-    @apply mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal];
+    @apply mb-2 text-[32px]/[38.4px] font-bold;
 }
 
 .formHeader {

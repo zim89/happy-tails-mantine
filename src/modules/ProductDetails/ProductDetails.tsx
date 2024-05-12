@@ -1,5 +1,7 @@
 'use client';
+
 import React, { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Anchor,
   Container,
@@ -13,11 +15,12 @@ import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import ProductSlider from './ui/ProductSlider';
 import { cn } from '@/shared/lib/utils';
-import { sliderData } from './lib/data';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
+import { useSelectProducts } from "@/shared/hooks/useSelectProducts";
+
+const ProductSlider = dynamic(() => import("./ui/ProductSlider"));
 
 interface Props {
   product: Product;
@@ -25,6 +28,9 @@ interface Props {
 
 export default function ProductDetails({ product }: Props) {
   const [opened, { close, toggle, open }] = useDisclosure();
+  const sliderData = useSelectProducts(state => state
+    .filter(prod => prod.id !== product.id && product.categoryId === prod.categoryId && prod.productStatus === "IN STOCK")
+  );
 
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
@@ -34,14 +40,16 @@ export default function ProductDetails({ product }: Props) {
 
   return (
     <>
-      <section className='pb-16 pt-2 md:pt-2.5 lg:pb-28 lg:pt-4'>
+      <section className='pb-16 lg:pb-28'>
         <Container>
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
-              { href: '/products', text: 'Catalog' },
+              { href: `/${product.categoryName.toLowerCase()}`, text: product.categoryName },
               { text: product.name },
             ]}
+
+            classNames={{ root: "p-0 pt-4" }}
           />
           <div className='mb-16 block md:mb-20 lg:mb-28 lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
@@ -132,7 +140,7 @@ export default function ProductDetails({ product }: Props) {
                     onChange={setQuantity}
                     readOnly
                     classNames={{
-                      input: 'px-4 py-2 text-center text-base font-bold',
+                      input: 'form-input border-0 px-4 py-2 text-center text-base font-bold',
                     }}
                   />
                   <button
@@ -171,7 +179,7 @@ export default function ProductDetails({ product }: Props) {
             </div>
           </div>
 
-          <ProductSlider data={sliderData as unknown as Product[]} />
+          {sliderData.length > 0 && <ProductSlider data={sliderData} targetCategory={product.categoryName}/>}
         </Container>
       </section>
     </>

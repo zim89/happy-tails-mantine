@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { useRef } from 'react';
 import {
   Button,
@@ -6,17 +7,16 @@ import {
   Group,
   Select,
   Textarea,
-  TextInput
+  TextInput,
 } from '@mantine/core';
-import { PlusCircle, UploadCloud, X, Check } from 'lucide-react';
+import { PlusCircle, UploadCloud, X, Check, AlertTriangle } from 'lucide-react';
 import Image from 'next/image';
 import { Form, isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddProductModal.module.css';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
+import { DEFAULT_CATEGORY_IMAGE, productStatusList } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
@@ -26,6 +26,8 @@ import { cn } from '@/shared/lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { Product } from '@/shared/types/types';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type PreviewImage = {
   name: string | null;
@@ -33,28 +35,33 @@ type PreviewImage = {
 };
 
 export default function AddProductModal() {
-  const { access_token } = useAuth();
   const [dispatch] = useCreateMutation();
-  const categoryList = useSelectCategories(cats => cats);
+  const categoryList = useSelectCategories((cats) => cats);
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      color: 'transparent',
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      text: 'Category adding failed!',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Category successfully added!',
+    }
+  });
 
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
-  const [isNotified, { open: openNotification, close: closeNotification }] =
-    useDisclosure(false);
-
-  const handleClose = () => {
-    closeNotification();
-  };
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
     initialValues: {
-      name: "",
-      code: "",
-      categoryName: "" as Product["categoryName"],
+      name: '',
+      code: '',
+      categoryName: '' as Product['categoryName'],
       price: 0,
       quantity: 0,
-      productStatus: "" as Product["productStatus"],
-      description: "",
+      productStatus: '' as Product['productStatus'],
+      description: '',
       image: null as File | null,
     },
 
@@ -68,11 +75,11 @@ export default function AddProductModal() {
     validate: {
       name: isNotEmpty('Entered an invalid product name'),
       categoryName: isNotEmpty('Pick a category for the product'),
-      code: isNotEmpty("Entered an invalid product code"),
-      price: val => val < 1 ? "Entered an invalid price" : null,
-      quantity: val => val < 1 ? "Entered an invalid quantity" : null,
-      productStatus: isNotEmpty("Pick a product status"),
-      description: isNotEmpty("Enter a description"),
+      code: isNotEmpty('Entered an invalid product code'),
+      price: (val) => (val < 1 ? 'Entered an invalid price' : null),
+      quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
+      productStatus: isNotEmpty('Pick a product status'),
+      description: isNotEmpty('Enter a description'),
     },
   });
 
@@ -95,43 +102,56 @@ export default function AddProductModal() {
     code,
     ...rest
   }: (typeof form)['values']) => {
-    let imagePath = DEFAULT_CATEGORY_IMAGE;
+    try {
+      let imagePath = DEFAULT_CATEGORY_IMAGE;
+  
+      if (image) {
+        const form = new FormData();
+        form.append('image', image);
+        form.append('title', `PRODUCT: ${name}`);
+  
+        const res = await axios.post('https://api.imgur.com/3/image/', form, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        imagePath = res.data.data.link;
+      }
+  
+      const newProduct: Partial<Product> = {
+        ...rest,
+        article: code,
+        imagePath,
+        productType: "INDOORS",
+        salePrice: 0
+      };
+  
+      const candidate = categoryList.find(
+        (cat) => cat.name === newProduct.categoryName
+      );
+      candidate && (newProduct.categoryId = candidate.id);
+        
+      await dispatch({ req: newProduct }).unwrap();
+  
+      clearAndClose();
+      setNotification("Success");
+    } catch (err) {
+      clearAndClose();
+      console.error(err);
 
-    if (image) {
-      const form = new FormData();
-      form.append('image', image);
-      form.append('title', `PRODUCT: ${name}`);
-
-      const res = await axios.post('https://api.imgur.com/3/image/', form, {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      imagePath = res.data.data.link;
+      if (isAxiosQueryError(err)) {
+        setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
-
-    const newProduct: Partial<Product> = {
-      ...rest,
-      article: code,
-      imagePath
-    };
-
-    const candidate = categoryList.find(cat => cat.name === newProduct.categoryName);
-    candidate && (newProduct.categoryId = candidate.id);
-
-    await dispatch({ req: newProduct, access_token });
-    
-    clearAndClose();
-    openNotification();
   };
 
   return (
     <>
       <div className={styles.pageHeader}>
         <hgroup className='pb-6'>
-          <h1 className='text-[32px] font-bold'>Products</h1>
+          <h2>Products</h2>
           <p>Manage your product catalog</p>
         </hgroup>
         <Button className='bg-black' onClick={open}>
@@ -203,7 +223,7 @@ export default function AddProductModal() {
                 }}
                 type='text'
                 label='Category'
-                data={categoryList.map(cat => cat.name)}
+                data={categoryList.map((cat) => cat.name)}
               ></Select>
             </Group>
             <Group className='flex-column flex gap-[30px]'>
@@ -257,7 +277,7 @@ export default function AddProductModal() {
                   ),
                   error: 'form-error',
                 }}
-                data={['DELETE', 'ACTIVE', 'TEMPORARILY_ABSENT', 'IN STOCK']}
+                data={productStatusList}
                 type='text'
                 label='Status'
               ></Select>
@@ -279,23 +299,23 @@ export default function AddProductModal() {
           </div>
           {!previewImage.current?.path || !previewImage.current?.name ? (
             <>
-            <div className={styles.upload}>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id='file'
-                w='100%'
-                placeholder='Max file size 500 kB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput)
-                }}
-              />
-            </div>
+              <div className={styles.upload}>
+                <label htmlFor='file'>
+                  <UploadCloud color='white' />
+                  <span>Select Image</span>
+                </label>
+                <FileInput
+                  id='file'
+                  w='100%'
+                  placeholder='Max file size 500 kB'
+                  {...form.getInputProps('image')}
+                  accept='.png,.jpeg,.gif,.webp'
+                  classNames={{
+                    wrapper: styles.fileWrapper,
+                    input: cn('form-input', styles.fileInput),
+                  }}
+                />
+              </div>
             </>
           ) : (
             <div className={styles.previewWrapper}>
@@ -323,13 +343,7 @@ export default function AddProductModal() {
         />
       </Modal>
 
-      <Notify
-        icon={<Check size={15} />}
-        color='#389B48'
-        visible={isNotified}
-        onClose={handleClose}
-        text='Category successfully added!'
-      />
+      <Notify {...props} onClose={clear} />
     </>
   );
 }

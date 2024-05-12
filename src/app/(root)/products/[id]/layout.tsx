@@ -37,9 +37,9 @@ export default function DashboardLayout({
 }) {
 
   return (
-    <section className="section">
+    <>
       {children}
       <ProductAdditionalInfo />
-    </section>
+    </>
   );
 }

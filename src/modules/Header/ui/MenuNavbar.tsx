@@ -1,4 +1,3 @@
-import { Category } from '@/shared/api/categoryApi';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
@@ -6,6 +5,7 @@ import Link from 'next/link';
 
 import { additionalLinks } from '../lib/data';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { Category } from '@/shared/types/types';
 
 type MenuNavbarProps = {
   menu: Category[];
@@ -72,11 +72,11 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
             className='border-b border-b-brand-grey-300 lg:border-none'
           >
             <Link
-              href={'/' + item.path}
+              href={'/' + item.name.toLowerCase()}
               onClick={close}
               className={cn(
                 'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                path === '/' + item.path && 'font-bold'
+                path === '/' + item.name && 'font-bold'
               )}
             >
               <Image

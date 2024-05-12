@@ -1,0 +1,18 @@
+.header {
+    @apply mb-6 flex;
+}
+
+.header h2 {
+    @apply mb-2 text-[32px]/[38.4px] font-bold;
+}
+
+.dropdown {
+    @apply p-0;
+}
+
+@media print {
+    .header,
+    .dropdown {
+        display: none !important;
+    }
+}

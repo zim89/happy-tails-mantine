@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from '@mantine/core';
 
-import { type Category, getAllCategories } from '@/shared/api/categoryApi';
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import CatalogProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Toolbar from '@/modules/Toolbar';
 import { CATEGORY } from '@/shared/lib/constants';
 import SearchForm from "@/modules/SearchForm"
+import { Category } from '@/shared/types/types';
+import { getAllCategories } from '@/shared/lib/requests';
 
 export default function Page() {
   const [categories, setCategories] = useState<Category[]>([]);

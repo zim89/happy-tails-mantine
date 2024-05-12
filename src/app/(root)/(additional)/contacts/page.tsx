@@ -11,6 +11,7 @@ export default function ContactsPage() {
     <Container>
       <Breadcrumbs
         crumbs={[{ href: '/', text: 'Home' }, { text: 'Contacts' }]}
+        classNames={{ root: "p-0 pt-4" }}
       />
 
       <div className={styles.content}>

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Minus } from 'lucide-react';
 import { Box, Collapse, Group, UnstyledButton, rem } from '@mantine/core';
 import Link from 'next/link';
-import { usePathname } from "next/navigation";
 
 import classes from './LinksGroup.module.css';
+import { cn } from '@/shared/lib/utils';
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -19,15 +19,20 @@ function Links({
   initiallyOpened,
   links,
 }: LinksGroupProps) {
+  // TODO: change links' appeareance
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
+  const [selected, setSelected] = useState("");
+  
 
-  const items = (hasLinks ? links : []).map((link) => (
-    <Link className={classes.link} href={link.link} key={link.label}>
+  const items = (hasLinks ? links : []).map((link) => {
+    return <Link className={cn(classes.link)} style={{
+      color: selected === link.label ? "orange" : "#C8C8C8"
+    }} href={link.link} key={link.label} onClick={() => setSelected(link.label)}>
       <Minus className='scale-x-50' />
       <span>{link.label}</span>
     </Link>
-  ));
+  });
 
   return (
     <>

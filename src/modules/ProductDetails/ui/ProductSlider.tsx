@@ -3,16 +3,17 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Card, Container, Stack, Text } from '@mantine/core';
 import { Carousel, Embla } from '@mantine/carousel';
 import { useViewportSize } from '@mantine/hooks';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import clsx from 'clsx';
 
 import '@mantine/carousel/styles.css';
 import { Product } from '@/shared/types/types';
 
-type ProductSliderProps = { alt?: boolean; data: Product[] };
+type ProductSliderProps = { targetCategory?: string, data: Product[], alt?: boolean };
 
-export default function ProductSlider({ alt, data }: ProductSliderProps) {
+export default function ProductSlider({ data, alt, targetCategory }: ProductSliderProps) {
   const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
@@ -43,7 +44,8 @@ export default function ProductSlider({ alt, data }: ProductSliderProps) {
 
   useEffect(() => {
     if (width >= 768 && width < 1280) slidesToScroll.current = 2;
-    if (width > 1280) slidesToScroll.current = 3;
+    if (width > 1280) slidesToScroll.current = 3
+    else slidesToScroll.current = 1;
   }, [width]);
 
   return (
@@ -96,7 +98,7 @@ export default function ProductSlider({ alt, data }: ProductSliderProps) {
             'navBtn data-[inactive=true]:navBtn-disabled data-[inactive=false]:navBtn-primary',
         }}
       >
-        {data.map((item) => (
+        {data.length > 0 && data.map((item) => (
           <Carousel.Slide key={item.id}>
             <Card
               withBorder
@@ -119,7 +121,9 @@ export default function ProductSlider({ alt, data }: ProductSliderProps) {
                     {item.article}
                   </Text>
                   <Text className='mb-9 text-xl font-bold leading-normal'>
-                    {item.name}
+                    <Link href={`/products/${item.id}`}>
+                      {item.name}
+                    </Link>
                   </Text>
                   <Text className='text-base'>$ {item.price}</Text>
                 </Box>
@@ -127,6 +131,21 @@ export default function ProductSlider({ alt, data }: ProductSliderProps) {
             </Card>
           </Carousel.Slide>
         ))}
+        {targetCategory &&
+        <Card
+          withBorder
+          padding={28}
+          radius={2}
+          classNames={{
+            root: 'border-brand-grey-400 bg-[#EEE] min-w-[340px] md:w-full',
+          }}>
+            <Link href={`/${targetCategory.toLowerCase()}`} className="text-xs text-[#A8A8A8] leading-normal inline-flex justify-center items-center flex-col h-full">
+                <Plus size={130}/>
+                <span className="text-2xl mb-3 uppercase font-light">More Products</span>
+                <span className="text-xs text-center">Explore more amazing products from this category!</span>
+            </Link>
+          </Card>
+        }
       </Carousel>
     </Container>
   );

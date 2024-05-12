@@ -16,3 +16,9 @@
     grid-area: body;
     @apply py-4 px-6 bg-[#FAFAFA];
 }
+
+@media print {
+    .layoutWrapper {
+        display: block !important;
+    }
+}

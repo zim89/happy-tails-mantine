@@ -1,6 +1,10 @@
+'use client';
 import { UploadCloud, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
+import Image from 'next/image';
+import axios from 'axios';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
@@ -8,18 +12,14 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
-import Image from 'next/image';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Product } from '@/shared/types/types';
-import axios from 'axios';
 import { useUpdateMutation } from '@/shared/api/productApi';
-import { useAuth } from '@/shared/hooks/useAuth';
-import { getAllCategories } from '@/shared/api/categoryApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   productLine: Product;
-  setIsNotified: Dispatch<SetStateAction<boolean>>;
+  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 type PreviewImage = {
@@ -27,9 +27,8 @@ type PreviewImage = {
   path: string;
 };
 
-const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
-  const { access_token } = useAuth();
-  const categoryList = useSelectCategories(res => res.map(cat => cat.name)); 
+const UpdateProductModal = ({ productLine, setNotification }: Props) => {
+  const categoryList = useSelectCategories((res) => res.map((cat) => cat.name));
 
   const form = useForm({
     initialValues: {
@@ -62,20 +61,36 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
           quantity: productLine.quantity,
           productStatus: productLine.productStatus,
           description: productLine.description,
-          image: null
-        })
-         
+          image: null,
+        });
       } catch (err) {
         console.log(err);
       }
     })();
-  }, []);
+  }, [
+    productLine.article,
+    productLine.categoryName,
+    productLine.description,
+    productLine.name,
+    productLine.price,
+    productLine.productStatus,
+    productLine.quantity,
+  ]);
 
+  
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
-
-  const [dispatch, { isError, isLoading }] = useUpdateMutation();
-
+  
+  const [dispatch] = useUpdateMutation();
+  
   const [opened, { open, close }] = useDisclosure(false);
+
+  // Initialize previewImage until the modal is opened
+  useEffect(() => {
+    if (!opened) {
+      previewImage.current.path = productLine.imagePath;
+      previewImage.current.name = productLine.name;
+    }
+  }, [opened, productLine]);
 
   const clearAndClose = () => {
     form.clearErrors();
@@ -90,28 +105,39 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
         ...rest,
         article: code,
       };
-  
+
       // Uploading an image
       if (image) {
         const formData = new FormData();
         formData.append('image', image);
         formData.append('type', 'image');
         formData.append('title', `Product image: ${rest.name}`);
-  
-        const res = await axios.post('https://api.imgur.com/3/image/', formData, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-  
+
+        const res = await axios.post(
+          'https://api.imgur.com/3/image/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
         requestBody.imagePath = res.data.data.link;
       }
-      
-      await dispatch({ req: requestBody, access_token });
+
+      await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setIsNotified(true);
+      setNotification('Success');
     } catch (err) {
+      clearAndClose();
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
       console.log(err);
     }
   };
@@ -268,23 +294,23 @@ const UpdateProductModal = ({ productLine, setIsNotified }: Props) => {
           </div>
           {!previewImage.current?.path || !previewImage.current?.name ? (
             <>
-            <div className={styles.upload}>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id='file'
-                w='100%'
-                placeholder='Max file size 500 kB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput)
-                }}
-              />
-            </div>
+              <div className={styles.upload}>
+                <label htmlFor='file'>
+                  <UploadCloud color='white' />
+                  <span>Select Image</span>
+                </label>
+                <FileInput
+                  id='file'
+                  w='100%'
+                  placeholder='Max file size 500 kB'
+                  {...form.getInputProps('image')}
+                  accept='.png,.jpeg,.gif,.webp'
+                  classNames={{
+                    wrapper: styles.fileWrapper,
+                    input: cn('form-input', styles.fileInput),
+                  }}
+                />
+              </div>
             </>
           ) : (
             <div className={styles.previewWrapper}>

@@ -1,19 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { Breadcrumbs as RawBreadcrumbs } from '@mantine/core';
+import { BreadcrumbsStylesNames, Breadcrumbs as RawBreadcrumbs } from '@mantine/core';
+import { cn } from '@/shared/lib/utils';
 
 export type Crumb = {
   text: string;
   href?: string;
 };
 
-export default function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
+export default function Breadcrumbs({ crumbs, classNames = {} }: { crumbs: Crumb[], classNames?: Partial<Record<BreadcrumbsStylesNames, string>> }) {
   return (
     <RawBreadcrumbs
       classNames={{
-        root: '[--bc-separator-margin:2px] text-xs/normal py-3 mb-4 md:max-lg:mb-3 lg:text-sm/normal lg:mb-4',
-        separator: 'text-secondary text-xs/normal',
+        ...classNames,
+        separator: cn('text-secondary text-xs/normal', classNames.separator),
+        root: cn('[--bc-separator-margin:2px] text-xs/normal py-3 mb-4 md:max-lg:mb-3 lg:text-sm/normal lg:mb-4', classNames.root),
       }}
     >
       {crumbs.map((crumb, index, arr) =>

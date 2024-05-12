@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { Container } from '@mantine/core';
+import AdminDashboard from "@/modules/AdminDashboard";
 
 export const metadata: Metadata = {
   robots: {
@@ -8,10 +8,8 @@ export const metadata: Metadata = {
   }
 }
 
-export default function AdminPage() {
+export default function Page() {
   return (
-    <Container>
-      <h2 className='my-8 text-2xl font-bold text-red-900'>AuthPage</h2>
-    </Container>
+    <AdminDashboard />
   );
 }

@@ -11,14 +11,14 @@ import clsx from 'clsx';
 
 import { useAppDispatch } from '@/shared/redux/store';
 import {
-  CartItem,
+  CartItem as TCartItem,
   decrementCartItem,
   incrementCartItem,
   removeFromCart,
 } from '@/shared/redux/cart/cartSlice';
 
 interface Props {
-  product: CartItem;
+  product: TCartItem;
 }
 
 export default function CartItem({ product }: Props) {

@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next'
 
-import { getAllCategories } from "@/shared/api/categoryApi";
-import { fetchPostList } from '@/shared/api/postApi';
-import { getProductList } from '@/shared/lib/requests';
+import { fetchPostList } from '@/shared/lib/requests';
+import { getProductList, getAllCategories } from '@/shared/lib/requests';
 
 const URL = process.env.NEXT_PUBLIC_SITE_DOMAIN;
 

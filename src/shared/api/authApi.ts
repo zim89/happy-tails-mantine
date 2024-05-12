@@ -10,6 +10,7 @@ import {
   RegisterResponse,
   VerifyEmailData,
 } from '@/shared/types/auth.types';
+import { AxiosQueryError, ErrorData } from '@/shared/types/types';
 
 export const axiosBaseQuery =
   (
@@ -25,7 +26,7 @@ export const axiosBaseQuery =
       headers?: AxiosRequestConfig['headers'];
     },
     unknown,
-    unknown
+    AxiosQueryError
   > =>
   async ({ url, method, data, params, headers }) => {
     try {
@@ -38,13 +39,23 @@ export const axiosBaseQuery =
       });
       return { data: result.data };
     } catch (axiosError) {
-      const err = axiosError as AxiosError;
-      return {
-        error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
-        },
+      const err = axiosError as AxiosError<ErrorData>;
+      let errorResponse: AxiosQueryError = {
+        data: err.message, // Default message
       };
+
+      if (err.response) {
+        // If the error is due to HTTP response
+        errorResponse = {
+          status: err.response.status,
+          data: err.response.data || err.message,
+        };
+      } else if (err.request) {
+        // The request was made but no response was received
+        errorResponse.data =
+          'The request was made but no response was received';
+      }
+      return { error: errorResponse };
     }
   };
 

@@ -1,0 +1,29 @@
+.dragContainer {
+    animation: exit .5s forwards;
+    /* Helen doesn't like a rounded image  */
+    @apply absolute left-[--x] top-[--y] flex bg-brand-grey-100/60 disabled:opacity-60;
+}
+
+.dragContainer.animated {
+    animation: enter .5s forwards;
+}
+
+@keyframes enter {
+    to {
+        translate: var(--posX) var(posY);
+    }
+
+    from {
+        translate: 0 0;
+    }
+}
+
+@keyframes exit {
+    to {
+        translate: 0 0;
+    }
+
+    from {
+        translate: var(--posX) var(posY);
+    }
+}

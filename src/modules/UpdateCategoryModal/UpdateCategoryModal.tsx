@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+'use client';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -6,7 +7,7 @@ import {
   TextInput,
   Tooltip,
 } from '@mantine/core';
-import { Info, UploadCloud, X, Check } from 'lucide-react';
+import { Info, UploadCloud, X, Check, AlertTriangle } from 'lucide-react';
 
 import styles from './UpdateCategoryModal.module.css';
 import { useDisclosure } from '@mantine/hooks';
@@ -17,25 +18,32 @@ import Notify from '@/components/Notify';
 import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import { Category, useUpdateCategoryMutation } from '@/shared/api/categoryApi';
+import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import Image from 'next/image';
-import { useAuth } from '@/shared/hooks/useAuth';
 import axios from 'axios';
 import { cn } from '@/shared/lib/utils';
+import { useNotification } from '@/shared/hooks/useNotification';
+import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
+import { Category } from '@/shared/types/types';
 
 type Props = {
-  categoryLine: Category & { image: { path: string; name: string } };
+  categoryLine: Category;
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
-  const { access_token } = useAuth();
-  const [isNotified, { open: openNotification, close: closeNotification }] =
-    useDisclosure();
   const [dispatch] = useUpdateCategoryMutation();
-  const previewImage = useRef<(typeof categoryLine)['image']>();
-
-  const handleClose = () => {
-    closeNotification();
-  };
+  const previewImage = useRef<{ path: string; name: string }>();
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      icon: <AlertTriangle size={24} fill="#DC362E"/>,
+      color: 'transparent',
+      text: 'Failed to update!',
+    },
+    success: {
+      icon: <Check size={24} />,
+      color: '#389B48',
+      text: 'Changes saved!',
+    },
+  });
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -52,21 +60,23 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     },
 
     validate: {
-      categoryName: isNotEmpty("The category name should be filled")
+      categoryName: isNotEmpty('The category name should be filled'),
     },
   });
 
-  const changeThumbnail = () => {
-    previewImage.current = {
-      path: categoryLine.image.path,
-      name: categoryLine.image.name,
-    };
-  };
+  const changeThumbnail = useCallback(() => {
+    if (categoryLine.imgSrc) {
+      previewImage.current = {
+        path: categoryLine.imgSrc,
+        name: categoryLine.name,
+      };
+    }
+  }, [categoryLine.id]);
 
   // When the list of categories is changed, change the form values respectively
   useEffect(() => {
-    changeThumbnail();
-  }, [categoryLine.id]);
+    if (!opened) changeThumbnail();
+  }, [categoryLine.id, opened]);
 
   const clearFile = () => {
     previewImage.current = {
@@ -85,32 +95,47 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     categoryName,
     image,
   }: (typeof form)['values']) => {
-    let requestBody = {
-      ...categoryLine,
-      name: categoryName,
-    };
+    try {
+      let requestBody = {
+        ...categoryLine,
+        name: categoryName,
+      };
 
-    // Uploading an image
-    if (image) {
-      const formData = new FormData();
-      formData.append('image', image);
-      formData.append('type', 'image');
-      formData.append('title', `Category image: ${categoryName}`);
+      // Uploading an image
+      if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('type', 'image');
+        formData.append('title', `Category image: ${categoryName}`);
 
-      const res = await axios.post('https://api.imgur.com/3/image/', formData, {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        const res = await axios.post(
+          'https://api.imgur.com/3/image/',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
 
-      requestBody.imgSrc = res.data.data.link;
+        requestBody.imgSrc = res.data.data.link;
+      }
+
+      await dispatch({ req: requestBody }).unwrap();
+
+      clearAndClose();
+      setNotification('Success');
+    } catch (err) {
+      clearAndClose();
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
+        console.error(err);
     }
-
-    await dispatch({ req: requestBody, access_token });
-
-    clearAndClose();
-    openNotification();
   };
 
   return (
@@ -129,7 +154,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         onClose={close}
       >
         <ModalHeader heading='Update Category' handleClose={close} />
-        
+
         <form>
           <TextInput
             classNames={{
@@ -138,7 +163,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
               section: 'static w-auto text-[#161616] whitespace-nowrap',
               input: cn(
-                'form-input rounded-sm outline-none border-0 p-0',
+                'form-input rounded-sm border-0 p-0 outline-none',
                 form?.errors?.categoryName && 'form-error--input'
               ),
               error: 'form-error',
@@ -161,7 +186,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </Tooltip>
           </InputLabel>
 
-          {!previewImage.current?.path || !previewImage.current?.name ? (
+          {!previewImage.current?.path ? (
             <div className={styles.upload}>
               <label htmlFor='file'>
                 <UploadCloud color='white' />
@@ -169,13 +194,13 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               </label>
               <FileInput
                 id='file'
-                w="100%"
+                w='100%'
                 placeholder='Max file size 500 kB'
                 {...form.getInputProps('image')}
                 accept='.png,.jpeg,.gif,.webp'
                 classNames={{
                   wrapper: styles.fileWrapper,
-                  input: cn("form-input", styles.fileInput),
+                  input: cn('form-input', styles.fileInput),
                 }}
               />
             </div>
@@ -201,17 +226,11 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit((values) => handleSubmit(values))}
+          primaryBtnOnClick={form.onSubmit(handleSubmit)}
         />
       </Modal>
 
-      <Notify
-        icon={<Check size={15} />}
-        color='#389B48'
-        visible={isNotified}
-        onClose={handleClose}
-        text='Changes saved!'
-      />
+      <Notify {...props} onClose={clear} />
     </>
   );
 }

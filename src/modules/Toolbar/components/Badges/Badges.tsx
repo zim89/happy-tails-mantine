@@ -1,9 +1,9 @@
 import { UseFormReturnType } from '@mantine/form';
 import { FilterFormValues } from '../FilterForm/FilterForm';
 import { cn } from '@/shared/lib/utils';
-import { Category } from '@/shared/api/categoryApi';
 import { Badge } from '@mantine/core';
 import { X } from 'lucide-react';
+import { Category } from '@/shared/types/types';
 
 export type BadgesProps = {
   form: UseFormReturnType<FilterFormValues>;

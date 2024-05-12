@@ -98,43 +98,38 @@ export const productApi = createApi({
     }),
     create: builder.mutation<
       Product,
-      { req: Partial<Product>; access_token: string }
+      { req: Partial<Product> }
     >({
-      query({ req, access_token }) {
+      query({ req }) {
         return {
           url: '/products',
           method: 'post',
           data: req,
           headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${access_token}`,
+            'Content-type': 'application/json',
           },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    update: builder.mutation<Product, { req: Product; access_token: string }>({
-      query({ req, access_token }) {
+    update: builder.mutation<Product, { req: Product }>({
+      query({ req }) {
         return {
           url: `/products`,
           method: 'put',
           data: req,
           headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${access_token}`,
+            'Content-type': 'application/json',
           },
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    remove: builder.mutation<void, { id: ID; access_token: string }>({
-      query({ id, access_token }) {
+    remove: builder.mutation<void, { id: ID }>({
+      query({ id }) {
         return {
           url: `/products/${id}`,
-          method: 'delete',
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
+          method: 'delete'
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],

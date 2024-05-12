@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import dynamic from 'next/dynamic';
 
 import { Container, Loader } from '@mantine/core';
@@ -16,9 +16,7 @@ type Props = {
 };
 
 export default function ProductPage({ params }: Props) {
-  const { data, isError, isLoading, error } = useFindOneQuery(
-    params.id
-  );
+  const { data, isError, isLoading, error } = useFindOneQuery(params.id);
 
   if (isLoading)
     return (

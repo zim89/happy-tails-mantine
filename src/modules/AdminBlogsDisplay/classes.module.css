@@ -1,0 +1,11 @@
+.header {
+    @apply flex justify-between items-center mb-6 mt-8;
+}
+
+.pageHeading h2 {
+    @apply text-[32px]/[38.4px] font-bold mb-1;
+}
+
+.td:nth-of-type(2) {
+    @apply w-full;
+}

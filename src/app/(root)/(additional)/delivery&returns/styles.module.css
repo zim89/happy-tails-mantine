@@ -1,5 +1,5 @@
 .section {
-  @apply pb-12 lg:pb-[72px] lg:pt-4;
+  @apply pb-12 lg:pb-[72px];
 }
 
 .section h1 {

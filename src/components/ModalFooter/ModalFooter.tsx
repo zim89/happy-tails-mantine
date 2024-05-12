@@ -1,5 +1,4 @@
 import { CSSProperties } from 'react';
-import { Button } from '@mantine/core';
 
 import styles from './ModalFooter.module.css';
 

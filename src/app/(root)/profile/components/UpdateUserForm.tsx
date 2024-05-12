@@ -56,7 +56,7 @@ export const UpdateUserForm = () => {
       onSubmit={form.onSubmit(async (values) => {
         try {
           const [updatedUser, count] = dirtyFields(values);
-          // If there is no changes, omit the call to API
+          // If there are no changes, omit the call to API
           if (count === 0) return;
           if (!currentUser) return;
 
@@ -75,7 +75,7 @@ export const UpdateUserForm = () => {
         type='text'
         classNames={{
           root: 'form-root',
-          label: 'form-label',
+          label: 'form-label block text-left',
           input: cn(
             'form-input',
             classes.inputSizing,
@@ -91,7 +91,7 @@ export const UpdateUserForm = () => {
         type='text'
         classNames={{
           root: 'form-root',
-          label: 'form-label',
+          label: 'form-label block text-left',
           input: cn(
             'form-input',
             classes.inputSizing,
@@ -106,7 +106,7 @@ export const UpdateUserForm = () => {
         label='Email Address'
         classNames={{
           root: 'form-root',
-          label: 'form-label',
+          label: 'form-label block text-left',
           input: cn(
             'form-input',
             classes.inputSizing,

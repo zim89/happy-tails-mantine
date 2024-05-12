@@ -1,0 +1,9 @@
+.breadCrumbs {
+    @apply mb-8;
+}
+
+@media print {
+    .breadCrumbs {
+        display: none !important;
+    }
+}
