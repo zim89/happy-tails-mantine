@@ -28,6 +28,7 @@ export default function Notify({
       <p className={cn('mr-8 text-base', kind === "success" ? 'text-lime-500' : "text-red-500")}>{text}</p>
       <div className='absolute bottom-0 left-0 h-1 w-full'>
         <span
+          role="progressbar"
           className={cn(
             kind === "success" ? 'bg-lime-500' : "bg-red-500",
             'block h-full origin-left animate-[progress_7s_ease]'

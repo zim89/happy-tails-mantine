@@ -14,6 +14,7 @@ export default function CategoryBadge({
   name,
   position,
 }: CategoryBadgeProps) {
+
   return (
     <Link
       style={
