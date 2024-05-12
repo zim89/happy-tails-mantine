@@ -103,7 +103,7 @@ export default function ProductSlider({ alt, data }: ProductSliderProps) {
               padding={28}
               radius={2}
               classNames={{
-                root: 'border-brand-grey-400 w-[340px] md:w-full',
+                root: 'border-brand-grey-400 w-[340px] md:w-full h-full',
               }}
             >
               <Stack gap={20}>
