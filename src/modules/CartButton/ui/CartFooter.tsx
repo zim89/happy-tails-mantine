@@ -35,7 +35,7 @@ export default function CartFooter({ length, close }: Props) {
           <div className={'flex flex-col justify-center gap-4'}>
             <Link href={'/checkout'}>
               <button onClick={close} className={'btn btn-primary w-full'}>
-                Procced to check out
+                Proceed to check out
               </button>
             </Link>
 
