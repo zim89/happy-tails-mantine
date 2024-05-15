@@ -2,7 +2,7 @@ import { Select } from '@mantine/core';
 import { useRichTextEditorContext } from '@mantine/tiptap';
 import { ChevronDown } from 'lucide-react';
 
-export const FontSizeControl = () => {
+export default function FontSizeControl() {
     const { editor } = useRichTextEditorContext();
 
     return (

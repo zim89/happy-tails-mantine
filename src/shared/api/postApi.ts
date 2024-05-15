@@ -28,6 +28,7 @@ type PutRequest = {
   authorName: string;
   posterImgSrc: string;
   content: string;
+  hero: boolean;
 }
 
 export const postApi = createApi({
@@ -57,7 +58,7 @@ export const postApi = createApi({
       })
     }),
     updatePost: builder.mutation<Post, PutRequest>({
-      query: ({ id, title, authorName, posterImgSrc, content }) => ({
+      query: ({ id, title, authorName, posterImgSrc, content, hero }) => ({
         url: `/posts`,
         method: "put",
         data: {
@@ -65,7 +66,8 @@ export const postApi = createApi({
           title: title,
           authorName: authorName,
           posterImgSrc: posterImgSrc,
-          content: content
+          content: content,
+          hero
         },
         headers: {
           "Content-Type": "application/json"

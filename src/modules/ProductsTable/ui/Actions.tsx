@@ -56,12 +56,6 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
 
         <Menu.Dropdown className='p-0 py-2'>
           <Menu.Item
-            leftSection={<Eye size={16} />}
-            className='mb-1 rounded-none hover:bg-brand-grey-200'
-          >
-            View
-          </Menu.Item>
-          <Menu.Item
             leftSection={<Edit2 size={16} />}
             className='rounded-none hover:bg-brand-grey-200'
           >

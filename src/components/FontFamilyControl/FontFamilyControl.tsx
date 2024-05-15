@@ -2,10 +2,10 @@ import { useRichTextEditorContext } from '@mantine/tiptap';
 import { Menu, UnstyledButton } from "@mantine/core";
 import { Type } from "lucide-react";
 
-import { sharedProps } from "./PostEditor";
-import { fonts } from "../lib/data";
+import { sharedProps } from "@/modules/PostEditor";
+import { fonts } from "./lib/fonts";
 
-export const FontFamilyControl = () => {
+export default function FontFamilyControl() {
     const { editor } = useRichTextEditorContext();
 
     return (

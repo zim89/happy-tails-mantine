@@ -2,13 +2,12 @@ import { FileButton, UnstyledButton } from "@mantine/core";
 import { useContext } from "react";
 import { LucideRotateCcw } from "lucide-react";
 
-import { FormContext } from "../lib/context";
-
 import classes from "@/modules/PostDetails/classes.module.css";
 import sampleImage from "@/assets/images/auth-dog.png";
+import { PostFormContext } from "@/shared/lib/context";
 
-export const FeaturedImage = () => {
-	const { form } = useContext(FormContext);
+export default function FeaturedImage() {
+	const { form } = useContext(PostFormContext);
 	const image = form.values.image;
 
 	const handleImage = (file: File | null) => {

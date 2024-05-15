@@ -3,7 +3,7 @@
 import { useContext } from "react";
 
 // @tiptap editor's libs and components
-import { useEditor } from '@tiptap/react';
+import { Editor, useEditor } from '@tiptap/react';
 import { Link } from '@mantine/tiptap';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -13,14 +13,13 @@ import TextStyle from '@tiptap/extension-text-style';
 import Image from '@tiptap/extension-image';
 
 import { FontFamily, FontSize } from '@/shared/lib/utils';
-import { PostEditor } from "./PostEditor";
-import { Header } from "./Header";
-import { Details } from "./Details";
-import { FeaturedImage } from "./FeaturedImage";
-import { FormContext } from "../lib/context";
+import { PostFormContext } from "@/shared/lib/context";
 
-export const EditorContext = () => {
-    const { form } = useContext(FormContext);
+type Props = {
+    children(editor: Editor): React.ReactNode;
+}
+export default function EditorWrapper({ children }: Props) {
+    const { form } = useContext(PostFormContext);
 
     const editor = useEditor({
         extensions: [
@@ -42,15 +41,7 @@ export const EditorContext = () => {
 
     return (
         <>
-            <Header editor={editor} />
-            <div className="flex flex-col lg:flex-row gap-16">
-                <PostEditor editor={editor} />
-
-                <div className="flex-1">
-                    <Details />
-                    <FeaturedImage />
-                </div>
-            </div>
+            {children(editor)}
         </>
     );
 }

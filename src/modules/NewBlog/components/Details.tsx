@@ -4,8 +4,6 @@ import { Eye, Trash2, FolderDown } from "lucide-react";
 
 import { PostFormContext } from "@/shared/lib/context";
 
-import classes from "../classes.module.css";
-
 export const Details = () => {
     const { form } = useContext(PostFormContext);
 
@@ -14,7 +12,7 @@ export const Details = () => {
 
     return (
         <div className="bg-white border border-[#C8C8C8] rounded mb-8">
-            <p className={classes.auxiliaryHeading}>Details</p>
+            <p className="text-center text-xl font-bold p-3">Details</p>
             <Checkbox color="black" label={"Assign as the main article"} checked={value} {...rest} classNames={{
                 root: 'group py-6 px-4 bg-[#EEE]',
                 body: 'checkbox-body',

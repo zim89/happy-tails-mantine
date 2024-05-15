@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
@@ -23,7 +24,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { cn } from '@/shared/lib/utils';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 
 type Props = {
@@ -34,7 +35,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
   const previewImage = useRef<{ path: string; name: string }>();
   const [setNotification, { props, clear }] = useNotification({
     failed: {
-      icon: <AlertTriangle size={24} fill="#DC362E"/>,
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
       color: 'transparent',
       text: 'Failed to update!',
     },
@@ -132,9 +133,9 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         setNotification(
           'Failed',
           isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
-        console.error(err);
+        );
+      }
+      console.error(err);
     }
   };
 
@@ -172,7 +173,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             type='text'
             label='Category Name'
             {...form.getInputProps('categoryName')}
-            rightSection={categoryLine.name}
+            rightSection={<button type="button" className="hover:underline" onClick={() => form.setFieldValue("categoryName", categoryLine.name)}>{categoryLine.name}</button>}
           />
 
           <InputLabel

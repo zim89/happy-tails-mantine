@@ -7,14 +7,13 @@ import { TextInput } from "@mantine/core";
 
 // Rich text editor libraries
 import { RichTextEditor } from '@mantine/tiptap';
-import ImageControl from './ImageControl';
-import { FontSizeControl } from "./FontSizeControl";
-import { FontFamilyControl } from "./FontFamilyControl";
-import { FormContext } from '../lib/context';
+import ImageControl from '@/components/ImageControl';
 
-import classes from "../classes.module.css";
+import classes from "./classes.module.css";
 import { cn } from '@/shared/lib/utils';
-
+import FontSizeControl from '@/components/FontSizeControl';
+import FontFamilyControl from '@/components/FontFamilyControl';
+import { PostFormContext } from '@/shared/lib/context';
 
 export const sharedProps = {
 	toolbarBtn: {
@@ -37,8 +36,8 @@ type Props = {
 	editor: Editor;
 }
 
-export const PostEditor = ({ editor }: Props) => {
-	const { form } = useContext(FormContext);
+export default function PostEditor({ editor }: Props) {
+	const { form } = useContext(PostFormContext);
 
 	const handleImageUpload = useCallback(
 		async (file: File) => {
@@ -116,12 +115,14 @@ export const PostEditor = ({ editor }: Props) => {
 								<RichTextEditor.Underline {...sharedProps.toolbarBtn} />
 								<RichTextEditor.Strikethrough {...sharedProps.toolbarBtn} />
 							</RichTextEditor.ControlsGroup>
+							
 							<RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
 								<RichTextEditor.AlignLeft {...sharedProps.toolbarBtn} />
 								<RichTextEditor.AlignCenter {...sharedProps.toolbarBtn} />
 								<RichTextEditor.AlignJustify {...sharedProps.toolbarBtn} />
 								<RichTextEditor.AlignRight {...sharedProps.toolbarBtn} />
 							</RichTextEditor.ControlsGroup>
+							
 							<RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
 								<RichTextEditor.OrderedList {...sharedProps.toolbarBtn} />
 								<RichTextEditor.BulletList {...sharedProps.toolbarBtn} />

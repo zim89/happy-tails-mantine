@@ -5,11 +5,11 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel
 } from '@tanstack/react-table';
 import { Button, Table as MantineTable, Select } from '@mantine/core';
 
 import { Post } from '@/shared/api/postApi';
-import { EntriesCount } from '@/components/EntriesCount';
 import classes from '../classes.module.css';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
@@ -22,6 +22,25 @@ import { Actions } from './Actions';
 import React from 'react';
 import { TableBody } from '@/components/TableBody';
 import { ChevronDown } from 'lucide-react';
+
+const sortingFieldsMap: { [P in string]: { field: string, order: "desc" | "asc" } } = {
+  "Date (new to old)": {
+    field: "publishedAt",
+    order: "desc"
+  },
+  "Date (old to new)": {
+    field: "publishedAt",
+    order: "asc"
+  },
+  "Name A - Z": {
+    field: "title",
+    order: "asc"
+  },
+  "Name Z - A": {
+    field: "title",
+    order: "desc"
+  }
+}
 
 type Props = {
   data: Post[];
@@ -44,12 +63,15 @@ const columns = [
     },
   }),
   columnHelper.accessor('publishedAt', {
+    sortingFn: "datetime"
+  }),
+  columnHelper.accessor('title', {
     cell: (info) => {
       return (
         <hgroup>
-          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[600px]'>{info.row.original.title}</h3>
+          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[600px]'>{info.getValue()}</h3>
           <p className='font-light'>
-            {formatPostDateFromNumber(info.getValue())}
+            {formatPostDateFromNumber(info.row.original.createdAt)}
           </p>
         </hgroup>
       );
@@ -87,7 +109,10 @@ export const Table = ({ data }: Props) => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
+
+ 
 
   return (
     <>
@@ -135,12 +160,18 @@ export const Table = ({ data }: Props) => {
           allowDeselect={false}
           rightSection={<ChevronDown size={16} />} 
           defaultValue="Date (new to old)"
+          onChange={(e) => {
+            if (e && sortingFieldsMap[e]) {
+              const { field, order } = sortingFieldsMap[e];
+              table.getColumn(field)?.toggleSorting(order === "desc");
+            }
+          }}
           classNames={{
             input: "border-0 form-input font-bold user-select-none",
             root: "flex items-center",
             section: "right-8"
           }}
-          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"]}
+          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"] as const}
         />
 
         <SearchEntry value={search} handleChange={setSearch} />

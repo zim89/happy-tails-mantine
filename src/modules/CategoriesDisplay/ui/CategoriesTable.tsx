@@ -24,7 +24,7 @@ export default function CategoriesTable({ categories }: Props) {
     return categories.map((item, index) => (
       <CategoryLine key={index} {...item} />
     ));
-  }, [categories.length]);
+  }, [categories]);
 
   return (
     <>
