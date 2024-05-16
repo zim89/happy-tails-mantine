@@ -1,6 +1,8 @@
-import { useForm, UseFormReturnType } from "@mantine/form";
+import { useForm, UseFormReturnType, isInRange, isNotEmpty } from "@mantine/form";
 import { createContext, useState, Dispatch, SetStateAction } from "react";
+
 import { Post } from "../api/postApi";
+import { isContentEmptyOrShort } from "./utils";
 
 type AdminPanelContext = {
     openedLink: string;
@@ -93,18 +95,37 @@ type FormProviderProps = {
     children: React.ReactNode;
 }
 export const PostFormProvider = ({ children, post }: FormProviderProps) => {
-    // TODO: get rid of unnecessary params
     const defaultValues = {
         id: post?.id || '',
         image: post?.posterImgSrc || '',
         isHero: post?.hero || false,
         title: post?.title || "",
-        content: post?.content || "",
+        content: post?.content || "<p></p>",
         author: post?.authorName || ""
     }
 
     const form = useForm({
-        initialValues: defaultValues
+        initialValues: defaultValues,
+        validate: {
+            title: (value) => {
+                if (value.trim().length < 20) {
+                    return "The title should be descriptive.";
+                } else if (value.length > 255) {
+                    return "The title is too long.";
+                }
+
+                return null;
+            },
+            content: (value) => {
+                // Initially the value equals "" but after editing <p>{content}</p>
+                if (!value.trim().length || value === "<p></p>" || isContentEmptyOrShort(value)) {
+                    return "The content must be at least 40 symbols long.";
+                }
+
+                return null;
+            },
+            image: isNotEmpty("Post poster is required.")   
+        }
     });
 
     return (

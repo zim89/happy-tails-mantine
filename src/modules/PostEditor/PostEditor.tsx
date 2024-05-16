@@ -63,7 +63,7 @@ export default function PostEditor({ editor }: Props) {
 	);
 
 	return (
-		<div className="w-full max-w-[700px] min-[2000px]:max-w-[60%] flex flex-col bg-white gap-12 p-4 rounded border border-[#C8C8C8]">
+		<div className="w-full max-w-[700px] min-[2000px]:max-w-[60%] flex flex-col bg-white gap-12 p-4 pb-0 lg:pb-8 rounded border border-[#C8C8C8]">
 			<div>
 				<label className="mb-1">Title</label>
 				<TextInput classNames={{
@@ -76,9 +76,9 @@ export default function PostEditor({ editor }: Props) {
 					error: 'form-error',
 				}} {...form.getInputProps("title")} />
 			</div>
-			<div style={{ height: "100%" }}>
+			<div style={{ height: "100%", position: "relative" }}>
 				<label className="mb-1">Content</label>
-				<div style={{ height: "95%", border: '1px solid #C8C8C8', borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
+				<div style={{ height: "95%", border: form.errors?.content ? '1px solid red' : '1px solid #C8C8C8', borderTopLeftRadius: 5, borderTopRightRadius: 5 }}>
 					<RichTextEditor editor={editor} classNames={{
 						root: classes.editorContent
 					}}>
@@ -137,6 +137,7 @@ export default function PostEditor({ editor }: Props) {
 						<RichTextEditor.Content />
 					</RichTextEditor>
 				</div>
+				{form.errors?.content && <p className='text-[#dc362e] text-[10px] py-1'>{form.errors.content}</p>}
 			</div>
 		</div >
 	)

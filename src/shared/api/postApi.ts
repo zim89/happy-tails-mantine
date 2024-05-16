@@ -16,14 +16,13 @@ export interface Post {
   hero: boolean;
 }
 
-type PostRequest = {
+type GetRequest = {
   page?: number;
   size?: number;
   sort?: Sort;
 };
 
-type PutRequest = {
-  id: string;
+type PostRequest = {
   title: string;
   authorName: string;
   posterImgSrc: string;
@@ -31,12 +30,16 @@ type PutRequest = {
   hero: boolean;
 }
 
+type PutRequest = PostRequest & {
+  id: string;
+}
+
 export const postApi = createApi({
   reducerPath: 'postApi',
   tagTypes: ['Posts'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    findMany: builder.query<BackendResponse<Post[]>, PostRequest>({
+    findMany: builder.query<BackendResponse<Post[]>, GetRequest>({
       query: ({ page = 0, size = 1000000, sort }) => {
         const params = new URLSearchParams({
           page: page.toString(),
@@ -74,8 +77,26 @@ export const postApi = createApi({
         }
       }),
       invalidatesTags: ["Posts"]
+    }),
+    createPost: builder.mutation<Post, PostRequest>({
+      query: ({ title, authorName, posterImgSrc, content, hero }) => ({
+        url: `/posts`,
+        method: "post",
+        data: {
+          title: title,
+          authorName: authorName,
+          posterImgSrc: posterImgSrc,
+          content: content,
+          hero,
+          postStatus: "CREATED"
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }),
+      invalidatesTags: ["Posts"]
     })
   }),
 });
 
-export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation } = postApi;
+export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation, useCreatePostMutation } = postApi;

@@ -11,7 +11,7 @@ export default function NewBlog() {
 	return (
 		<PostFormProvider>
 			<EditorContext>
-				{(editor) => <>
+				{(editor) => <form>
                     <Header editor={editor}/>
 					<div className="flex flex-col lg:flex-row gap-16">
 						<PostEditor editor={editor} />
@@ -21,7 +21,7 @@ export default function NewBlog() {
 							<ImageBox />
 						</div>
 					</div>
-				</>}
+				</form>}
 			</EditorContext>
 		</PostFormProvider>
 	);

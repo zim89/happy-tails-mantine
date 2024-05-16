@@ -5,6 +5,7 @@ import { LucideRotateCcw } from "lucide-react";
 import classes from "@/modules/PostDetails/classes.module.css";
 import sampleImage from "@/assets/images/auth-dog.png";
 import { PostFormContext } from "@/shared/lib/context";
+import { cn } from "@/shared/lib/utils";
 
 export default function FeaturedImage() {
 	const { form } = useContext(PostFormContext);
@@ -20,9 +21,10 @@ export default function FeaturedImage() {
 	}
 
 	return (
-		<div className="bg-white border border-[#C8C8C8] rounded">
+		<div className="bg-white border border-[#C8C8C8] rounded relative">
 			<p className={classes.auxiliaryHeading}>Featured image</p>
-			<div className="m-4 p-4 border-[2px] border-dashed border-[gray] flex items-center">
+			{form.errors?.image && <p className="absolute top-12 left-4 text-[#dc362e] text-[10px]">{form.errors.image}</p>}
+			<div className={cn("m-4 p-4 border-[2px] border-dashed border-[gray] flex items-center", form.errors?.image && "border-[#dc362e] hover:border-[initial] transition")}>
 				{image ? (
 					<div className="flex flex-col w-full">
 						<img src={image} className="object-contain w-full h-full" alt="Hero image" />

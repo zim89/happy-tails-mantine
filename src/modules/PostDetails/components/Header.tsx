@@ -15,7 +15,6 @@ export const Header = ({ editor }: Props) => {
     const [dispatch] = useUpdatePostMutation();
 
     const [isEdited, setIsEdited] = useState(false);
-    const editorText = editor?.getText();
     const editorContent = editor?.getHTML();
 
     // Keep in my mind, whenever you put or clear something in the editor, it wraps the text in <p> tag, so it's always considered to be dirty as defaultValues.content is a plain text node
@@ -41,7 +40,7 @@ export const Header = ({ editor }: Props) => {
         const res = checkIsFormDirty();
         setIsEdited(res);
         setUnsavedState(prev => ({ ...prev, unsavedChanges: res }));
-    }, [editorText, form, defaultValues.content])
+    }, [editorContent, form, defaultValues.content])
 
     const handleCancel = () => {
         // Roll back to the initial state
@@ -52,6 +51,8 @@ export const Header = ({ editor }: Props) => {
 
     const handleSave = async () => {
         try {
+            form.validate();
+            if (!form.isValid()) return;
             const { id, author, content, image, title, isHero } = form.values;
             await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc: image, hero: isHero }).unwrap();
             setIsEdited(false);

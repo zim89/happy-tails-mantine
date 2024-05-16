@@ -25,11 +25,11 @@ import { ChevronDown } from 'lucide-react';
 
 const sortingFieldsMap: { [P in string]: { field: string, order: "desc" | "asc" } } = {
   "Date (new to old)": {
-    field: "publishedAt",
+    field: "createdAt",
     order: "desc"
   },
   "Date (old to new)": {
-    field: "publishedAt",
+    field: "createdAt",
     order: "asc"
   },
   "Name A - Z": {
@@ -61,9 +61,7 @@ const columns = [
         />
       );
     },
-  }),
-  columnHelper.accessor('publishedAt', {
-    sortingFn: "datetime"
+    size: 120
   }),
   columnHelper.accessor('title', {
     cell: (info) => {
@@ -90,6 +88,10 @@ const columns = [
       />
     ),
   }),
+  columnHelper.accessor('createdAt', {
+    sortingFn: "alphanumeric",
+    size: 0,
+  }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info.row.original} />,
@@ -103,7 +105,7 @@ export const Table = ({ data }: Props) => {
     data,
     columns,
     state: {
-      globalFilter: search,
+      globalFilter: search
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
