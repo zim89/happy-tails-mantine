@@ -2,15 +2,13 @@
 
 import {
   type ReactNode,
-  type Dispatch,
-  type SetStateAction,
   createContext,
   useState,
   useCallback
 } from 'react';
 
 export const ProductCountContext = createContext<
-  [number, Dispatch<SetStateAction<number>>]
+  [number, (val: number) => void]
 >([0, () => {}]);
 
 export default function ProductCountContextProvider({
@@ -20,7 +18,7 @@ export default function ProductCountContextProvider({
 }) {
   const [value, _setValue] = useState(0);
 
-  const setValue = useCallback((val: number) => _setValue(val), [_setValue]);
+  const setValue = useCallback((val: number) => _setValue(val), [value]);
 
   return (
     <ProductCountContext.Provider value={[value, setValue]}>

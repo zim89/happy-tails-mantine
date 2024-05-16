@@ -6,6 +6,7 @@ import classes from "@/modules/PostDetails/classes.module.css";
 import sampleImage from "@/assets/images/auth-dog.png";
 import { PostFormContext } from "@/shared/lib/context";
 import { cn } from "@/shared/lib/utils";
+import Image from "next/image";
 
 export default function FeaturedImage() {
 	const { form } = useContext(PostFormContext);
@@ -27,7 +28,15 @@ export default function FeaturedImage() {
 			<div className={cn("m-4 p-4 border-[2px] border-dashed border-[gray] flex items-center", form.errors?.image && "border-[#dc362e] hover:border-[initial] transition")}>
 				{image ? (
 					<div className="flex flex-col w-full">
-						<img src={image} className="object-contain w-full h-full" alt="Hero image" />
+						<div className="min-h-[50px] aspect-square relative">
+							<Image 
+								src={image} 
+								layout="fill"
+								sizes="100vw"
+								style={{ objectFit: "contain" }}
+								alt="Poster image" 
+							/>
+						</div>
 						<div className="flex justify-between mt-8">
 							<UnstyledButton classNames={{ root: "text-sm flex items-center gap-2" }} disabled={!form.isDirty("image")}><LucideRotateCcw size={16} />Update</UnstyledButton>
 							<UnstyledButton classNames={{ root: "text-sm flex items-center gap-2" }} c="#DC362E" onClick={handleRemoveImage}>Remove</UnstyledButton>
