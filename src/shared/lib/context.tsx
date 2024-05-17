@@ -59,21 +59,21 @@ type FormProviderType = {
     form: UseFormReturnType<{
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: File | null;
         title: string;
         content: string;
         author: string;
     }, (values: {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: File | null;
         title: string;
         content: string;
         author: string;
     }) => {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: File | null;
         title: string;
         content: string;
         author: string;
@@ -81,7 +81,7 @@ type FormProviderType = {
     defaultValues: {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: File | null;
         title: string;
         content: string;
         author: string;
@@ -97,7 +97,7 @@ type FormProviderProps = {
 export const PostFormProvider = ({ children, post }: FormProviderProps) => {
     const defaultValues = {
         id: post?.id || '',
-        image: post?.posterImgSrc || '',
+        image: post?.posterImgSrc || null as string | (File | null),
         isHero: post?.hero || false,
         title: post?.title || "",
         content: post?.content || "<p></p>",

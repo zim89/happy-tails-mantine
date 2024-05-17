@@ -1,7 +1,8 @@
 import { Button } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
-
 import { Editor } from "@tiptap/react";
+import axios, { AxiosError } from "axios";
+
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
 import { useCreatePostMutation } from "@/shared/api/postApi";
@@ -50,12 +51,32 @@ export const Header = ({ editor }: Props) => {
     }
 
     const handleSave = async () => {
-        try {
-            form.validate();
-            if (!form.isValid()) return;
+        form.validate();
+        if (!form.isValid()) return;
         
+        try {
+            
             const { author, content, image, title, isHero } = form.values;
-            await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc: image, hero: isHero }).unwrap();
+            
+            const params = new FormData();
+            params.append('image', image);
+            params.append('title', `Post poster for: ${form.values.title}`);
+      
+            try {
+                const res = await axios.post('https://api.imgur.com/3/image/', params, {
+                  headers: {
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                });
+            } catch (err) {
+                if (err instanceof AxiosError) {
+                    form.setFieldError("image", err.message);
+                    console.log(err);
+                }
+            }
+
+            await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc: res.data.data.link, hero: isHero }).unwrap();
             setIsEdited(false);
         } catch (err) {
             console.log(err);

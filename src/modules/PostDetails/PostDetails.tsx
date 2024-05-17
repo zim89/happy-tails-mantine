@@ -24,7 +24,7 @@ export default function PostDetails({ id }: Props) {
 		<PostFormProvider post={data}>
 			<EditorContext>
 				{(editor) => <>
-					<Header editor={editor} />
+					<Header editor={editor} post={data} />
 					<div className="flex flex-col lg:flex-row gap-16">
 						<PostEditor editor={editor} />
 

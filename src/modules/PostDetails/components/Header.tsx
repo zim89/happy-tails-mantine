@@ -1,15 +1,20 @@
 import { Button } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
-
 import { Editor } from "@tiptap/react";
+import axios, { AxiosError } from "axios";
+
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
+import { Post } from "@/shared/types/types";
 import { useUpdatePostMutation } from "@/shared/api/postApi";
+import { formatOrderDate } from "@/shared/lib/helpers";
+import { CustomBadge } from "@/components/Badge";
 
 type Props = {
     editor: Editor;
+    post: Post;
 }
-export const Header = ({ editor }: Props) => {
+export const Header = ({ editor, post }: Props) => {
     const { form, defaultValues } = useContext(PostFormContext);
     const { update: setUnsavedState } = useContext(UnsavedChangesContext);
     const [dispatch] = useUpdatePostMutation();
@@ -50,16 +55,43 @@ export const Header = ({ editor }: Props) => {
     }
 
     const handleSave = async () => {
+        form.validate();
+        if (!form.isValid()) return;
+        
         try {
-            form.validate();
-            if (!form.isValid()) return;
             const { id, author, content, image, title, isHero } = form.values;
-            await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc: image, hero: isHero }).unwrap();
+            let posterImgSrc = image;
+
+            if (form.isDirty("image")) {
+                const params = new FormData();
+                params.append('image', image);
+                params.append('title', `Post poster for: ${form.values.title}`);
+          
+                try {
+                    const res = await axios.post('https://api.imgur.com/3/image/', params, {
+                      headers: {
+                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+                        'Content-Type': 'multipart/form-data',
+                      },
+                    });
+
+                    posterImgSrc = res.data.data.link;
+                } catch (err) {
+                    if (err instanceof AxiosError) {
+                        form.setFieldError("image", err.message);
+                        console.log(err);
+                    }
+                }   
+            }
+
+            await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
             setIsEdited(false);
         } catch (err) {
             console.log(err);
         }
     };
+
+    console.log(post);
 
     return (
         <div className='flex items-center justify-between mb-8'>
@@ -67,7 +99,18 @@ export const Header = ({ editor }: Props) => {
                 <h2 className='mr-1 text-[32px]/[38.4px] font-black'>
                     Blog post
                 </h2>
-                <p>Сreating and publishing engaging content for our audience.</p>
+                <div className="flex gap-4 items-center">
+                    <p>{formatOrderDate(post.createdAt)}</p>
+                    <CustomBadge
+                        color={post.postStatus.toLowerCase()}
+                        name={post.postStatus}
+                        palette={{
+                          published: '#389B48',
+                          draft: '#FBBC04',
+                          archived: '#B4B4B4',
+                        }}
+                      />
+                </div>
             </hgroup>
             {isEdited && (
                 <div className='flex gap-3'>
