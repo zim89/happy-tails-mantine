@@ -2,12 +2,14 @@ import React, { Suspense } from 'react';
 import { Container } from '@mantine/core';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
+
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { PostContent } from "./ui/PostContent";
 import ShareInSocial from './ui/ShareInSocial';
 import PopularPosts from './ui/PopularPosts';
 import { fetchOnePost } from '@/shared/lib/requests';
 import { formatDate, formatRawPostDate } from '@/shared/lib/helpers';
-import Script from 'next/script';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const post = await fetchOnePost(params.id);
@@ -71,7 +73,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                   <p className='mb-6 text-sm/normal font-light lg:mb-9 lg:text-base'>
                     {formatDate(post.createdAt)}
                   </p>
-                  <p>{post.content}</p>
+                  <PostContent content={post.content} />
                 </div>
 
                 <div className='space-y-12 lg:space-y-10'>
