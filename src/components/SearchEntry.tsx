@@ -17,10 +17,8 @@ export const SearchEntry = ({ value, handleChange }: Props) => {
       classNames={{
         root: 'form-root',
         label: 'form-label',
-        input: cn(
-          'form-input',
-          'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary'
-        ),
+        input:
+          'form-input rounded-0.5 border border-brand-grey-400 bg-primary py-2 pl-8 pr-4 text-base placeholder:text-sm/[21px] placeholder:font-lato placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
         section: 'text-brand-grey-600',
       }}
     />

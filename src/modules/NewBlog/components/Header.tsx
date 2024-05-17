@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Editor } from "@tiptap/react";
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
-import { useUpdatePostMutation } from "@/shared/api/postApi";
+import { useCreatePostMutation } from "@/shared/api/postApi";
 
 type Props = {
     editor: Editor;
@@ -12,7 +12,7 @@ type Props = {
 export const Header = ({ editor }: Props) => {
     const { form, defaultValues } = useContext(PostFormContext);
     const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-    const [dispatch] = useUpdatePostMutation();
+    const [dispatch] = useCreatePostMutation();
 
     const [isEdited, setIsEdited] = useState(false);
     const editorContent = editor?.getHTML();
@@ -53,9 +53,9 @@ export const Header = ({ editor }: Props) => {
         try {
             form.validate();
             if (!form.isValid()) return;
-            console.log("Saved");
-            const { id, author, content, image, title, isHero } = form.values;
-            // await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc: image, hero: isHero }).unwrap();
+        
+            const { author, content, image, title, isHero } = form.values;
+            await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc: image, hero: isHero }).unwrap();
             setIsEdited(false);
         } catch (err) {
             console.log(err);

@@ -12,8 +12,6 @@ export const TableBody = <T,>({ rowModel, classNames }: Props<T>) => {
             rowModel.rows.map((row) => (
               <Table.Tr key={row.id} classNames={classNames}>
                 {row.getVisibleCells().map((cell) => {
-                  console.log(cell.column.getIndex(), cell.column.getSize());
-
                   return <Table.Td key={cell.id} styles={{ td: { width: `${cell.column.getSize()}px` } }} classNames={{ td: "p-4" }}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Table.Td>

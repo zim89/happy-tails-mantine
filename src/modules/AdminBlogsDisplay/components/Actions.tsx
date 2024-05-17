@@ -1,6 +1,5 @@
-import { Menu } from '@mantine/core';
+import { Menu, UnstyledButton } from '@mantine/core';
 import { Eye, Edit2, MoreHorizontal, Trash2, FolderDown } from 'lucide-react';
-import { Button } from '@mantine/core';
 import Link from 'next/link';
 
 import { Post } from "@/shared/api/postApi";
@@ -11,26 +10,26 @@ type Props = {
 export const Actions = ({ ctx }: Props) => {
   return (
     <div className='flex justify-end gap-4'>
-      <Button
-        classNames={{ root: 'border border-black w-9 p-0 rounded-[2px]' }}
+      <UnstyledButton
+        classNames={{ root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]' }}
       >
         <Link href={`/admin/blogs/${ctx.id}`}>
           <Eye size={16} color='black' />
         </Link>
-      </Button>
-      <Button
-        classNames={{ root: 'border border-black w-9 p-0 rounded-[2px]' }}
+      </UnstyledButton>
+      <UnstyledButton
+        classNames={{ root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]' }}
       >
         <Edit2 size={16} color='black' />
-      </Button>
+      </UnstyledButton>
 
       <Menu position='bottom-end'>
         <Menu.Target>
-          <Button
-            classNames={{ root: 'border border-black w-9 p-0 rounded-[2px]' }}
+          <UnstyledButton
+            classNames={{ root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]' }}
           >
             <MoreHorizontal size={16} color='black' />
-          </Button>
+          </UnstyledButton>
         </Menu.Target>
 
         <Menu.Dropdown className='p-0 py-2'>

@@ -133,7 +133,7 @@ export const isContentEmptyOrShort = (input: string): boolean => {
   if (match && match[1]) {
     // Check if the content is only whitespace or has less than 40 characters
     const content = match[1].trim();
-    return content.length === 0 || content.length < 40;
+    return content.length === 0 || content.length < 2;
   }
 
   return false;
