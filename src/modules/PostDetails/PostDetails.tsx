@@ -20,8 +20,6 @@ export default function PostDetails({ id }: Props) {
 		"Whoops, it shouldn't have happened, our experts are already fixing this!"
 	}</p>
 
-	console.log(data);
-
 	return (
 		<>
 			{data && (
@@ -31,7 +29,6 @@ export default function PostDetails({ id }: Props) {
 							<Header editor={editor} post={{...data, refetch}} />
 							<div className="flex flex-col lg:flex-row gap-16">
 								<PostEditor editor={editor} />
-
 								<div className="flex-1">
 									<Details post={data} />
 									<ImageBox />

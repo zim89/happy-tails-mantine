@@ -19,27 +19,9 @@ export const Header = ({ editor, post }: Props) => {
     const [isEdited, setIsEdited] = useState(false);
     const editorContent = editor?.getHTML();
 
-    // Keep in my mind, whenever you put or clear something in the editor, it wraps the text in <p> tag, so it's always considered to be dirty as defaultValues.content is a plain text node
-    const checkIsFormDirty = () => {
-        // First, check if the form itself reports being dirty using its isDirty method
-        if (!form.isDirty()) return false; // If the form is not dirty, immediately return false
-
-        // Compare the current text in the editor with the default content value
-        const isContentSame = editorContent === defaultValues.content;
-
-        // Check if specific form fields ('image', 'isHero', 'title') are not dirty
-        const isOtherFieldsNotDirty = !form.isDirty("image") && !form.isDirty("isHero") && !form.isDirty("title");
-
-        // The form is considered not dirty if the content is the same as the default
-        // and none of the specified fields are dirty
-        // If both conditions are true, !(true && true) => false, meaning the form is not dirty
-        // If any condition is false, it means there's a difference or a dirty field, hence the form is dirty
-        return !(isContentSame && isOtherFieldsNotDirty);
-    };
-
     useEffect(() => {
         // I forced to compare editor's text to the default value because whenever I put something or clear in the editor, it wraps the text in <p> tag, so it's always dirty
-        const res = checkIsFormDirty();
+        const res = form.isDirty();
         setIsEdited(res);
         setUnsavedState(prev => ({ ...prev, unsavedChanges: res }));
     }, [editorContent, form, defaultValues.content])
@@ -71,9 +53,17 @@ export const Header = ({ editor, post }: Props) => {
                 </div>
             </hgroup>
             <div className='flex gap-3 mt-4 md:mt-0'>
-                {isEdited && post.postStatus === "PUBLISHED" && <PublishedController onClose={() => setIsEdited(false)} handleCancel={handleCancel} />}
-                {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController postId={post.id} refetch={post.refetch} />}
-                {post.postStatus === "DRAFT" && <DraftController handlePreview={() => { }} handleSaveAndExit={() => { }} handlePublish={() => { }} />}
+                {isEdited && post.postStatus === "PUBLISHED" && <PublishedController refetch={() => {
+                    post.refetch();
+                    form.resetDirty();
+                }} handleCancel={handleCancel} />}
+                {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController postId={post.id} refetch={() => {
+                    post.refetch();
+                    form.resetDirty();
+                }} />}
+                {post.postStatus === "DRAFT" && <DraftController postId={post.id} handlePreview={() => { }} refetch={() => {
+                    post.refetch();
+                }} />}
             </div>
         </div>
     );

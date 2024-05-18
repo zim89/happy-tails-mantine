@@ -1,14 +1,19 @@
+"use client"
+
+import { useContext } from "react";
+import { useRouter } from "next/navigation";
+
 import Controls from "@/components/Controls";
 import { useChangePostStatusMutation, useUpdatePostMutation } from "@/shared/api/postApi";
 import { PostFormContext } from "@/shared/lib/context";
 import { publishImage } from "@/shared/lib/requests";
-import { useContext } from "react";
 
 type PublishedControllerProps = {
     handleCancel: () => void;
-    onClose: () => void;
+    refetch: () => void;
 }
-export const PublishedController = ({ onClose, handleCancel }: PublishedControllerProps) => {
+
+export const PublishedController = ({ refetch, handleCancel }: PublishedControllerProps) => {
     const { form } = useContext(PostFormContext);
     const [dispatch] = useUpdatePostMutation();
 
@@ -25,12 +30,12 @@ export const PublishedController = ({ onClose, handleCancel }: PublishedControll
             }
 
             await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
-            onClose();
+            refetch();
         } catch (err) {
             console.log(err);
         }
     };
-    
+
     return (
         <Controls>
             {({ DarkButton, LightButton }) => <>
@@ -52,7 +57,7 @@ type ArchivedControllerProps = {
 
 export const ArchivedController = ({ postId, refetch }: ArchivedControllerProps) => {
     const [dispatch] = useChangePostStatusMutation();
-    
+
     const handler = async (id: number, status: "DRAFT" | "PUBLISHED") => {
         try {
             await dispatch({ id, status }).unwrap();
@@ -77,20 +82,57 @@ export const ArchivedController = ({ postId, refetch }: ArchivedControllerProps)
 }
 
 type DraftControllerProps = {
+    postId: number;
     handlePreview: () => void;
-    handleSaveAndExit: () => void;
-    handlePublish: () => void;
+    refetch: () => void;
 }
 
-export const DraftController = ({ handlePreview, handleSaveAndExit, handlePublish }: DraftControllerProps) => {
+export const DraftController = ({ postId, handlePreview, refetch }: DraftControllerProps) => {
+    const { form } = useContext(PostFormContext);
+    const [dispatch] = useUpdatePostMutation();
+    const [changeStatus] = useChangePostStatusMutation();
+    const router = useRouter();
+
+    const save = async () => {
+        form.validate();
+        if (!form.isValid()) return;
+
+        try {
+            const { id, author, content, image, title, isHero } = form.values;
+            let posterImgSrc = typeof image === "string" ? image : "";
+
+            if (form.isDirty("image") && image) {
+                posterImgSrc = await publishImage(image, `Post poster for: ${form.values.title}`);
+            }
+
+            await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const publish = async () => {
+        try {
+            await save();
+            await changeStatus({ id: postId, status: "PUBLISHED" }).unwrap();
+            refetch();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <Controls>
             {({ DarkButton, LightButton, PreviewButton }) => <>
                 <PreviewButton handler={handlePreview} />
-                <LightButton handler={handleSaveAndExit}>
+                <LightButton handler={async () => {
+                    await save();
+                    refetch();
+                    router.push("/admin/blogs");
+                }}>
                     Save and exit
                 </LightButton>
-                <DarkButton handler={handlePublish}>
+                <DarkButton handler={publish}>
                     Publish
                 </DarkButton>
             </>}
