@@ -34,6 +34,11 @@ type PutRequest = PostRequest & {
   id: string;
 }
 
+type PostStatusRequest = {
+  id: number;
+  status: Post["postStatus"];
+}
+
 export const postApi = createApi({
   reducerPath: 'postApi',
   tagTypes: ['Posts'],
@@ -65,11 +70,11 @@ export const postApi = createApi({
         url: `/posts`,
         method: "put",
         data: {
-          id: id,
-          title: title,
-          authorName: authorName,
-          posterImgSrc: posterImgSrc,
-          content: content,
+          id,
+          title,
+          authorName,
+          posterImgSrc,
+          content,
           hero
         },
         headers: {
@@ -94,8 +99,27 @@ export const postApi = createApi({
         }
       }),
       invalidatesTags: ["Posts"]
+    }),
+    deletePost: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `/posts/${id}`,
+        method: "delete"
+      }),
+      invalidatesTags: ["Posts"]
+    }),
+    changePostStatus: builder.mutation<Post, PostStatusRequest>({
+      query: ({ id, status }) => {
+        const params = new URLSearchParams({ id: id.toString(), postStatus: status });
+        
+        return {
+          url: `/posts/update-status`,
+          method: "put",
+          params,
+        }
+      },
+      invalidatesTags: ["Posts"]
     })
   }),
 });
 
-export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation, useCreatePostMutation } = postApi;
+export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation, useCreatePostMutation, useDeletePostMutation, useChangePostStatusMutation } = postApi;

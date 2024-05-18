@@ -1,23 +1,20 @@
-import { Button } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { Editor } from "@tiptap/react";
-import axios, { AxiosError } from "axios";
 
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
 import { Post } from "@/shared/api/postApi";
-import { useUpdatePostMutation } from "@/shared/api/postApi";
-import { formatOrderDate } from "@/shared/lib/helpers";
+import { formatDate } from "@/shared/lib/helpers";
 import { CustomBadge } from "@/components/Badge";
+import { ArchivedController, DraftController, PublishedController } from "./Controllers";
 
 type Props = {
     editor: Editor;
-    post: Post;
+    post: Post & { refetch: () => void; };
 }
 export const Header = ({ editor, post }: Props) => {
     const { form, defaultValues } = useContext(PostFormContext);
     const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-    const [dispatch] = useUpdatePostMutation();
 
     const [isEdited, setIsEdited] = useState(false);
     const editorContent = editor?.getHTML();
@@ -54,85 +51,30 @@ export const Header = ({ editor, post }: Props) => {
         setIsEdited(false);
     }
 
-    const handleSave = async () => {
-        form.validate();
-        if (!form.isValid()) return;
-        
-        try {
-            const { id, author, content, image, title, isHero } = form.values;
-            let posterImgSrc = typeof image === "string" ? image : "";
-
-            if (form.isDirty("image") && image) {
-                const params = new FormData();
-                params.append('image', image);
-                params.append('title', `Post poster for: ${form.values.title}`);
-          
-                try {
-                    const res = await axios.post('https://api.imgur.com/3/image/', params, {
-                      headers: {
-                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-                        'Content-Type': 'multipart/form-data',
-                      },
-                    });
-
-                    posterImgSrc = res.data.data.link;
-                } catch (err) {
-                    if (err instanceof AxiosError) {
-                        form.setFieldError("image", err.message);
-                        console.log(err);
-                        return;
-                    }
-                }   
-            }
-
-            await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
-            setIsEdited(false);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    console.log(post);
-
     return (
-        <div className='flex items-center justify-between mb-8'>
+        <div className='md:flex items-center justify-between mb-8'>
             <hgroup>
                 <h2 className='mr-1 text-[32px]/[38.4px] font-black'>
                     Blog post
                 </h2>
-                <div className="flex gap-4 items-center">
-                    <p>{formatOrderDate(post.createdAt)}</p>
+                <div className="flex gap-3 items-baseline">
+                    <p>{formatDate(post.createdAt, "MMM DD, YYYY, HH:mm:ss A")}</p>
                     <CustomBadge
                         color={post.postStatus.toLowerCase()}
                         name={post.postStatus}
                         palette={{
-                          published: '#389B48',
-                          draft: '#FBBC04',
-                          archived: '#B4B4B4',
+                            published: '#389B48',
+                            draft: '#FBBC04',
+                            archived: '#B4B4B4',
                         }}
-                      />
+                    />
                 </div>
             </hgroup>
-            {isEdited && (
-                <div className='flex gap-3'>
-                    <Button
-                        classNames={{
-                            root: 'text-black border rounded-[2px] border-[#C8C8C8] py-[10px] px-8',
-                        }}
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        classNames={{
-                            root: 'rounded-[2px] bg-black px-8 py-[10px] text-white'
-                        }}
-                        onClick={handleSave}
-                    >
-                        Save
-                    </Button>
-                </div>
-            )}
+            <div className='flex gap-3 mt-4 md:mt-0'>
+                {isEdited && post.postStatus === "PUBLISHED" && <PublishedController onClose={() => setIsEdited(false)} handleCancel={handleCancel} />}
+                {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController postId={post.id} refetch={post.refetch}/>}
+                {post.postStatus === "DRAFT" && <DraftController handlePreview={() => { }} handleSaveAndExit={() => { }} handlePublish={() => { }} />}
+            </div>
         </div>
     );
 };

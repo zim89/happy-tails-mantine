@@ -4,10 +4,8 @@ import { FileButton, UnstyledButton } from "@mantine/core";
 import { useContext } from "react";
 import { LucideRotateCcw, UploadCloud } from "lucide-react";
 import Image from "next/image";
-import axios from "axios";
 
 import classes from "./classes.module.css";
-import sampleImage from "@/assets/images/auth-dog.png";
 import { PostFormContext } from "@/shared/lib/context";
 import { cn } from "@/shared/lib/utils";
 
@@ -31,12 +29,11 @@ export default function FeaturedImage() {
 			<div className={cn("m-4 p-3 py-6 flex items-center", classes.borderedBox, form.errors?.image && classes.error)}>
 				{image ? (
 					<div className="flex flex-col w-full">
-						<div className="min-h-[50px] aspect-square relative">
+						<div className="min-h-[120px] relative">
 							<Image 
 								src={typeof image === "string" ? image : URL.createObjectURL(image)} 
 								layout="fill"
-								sizes="100vw"
-								style={{ objectFit: "contain" }}
+								style={{ objectFit: "cover" }}
 								alt="Poster image" 
 							/>
 						</div>

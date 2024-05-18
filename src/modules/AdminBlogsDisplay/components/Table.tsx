@@ -15,12 +15,7 @@ import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
 import { EmptyRow } from '@/components/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
-import { CustomBadge } from '@/components/Badge';
-import Image from 'next/image';
-import { formatPostDateFromNumber } from '@/shared/lib/helpers';
-import { Actions } from './Actions';
 import React from 'react';
-import { TableBody } from '@/components/TableBody';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomTableRow } from "./CustomTableRow";

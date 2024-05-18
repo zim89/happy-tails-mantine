@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import {
   Button,
+  UnstyledButton,
   FileInput,
   InputLabel,
   TextInput,
@@ -141,9 +142,9 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
   return (
     <>
-      <Button className={styles.actionButton} onClick={open}>
+      <UnstyledButton className={styles.actionButton} onClick={open}>
         Update
-      </Button>
+      </UnstyledButton>
 
       <Modal
         size={694}

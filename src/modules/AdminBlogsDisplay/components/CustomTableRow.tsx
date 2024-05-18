@@ -1,7 +1,7 @@
 import { Table } from "@mantine/core";
 import Image from "next/image";
 
-import { formatPostDateFromNumber } from '@/shared/lib/helpers';
+import { formatDateFromTimestamp } from '@/shared/lib/helpers';
 import { Post } from "@/shared/api/postApi";
 import { CustomBadge } from '@/components/Badge';
 import { Actions } from './Actions';
@@ -25,7 +25,7 @@ export const CustomTableRow = ({ row }: Props) => {
 				<hgroup>
 		          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis w-full max-w-[600px] mb-2'>{row.title}</h3>
 		          <p className='font-light'>
-		            {formatPostDateFromNumber(row.createdAt)}
+		            {formatDateFromTimestamp(row.createdAt)}
 		          </p>
 		        </hgroup>
 			</Table.Td>
@@ -41,7 +41,7 @@ export const CustomTableRow = ({ row }: Props) => {
 			      />
 			</Table.Td>
 			<Table.Td className="pl-11 ml-auto">
-				<Actions ctx={row} />
+				<Actions post={row} />
 			</Table.Td>
 		</Table.Tr>
 	);

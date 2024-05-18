@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import classes from '../classes.module.css';
-import { Button } from '@mantine/core';
+import { Button, UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
 
@@ -22,15 +22,13 @@ export const Header = () => {
           <p>Streamlining content management on your store</p>
         </hgroup>
 
-        <Button
+        <UnstyledButton
           component={Link}
           href='/admin/blogs/new'
-          leftSection={<PlusCircle size={20} />}
-          size='md'
-          className='ml-6 bg-black'
+          className='bg-black gap-2 text-white font-bold flex items-center py-[10px] px-4 rounded'
         >
-          Add a new article
-        </Button>
+          <PlusCircle size={20} />Add a new article
+        </UnstyledButton>
       </div>
     </>
   );

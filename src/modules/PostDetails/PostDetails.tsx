@@ -13,12 +13,14 @@ type Props = {
 };
 
 export default function PostDetails({ id }: Props) {
-	const { data, isLoading, error } = useFindOneQuery({ id });
+	const { data, isLoading, error, refetch } = useFindOneQuery({ id });
 
 	if (isLoading) return <p>Loading...</p>
 	if (error) return <p>{
 		"Whoops, it shouldn't have happened, our experts are already fixing this!"
 	}</p>
+
+	console.log(data);
 
 	return (
 		<>
@@ -26,12 +28,12 @@ export default function PostDetails({ id }: Props) {
 				<PostFormProvider post={data}>
 					<EditorContext>
 						{(editor) => <>
-							<Header editor={editor} post={data} />
+							<Header editor={editor} post={{...data, refetch}} />
 							<div className="flex flex-col lg:flex-row gap-16">
 								<PostEditor editor={editor} />
 
 								<div className="flex-1">
-									<Details />
+									<Details post={data} />
 									<ImageBox />
 								</div>
 							</div>

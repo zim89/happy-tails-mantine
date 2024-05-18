@@ -63,7 +63,7 @@ export default function PostEditor({ editor }: Props) {
 	);
 
 	return (
-		<div className="w-full max-w-[700px] min-[2000px]:max-w-[60%] flex flex-col bg-white gap-12 p-4 pb-0 lg:pb-8 rounded border border-[#C8C8C8]">
+		<div className="w-full max-w-[700px] min-[2000px]:max-w-[60%] flex flex-col bg-white gap-12 p-4 lg:pb-8 rounded border border-[#C8C8C8]">
 			<div>
 				<label className="mb-1">Title</label>
 				<TextInput classNames={{

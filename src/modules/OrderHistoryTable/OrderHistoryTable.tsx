@@ -1,7 +1,6 @@
-import { Table, Button, Pagination, Group, Select } from '@mantine/core';
+import { Table, Button } from '@mantine/core';
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -10,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 
 import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
-import { formatOrderDate } from '@/shared/lib/helpers';
+import { formatDateTimeWithBrackets } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 
@@ -18,9 +17,6 @@ import classes from './classes.module.css';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { useDebouncedState } from '@mantine/hooks';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { CustomBadge } from '@/components/Badge';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
@@ -48,7 +44,7 @@ const columns = [
     enableSorting: false,
   }),
   columnHelper.accessor('createdDate', {
-    cell: (info) => <span>{formatOrderDate(info.getValue())}</span>,
+    cell: (info) => <span>{formatDateTimeWithBrackets(info.getValue())}</span>,
     header: 'Date',
   }),
   columnHelper.accessor('orderStatus', {

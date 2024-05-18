@@ -17,7 +17,7 @@ export default function CategoryRow(category: Category) {
       </Table.Td>
       <Table.Td>{category.name}</Table.Td>
       <Table.Td>{category.productCount}</Table.Td>
-      <Table.Td py={0}>
+      <Table.Td className="flex flex-col gap-3">
         <UpdateCategory categoryLine={{ ...category }} />
         <DeleteCategory categoryLine={{ ...category }} />
       </Table.Td>

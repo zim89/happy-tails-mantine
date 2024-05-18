@@ -1,7 +1,7 @@
 'use client';
 
 import { useSelectUsers } from '@/shared/hooks/useSelectUsers';
-import { formatArrayToDate } from '@/shared/lib/helpers';
+import { formatDateFromArray } from '@/shared/lib/helpers';
 import { Profile } from './components/Profile';
 import { DeliveryDetails } from './components/DeliveryDetails';
 import OrderHistoryTable from '../OrderHistoryTable';
@@ -17,7 +17,7 @@ export default function UserDetails({ id }: Props) {
   if (!user) return null;
 
   // Cut a timestamp
-  const [day, year, _] = formatArrayToDate(user.registerDate).split(/(\w{4})/g);
+  const [day, year, _] = formatDateFromArray(user.registerDate).split(/(\w{4})/g);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
 import { BackendResponse, Category, Product } from '../types/types';
@@ -118,3 +118,24 @@ export const fetchLastFivePosts = async (): Promise<Post[]> => {
     throw new Error('Failed to fetch last posts');
   }
 };
+
+export const publishImage = async (image: Blob | string, title: string): Promise<string> => {
+  const params = new FormData();
+  params.append('image', image);
+  params.append('title', title);
+
+  try {
+    const res = await axios.post('https://api.imgur.com/3/image/', params, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data.data.link;
+  } catch (err) {
+    if (err instanceof AxiosError)
+      console.log(err);
+    throw err;
+  }
+}

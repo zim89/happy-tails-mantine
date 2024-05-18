@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { fetchLastFivePosts } from '@/shared/lib/requests';
-import { formatDate } from '@/shared/lib/helpers';
+import { formatDateToLongString } from '@/shared/lib/helpers';
 import noImage from '@/assets/icons/no-image.512x512.png';
 
 async function PopularPosts() {
@@ -40,7 +40,7 @@ async function PopularPosts() {
                     {post.title}
                   </h3>
                   <p className='text-base font-light'>
-                    {formatDate(post.createdAt)}
+                    {formatDateToLongString(post.createdAt)}
                   </p>
                 </div>
               </div>

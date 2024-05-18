@@ -1,5 +1,5 @@
 .actionButton {
-    @apply p-0 text-black block;
+    @apply p-0 text-black block font-bold text-sm;
 }
 
 .formHeader {

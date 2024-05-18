@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Badge, Button } from '@mantine/core';
 import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
-import { formatRawOrderDate } from '@/shared/lib/helpers';
+import { formatDateToShortString } from '@/shared/lib/helpers';
 import Image from 'next/image';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
@@ -66,7 +66,7 @@ export default function OrdersList({ orders }: Props) {
               )}
             >
               <span>№ {order.number} from </span>
-              <time>{formatRawOrderDate(order.createdDate)}</time>
+              <time>{formatDateToShortString(order.createdDate)}</time>
             </div>
 
             {/* Only from laptops */}

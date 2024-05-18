@@ -3,18 +3,19 @@ import dayjs from 'dayjs';
 import { Order, Product, AxiosQueryError } from '../types/types';
 import { ErrorResponse } from './constants';
 
-// TODO: Name it to formatDateToLongString
-export const formatDate = (date: string | number) => {
-  return dayjs(date).format('MMMM D, YYYY');
+export const formatDate = (date: string | number, format = "MMMM D, YYYY") => {
+  return dayjs(date).format(format);
+} 
+
+export const formatDateToLongString = (date: string | number, format = "MMMM D, YYYY") => {
+  return dayjs(date).format(format);
 };
 
-// TODO: Name it to formatDateToShortString
-export const formatRawOrderDate = (raw: string) => {
+export const formatDateToShortString = (raw: string) => {
   return dayjs(raw).format('DD.MM.YY');
 };
 
-// TODO: Name it to formatDateToISO
-export const formatRawPostDate = (raw: string) => {
+export const formatDateToISO = (raw: string) => {
   return dayjs(raw).format();
 };
 
@@ -28,13 +29,11 @@ export const formatUserAttributes = (obj: { [P in string]: string }) => {
   return res;
 };
 
-// TODO: Name it to formatDateTimeWithBrackets
-export const formatOrderDate = (raw: string | number) => {
+export const formatDateTimeWithBrackets = (raw: string | number) => {
   return dayjs(raw).format('MMM DD, YYYY (HH:mm)')
 }
 
-// TODO: Name it to formatDateFromArray
-export const formatArrayToDate = (array: number[]) => {
+export const formatDateFromArray = (array: number[], format = 'MMM DD, YYYY (HH:mm)') => {
   const dateArray = array;
   const date = dayjs(
     new Date(
@@ -47,13 +46,12 @@ export const formatArrayToDate = (array: number[]) => {
       dateArray[6] / 1000
     )
   );
-  const formattedDate = date.format('MMM DD, YYYY (HH:mm)');
+  const formattedDate = date.format(format);
 
   return formattedDate;
 };
 
-// TODO: Name it to formatDateFromTimestamp
-export const formatPostDateFromNumber = (date: number) => {
+export const formatDateFromTimestamp = (date: number) => {
   return dayjs(new Date(date)).format("MMMM D, YYYY");
 }
 
