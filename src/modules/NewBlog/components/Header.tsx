@@ -59,9 +59,11 @@ export const Header = ({ editor }: Props) => {
             const { author, content, image, title, isHero } = form.values;
             
             const params = new FormData();
-            params.append('image', image);
+            params.append('image', image!);
             params.append('title', `Post poster for: ${form.values.title}`);
-      
+            
+            let posterImgSrc = "";
+
             try {
                 const res = await axios.post('https://api.imgur.com/3/image/', params, {
                   headers: {
@@ -69,6 +71,8 @@ export const Header = ({ editor }: Props) => {
                     'Content-Type': 'multipart/form-data',
                   },
                 });
+
+                posterImgSrc = res.data.data.link;
             } catch (err) {
                 if (err instanceof AxiosError) {
                     form.setFieldError("image", err.message);
@@ -76,7 +80,7 @@ export const Header = ({ editor }: Props) => {
                 }
             }
 
-            await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc: res.data.data.link, hero: isHero }).unwrap();
+            await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc, hero: isHero }).unwrap();
             setIsEdited(false);
         } catch (err) {
             console.log(err);

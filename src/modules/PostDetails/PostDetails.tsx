@@ -21,20 +21,24 @@ export default function PostDetails({ id }: Props) {
 	}</p>
 
 	return (
-		<PostFormProvider post={data}>
-			<EditorContext>
-				{(editor) => <>
-					<Header editor={editor} post={data} />
-					<div className="flex flex-col lg:flex-row gap-16">
-						<PostEditor editor={editor} />
+		<>
+			{data && (
+				<PostFormProvider post={data}>
+					<EditorContext>
+						{(editor) => <>
+							<Header editor={editor} post={data} />
+							<div className="flex flex-col lg:flex-row gap-16">
+								<PostEditor editor={editor} />
 
-						<div className="flex-1">
-							<Details />
-							<ImageBox />
-						</div>
-					</div>
-				</>}
-			</EditorContext>
-		</PostFormProvider>
+								<div className="flex-1">
+									<Details />
+									<ImageBox />
+								</div>
+							</div>
+						</>}
+					</EditorContext>
+				</PostFormProvider>
+			)}
+		</>
 	);
 }

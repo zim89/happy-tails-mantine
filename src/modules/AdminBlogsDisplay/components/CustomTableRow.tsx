@@ -2,7 +2,7 @@ import { Table } from "@mantine/core";
 import Image from "next/image";
 
 import { formatPostDateFromNumber } from '@/shared/lib/helpers';
-import { Post } from "@/shared/types/types";
+import { Post } from "@/shared/api/postApi";
 import { CustomBadge } from '@/components/Badge';
 import { Actions } from './Actions';
 

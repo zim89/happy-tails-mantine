@@ -5,7 +5,7 @@ import axios, { AxiosError } from "axios";
 
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
-import { Post } from "@/shared/types/types";
+import { Post } from "@/shared/api/postApi";
 import { useUpdatePostMutation } from "@/shared/api/postApi";
 import { formatOrderDate } from "@/shared/lib/helpers";
 import { CustomBadge } from "@/components/Badge";
@@ -60,9 +60,9 @@ export const Header = ({ editor, post }: Props) => {
         
         try {
             const { id, author, content, image, title, isHero } = form.values;
-            let posterImgSrc = image;
+            let posterImgSrc = typeof image === "string" ? image : "";
 
-            if (form.isDirty("image")) {
+            if (form.isDirty("image") && image) {
                 const params = new FormData();
                 params.append('image', image);
                 params.append('title', `Post poster for: ${form.values.title}`);
@@ -80,6 +80,7 @@ export const Header = ({ editor, post }: Props) => {
                     if (err instanceof AxiosError) {
                         form.setFieldError("image", err.message);
                         console.log(err);
+                        return;
                     }
                 }   
             }

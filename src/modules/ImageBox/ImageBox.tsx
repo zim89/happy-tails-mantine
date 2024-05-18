@@ -21,7 +21,7 @@ export default function FeaturedImage() {
 	};
 
 	const handleRemoveImage = () => {
-		form.setFieldValue("image", "");
+		form.setFieldValue("image", null);
 	}
 
 	return (
