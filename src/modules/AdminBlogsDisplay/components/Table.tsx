@@ -5,11 +5,11 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel
 } from '@tanstack/react-table';
 import { Button, Table as MantineTable, Select } from '@mantine/core';
 
 import { Post } from '@/shared/api/postApi';
-import { EntriesCount } from '@/components/EntriesCount';
 import classes from '../classes.module.css';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
@@ -22,6 +22,25 @@ import { Actions } from './Actions';
 import React from 'react';
 import { TableBody } from '@/components/TableBody';
 import { ChevronDown } from 'lucide-react';
+
+const sortingFieldsMap: { [P in string]: { field: string, order: "desc" | "asc" } } = {
+  "Date (new to old)": {
+    field: "createdAt",
+    order: "desc"
+  },
+  "Date (old to new)": {
+    field: "createdAt",
+    order: "asc"
+  },
+  "Name A - Z": {
+    field: "title",
+    order: "asc"
+  },
+  "Name Z - A": {
+    field: "title",
+    order: "desc"
+  }
+}
 
 type Props = {
   data: Post[];
@@ -42,14 +61,15 @@ const columns = [
         />
       );
     },
+    size: 120
   }),
-  columnHelper.accessor('publishedAt', {
+  columnHelper.accessor('title', {
     cell: (info) => {
       return (
         <hgroup>
-          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[600px]'>{info.row.original.title}</h3>
+          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[600px]'>{info.getValue()}</h3>
           <p className='font-light'>
-            {formatPostDateFromNumber(info.getValue())}
+            {formatPostDateFromNumber(info.row.original.createdAt)}
           </p>
         </hgroup>
       );
@@ -68,9 +88,13 @@ const columns = [
       />
     ),
   }),
+  columnHelper.accessor('createdAt', {
+    sortingFn: "alphanumeric",
+    size: 0,
+  }),
   columnHelper.display({
     id: 'actions',
-    cell: (info) => <Actions />,
+    cell: (info) => <Actions ctx={info.row.original} />,
   }),
 ];
 
@@ -81,13 +105,16 @@ export const Table = ({ data }: Props) => {
     data,
     columns,
     state: {
-      globalFilter: search,
+      globalFilter: search
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
+
+ 
 
   return (
     <>
@@ -130,30 +157,23 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <div className='flex items-center justify-between border-[1px] bg-white p-4'>
-        {/* <EntriesCount
-          current={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            1
-          }
-          pageSize={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            table.getRowModel().rows.length
-          }
-          size={table.getCoreRowModel().rows.length}
-        /> */}
         <Select
           label="Sort By"
           allowDeselect={false}
           rightSection={<ChevronDown size={16} />} 
           defaultValue="Date (new to old)"
+          onChange={(e) => {
+            if (e && sortingFieldsMap[e]) {
+              const { field, order } = sortingFieldsMap[e];
+              table.getColumn(field)?.toggleSorting(order === "desc");
+            }
+          }}
           classNames={{
             input: "border-0 form-input font-bold user-select-none",
             root: "flex items-center",
             section: "right-8"
           }}
-          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"]}
+          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"] as const}
         />
 
         <SearchEntry value={search} handleChange={setSearch} />
@@ -174,6 +194,7 @@ export const Table = ({ data }: Props) => {
         visible={table.getRowModel().rows.length === 0}
         message='You have no written blog yet'
       />
+
 
       <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>

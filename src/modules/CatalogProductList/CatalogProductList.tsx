@@ -35,7 +35,7 @@ export default function CatalogProductList({
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
     replace(`${path}?${params.toString()}`);
-    setPage(page);
+    setPage(() => page);
     scrollIntoView();
   };
 

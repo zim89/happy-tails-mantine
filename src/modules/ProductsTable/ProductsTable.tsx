@@ -11,6 +11,7 @@ import {
   useReactTable,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
@@ -42,6 +43,7 @@ const columns = [
       <Image width={50} height={50} src={info.getValue()} alt='' />
     ),
     header: 'Image',
+    enableSorting: false,
     size: 112,
   }),
   columnHelper.accessor('name', {
@@ -56,6 +58,7 @@ const columns = [
     ),
     header: 'Code',
     size: 89,
+    enableSorting: false,
   }),
   columnHelper.accessor('categoryName', {
     cell: (info) => (
@@ -63,6 +66,7 @@ const columns = [
     ),
     header: 'Category',
     size: 89,
+    enableSorting: false,
   }),
   columnHelper.accessor('price', {
     cell: (info) => (
@@ -97,6 +101,7 @@ const columns = [
     ),
     header: 'Status',
     size: 89,
+    enableSorting: false,
   }),
   columnHelper.display({
     id: 'actions',
@@ -124,6 +129,7 @@ export default function ProductsTable({ data }: Props) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (

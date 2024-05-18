@@ -8,10 +8,12 @@ import { SidebarLinks } from '../lib/utils';
 import { AdminPanelContext } from '@/shared/lib/context';
 import { cn } from '@/shared/lib/utils';
 import { Dropdown } from './Dropdown';
+import BlockLink from '@/modules/BlockLink';
 
 type Props = {
   links: SidebarLinks;
 };
+
 export const Menu = ({ links }: Props) => {
   const { openedLink, update } = useContext(AdminPanelContext);
 
@@ -36,10 +38,10 @@ export const Menu = ({ links }: Props) => {
             <Group>
               <Box className='flex'>
                 <Box ml='md' className='text-xl font-bold leading-6'>
-                  <Link href={item.link} className='inline-flex gap-3 items-center'>
+                  <BlockLink href={item.link} className='inline-flex gap-3 items-center'>
                     <item.icon size={20} />
                     {item.label}
-                  </Link>
+                  </BlockLink>
                 </Box>
               </Box>
             </Group>

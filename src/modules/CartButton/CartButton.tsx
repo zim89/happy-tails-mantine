@@ -38,11 +38,11 @@ export default function CartButton() {
           disabled={!hasItemsInCart}
           position='bottom-end'
           color='#F39324'
-          size={10}
+          size={14}
           offset={5}
           inline
           classNames={{
-            indicator: 'p-0 text-[6px]/[7px] font-bold text-black',
+            indicator: 'p-0 text-[10px]/[21px] font-bold text-black',
           }}
         >
           <ShoppingBag className='iconBtn' />

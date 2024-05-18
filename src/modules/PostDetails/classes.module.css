@@ -1,0 +1,3 @@
+.auxiliaryHeading {
+	@apply text-center text-xl font-bold p-3;
+}

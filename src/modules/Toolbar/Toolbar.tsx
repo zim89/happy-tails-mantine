@@ -80,7 +80,6 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
       );
 
     close();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values]);
 
@@ -92,9 +91,6 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           form={form}
           category={category}
           categories={categories}
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
           opened={opened}
           onClose={close}
           onToggle={toggle}

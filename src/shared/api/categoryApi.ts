@@ -29,7 +29,16 @@ export const categoriesApi = createApi({
           params,
         };
       },
-      providesTags: ['Categories'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ id }) => ({
+                type: 'Categories' as const,
+                id,
+              })),
+              "Categories",
+            ]
+          : ['Categories'],
     }),
     addNewCategory: builder.mutation<Category, Partial<Category>>({
       query: (payload) => {
@@ -47,7 +56,7 @@ export const categoriesApi = createApi({
           },
         };
       },
-      invalidatesTags: ['Categories'],
+      invalidatesTags: ["Categories"],
     }),
     removeCategory: builder.mutation<void, { id: ID }>({
       query: (payload) => ({
@@ -68,7 +77,7 @@ export const categoriesApi = createApi({
           'Content-type': 'application/json',
         },
       }),
-      invalidatesTags: ['Categories'],
+      invalidatesTags: ["Categories"]
     }),
   }),
 });
