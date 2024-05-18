@@ -34,6 +34,10 @@ type PutRequest = PostRequest & {
   id: string;
 }
 
+type DeleteRequest = {
+  id: number;
+}
+
 type PostStatusRequest = {
   id: number;
   status: Post["postStatus"];
@@ -100,7 +104,7 @@ export const postApi = createApi({
       }),
       invalidatesTags: ["Posts"]
     }),
-    deletePost: builder.mutation<void, { id: string }>({
+    deletePost: builder.mutation<void, DeleteRequest>({
       query: ({ id }) => ({
         url: `/posts/${id}`,
         method: "delete"

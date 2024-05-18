@@ -72,7 +72,7 @@ export const Header = ({ editor, post }: Props) => {
             </hgroup>
             <div className='flex gap-3 mt-4 md:mt-0'>
                 {isEdited && post.postStatus === "PUBLISHED" && <PublishedController onClose={() => setIsEdited(false)} handleCancel={handleCancel} />}
-                {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController postId={post.id} refetch={post.refetch}/>}
+                {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController postId={post.id} refetch={post.refetch} />}
                 {post.postStatus === "DRAFT" && <DraftController handlePreview={() => { }} handleSaveAndExit={() => { }} handlePublish={() => { }} />}
             </div>
         </div>
