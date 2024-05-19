@@ -7,13 +7,16 @@ import Controls from "@/components/Controls";
 import { useChangePostStatusMutation, useUpdatePostMutation } from "@/shared/api/postApi";
 import { PostFormContext } from "@/shared/lib/context";
 import { publishImage } from "@/shared/lib/requests";
+import { isAxiosQueryError, isErrorDataString } from "@/shared/lib/helpers";
+import { AxiosError } from "axios";
 
 type PublishedControllerProps = {
     handleCancel: () => void;
     refetch: () => void;
+    setNotification: (type: "Success" | "Failed", text?: string) => void;
 }
 
-export const PublishedController = ({ refetch, handleCancel }: PublishedControllerProps) => {
+export const PublishedController = ({ refetch, handleCancel, setNotification }: PublishedControllerProps) => {
     const { form } = useContext(PostFormContext);
     const [dispatch] = useUpdatePostMutation();
 
@@ -26,13 +29,24 @@ export const PublishedController = ({ refetch, handleCancel }: PublishedControll
             let posterImgSrc = typeof image === "string" ? image : "";
 
             if (form.isDirty("image") && image) {
-                posterImgSrc = await publishImage(image, `Post poster for: ${form.values.title}`);
+                try {
+                    posterImgSrc = await publishImage(image, `Post poster for: ${form.values.title}`);
+                } catch (err) {
+                    if (err instanceof AxiosError) {
+                        form.setFieldError("image", err.message);
+                        throw err;
+                    }
+                }
             }
 
             await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
             refetch();
+            setNotification("Success", "Post has been saved!")
         } catch (err) {
-            console.log(err);
+            if (isAxiosQueryError(err)) {
+                console.error(err);
+                setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+            }
         }
     };
 
@@ -53,17 +67,22 @@ export const PublishedController = ({ refetch, handleCancel }: PublishedControll
 type ArchivedControllerProps = {
     postId: number;
     refetch: () => void;
+    setNotification: (type: "Success" | "Failed", text?: string) => void;
 }
 
-export const ArchivedController = ({ postId, refetch }: ArchivedControllerProps) => {
+export const ArchivedController = ({ postId, refetch, setNotification }: ArchivedControllerProps) => {
     const [dispatch] = useChangePostStatusMutation();
 
     const handler = async (id: number, status: "DRAFT" | "PUBLISHED") => {
         try {
             await dispatch({ id, status }).unwrap();
             refetch();
+            setNotification('Success', `The post has been ${status === "DRAFT" ? "placed in drafts!" : "published!"}!`);
         } catch (err) {
-            console.log(err);
+            if (isAxiosQueryError(err)) {
+                console.error(err);
+                setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+            }
         }
     }
 
@@ -85,9 +104,10 @@ type DraftControllerProps = {
     postId: number;
     handlePreview: () => void;
     refetch: () => void;
+    setNotification: (type: "Success" | "Failed", text?: string) => void;
 }
 
-export const DraftController = ({ postId, handlePreview, refetch }: DraftControllerProps) => {
+export const DraftController = ({ postId, handlePreview, refetch, setNotification }: DraftControllerProps) => {
     const { form } = useContext(PostFormContext);
     const [dispatch] = useUpdatePostMutation();
     const [changeStatus] = useChangePostStatusMutation();
@@ -106,8 +126,12 @@ export const DraftController = ({ postId, handlePreview, refetch }: DraftControl
             }
 
             await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
+            setNotification("Success", "The post has been saved!");
         } catch (err) {
-            console.log(err);
+            if (isAxiosQueryError(err)) {
+                console.error(err);
+                setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+            }
         }
     }
 
@@ -116,8 +140,12 @@ export const DraftController = ({ postId, handlePreview, refetch }: DraftControl
             await save();
             await changeStatus({ id: postId, status: "PUBLISHED" }).unwrap();
             refetch();
+            setNotification("Success", "The post has been published!");
         } catch (err) {
-            console.log(err);
+            if (isAxiosQueryError(err)) {
+                console.error(err);
+                setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+            }
         }
     }
 
