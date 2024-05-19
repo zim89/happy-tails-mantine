@@ -1,12 +1,13 @@
+"use client";
+
 import { FileButton, UnstyledButton } from "@mantine/core";
 import { useContext } from "react";
-import { LucideRotateCcw } from "lucide-react";
+import { LucideRotateCcw, UploadCloud } from "lucide-react";
+import Image from "next/image";
 
-import classes from "@/modules/PostDetails/classes.module.css";
-import sampleImage from "@/assets/images/auth-dog.png";
+import classes from "./classes.module.css";
 import { PostFormContext } from "@/shared/lib/context";
 import { cn } from "@/shared/lib/utils";
-import Image from "next/image";
 
 export default function FeaturedImage() {
 	const { form } = useContext(PostFormContext);
@@ -14,26 +15,25 @@ export default function FeaturedImage() {
 
 	const handleImage = (file: File | null) => {
 		if (!file) return;
-		form.setFieldValue("image", sampleImage.src);
+		form.setFieldValue("image", file);
 	};
 
 	const handleRemoveImage = () => {
-		form.setFieldValue("image", "");
+		form.setFieldValue("image", null);
 	}
 
 	return (
 		<div className="bg-white border border-[#C8C8C8] rounded relative">
 			<p className={classes.auxiliaryHeading}>Featured image</p>
 			{form.errors?.image && <p className="absolute top-12 left-4 text-[#dc362e] text-[10px]">{form.errors.image}</p>}
-			<div className={cn("m-4 p-4 border-[2px] border-dashed border-[gray] flex items-center", form.errors?.image && "border-[#dc362e] hover:border-[initial] transition")}>
+			<div className={cn("m-4 p-3 py-6 flex items-center", classes.borderedBox, form.errors?.image && classes.error)}>
 				{image ? (
 					<div className="flex flex-col w-full">
-						<div className="min-h-[50px] aspect-square relative">
+						<div className="min-h-[120px] relative">
 							<Image 
-								src={image} 
+								src={typeof image === "string" ? image : URL.createObjectURL(image)} 
 								layout="fill"
-								sizes="100vw"
-								style={{ objectFit: "contain" }}
+								style={{ objectFit: "cover" }}
 								alt="Poster image" 
 							/>
 						</div>
@@ -46,8 +46,8 @@ export default function FeaturedImage() {
 					<>
 						<FileButton onChange={handleImage} accept="image/png,image/jpeg">
 							{(props) => (
-								<UnstyledButton {...props} classNames={{ root: "w-full bg-black text-white text-center font-bold p-2" }} aria-label="Add image" title="Add image">
-									Add Image
+								<UnstyledButton {...props} classNames={{ root: "rounded-[2px] flex items-center justify-center gap-2 w-full bg-[#5A5A5A] text-white font-bold p-2" }} aria-label="Add image" title="Add image">
+									<UploadCloud size={20} /> Add Image
 								</UnstyledButton>
 							)}
 						</FileButton>

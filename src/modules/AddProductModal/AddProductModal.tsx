@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import {
-  Button,
+  UnstyledButton,
   FileInput,
   Group,
   Select,
@@ -154,10 +154,10 @@ export default function AddProductModal() {
           <h2>Products</h2>
           <p>Manage your product catalog</p>
         </hgroup>
-        <Button className='bg-black' onClick={open}>
-          <PlusCircle width={16} className='mr-[10px]' />
+        <UnstyledButton className='bg-black text-white flex gap-2 items-center font-black rounded px-4 py-[10px]' onClick={open}>
+          <PlusCircle width={20} />
           Add product
-        </Button>
+        </UnstyledButton>
       </div>
 
       <Modal

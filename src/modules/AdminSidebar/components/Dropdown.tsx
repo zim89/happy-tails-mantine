@@ -1,12 +1,11 @@
 'use client';
 
 import { Box, Collapse, Group, Text, UnstyledButton } from '@mantine/core';
-import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { Minus } from "lucide-react";
 
 import { LinksGroup } from '../lib/utils';
-import { AdminPanelContext } from '@/shared/lib/context';
+import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
 import { cn } from '@/shared/lib/utils';
 import BlockLink from '@/modules/BlockLink';
 
@@ -14,6 +13,7 @@ type Props = {
   linksGroup: LinksGroup;
 };
 export const Dropdown = ({ linksGroup }: Props) => {
+  const { unsavedChanges } = useContext(UnsavedChangesContext);
   const { openedLink, update } = useContext(AdminPanelContext);
   const [isOpened, setIsOpened] = useState(false);
 
@@ -22,6 +22,8 @@ export const Dropdown = ({ linksGroup }: Props) => {
   );
 
   useEffect(() => {
+    if (unsavedChanges) return;
+
     if (areThereLinksSelected) {
       setIsOpened(true);
     } else if (openedLink !== linksGroup.label) {
@@ -30,6 +32,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
   }, [openedLink]);
 
   const setOpened = (label: string) => {
+    if (unsavedChanges) return;
     update((prev) => ({ ...prev, openedLink: label }));
   };
 
@@ -39,6 +42,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
         // It's highlighted when it's clicked or when the page to which child link forwards is opened
         className={cn('w-full py-2 pl-10 text-[#C8C8C8]', (isOpened && areThereLinksSelected) && 'bg-[#F39324] text-[#FDFDFD]')}
         onClick={() => {
+          if (unsavedChanges) return;
           setIsOpened(!isOpened);
         }}
       >

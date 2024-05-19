@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 import { Check, AlertTriangle } from 'lucide-react';
@@ -12,7 +12,7 @@ import file_error from '@/assets/icons/categories/file_error.svg';
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { isAxiosQueryError, isErrorDataString, mockLongRequest } from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 
 type Props = {
@@ -69,9 +69,9 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         return (
           <>
             {/* Button to open main modal */}
-            <Button className={styles.actionButton} onClick={openMain}>
+            <UnstyledButton className={styles.actionButton} onClick={openMain}>
               Delete
-            </Button>
+            </UnstyledButton>
 
             <Modal
               onClose={closeMain}

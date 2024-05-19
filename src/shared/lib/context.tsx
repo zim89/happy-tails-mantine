@@ -59,21 +59,21 @@ type FormProviderType = {
     form: UseFormReturnType<{
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: string | File | null;
         title: string;
         content: string;
         author: string;
     }, (values: {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: string | File | null;
         title: string;
         content: string;
         author: string;
     }) => {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: string | File | null;
         title: string;
         content: string;
         author: string;
@@ -81,7 +81,7 @@ type FormProviderType = {
     defaultValues: {
         id: string | number;
         isHero: boolean;
-        image: string;
+        image: string | File | null;
         title: string;
         content: string;
         author: string;
@@ -97,21 +97,25 @@ type FormProviderProps = {
 export const PostFormProvider = ({ children, post }: FormProviderProps) => {
     const defaultValues = {
         id: post?.id || '',
-        image: post?.posterImgSrc || '',
+        image: post?.posterImgSrc || null as string | File | null,
         isHero: post?.hero || false,
         title: post?.title || "",
         content: post?.content || "<p></p>",
         author: post?.authorName || ""
     }
 
+    const titlePattern = /^[a-zA-Z0-9 _,.-]+$/;
+
     const form = useForm({
         initialValues: defaultValues,
         validate: {
             title: (value) => {
-                if (value.trim().length < 20) {
+                if (value.trim().length < 2) {
                     return "The title should be descriptive.";
-                } else if (value.length > 255) {
+                } else if (value.length > 50) {
                     return "The title is too long.";
+                } else if (!titlePattern.test(value)) {
+                    return "The title is incorrect";
                 }
 
                 return null;
@@ -119,7 +123,7 @@ export const PostFormProvider = ({ children, post }: FormProviderProps) => {
             content: (value) => {
                 // Initially the value equals "" but after editing <p>{content}</p>
                 if (!value.trim().length || value === "<p></p>" || isContentEmptyOrShort(value)) {
-                    return "The content must be at least 40 symbols long.";
+                    return "The content must be reasonable.";
                 }
 
                 return null;

@@ -30,7 +30,7 @@ export const Actions = ({ ctx }: Props) => {
       {/* "keepMounted" is used to prevent re-rendering its children which causes flickering */}
       <Menu width={148} position='bottom-end' keepMounted>
         <Menu.Target>
-          <ActionIcon className='size-9 border border-brand-grey-400 bg-primary text-secondary hover:bg-brand-grey-300 data-[expanded=true]:bg-brand-grey-300'>
+          <ActionIcon className='size-9 border border-brand-grey-400 bg-primary text-secondary hover:bg-brand-grey-300 hover:text-secondary data-[expanded=true]:bg-brand-grey-300'>
             <MoreHorizontal size={16} />
           </ActionIcon>
         </Menu.Target>

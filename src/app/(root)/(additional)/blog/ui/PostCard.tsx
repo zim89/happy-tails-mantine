@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import type { Post } from '@/shared/api/postApi';
-import { formatDate } from '@/shared/lib/helpers';
+import { formatDateToLongString } from '@/shared/lib/helpers';
 
 interface Props {
   post: Post;
@@ -41,7 +41,7 @@ function PostCard({ post }: Props) {
         />
       </div>
 
-      <p className='mb-2 text-base font-light'>{formatDate(post.createdAt)}</p>
+      <p className='mb-2 text-base font-light'>{formatDateToLongString(post.createdAt)}</p>
       <h3 className='text-xl/normal font-bold md:h-8 lg:h-11'>{post.title}</h3>
     </div>
   );

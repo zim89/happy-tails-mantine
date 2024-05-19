@@ -1,0 +1,11 @@
+.auxiliaryHeading {
+	@apply text-center text-xl font-bold p-3;
+}
+
+.borderedBox {
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23C8C8C8FF' stroke-width='3' stroke-dasharray='6%2c 13' stroke-dashoffset='3.5' stroke-linecap='square'/%3e%3c/svg%3e");	
+}	
+
+.error {
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23dc362e' stroke-width='3' stroke-dasharray='6%2c 13' stroke-dashoffset='3.5' stroke-linecap='square'/%3e%3c/svg%3e");
+}

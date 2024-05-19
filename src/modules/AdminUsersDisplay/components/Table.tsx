@@ -13,7 +13,7 @@ import { User } from '@/shared/types/auth.types';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
-import { formatArrayToDate } from '@/shared/lib/helpers';
+import { formatDateFromArray } from '@/shared/lib/helpers';
 
 import classes from '../classes.module.css';
 import { Actions } from './Actions';
@@ -64,7 +64,7 @@ const columns = [
   columnHelper.accessor('registerDate', {
     cell: (info) => {
       // Apr 26, 2024 (22:18) => ['Apr 26,', '2024', '(22:18)']
-      const splittedDate = formatArrayToDate(info.getValue()).split(/(\w{4})/g);
+      const splittedDate = formatDateFromArray(info.getValue()).split(/(\w{4})/g);
 
       return <div>
         <span className="whitespace-pre">{splittedDate[0]}{splittedDate[1]}</span>

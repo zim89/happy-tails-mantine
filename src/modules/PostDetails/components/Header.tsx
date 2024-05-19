@@ -1,43 +1,42 @@
-import { Button } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
-
 import { Editor } from "@tiptap/react";
+
 import { PostFormContext } from "@/shared/lib/context";
 import { UnsavedChangesContext } from "@/shared/lib/context";
-import { useUpdatePostMutation } from "@/shared/api/postApi";
+import { Post } from "@/shared/api/postApi";
+import { formatDate } from "@/shared/lib/helpers";
+import { CustomBadge } from "@/components/Badge";
+import { ArchivedController, DraftController, PublishedController } from "./Controllers";
+import { AlertTriangle, Check } from "lucide-react";
+import { useNotification } from "@/shared/hooks/useNotification";
+import Notify from "@/components/Notify";
 
 type Props = {
     editor: Editor;
+    post: Post & { refetch: () => void; };
 }
-export const Header = ({ editor }: Props) => {
+export const Header = ({ editor, post }: Props) => {
     const { form, defaultValues } = useContext(PostFormContext);
     const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-    const [dispatch] = useUpdatePostMutation();
+    const [setNotification, { props, clear }] = useNotification({
+        failed: {
+            color: "transparent",
+            icon: <AlertTriangle size={24} fill='#DC362E' />,
+            text: 'Post update failed!',
+        },
+        success: {
+            color: '#389B48',
+            icon: <Check size={24} />,
+            text: 'Post update succeeded!',
+        },
+    });
 
     const [isEdited, setIsEdited] = useState(false);
     const editorContent = editor?.getHTML();
 
-    // Keep in my mind, whenever you put or clear something in the editor, it wraps the text in <p> tag, so it's always considered to be dirty as defaultValues.content is a plain text node
-    const checkIsFormDirty = () => {
-        // First, check if the form itself reports being dirty using its isDirty method
-        if (!form.isDirty()) return false; // If the form is not dirty, immediately return false
-
-        // Compare the current text in the editor with the default content value
-        const isContentSame = editorContent === defaultValues.content;
-
-        // Check if specific form fields ('image', 'isHero', 'title') are not dirty
-        const isOtherFieldsNotDirty = !form.isDirty("image") && !form.isDirty("isHero") && !form.isDirty("title");
-
-        // The form is considered not dirty if the content is the same as the default
-        // and none of the specified fields are dirty
-        // If both conditions are true, !(true && true) => false, meaning the form is not dirty
-        // If any condition is false, it means there's a difference or a dirty field, hence the form is dirty
-        return !(isContentSame && isOtherFieldsNotDirty);
-    };
-
     useEffect(() => {
         // I forced to compare editor's text to the default value because whenever I put something or clear in the editor, it wraps the text in <p> tag, so it's always dirty
-        const res = checkIsFormDirty();
+        const res = form.isDirty();
         setIsEdited(res);
         setUnsavedState(prev => ({ ...prev, unsavedChanges: res }));
     }, [editorContent, form, defaultValues.content])
@@ -49,46 +48,41 @@ export const Header = ({ editor }: Props) => {
         setIsEdited(false);
     }
 
-    const handleSave = async () => {
-        try {
-            form.validate();
-            if (!form.isValid()) return;
-            const { id, author, content, image, title, isHero } = form.values;
-            await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc: image, hero: isHero }).unwrap();
-            setIsEdited(false);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
     return (
-        <div className='flex items-center justify-between mb-8'>
-            <hgroup>
-                <h2 className='mr-1 text-[32px]/[38.4px] font-black'>
-                    Blog post
-                </h2>
-                <p>Сreating and publishing engaging content for our audience.</p>
-            </hgroup>
-            {isEdited && (
-                <div className='flex gap-3'>
-                    <Button
-                        classNames={{
-                            root: 'text-black border rounded-[2px] border-[#C8C8C8] py-[10px] px-8',
-                        }}
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        classNames={{
-                            root: 'rounded-[2px] bg-black px-8 py-[10px] text-white'
-                        }}
-                        onClick={handleSave}
-                    >
-                        Save
-                    </Button>
+        <>
+            <div className='md:flex items-center justify-between mb-8'>
+                <hgroup>
+                    <h2 className='mr-1 text-[32px]/[38.4px] font-black'>
+                        Blog post
+                    </h2>
+                    <div className="flex gap-3 items-baseline">
+                        <p>{formatDate(post.createdAt, "MMM DD, YYYY, HH:mm:ss A")}</p>
+                        <CustomBadge
+                            color={post.postStatus.toLowerCase()}
+                            name={post.postStatus}
+                            palette={{
+                                published: '#389B48',
+                                draft: '#FBBC04',
+                                archived: '#B4B4B4',
+                            }}
+                        />
+                    </div>
+                </hgroup>
+                <div className='flex gap-3 mt-4 md:mt-0'>
+                    {isEdited && post.postStatus === "PUBLISHED" && <PublishedController setNotification={setNotification} refetch={() => {
+                        post.refetch();
+                        form.resetDirty();
+                    }} handleCancel={handleCancel} />}
+                    {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController setNotification={setNotification} postId={post.id} refetch={() => {
+                        post.refetch();
+                        form.resetDirty();
+                    }} />}
+                    {post.postStatus === "DRAFT" && <DraftController setNotification={setNotification} postId={post.id} handlePreview={() => { }} refetch={() => {
+                        post.refetch();
+                    }} />}
                 </div>
-            )}
-        </div>
+            </div>
+            <Notify {...props} onClose={clear} />
+        </>
     );
 };

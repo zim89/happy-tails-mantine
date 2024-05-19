@@ -138,12 +138,13 @@ export default function ProductsTable({ data }: Props) {
         <h2 className='mr-6 text-base/[24px] font-bold'>Products Catalog</h2>
         <div className='flex gap-6'>
           <Button
+            variant="transparent"
             onClick={() =>
               table.getColumn('categoryName')?.setFilterValue(null)
             }
             classNames={{
               root: cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
                 !table.getColumn('categoryName')?.getFilterValue() &&
                   'bg-gray-300'
               ),
@@ -154,13 +155,14 @@ export default function ProductsTable({ data }: Props) {
           {categories.length > 0 &&
             categories.map(({ name, title }, index) => (
               <Button
+                variant="transparent"
                 onClick={() =>
                   table.getColumn('categoryName')?.setFilterValue(name)
                 }
                 key={index}
                 classNames={{
                   root: cn(
-                    'rounded-sm px-3 py-2 text-sm text-[#161616]',
+                    'rounded-sm px-3 py-2 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
                     table.getColumn('categoryName')?.getFilterValue() ===
                       name && 'bg-gray-300'
                   ),

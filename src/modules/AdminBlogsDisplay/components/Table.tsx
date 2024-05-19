@@ -15,13 +15,10 @@ import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
 import { EmptyRow } from '@/components/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
-import { CustomBadge } from '@/components/Badge';
-import Image from 'next/image';
-import { formatPostDateFromNumber } from '@/shared/lib/helpers';
-import { Actions } from './Actions';
 import React from 'react';
-import { TableBody } from '@/components/TableBody';
 import { ChevronDown } from 'lucide-react';
+
+import { CustomTableRow } from "./CustomTableRow";
 
 const sortingFieldsMap: { [P in string]: { field: string, order: "desc" | "asc" } } = {
   "Date (new to old)": {
@@ -48,54 +45,11 @@ type Props = {
 
 const columnHelper = createColumnHelper<Post>();
 
+// It's used only for sorting and filtering purposes
 const columns = [
-  columnHelper.accessor('posterImgSrc', {
-    cell: (info) => {
-      return (
-        <Image
-          src={info.getValue()}
-          width={120}
-          height={120}
-          className='aspect-square max-w-[120px] object-cover'
-          alt={info.row.original.slug}
-        />
-      );
-    },
-    size: 120
-  }),
-  columnHelper.accessor('title', {
-    cell: (info) => {
-      return (
-        <hgroup>
-          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis max-w-[600px]'>{info.getValue()}</h3>
-          <p className='font-light'>
-            {formatPostDateFromNumber(info.row.original.createdAt)}
-          </p>
-        </hgroup>
-      );
-    },
-  }),
-  columnHelper.accessor('postStatus', {
-    cell: (info) => (
-      <CustomBadge
-        color={info.getValue().toLowerCase()}
-        name={info.getValue()}
-        palette={{
-          published: '#389B48',
-          draft: '#FBBC04',
-          archived: '#B4B4B4',
-        }}
-      />
-    ),
-  }),
-  columnHelper.accessor('createdAt', {
-    sortingFn: "alphanumeric",
-    size: 0,
-  }),
-  columnHelper.display({
-    id: 'actions',
-    cell: (info) => <Actions ctx={info.row.original} />,
-  }),
+  columnHelper.accessor('title', {}),
+  columnHelper.accessor('postStatus', {}),
+  columnHelper.accessor('createdAt', { sortingFn: "alphanumeric" })
 ];
 
 export const Table = ({ data }: Props) => {
@@ -114,7 +68,7 @@ export const Table = ({ data }: Props) => {
     getSortedRowModel: getSortedRowModel(),
   });
 
- 
+  const rowModel = table.getRowModel();
 
   return (
     <>
@@ -122,12 +76,13 @@ export const Table = ({ data }: Props) => {
         <h2 className='mr-6 text-xl/[24px] font-bold'>Articles</h2>
         <div className='flex gap-6'>
           <Button
+            variant='transparent'
             onClick={() => table.getColumn('postStatus')?.setFilterValue(null)}
             classNames={{
               root: cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
                 !table.getColumn('postStatus')?.getFilterValue() &&
-                  'bg-gray-300'
+                'bg-gray-300'
               ),
             }}
           >
@@ -141,10 +96,11 @@ export const Table = ({ data }: Props) => {
           ).map((status) => (
             <Button
               key={status}
+              variant='transparent'
               className={cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
                 table.getColumn('postStatus')?.getFilterValue() === status &&
-                  'bg-brand-grey-300'
+                'bg-brand-grey-300'
               )}
               onClick={() =>
                 table.getColumn('postStatus')?.setFilterValue(status)
@@ -160,7 +116,7 @@ export const Table = ({ data }: Props) => {
         <Select
           label="Sort By"
           allowDeselect={false}
-          rightSection={<ChevronDown size={16} />} 
+          rightSection={<ChevronDown size={16} />}
           defaultValue="Date (new to old)"
           onChange={(e) => {
             if (e && sortingFieldsMap[e]) {
@@ -187,7 +143,12 @@ export const Table = ({ data }: Props) => {
           table: 'border-spacing-y-4 border-separate',
         }}
       >
-        <TableBody rowModel={table.getRowModel()} />
+        <MantineTable.Tbody className="gap-4 flex flex-col"> 
+          {rowModel.rows.length > 0 &&
+            rowModel.rows.map((row) => {
+                return <CustomTableRow key={row.original.id} row={row.original} />
+            })}
+        </MantineTable.Tbody>
       </MantineTable>
 
       <EmptyRow

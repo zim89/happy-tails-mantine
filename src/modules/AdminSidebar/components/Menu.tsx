@@ -1,11 +1,10 @@
 'use client';
 
-import { Box, Collapse, Group, Text, UnstyledButton } from '@mantine/core';
-import { useContext, Fragment, useState } from 'react';
-import Link from 'next/link';
+import { Box, Group, UnstyledButton } from '@mantine/core';
+import { useContext } from 'react';
 
 import { SidebarLinks } from '../lib/utils';
-import { AdminPanelContext } from '@/shared/lib/context';
+import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
 import { cn } from '@/shared/lib/utils';
 import { Dropdown } from './Dropdown';
 import BlockLink from '@/modules/BlockLink';
@@ -15,9 +14,12 @@ type Props = {
 };
 
 export const Menu = ({ links }: Props) => {
+  const { unsavedChanges } = useContext(UnsavedChangesContext);
   const { openedLink, update } = useContext(AdminPanelContext);
 
   const setOpened = (label: string) => {
+    if (unsavedChanges) return;
+
     update((prev) => ({ ...prev, openedLink: label }));
   };
 
