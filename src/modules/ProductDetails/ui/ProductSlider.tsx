@@ -11,9 +11,17 @@ import clsx from 'clsx';
 import '@mantine/carousel/styles.css';
 import { Product } from '@/shared/types/types';
 
-type ProductSliderProps = { targetCategory?: string, data: Product[], alt?: boolean };
+type ProductSliderProps = {
+  targetCategory?: string;
+  data: Product[];
+  alt?: boolean;
+};
 
-export default function ProductSlider({ data, alt, targetCategory }: ProductSliderProps) {
+export default function ProductSlider({
+  data,
+  alt,
+  targetCategory,
+}: ProductSliderProps) {
   const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
@@ -44,7 +52,7 @@ export default function ProductSlider({ data, alt, targetCategory }: ProductSlid
 
   useEffect(() => {
     if (width >= 768 && width < 1280) slidesToScroll.current = 2;
-    if (width > 1280) slidesToScroll.current = 3
+    if (width > 1280) slidesToScroll.current = 3;
     else slidesToScroll.current = 1;
   }, [width]);
 
@@ -98,54 +106,63 @@ export default function ProductSlider({ data, alt, targetCategory }: ProductSlid
             'navBtn data-[inactive=true]:navBtn-disabled data-[inactive=false]:navBtn-primary',
         }}
       >
-        {data.length > 0 && data.map((item) => (
-          <Carousel.Slide key={item.id}>
-            <Card
-              withBorder
-              padding={28}
-              radius={2}
-              classNames={{
-                root: 'border-brand-grey-400 w-[340px] md:w-full',
-              }}
+        {data.length > 0 &&
+          data.map((item) => (
+            <Carousel.Slide key={item.id}>
+              <Link href={`/products/${item.id}`}>
+                <Card
+                  withBorder
+                  padding={28}
+                  radius={2}
+                  classNames={{
+                    root: 'border-brand-grey-400 w-[340px] md:w-full h-full',
+                  }}
+                >
+                  <Stack gap={20}>
+                    <Image
+                      src={item.imagePath}
+                      alt={item.name}
+                      width={304}
+                      height={287}
+                      className='h-[287px] w-[284px] lg:w-[304px]'
+                    />
+                    <Box>
+                      <Text className='mb-2 text-xs leading-normal'>
+                        {item.article}
+                      </Text>
+                      <Text className='mb-9 text-xl font-bold leading-normal'>
+                        {item.name}
+                      </Text>
+                      <Text className='text-base'>$ {item.price}</Text>
+                    </Box>
+                  </Stack>
+                </Card>
+              </Link>
+            </Carousel.Slide>
+          ))}
+        {targetCategory && (
+          <Card
+            withBorder
+            padding={28}
+            radius={2}
+            classNames={{
+              root: 'border-brand-grey-400 bg-[#EEE] min-w-[340px] md:w-full',
+            }}
+          >
+            <Link
+              href={`/${targetCategory.toLowerCase()}`}
+              className='inline-flex h-full flex-col items-center justify-center text-xs leading-normal text-[#A8A8A8]'
             >
-              <Stack gap={20}>
-                <Image
-                  src={item.imagePath}
-                  alt={item.name}
-                  width={304}
-                  height={287}
-                  className='h-[287px] w-[284px] lg:w-[304px]'
-                />
-                <Box>
-                  <Text className='mb-2 text-xs leading-normal'>
-                    {item.article}
-                  </Text>
-                  <Text className='mb-9 text-xl font-bold leading-normal'>
-                    <Link href={`/products/${item.id}`}>
-                      {item.name}
-                    </Link>
-                  </Text>
-                  <Text className='text-base'>$ {item.price}</Text>
-                </Box>
-              </Stack>
-            </Card>
-          </Carousel.Slide>
-        ))}
-        {targetCategory &&
-        <Card
-          withBorder
-          padding={28}
-          radius={2}
-          classNames={{
-            root: 'border-brand-grey-400 bg-[#EEE] min-w-[340px] md:w-full',
-          }}>
-            <Link href={`/${targetCategory.toLowerCase()}`} className="text-xs text-[#A8A8A8] leading-normal inline-flex justify-center items-center flex-col h-full">
-                <Plus size={130}/>
-                <span className="text-2xl mb-3 uppercase font-light">More Products</span>
-                <span className="text-xs text-center">Explore more amazing products from this category!</span>
+              <Plus size={130} />
+              <span className='mb-3 text-2xl font-light uppercase'>
+                More Products
+              </span>
+              <span className='text-center text-xs'>
+                Explore more amazing products from this category!
+              </span>
             </Link>
           </Card>
-        }
+        )}
       </Carousel>
     </Container>
   );

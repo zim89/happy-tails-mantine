@@ -10,9 +10,10 @@ import PostCard from './PostCard';
 
 interface Props {
   posts: BackendResponse<Post[]>;
+  external?: boolean;
 }
 
-export default function PostList({ posts }: Props) {
+export default function PostList({ posts, external }: Props) {
   const [data, setData] = useState<Post[]>(posts.content ?? []);
   const [page, setPage] = useState(1);
   const [totalPages] = useState(posts.totalPages);
@@ -43,28 +44,37 @@ export default function PostList({ posts }: Props) {
         ))}
       </ul>
 
-      {page < totalPages && (
-        <button
-          type='button'
-          onClick={handleLoadMore}
-          className={cn(
-            'btn btn-secondary relative block md:mx-auto md:w-[174px]',
-            isLoading && 'opacity-40'
-          )}
-          disabled={isLoading}
+      {external ? (
+        <Link
+          href='/blog'
+          className='btn btn-secondary relative block md:mx-auto md:w-[174px]'
         >
-          <Loader
-            color='orange'
-            size={28}
-            classNames={{
-              root: cn(
-                'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
-                !isLoading && 'hidden'
-              ),
-            }}
-          />
           Read more
-        </button>
+        </Link>
+      ) : (
+        page < totalPages && (
+          <button
+            type='button'
+            onClick={handleLoadMore}
+            className={cn(
+              'btn btn-secondary relative block md:mx-auto md:w-[174px]',
+              isLoading && 'opacity-40'
+            )}
+            disabled={isLoading}
+          >
+            <Loader
+              color='orange'
+              size={28}
+              classNames={{
+                root: cn(
+                  'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
+                  !isLoading && 'hidden'
+                ),
+              }}
+            />
+            Read more
+          </button>
+        )
       )}
     </>
   );

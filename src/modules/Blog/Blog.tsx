@@ -12,7 +12,7 @@ export default async function Blog() {
       </h2>
 
       <Container>
-        <PostList posts={posts} />
+        <PostList posts={posts} external />
       </Container>
     </section>
   );
