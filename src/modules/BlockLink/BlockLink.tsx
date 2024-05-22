@@ -6,7 +6,7 @@ import React, { useContext } from "react"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import DeleteModal from "@/components/DeleteModal";
+import WarnModal from "@/components/DeleteModal";
 import { UnsavedChangesContext } from "@/shared/lib/context"
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
@@ -28,7 +28,7 @@ export default function BlockLink({ children, ...props }: Props) {
     return (
         <>
             {!context ? link : context.unsavedChanges ? (
-                <DeleteModal>
+                <WarnModal>
                     {(Modal) => (
                         <>
                             {/* Opens a modal window */}
@@ -68,7 +68,7 @@ export default function BlockLink({ children, ...props }: Props) {
                             </Modal>
                         </>
                     )}
-                </DeleteModal>
+                </WarnModal>
             ) : (
                 link
             )}

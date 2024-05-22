@@ -84,24 +84,23 @@ export const Header = ({ editor }: Props) => {
             params.append('image', image!);
             params.append('title', `Post poster for: ${form.values.title}`);
 
-            let posterImgSrc = thumbnail.src;
-            // let posterImgSrc = "";
+            let posterImgSrc = "";
 
-            // try {
-            //     const res = await axios.post('https://api.imgur.com/3/image/', params, {
-            //         headers: {
-            //             Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            //             'Content-Type': 'multipart/form-data',
-            //         },
-            //     });
+            try {
+                const res = await axios.post('https://api.imgur.com/3/image/', params, {
+                    headers: {
+                        Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
 
-            //     posterImgSrc = res.data.data.link;
-            // } catch (err) {
-            //     if (err instanceof AxiosError) {
-            //         form.setFieldError("image", err.message);
-            //         throw err;
-            //     }
-            // }
+                posterImgSrc = res.data.data.link;
+            } catch (err) {
+                if (err instanceof AxiosError) {
+                    form.setFieldError("image", err.message);
+                    throw err;
+                }
+            }
 
             const { id } = await dispatch({ authorName: author || "Happy Tails Admin", content, title, posterImgSrc, hero: isHero }).unwrap();
             setIsEdited(false);
@@ -145,6 +144,7 @@ export const Header = ({ editor }: Props) => {
                     </div>
                 )}
             </div>
+            
             <Notify {...props} onClose={clear} />
         </>
     );
