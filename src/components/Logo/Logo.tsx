@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import logoMobile from '@/assets/logo/logo-mobile.svg';
 import logoTablet from '@/assets/logo/logo-tablet.svg';
@@ -10,7 +9,7 @@ const logoAlt =
 
 function Logo() {
   return (
-    <Link href='/'>
+    <>
       <Image src={logoMobile} alt={logoAlt} className='md:hidden' />
       <Image
         src={logoTablet}
@@ -22,7 +21,7 @@ function Logo() {
         alt={`${logoAlt} After logo placed text: Happy Tails`}
         className='hidden lg:block'
       />
-    </Link>
+    </>
   );
 }
 

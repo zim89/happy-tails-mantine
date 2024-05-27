@@ -9,6 +9,8 @@ import { useEffect } from "react";
 
 import { sharedProps } from "@/modules/PostEditor";
 
+import url from "@/assets/images/auth-dog.png"
+
 interface Props {
     handleImageUpload: (file: File) => Promise<string>;
 }
@@ -39,10 +41,10 @@ const ImageControl = ({ handleImageUpload }: Props) => {
 
     const handleImage = (file: File | null) => {
         if (!file) return;
-        handleImageUpload(file).then((url) => {
-            // @ts-ignore
-            editor?.chain().focus().setImage({ src: url }).run();
-        });
+        // handleImageUpload(file).then((url) => {
+           
+            editor?.chain().focus().setImage({ src: url.src }).run();
+        // });
     };
 
     return (

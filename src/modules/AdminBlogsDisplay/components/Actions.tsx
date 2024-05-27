@@ -29,7 +29,7 @@ export const Actions = ({ post }: Props) => {
         <UnstyledButton
           classNames={{ root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]' }}
         >
-          <Link href={`/admin/blogs/${post.id}`}>
+          <Link href={`/admin/blogs/${post.id}/preview`}>
             <Eye size={16} color='black' />
           </Link>
         </UnstyledButton>

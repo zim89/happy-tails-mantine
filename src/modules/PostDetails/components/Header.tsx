@@ -13,7 +13,7 @@ import Notify from "@/components/Notify";
 
 type Props = {
     editor: Editor;
-    post: Post & { refetch: () => void; };
+    post: Post;
 }
 export const Header = ({ editor, post }: Props) => {
     const { form, defaultValues } = useContext(PostFormContext);
@@ -70,16 +70,12 @@ export const Header = ({ editor, post }: Props) => {
                 </hgroup>
                 <div className='flex gap-3 mt-4 md:mt-0'>
                     {isEdited && post.postStatus === "PUBLISHED" && <PublishedController setNotification={setNotification} refetch={() => {
-                        post.refetch();
                         form.resetDirty();
                     }} handleCancel={handleCancel} />}
                     {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController setNotification={setNotification} postId={post.id} refetch={() => {
-                        post.refetch();
                         form.resetDirty();
                     }} />}
-                    {post.postStatus === "DRAFT" && <DraftController setNotification={setNotification} postId={post.id} handlePreview={() => { }} refetch={() => {
-                        post.refetch();
-                    }} />}
+                    {post.postStatus === "DRAFT" && <DraftController setNotification={setNotification} postId={post.id} />}
                 </div>
             </div>
             <Notify {...props} onClose={clear} />

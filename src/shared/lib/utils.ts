@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Extension } from '@tiptap/react';
+import { Node, mergeAttributes } from '@tiptap/core'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -138,3 +139,105 @@ export const isContentEmptyOrShort = (input: string): boolean => {
 
   return false;
 }
+
+export interface ImageResizeOptions {
+  inline: boolean,
+  allowBase64: boolean,
+  HTMLAttributes: Record<string, any>,
+  scaleFactor: 1,
+}
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    image: {
+      setImage: (options: { src: string, alt?: string, title?: string, width?: string, height?: string }) => ReturnType,
+      resizeImage: (options: { scale: number }) => ReturnType,
+    }
+  }
+}
+
+let scaleVar = .4;
+
+export const ImageResize = Node.create<ImageResizeOptions>({
+  name: 'image',
+  
+  addOptions() {
+    return {
+      inline: false,
+      allowBase64: false,
+      HTMLAttributes: {},
+      scaleFactor: 1,
+    }
+  },
+
+  inline() {
+    return this.options.inline
+  },
+
+  group() {
+    return this.options.inline ? 'inline' : 'block'
+  },
+
+  draggable: true,
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+      alt: {
+        default: null,
+      },
+      title: {
+        default: null,
+      },
+      scale: {
+        default: 1
+      }
+    }
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: this.options.allowBase64 ? 'img[src]' : 'img[src]:not([src^="data:"])',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    
+    const style = scaleVar && scaleVar !== 1 
+    ? `transform: scale(${scaleVar});` 
+    : '';
+    
+    console.log("Inside renderHTML: ", style)
+    
+    return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, { style: `transform: scale(${scaleVar})` })]
+  },
+
+  addCommands() {
+    return {
+      setImage: options => ({ commands }) => {
+        return commands.insertContent({
+          type: this.name,
+          attrs: options,
+        })
+      },
+      resizeImage: (scale) => ({ state, commands }) => {
+        const { selection } = state;
+        const { from, to } = selection;
+  
+        state.doc.nodesBetween(from, to, (node, pos) => {
+          if (node.type.name === 'image') {
+            scaleVar = scale.scale; 
+
+            return commands.updateAttributes('img', { style: `transform: scale(${scale.scale})` });
+          }
+        });
+
+        return false;
+      },
+    }
+  },
+})
