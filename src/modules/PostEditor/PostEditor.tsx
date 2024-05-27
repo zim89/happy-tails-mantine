@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useCallback, useContext } from "react";
 import { Editor } from "@tiptap/react";
-import { TextInput } from "@mantine/core";
+import { TextInput, Button } from "@mantine/core";
 
 // Rich text editor libraries
 import { RichTextEditor } from '@mantine/tiptap';
@@ -133,6 +133,10 @@ export default function PostEditor({ editor }: Props) {
 								<ImageControl handleImageUpload={handleImageUpload} />
 								<RichTextEditor.Link {...sharedProps.toolbarBtn} />
 							</RichTextEditor.ControlsGroup>
+							{/* TODO: Image resizing */}
+							{/* <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
+								<Button onClick={() => editor?.chain().focus().resizeImage({ scale: .3 })}>Resize</Button>
+							</RichTextEditor.ControlsGroup> */}
 						</RichTextEditor.Toolbar>
 						<RichTextEditor.Content />
 					</RichTextEditor>

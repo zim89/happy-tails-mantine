@@ -6,8 +6,7 @@ import Link from 'next/link';
 import FooterNav from './ui/FooterNav';
 import SocialLinks from './ui/SocialLinks';
 import logoImg from '@/assets/logo/logo-footer.svg';
-
-// Forced to move styles externally cause 404 page doesn't load styles from a file 😕
+import { formatYearFromDate } from "@/shared/lib/helpers";
 
 export default function Footer(): React.JSX.Element {
   return (
@@ -48,7 +47,7 @@ export default function Footer(): React.JSX.Element {
         <div className='md:flex md:justify-between'>
           <div className="flex justify-between md:w-3/5">
             <p className='flex gap-3 text-xs leading-normal md:text-base'>
-              <span>© 2023</span>
+              <span>© {formatYearFromDate(Date.now())}</span>
               <span>Happy Tails</span>
             </p>
             <Link

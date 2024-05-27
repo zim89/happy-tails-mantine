@@ -1,8 +1,16 @@
 import { useForm, UseFormReturnType, isInRange, isNotEmpty } from "@mantine/form";
-import { createContext, useState, Dispatch, SetStateAction } from "react";
+import { createContext, useState, Dispatch, SetStateAction, useContext } from "react";
 
 import { Post } from "../api/postApi";
-import { isContentEmptyOrShort } from "./utils";
+import { FontFamily, FontSize, ImageResize, isContentEmptyOrShort } from "./utils";
+import { Editor, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import TextAlign from "@tiptap/extension-text-align";
+import { StateHistory, useStateHistory, UseStateHistoryHandlers } from "@mantine/hooks";
 
 type AdminPanelContext = {
     openedLink: string;
@@ -86,6 +94,21 @@ type FormProviderType = {
         content: string;
         author: string;
     };
+    history: StateHistory<{
+        id: string | number;
+        isHero: boolean;
+        image: string | File | null;
+        title: string;
+        content: string;
+        author: string;
+    }> & UseStateHistoryHandlers<{
+        id: string | number;
+        image: string | File | null;
+        isHero: boolean;
+        title: string;
+        content: string;
+        author: string;
+    }>
 }
 
 export const PostFormContext = createContext<FormProviderType>({} as FormProviderType);
@@ -103,6 +126,9 @@ export const PostFormProvider = ({ children, post }: FormProviderProps) => {
         content: post?.content || "<p></p>",
         author: post?.authorName || ""
     }
+
+    // It's used for rolling back changes after pre-viewing a post
+    const [_, handlers, history] = useStateHistory(defaultValues);
 
     const titlePattern = /^[a-zA-Z0-9 _,.-]+$/;
 
@@ -128,12 +154,12 @@ export const PostFormProvider = ({ children, post }: FormProviderProps) => {
 
                 return null;
             },
-            image: isNotEmpty("Post poster is required.")   
+            image: isNotEmpty("Post poster is required.")
         }
     });
 
     return (
-        <PostFormContext.Provider value={{ form, defaultValues }}>
+        <PostFormContext.Provider value={{ form, defaultValues, history: { ...history, ...handlers } }}>
             {children}
         </PostFormContext.Provider>
     );

@@ -9,6 +9,7 @@ import { PostFormContext } from "@/shared/lib/context";
 import { publishImage } from "@/shared/lib/requests";
 import { isAxiosQueryError, isErrorDataString } from "@/shared/lib/helpers";
 import { AxiosError } from "axios";
+import { KEYS } from "@/shared/constants/localStorageKeys";
 
 type PublishedControllerProps = {
     handleCancel: () => void;
@@ -77,7 +78,7 @@ export const ArchivedController = ({ postId, refetch, setNotification }: Archive
         try {
             await dispatch({ id, status }).unwrap();
             refetch();
-            setNotification('Success', `The post has been ${status === "DRAFT" ? "placed in drafts!" : "published!"}!`);
+            setNotification('Success', `The post has been ${status === "DRAFT" ? "placed in drafts!" : "published!"}`);
         } catch (err) {
             if (isAxiosQueryError(err)) {
                 console.error(err);
@@ -102,12 +103,10 @@ export const ArchivedController = ({ postId, refetch, setNotification }: Archive
 
 type DraftControllerProps = {
     postId: number;
-    handlePreview: () => void;
-    refetch: () => void;
     setNotification: (type: "Success" | "Failed", text?: string) => void;
 }
 
-export const DraftController = ({ postId, handlePreview, refetch, setNotification }: DraftControllerProps) => {
+export const DraftController = ({ postId, setNotification }: DraftControllerProps) => {
     const { form } = useContext(PostFormContext);
     const [dispatch] = useUpdatePostMutation();
     const [changeStatus] = useChangePostStatusMutation();
@@ -139,7 +138,6 @@ export const DraftController = ({ postId, handlePreview, refetch, setNotificatio
         try {
             await save();
             await changeStatus({ id: postId, status: "PUBLISHED" }).unwrap();
-            refetch();
             setNotification("Success", "The post has been published!");
         } catch (err) {
             if (isAxiosQueryError(err)) {
@@ -152,10 +150,12 @@ export const DraftController = ({ postId, handlePreview, refetch, setNotificatio
     return (
         <Controls>
             {({ DarkButton, LightButton, PreviewButton }) => <>
-                <PreviewButton handler={handlePreview} />
+                <PreviewButton handler={() => { 
+                    localStorage.setItem(KEYS["TEMP_PREVIEW"], JSON.stringify(form.values));
+                    router.push(`/admin/blogs/${postId}/preview`);
+                }} />
                 <LightButton handler={async () => {
                     await save();
-                    refetch();
                     router.push("/admin/blogs");
                 }}>
                     Save and exit
