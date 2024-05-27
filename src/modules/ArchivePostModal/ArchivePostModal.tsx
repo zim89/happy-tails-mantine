@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import DeleteModal from '@/components/DeleteModal';
 import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { useDeletePostMutation } from '@/shared/api/postApi';
+import { useChangePostStatusMutation } from '@/shared/api/postApi';
 
 type Props = {
     id: number;
@@ -16,13 +16,13 @@ type Props = {
     redirect?: string;
 };
 
-export default function DeletePostModal({ id, setNotification, customHandler, redirect }: Props) {
-    const [dispatch] = useDeletePostMutation();
+export default function ArchivePostModal({ id, setNotification, customHandler, redirect }: Props) {
+    const [dispatch] = useChangePostStatusMutation();
     const router = useRouter();
 
-    const handleDelete = async () => {
+    const handleArchive = async () => {
         try {
-            await dispatch({ id }).unwrap();
+            await dispatch({ id, status: "ARCHIVED" }).unwrap();
 
             closeMain();
             setNotification('Success');
@@ -45,7 +45,7 @@ export default function DeletePostModal({ id, setNotification, customHandler, re
                 <>
                     {/* Opens a modal window */}
                     {customHandler ? customHandler(openMain) : <span onClick={openMain} className='block p-0 text-black'>
-                        Delete
+                        Archive
                     </span>}
 
                     <Modal
@@ -55,8 +55,8 @@ export default function DeletePostModal({ id, setNotification, customHandler, re
                             singleBtn: false,
                             secondaryBtnOnClick: closeMain,
                             secondaryBtnText: 'Cancel',
-                            primaryBtnOnClick: handleDelete,
-                            primaryBtnText: 'Delete',
+                            primaryBtnOnClick: handleArchive,
+                            primaryBtnText: 'Archive',
                             containerStyles: { display: 'flex', justifyContent: 'end', marginTop: "32px" },
                         }}
                     >
@@ -68,8 +68,8 @@ export default function DeletePostModal({ id, setNotification, customHandler, re
                                 height={64}
                             />
                             <hgroup>
-                                <h2 className="mb-3 font-bold">{`Delete article #${id}?`}</h2>
-                                <p>Are you sure you want to delete the selected article?</p>
+                                <h2 className="mb-3 font-bold">{`Archive article #${id}?`}</h2>
+                                <p>Are you sure you want to archived the selected article?</p>
                             </hgroup>
                         </div>
                     </Modal>

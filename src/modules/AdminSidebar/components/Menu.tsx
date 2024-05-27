@@ -24,14 +24,14 @@ export const Menu = ({ links }: Props) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center">
       {links.map((item, itemKey) => {
         return item.id === 'links-group' ? (
           <Dropdown linksGroup={item} key={item.id + itemKey} />
         ) : (
           <UnstyledButton
             className={cn(
-              'w-full py-2 pl-10 text-[#C8C8C8]',
+              'w-full py-2 md:px-10 text-[#C8C8C8]',
               openedLink === item.label && 'bg-[#F39324] text-[#FDFDFD]'
             )}
             onClick={() => setOpened(item.label)}
@@ -39,10 +39,10 @@ export const Menu = ({ links }: Props) => {
           >
             <Group>
               <Box className='flex'>
-                <Box ml='md' className='text-xl font-bold leading-6'>
+                <Box className='text-xl font-bold leading-6 ml-3 md:ml-4'>
                   <BlockLink href={item.link} className='inline-flex gap-3 items-center'>
                     <item.icon size={20} />
-                    {item.label}
+                    <span className='hidden md:inline'>{item.label}</span>
                   </BlockLink>
                 </Box>
               </Box>
@@ -50,6 +50,6 @@ export const Menu = ({ links }: Props) => {
           </UnstyledButton>
         );
       })}
-    </>
+    </div>
   );
 };

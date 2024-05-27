@@ -5,7 +5,6 @@ import { formatDateFromTimestamp } from '@/shared/lib/helpers';
 import { Post } from "@/shared/api/postApi";
 import { CustomBadge } from '@/components/Badge';
 import { Actions } from './Actions';
-import Link from "next/link";
 
 type Props = {
 	row: Post
@@ -24,7 +23,7 @@ export const CustomTableRow = ({ row }: Props) => {
 			</Table.Td>
 			<Table.Td className="max-w-[760px]">
 				<hgroup>
-		          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis w-full max-w-[600px] mb-2'><Link href={`/admin/blogs/${row.id}`}>{row.title}</Link></h3>
+		          <h3 className='text-lg whitespace-nowrap overflow-hidden text-ellipsis w-full max-w-[600px] mb-2'>{row.title}</h3>
 		          <p className='font-light'>
 		            {formatDateFromTimestamp(row.createdAt)}
 		          </p>

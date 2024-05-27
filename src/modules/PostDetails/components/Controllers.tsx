@@ -104,9 +104,10 @@ export const ArchivedController = ({ postId, refetch, setNotification }: Archive
 type DraftControllerProps = {
     postId: number;
     setNotification: (type: "Success" | "Failed", text?: string) => void;
+    refetch: () => void;
 }
 
-export const DraftController = ({ postId, setNotification }: DraftControllerProps) => {
+export const DraftController = ({ postId, setNotification, refetch }: DraftControllerProps) => {
     const { form } = useContext(PostFormContext);
     const [dispatch] = useUpdatePostMutation();
     const [changeStatus] = useChangePostStatusMutation();
@@ -126,6 +127,7 @@ export const DraftController = ({ postId, setNotification }: DraftControllerProp
 
             await dispatch({ id: id.toString(), authorName: author, content, title, posterImgSrc, hero: isHero }).unwrap();
             setNotification("Success", "The post has been saved!");
+            refetch();
         } catch (err) {
             if (isAxiosQueryError(err)) {
                 console.error(err);
@@ -139,6 +141,7 @@ export const DraftController = ({ postId, setNotification }: DraftControllerProp
             await save();
             await changeStatus({ id: postId, status: "PUBLISHED" }).unwrap();
             setNotification("Success", "The post has been published!");
+            refetch();
         } catch (err) {
             if (isAxiosQueryError(err)) {
                 console.error(err);
