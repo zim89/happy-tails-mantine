@@ -2,7 +2,7 @@
     display: grid;
     grid-template-areas:"nav head"
                         "nav body";
-    grid-template-columns: auto 1fr;
+    grid-template-columns: minmax(43px, auto) 1fr;
     grid-template-rows: 76px 1fr;
 }
 

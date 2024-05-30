@@ -37,7 +37,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
   };
 
   return (
-    <>
+    <div className="hidden md:block w-full">
       <UnstyledButton
         // It's highlighted when it's clicked or when the page to which child link forwards is opened
         className={cn('w-full py-2 md:pl-10 text-[#C8C8C8]', (isOpened && areThereLinksSelected) && 'bg-[#F39324] text-[#FDFDFD]')}
@@ -45,6 +45,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
           if (unsavedChanges) return;
           setIsOpened(!isOpened);
         }}
+        title="Open catalog"
       >
         <Group>
           <Box className='flex'>
@@ -60,7 +61,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
           isOpened ||
           (!!linksGroup.links.find((l) => l.label === openedLink) && isOpened)
         }
-        className='pb-8'
+        className='pb-4'
       >
         {linksGroup.links.map((link, linkKey) => (
           <Text
@@ -70,11 +71,12 @@ export const Dropdown = ({ linksGroup }: Props) => {
             }}
             classNames={{ root: "pl-4 md:pl-14 pr-4" }}
             key={linkKey}
+            title={link.label}
           >
             <BlockLink href={link.link} className='pt-2 inline-flex text-lg'><Minus width={7} className='mr-3' /> {link.label}</BlockLink>
           </Text>
         ))}
       </Collapse>
-    </>
+    </div>
   );
 };

@@ -1,13 +1,14 @@
 'use client';
 
 import { Box, Group, UnstyledButton } from '@mantine/core';
-import { useContext } from 'react';
+import { useContext, Fragment } from 'react';
 
 import { SidebarLinks } from '../lib/utils';
 import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
 import { cn } from '@/shared/lib/utils';
 import { Dropdown } from './Dropdown';
 import BlockLink from '@/modules/BlockLink';
+import { MobileMenu } from './MobileMenu';
 
 type Props = {
   links: SidebarLinks;
@@ -27,7 +28,13 @@ export const Menu = ({ links }: Props) => {
     <div className="flex flex-col items-center">
       {links.map((item, itemKey) => {
         return item.id === 'links-group' ? (
-          <Dropdown linksGroup={item} key={item.id + itemKey} />
+          <Fragment key={item.id + itemKey} >
+            {/* Visible since tablets and so on */}
+            <Dropdown linksGroup={item} />
+            
+            {/* Visible on mobile screen */}
+            <MobileMenu linksGroup={item} />
+          </Fragment>
         ) : (
           <UnstyledButton
             className={cn(
@@ -36,6 +43,7 @@ export const Menu = ({ links }: Props) => {
             )}
             onClick={() => setOpened(item.label)}
             key={item.id + itemKey}
+            title={item.label}
           >
             <Group>
               <Box className='flex'>

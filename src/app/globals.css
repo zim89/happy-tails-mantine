@@ -197,7 +197,7 @@
   }
 
   .form-input {
-    @apply font-lato rounded-0.5 border border-brand-grey-400 bg-primary px-4 py-2.5 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
+    @apply font-lato rounded-0.5 border text-brand-grey-700 border-brand-grey-400 bg-primary px-4 py-2.5 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
   }
 
   .form-label {

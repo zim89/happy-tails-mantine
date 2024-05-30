@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddProductModal.module.css';
-import { DEFAULT_CATEGORY_IMAGE, productStatusList } from '@/shared/lib/constants';
+import { DEFAULT_CATEGORY_IMAGE, productTypeList } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
@@ -41,12 +41,12 @@ export default function AddProductModal() {
     failed: {
       color: 'transparent',
       icon: <AlertTriangle size={24} fill="#DC362E" />,
-      text: 'Category adding failed!',
+      text: 'Product adding failed!',
     },
     success: {
       icon: <Check size={24} />,
       color: '#389B48',
-      text: 'Category successfully added!',
+      text: 'Product successfully added!',
     }
   });
 
@@ -56,11 +56,11 @@ export default function AddProductModal() {
   const form = useForm({
     initialValues: {
       name: '',
-      code: '',
       categoryName: '' as Product['categoryName'],
       price: 0,
       quantity: 0,
-      productStatus: '' as Product['productStatus'],
+      salePrice: 0,
+      productType: 'INDOORS' as Product['productType'],
       description: '',
       image: null as File | null,
     },
@@ -75,10 +75,8 @@ export default function AddProductModal() {
     validate: {
       name: isNotEmpty('Entered an invalid product name'),
       categoryName: isNotEmpty('Pick a category for the product'),
-      code: isNotEmpty('Entered an invalid product code'),
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
-      productStatus: isNotEmpty('Pick a product status'),
       description: isNotEmpty('Enter a description'),
     },
   });
@@ -99,42 +97,38 @@ export default function AddProductModal() {
 
   const handleSubmit = async ({
     image,
-    code,
     ...rest
   }: (typeof form)['values']) => {
     try {
       let imagePath = DEFAULT_CATEGORY_IMAGE;
-  
+
       if (image) {
         const form = new FormData();
         form.append('image', image);
         form.append('title', `PRODUCT: ${name}`);
-  
+
         const res = await axios.post('https://api.imgur.com/3/image/', form, {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
             'Content-Type': 'multipart/form-data',
           },
         });
-  
+
         imagePath = res.data.data.link;
       }
-  
+
       const newProduct: Partial<Product> = {
         ...rest,
-        article: code,
-        imagePath,
-        productType: "INDOORS",
-        salePrice: 0
+        imagePath
       };
-  
+
       const candidate = categoryList.find(
         (cat) => cat.name === newProduct.categoryName
       );
       candidate && (newProduct.categoryId = candidate.id);
-        
+
       await dispatch({ req: newProduct }).unwrap();
-  
+
       clearAndClose();
       setNotification("Success");
     } catch (err) {
@@ -167,7 +161,7 @@ export default function AddProductModal() {
           header: styles.modalHeader,
           content: styles.modalContent,
         }}
-        onChange={() => {}}
+        onChange={() => { }}
         onClose={close}
       >
         <ModalHeader heading='Add New Product' handleClose={close} />
@@ -176,6 +170,7 @@ export default function AddProductModal() {
           <div className='flex gap-[42px]'>
             <Group className='flex-column flex gap-[30px]'>
               <TextInput
+                withAsterisk
                 {...form.getInputProps('name')}
                 classNames={{
                   root: 'form-root w-full',
@@ -192,7 +187,7 @@ export default function AddProductModal() {
                 label='Name'
               />
               <TextInput
-                {...form.getInputProps('code')}
+                {...form.getInputProps('salePrice')}
                 classNames={{
                   root: 'form-root w-full',
                   label: 'form-label',
@@ -200,14 +195,17 @@ export default function AddProductModal() {
                   section: 'static w-auto text-[#161616] whitespace-nowrap',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.code && 'form-error--input'
+                    form?.errors?.salePrice && 'form-error--input'
                   ),
                   error: 'form-error',
                 }}
-                type='text'
-                label='Code'
+                type='number'
+                min={0}
+                max={Number.MAX_SAFE_INTEGER}
+                label='Sale price'
               />
               <Select
+                withAsterisk
                 {...form.getInputProps('categoryName')}
                 classNames={{
                   root: 'form-root w-full',
@@ -228,6 +226,7 @@ export default function AddProductModal() {
             </Group>
             <Group className='flex-column flex gap-[30px]'>
               <TextInput
+                withAsterisk
                 {...form.getInputProps('price')}
                 classNames={{
                   root: 'form-root w-full',
@@ -246,6 +245,7 @@ export default function AddProductModal() {
                 label='Price'
               />
               <TextInput
+                withAsterisk
                 {...form.getInputProps('quantity')}
                 classNames={{
                   root: 'form-root w-full',
@@ -264,7 +264,8 @@ export default function AddProductModal() {
                 label='Quantity'
               />
               <Select
-                {...form.getInputProps('productStatus')}
+                defaultValue={"INDOORS"}
+                {...form.getInputProps('productType')}
                 classNames={{
                   root: 'form-root w-full',
                   label: 'form-label',
@@ -273,16 +274,17 @@ export default function AddProductModal() {
                   option: 'text-xs',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.productStatus && 'form-error--input'
+                    form?.errors?.productType && 'form-error--input'
                   ),
                   error: 'form-error',
                 }}
-                data={productStatusList}
+                data={productTypeList}
                 type='text'
-                label='Status'
+                label='Type'
               ></Select>
             </Group>
             <Textarea
+              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',
