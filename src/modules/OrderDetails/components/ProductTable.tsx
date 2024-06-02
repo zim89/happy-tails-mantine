@@ -8,14 +8,13 @@ type Props = {
 };
 
 const tax = 1.49;
-const discountValue = 5;
 const expressShipping = 20;
 const standardShipping = 10;
 
 export const ProductTable = ({ order }: Props) => {
   const shipping =
-    order.shippingMethod === 'Standard' ? standardShipping : expressShipping;
-  const discount = order.discountCode ? discountValue : 0;
+    order.shippingMethodDTO.name === 'Standard' ? standardShipping : expressShipping;
+  const discount = order.discountAmount;
   const total =
     order.orderProductDTOList.reduce(
       (total, product) =>
@@ -64,7 +63,7 @@ export const ProductTable = ({ order }: Props) => {
               <Table.Td>{product.productName}</Table.Td>
               <Table.Td>${product.productPrice}</Table.Td>
               <Table.Td>
-                {order.discountCode ? `$ ${discount}` : 'None'}
+                {order.discountAmount ? `$ ${order.discountAmount}` : 'None'}
               </Table.Td>
               <Table.Td>{product.count}</Table.Td>
               <Table.Td>
@@ -76,7 +75,7 @@ export const ProductTable = ({ order }: Props) => {
                 $
                 {(
                   product.productPrice * product.count -
-                  (order.discountCode ? discount : 0) +
+                  (order.discountAmount ? order.discountAmount : 0) +
                   tax
                 ).toFixed(2)}
               </Table.Td>

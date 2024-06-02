@@ -1,6 +1,6 @@
 import { Banknote, Package } from 'lucide-react';
 
-import { Order, ParsedShippingAddress } from '@/shared/types/types';
+import { Order } from '@/shared/types/types';
 import { ShippingModal } from './ShippingModal';
 
 type Props = {
@@ -8,9 +8,6 @@ type Props = {
 };
 
 export const ShippingDetails = ({ order }: Props) => {
-  const { firstName: omitShippingName, secondName: omitShippingSecondName, ...shippingAddress }: ParsedShippingAddress = JSON.parse(order.shippingAddress);
-  const { firstName: omitBillingName, secondName: omitBillingSecondName, ...billingAddress }: ParsedShippingAddress = JSON.parse(order.billingAddress);
-
   return (
     <div className='col-span-2 rounded-[4px] border-[1px] border-[#EEE] bg-white'>
       <div className='flex items-center justify-between px-4 py-[22px]'>
@@ -25,7 +22,7 @@ export const ShippingDetails = ({ order }: Props) => {
         </p>
 
         <p className='col-span-2 flex items-center text-ellipsis px-4 text-sm'>
-          {Object.values(shippingAddress).reduce((address, segment) => {
+          {Object.values(order.shippingAddress).reduce((address, segment) => {
             if (!address.trim()) return segment;
             return segment + ", " + address;
           }, "")}
@@ -37,7 +34,7 @@ export const ShippingDetails = ({ order }: Props) => {
         </p>
         
         <p className='col-span-2 flex border-y-[1px] border-[#EEE] items-center text-ellipsis px-4 text-sm'>
-        {Object.values(billingAddress).reduce((address, segment) => {
+        {Object.values(order.billingAddress).reduce((address, segment) => {
             if (!address.trim()) return segment;
             return segment + ", " + address;
           }, "")}
@@ -49,7 +46,7 @@ export const ShippingDetails = ({ order }: Props) => {
         </p>
 
         <p className='col-span-2 flex items-center px-4 text-sm capitalize'>
-          {order.shippingMethod}
+          {order.shippingMethodDTO.name}
         </p>
       </div>
     </div>

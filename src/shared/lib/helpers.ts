@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Order, Product, AxiosQueryError } from '../types/types';
+import { Order, Product, AxiosQueryError, ProductStatus } from '../types/types';
 import { ErrorResponse } from './constants';
 
 export const formatDate = (date: string | number, format = "MMMM D, YYYY") => {
@@ -86,12 +86,10 @@ export const dirtyFields = (obj: { [P in string]: string }) => {
 };
 
 export const availabilityMap: {
-  [P in NonNullable<Product['productStatus']>]: string;
+  [P in NonNullable<ProductStatus>]: string;
 } = {
   'IN STOCK': 'https://schema.org/InStock',
-  TEMPORARILY_ABSENT: 'https://schema.org/OutOfStock',
-  DELETE: 'https://schema.org/Discontinued',
-  ACTIVE: 'https://schema.org/InStock',
+  "OUT OF STOCK": 'https://schema.org/OutOfStock: The item is currently out of stock.'
 
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.
@@ -99,7 +97,6 @@ export const availabilityMap: {
   // https://schema.org/InStoreOnly: The item is only available for purchase in store.
   // https://schema.org/LimitedAvailability: The item has limited availability.
   // https://schema.org/OnlineOnly: The item is available online only.
-  // https://schema.org/OutOfStock: The item is currently out of stock.
   // https://schema.org/PreOrder: The item is available for pre-order.
   // https://schema.org/PreSale: The item is available for ordering and delivery before general availability.
   // https://schema.org/SoldOut: The item has been sold out.

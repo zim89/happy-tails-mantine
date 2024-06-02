@@ -102,7 +102,7 @@ export default function CartItem({ product }: Props) {
                 allowDecimal={false}
                 step={1}
                 min={1}
-                max={product.quantity}
+                max={product.totalQuantity}
                 value={product.count}
                 readOnly
                 classNames={{
@@ -120,9 +120,9 @@ export default function CartItem({ product }: Props) {
                 onClick={() => handleIncrement(product.id)}
                 className={clsx(
                   'p-2',
-                  product.count === product.quantity && 'text-brand-grey-400'
+                  product.count === product.totalQuantity && 'text-brand-grey-400'
                 )}
-                disabled={product.count === product.quantity}
+                disabled={product.count === product.totalQuantity}
               >
                 <Plus className='h-4 w-4 stroke-2' />
               </button>

@@ -84,25 +84,26 @@ const columns = [
     header: 'Quantity',
     size: 89,
   }),
-  columnHelper.accessor('productStatus', {
-    cell: (info) => (
-      <Badge
-        bg={badgePalette[info.getValue().toLowerCase()]}
-        classNames={{
-          root: cn(classes.columnCell, 'h-[1.375rem] overflow-ellipsis px-2'),
-          label: 'text-xs',
-        }}
-        styles={{
-          root: { color: 'white' },
-        }}
-      >
-        {info.getValue()}
-      </Badge>
-    ),
-    header: 'Status',
-    size: 89,
-    enableSorting: false,
-  }),
+  // FIXME
+  // columnHelper.accessor('productStatus', {
+  //   cell: (info) => (
+  //     <Badge
+  //       bg={badgePalette[info.getValue().toLowerCase()]}
+  //       classNames={{
+  //         root: cn(classes.columnCell, 'h-[1.375rem] overflow-ellipsis px-2'),
+  //         label: 'text-xs',
+  //       }}
+  //       styles={{
+  //         root: { color: 'white' },
+  //       }}
+  //     >
+  //       {info.getValue()}
+  //     </Badge>
+  //   ),
+  //   header: 'Status',
+  //   size: 89,
+  //   enableSorting: false,
+  // }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info} />,

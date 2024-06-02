@@ -4,10 +4,6 @@ import deliveryIcon from '@/assets/icons/additional/delivery.svg';
 import basketIcon from '@/assets/icons/additional/basket.svg';
 import priceIcon from '@/assets/icons/additional/price.svg';
 
-import img1 from '@/assets/images/temp/product-slider/img-01.png';
-import img2 from '@/assets/images/temp/product-slider/img-02.png';
-import img3 from '@/assets/images/temp/product-slider/img-03.png';
-
 export const additionalList = [
   {
     title: 'Free Standard Delivery',
@@ -25,64 +21,6 @@ export const additionalList = [
     icon: priceIcon,
   },
 ] as const;
-
-// Temp lib
-export const sliderData: Product[] = [
-  {
-    "id": 51,
-    "article": "ABK4568",
-    "name": "K&H Thermo Basket Pet Bed",
-    "price": 94.67,
-    "onSale": false,
-    "salePrice": null,
-    "categoryId": 5,
-    "categoryName": "Furniture",
-    "description": "The K&H Thermo-Basket Pet Bed has firm sidewalls accompanied by a soft cushion filled with polyfil",
-    "productType": "INDOORS",
-    "quantity": 23,
-    "unitsSold": 0,
-    "productStatus": "IN STOCK",
-    "createdAt": 1714489640.614212,
-    "updatedAt": null,
-    "imagePath": "https://www.petland.ca/cdn/shop/files/k-h-k-h-thermo-basket-pet-bed-29586999738470_376x489.png?v=1691410500"
-  },
-  {
-    "id": 11,
-    "article": "AAABBB05",
-    "name": "FurHaven Quilted Orthopedic Sofa",
-    "price": 59.99,
-    "onSale": false,
-    "salePrice": null,
-    "categoryId": 5,
-    "categoryName": "Furniture",
-    "description": "Curling up for a quick nap or a long night’s rest has never felt better when your sleepy pet has the FurHaven Quilted Orthopedic Sofa Cat & Dog Bed w/ Removable Cover. This high-quality bed is designed for maximum comfort with a soft.",
-    "productType": "INDOORS",
-    "quantity": 32,
-    "unitsSold": 0,
-    "productStatus": "IN STOCK",
-    "createdAt": 1714489640.614212,
-    "updatedAt": null,
-    "imagePath": "https://image.chewy.com/is/image/catalog/266014_MAIN._AC_SS1800_V1615845695_.jpg"
-  },
-  {
-    "id": 49,
-    "article": "ABK4565",
-    "name": "Outward Hound Pawsh Donut Cuddler Bed",
-    "price": 84.97,
-    "onSale": false,
-    "salePrice": null,
-    "categoryId": 5,
-    "categoryName": "Furniture",
-    "description": "Your beloved pet deserves high-end luxury, glamour, and style. Get them only the best — beds with exquisite fabrics that provide the utmost comfort and sophisticated flair. Make sure you don't compromise when it comes to style , with Donut Cuddler Bed, you won't have to",
-    "productType": "INDOORS",
-    "quantity": 23,
-    "unitsSold": 0,
-    "productStatus": "IN STOCK",
-    "createdAt": 1714489640.614212,
-    "updatedAt": null,
-    "imagePath": "https://www.petland.ca/cdn/shop/files/outward-hound-outward-hound-pawsh-donut-cuddler-bed-mink-29613679509606_376x489.jpg?v=1691283790"
-  }
-];
 
 type Sizing = {
   size: string;

@@ -27,16 +27,15 @@ export default function OrderTotal({ form }: Props) {
 
   const subTotal = form.values.items.reduce((acc, prev) => {
     const parsed: Product = JSON.parse(prev);
-    if (parsed.productStatus !== "IN STOCK") return acc;
-    return acc + parsed.price * parsed.quantity;
+    // FIX ME
+    // if (parsed.productStatus !== "IN STOCK") return acc;
+    return acc + parsed.price * parsed.totalQuantity;
   }, 0);
 
   const shipping = subTotal === 0 ? 0 : form.values.shippingMethod === "fast" ? 20 : 10;
 
   useEffect(() => {
     if (!promoCode.trim()) return;
-
-    
 
     (async () => {
       try {

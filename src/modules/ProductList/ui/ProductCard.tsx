@@ -16,7 +16,8 @@ interface Props {
   router?: AppRouterInstance;
 }
 export default function ProductCard({ product, router }: Props) {
-  const isAvailable = product.productStatus === 'IN STOCK';
+  // FIXME
+  // const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
 
   return (
@@ -27,7 +28,7 @@ export default function ProductCard({ product, router }: Props) {
       <div
         className={clsx(
           'h-full overflow-hidden',
-          !isAvailable && 'text-secondary/40'
+          // !isAvailable && 'text-secondary/40'
         )}
       >
         <Link href={`/products/${product.id}`}>
@@ -35,7 +36,7 @@ export default function ProductCard({ product, router }: Props) {
             className={clsx(
               'relative mb-5 transition-all duration-500',
               desktop ? 'h-[287px] group-hover/card:h-[223px]' : 'h-[223px]',
-              !isAvailable ? 'grayscale' : 'grayscale-0'
+              // !isAvailable ? 'grayscale' : 'grayscale-0'
             )}
           >
             <Image

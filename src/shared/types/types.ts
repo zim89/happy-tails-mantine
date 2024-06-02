@@ -1,4 +1,4 @@
-type ProductStatus = 'OUT OF STOCK' | 'IN STOCK';
+export type ProductStatus = 'OUT OF STOCK' | 'IN STOCK';
 type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =

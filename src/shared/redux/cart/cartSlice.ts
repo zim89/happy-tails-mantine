@@ -68,7 +68,7 @@ const cartSlice = createSlice({
       const item = state.items.find((obj) => obj.id === action.payload);
 
       if (item) {
-        if (item.count < item.quantity) item.count++;
+        if (item.count < item.totalQuantity) item.count++;
       }
 
       state.totalPrice = calcTotalPrice(state.items);

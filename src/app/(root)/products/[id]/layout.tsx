@@ -16,8 +16,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     }
 
     let meta = {
-      title: `${product.quantity < 10 ? 'Almost Out of Stock | ' : 'Buy Freely! | '} ${product.name} | Happy Tails`,
-      description: `${product.quantity < 10 ? 'Almost Sold Out! ' + 'Grab This ' + product.name + " Before It's Gone for Excellent Price: " + product.price + '$' : 'Spoil Your Pup! Shop This ' + product.name + ' Now! ' + 'Get Yours Almost For Nothing: ' + product.price + "$ You Don't Want to Miss it Out!"}`,
+      title: `${product.totalQuantity < 10 ? 'Almost Out of Stock | ' : 'Buy Freely! | '} ${product.name} | Happy Tails`,
+      description: `${product.totalQuantity < 10 ? 'Almost Sold Out! ' + 'Grab This ' + product.name + " Before It's Gone for Excellent Price: " + product.price + '$' : 'Spoil Your Pup! Shop This ' + product.name + ' Now! ' + 'Get Yours Almost For Nothing: ' + product.price + "$ You Don't Want to Miss it Out!"}`,
     };
 
     return {
