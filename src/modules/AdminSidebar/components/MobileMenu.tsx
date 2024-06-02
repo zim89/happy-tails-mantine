@@ -1,12 +1,13 @@
 "use client";
 
 import { Box, Menu, UnstyledButton } from "@mantine/core";
-import { LinksGroup } from "../lib/utils";
+import { Minus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+
+import { LinksGroup } from "../lib/utils";
 import { AdminPanelContext, UnsavedChangesContext } from "@/shared/lib/context";
 import { cn } from "@/shared/lib/utils";
 import BlockLink from "@/modules/BlockLink";
-import { Minus } from "lucide-react";
 
 type Props = {
     linksGroup: LinksGroup;
@@ -14,25 +15,17 @@ type Props = {
 export const MobileMenu = ({ linksGroup }: Props) => {
     const { unsavedChanges } = useContext(UnsavedChangesContext);
     const { openedLink, update } = useContext(AdminPanelContext);
-    const [isOpened, setIsOpened] = useState(false);
 
     const areThereLinksSelected = linksGroup.links.find(
         (l) => l.label === openedLink
     );
 
-    useEffect(() => {
-        if (unsavedChanges) return;
-
-        if (areThereLinksSelected) {
-            setIsOpened(true);
-        } else if (openedLink !== linksGroup.label) {
-            setIsOpened(false);
-        }
-    }, [openedLink]);
-
-    const setOpened = (label: string) => {
+    const [isOpened, setIsOpened] = useState(openedLink !== linksGroup.label ? false : areThereLinksSelected ? true : false);
+    
+    const setOpened = (label: string, forceOpened?: boolean) => {
         if (unsavedChanges) return;
         update((prev) => ({ ...prev, openedLink: label }));
+        forceOpened && setIsOpened(forceOpened)
     };
 
     return (
@@ -49,7 +42,7 @@ export const MobileMenu = ({ linksGroup }: Props) => {
                         <Menu.Item
                             c={link.label === openedLink ? '#F39324' : '#868686'}
                             onClick={() => {
-                                setOpened(link.label)
+                                setOpened(link.label, false);
                             }}
                             classNames={{ item: "pl-4 pr-4" }}
                             key={linkKey}

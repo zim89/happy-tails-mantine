@@ -1,5 +1,8 @@
+"use client";
+
 import { Table, Button } from '@mantine/core';
 import {
+  ColumnFiltersState,
   createColumnHelper,
   getCoreRowModel,
   getFilteredRowModel,
@@ -22,6 +25,7 @@ import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
+import { useState } from 'react';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -55,7 +59,7 @@ const columns = [
     header: 'Status',
     enableSorting: false
   }),
-  columnHelper.accessor('price', {
+  columnHelper.accessor('totalPrice', {
     cell: (info) => <span>$ {info.getValue()}</span>,
     header: 'Total paid',
     enableSorting: false
@@ -75,15 +79,18 @@ export default function OrderHistoryTable({ email }: Props) {
     state.filter((order) => order.email === email)
   );
 
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [search, setSearch] = useDebouncedState('', 200);
 
   const table = useReactTable({
     data: orders || [],
     columns,
     state: {
+      columnFilters,
       globalFilter: search,
     },
     onGlobalFilterChange: setSearch,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

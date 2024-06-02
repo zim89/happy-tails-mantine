@@ -24,7 +24,7 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
-import { Product } from '@/shared/types/types';
+import { Product, ProductSizeEnum } from '@/shared/types/types';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { useNotification } from '@/shared/hooks/useNotification';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
@@ -58,8 +58,6 @@ export default function AddProductModal() {
       name: '',
       categoryName: '' as Product['categoryName'],
       price: 0,
-      quantity: 0,
-      salePrice: 0,
       productType: 'INDOORS' as Product['productType'],
       description: '',
       image: null as File | null,
@@ -76,7 +74,6 @@ export default function AddProductModal() {
       name: isNotEmpty('Entered an invalid product name'),
       categoryName: isNotEmpty('Pick a category for the product'),
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
-      quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
       description: isNotEmpty('Enter a description'),
     },
   });
@@ -119,6 +116,11 @@ export default function AddProductModal() {
 
       const newProduct: Partial<Product> = {
         ...rest,
+        productSizes: [{
+          size: ProductSizeEnum["M"],
+          quantity: 1,
+          productStatus: "IN STOCK"
+        }],
         imagePath
       };
 
@@ -170,7 +172,6 @@ export default function AddProductModal() {
           <div className='flex gap-[42px]'>
             <Group className='flex-column flex gap-[30px]'>
               <TextInput
-                withAsterisk
                 {...form.getInputProps('name')}
                 classNames={{
                   root: 'form-root w-full',
@@ -186,26 +187,7 @@ export default function AddProductModal() {
                 type='text'
                 label='Name'
               />
-              <TextInput
-                {...form.getInputProps('salePrice')}
-                classNames={{
-                  root: 'form-root w-full',
-                  label: 'form-label',
-                  wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
-                  input: cn(
-                    'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.salePrice && 'form-error--input'
-                  ),
-                  error: 'form-error',
-                }}
-                type='number'
-                min={0}
-                max={Number.MAX_SAFE_INTEGER}
-                label='Sale price'
-              />
               <Select
-                withAsterisk
                 {...form.getInputProps('categoryName')}
                 classNames={{
                   root: 'form-root w-full',
@@ -226,7 +208,6 @@ export default function AddProductModal() {
             </Group>
             <Group className='flex-column flex gap-[30px]'>
               <TextInput
-                withAsterisk
                 {...form.getInputProps('price')}
                 classNames={{
                   root: 'form-root w-full',
@@ -243,25 +224,6 @@ export default function AddProductModal() {
                 min={0}
                 max={Number.MAX_SAFE_INTEGER}
                 label='Price'
-              />
-              <TextInput
-                withAsterisk
-                {...form.getInputProps('quantity')}
-                classNames={{
-                  root: 'form-root w-full',
-                  label: 'form-label',
-                  wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
-                  input: cn(
-                    'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.quantity && 'form-error--input'
-                  ),
-                  error: 'form-error',
-                }}
-                type='number'
-                min={0}
-                max={Number.MAX_SAFE_INTEGER}
-                label='Quantity'
               />
               <Select
                 defaultValue={"INDOORS"}
@@ -284,7 +246,6 @@ export default function AddProductModal() {
               ></Select>
             </Group>
             <Textarea
-              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',

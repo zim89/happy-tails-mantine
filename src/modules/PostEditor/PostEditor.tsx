@@ -14,6 +14,7 @@ import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/lib/context';
+import ImageResizeControl from '@/components/ImageResizeControl';
 
 export const sharedProps = {
 	toolbarBtn: {
@@ -133,9 +134,9 @@ export default function PostEditor({ editor }: Props) {
 								<ImageControl handleImageUpload={handleImageUpload} />
 								<RichTextEditor.Link {...sharedProps.toolbarBtn} />
 							</RichTextEditor.ControlsGroup>
-							{/* TODO: Image resizing */}
+							{/* TODO: Image resize */}
 							{/* <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-								<Button onClick={() => editor?.chain().focus().resizeImage({ scale: .3 })}>Resize</Button>
+								<ImageResizeControl />
 							</RichTextEditor.ControlsGroup> */}
 						</RichTextEditor.Toolbar>
 						<RichTextEditor.Content />

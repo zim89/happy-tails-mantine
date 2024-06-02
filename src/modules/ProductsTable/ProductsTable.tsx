@@ -77,7 +77,7 @@ const columns = [
     header: 'Price',
     size: 89,
   }),
-  columnHelper.accessor('quantity', {
+  columnHelper.accessor('totalQuantity', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),

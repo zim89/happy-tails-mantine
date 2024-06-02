@@ -1,4 +1,5 @@
 'use client';
+
 import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import { Button, Menu } from '@mantine/core';
 import {
@@ -104,15 +105,15 @@ export default function AdminOrderHeader() {
         </Menu.Dropdown>
       </Menu>
 
-      <Button
-        component={Link}
-        href='/admin/orders/new'
-        leftSection={<PlusCircle size={20} />}
-        size='md'
-        className='ml-6 bg-black'
-      >
-        Add a new order
-      </Button>
+      <div>
+        <Link
+          href='/admin/orders/new'
+          className='ml-6 bg-black whitespace-pre flex items-center gap-2 px-4 py-2 font-bold rounded-[2px] text-white'
+        >
+          <PlusCircle size={20} />
+          Add a new order
+        </Link>
+      </div>
       <Notification {...props} onClose={clear} />
     </div>
   );

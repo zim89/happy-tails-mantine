@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
 import Image from 'next/image';
 import axios from 'axios';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
@@ -16,6 +16,7 @@ import { Product } from '@/shared/types/types';
 import { useUpdateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { productTypeList } from '@/shared/lib/constants';
 
 type Props = {
   productLine: Product;
@@ -33,11 +34,10 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
   const form = useForm({
     initialValues: {
       name: productLine.name,
-      code: productLine.article,
       categoryName: productLine.categoryName,
       price: productLine.price,
-      quantity: productLine.quantity,
-      productStatus: productLine.productStatus,
+      salePrice: productLine.salePrice,
+      productType: productLine.productType,
       description: productLine.description,
       image: null as File | null,
     },
@@ -51,37 +51,28 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
   });
 
   useEffect(() => {
-    (async () => {
-      try {
-        form.initialize({
-          name: productLine.name,
-          code: productLine.article,
-          categoryName: productLine.categoryName,
-          price: productLine.price,
-          quantity: productLine.quantity,
-          productStatus: productLine.productStatus,
-          description: productLine.description,
-          image: null,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    form.initialize({
+      name: productLine.name,
+      categoryName: productLine.categoryName,
+      price: productLine.price,
+      salePrice: productLine.salePrice,
+      productType: productLine.productType,
+      description: productLine.description,
+      image: null,
+    });
   }, [
     productLine.article,
     productLine.categoryName,
     productLine.description,
     productLine.name,
     productLine.price,
-    productLine.productStatus,
-    productLine.quantity,
   ]);
 
-  
+
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
-  
+
   const [dispatch] = useUpdateMutation();
-  
+
   const [opened, { open, close }] = useDisclosure(false);
 
   // Initialize previewImage until the modal is opened
@@ -98,12 +89,18 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
     close();
   };
 
-  const handleSubmit = async ({ code, image, ...rest }: typeof form.values) => {
+  const handleSubmit = async ({ image, productType, ...rest }: typeof form.values) => {
     try {
       let requestBody: Product = {
         ...productLine,
+        productSizes: productLine?.productSizes ? [
+          {
+            size: productLine.productSizes[0].size,
+            quantity: productLine.productSizes[0].quantity,
+            productStatus: productLine.productSizes[0].productStatus
+          }
+        ] : null,
         ...rest,
-        article: code,
       };
 
       // Uploading an image
@@ -163,9 +160,9 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
           header: styles.modalHeader,
           content: styles.modalContent,
         }}
-        onClose={close}
+        onClose={clearAndClose}
       >
-        <ModalHeader heading='Edit Product' handleClose={close} />
+        <ModalHeader heading='Edit Product' handleClose={clearAndClose} />
 
         <Form form={form}>
           <div className='flex gap-[42px]'>
@@ -185,22 +182,6 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                 }}
                 type='text'
                 label='Name'
-              />
-              <TextInput
-                {...form.getInputProps('code')}
-                classNames={{
-                  root: 'form-root w-full',
-                  label: 'form-label',
-                  wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
-                  input: cn(
-                    'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.code && 'form-error--input'
-                  ),
-                  error: 'form-error',
-                }}
-                type='text'
-                label='Code'
               />
               <Select
                 {...form.getInputProps('categoryName')}
@@ -240,26 +221,9 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                 max={Number.MAX_SAFE_INTEGER}
                 label='Price'
               />
-              <TextInput
-                {...form.getInputProps('quantity')}
-                classNames={{
-                  root: 'form-root w-full',
-                  label: 'form-label',
-                  wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
-                  input: cn(
-                    'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.quantity && 'form-error--input'
-                  ),
-                  error: 'form-error',
-                }}
-                type='number'
-                min={0}
-                max={Number.MAX_SAFE_INTEGER}
-                label='Quantity'
-              />
               <Select
-                {...form.getInputProps('productStatus')}
+                defaultValue="INDOORS"
+                {...form.getInputProps('productType')}
                 classNames={{
                   root: 'form-root w-full',
                   label: 'form-label',
@@ -268,13 +232,13 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                   option: 'text-xs',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
-                    form?.errors?.productStatus && 'form-error--input'
+                    form?.errors?.productType && 'form-error--input'
                   ),
                   error: 'form-error',
                 }}
-                data={['DELETE', 'ACTIVE', 'TEMPORARILY_ABSENT', 'IN STOCK']}
+                data={productTypeList}
                 type='text'
-                label='Status'
+                label='Type'
               ></Select>
             </Group>
             <Textarea

@@ -22,7 +22,7 @@ export default function AdminSidebar() {
             className="hidden md:block"
             alt='Happy Tails Logo'
           />
-          <div className="md:hidden filter grayscale contrast-[2] saturate">
+          <div className="md:hidden filter grayscale contrast-[2] saturate px-2">
             <Logo />
           </div>
         </Group>

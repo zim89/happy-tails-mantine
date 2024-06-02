@@ -45,10 +45,10 @@ export const Menu = ({ links }: Props) => {
             key={item.id + itemKey}
             title={item.label}
           >
-            <Group>
-              <Box className='flex'>
-                <Box className='text-xl font-bold leading-6 ml-3 md:ml-4'>
-                  <BlockLink href={item.link} className='inline-flex gap-3 items-center'>
+            <Group classNames={{ root: "justify-center md:justify-start" }}  >
+              <Box>
+                <Box className='text-xl font-bold leading-6 md:ml-4'>
+                  <BlockLink href={item.link} className='inline-flex gap-3 justify-center items-center'>
                     <item.icon size={20} />
                     <span className='hidden md:inline'>{item.label}</span>
                   </BlockLink>

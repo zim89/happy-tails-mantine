@@ -144,29 +144,25 @@ export interface ImageResizeOptions {
   inline: boolean,
   allowBase64: boolean,
   HTMLAttributes: Record<string, any>,
-  scaleFactor: 1,
 }
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     image: {
-      setImage: (options: { src: string, alt?: string, title?: string, width?: string, height?: string }) => ReturnType,
-      resizeImage: (options: { scale: number }) => ReturnType,
+      setImage: (options: { src: string, alt?: string, title?: string, scale?: number }) => ReturnType,
+      resizeImage: (scale: number) => ReturnType,
     }
   }
 }
 
-let scaleVar = .4;
-
 export const ImageResize = Node.create<ImageResizeOptions>({
   name: 'image',
-  
+
   addOptions() {
     return {
       inline: false,
       allowBase64: false,
       HTMLAttributes: {},
-      scaleFactor: 1,
     }
   },
 
@@ -192,7 +188,7 @@ export const ImageResize = Node.create<ImageResizeOptions>({
         default: null,
       },
       scale: {
-        default: 1
+        default: 1,
       }
     }
   },
@@ -206,37 +202,31 @@ export const ImageResize = Node.create<ImageResizeOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    
-    const style = scaleVar && scaleVar !== 1 
-    ? `transform: scale(${scaleVar});` 
-    : '';
-    
-    console.log("Inside renderHTML: ", style)
-    
-    return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, { style: `transform: scale(${scaleVar})` })]
+    const { scale, ...rest } = HTMLAttributes;
+    return [
+      'div',
+      { 
+        class: 'resizable-image-wrapper', 
+        style: `position: relative; display: inline-block; transform: scale(${scale});`
+      },
+      ['img', mergeAttributes(this.options.HTMLAttributes, rest)],
+      ['div', {
+        class: 'resize-handle',
+      }]
+    ]
   },
 
   addCommands() {
     return {
       setImage: options => ({ commands }) => {
+        console.log("Options: ",options);
         return commands.insertContent({
           type: this.name,
           attrs: options,
         })
       },
-      resizeImage: (scale) => ({ state, commands }) => {
-        const { selection } = state;
-        const { from, to } = selection;
-  
-        state.doc.nodesBetween(from, to, (node, pos) => {
-          if (node.type.name === 'image') {
-            scaleVar = scale.scale; 
-
-            return commands.updateAttributes('img', { style: `transform: scale(${scale.scale})` });
-          }
-        });
-
-        return false;
+      resizeImage: (scale) => ({ commands }) => {
+        return commands.updateAttributes('image', { scale });
       },
     }
   },
