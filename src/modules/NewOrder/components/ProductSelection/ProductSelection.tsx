@@ -47,10 +47,10 @@ export default function ProductSelection({ form }: Props) {
 
   const filteredOptions = shouldFilterOptions
     ? products.filter(
-        (item) =>
-          // item.productStatus === 'IN STOCK' &&
-          item.name.toLowerCase().includes(search.toLowerCase().trim())
-      )
+      (item) =>
+        item.productStatus === 'IN STOCK' &&
+        item.name.toLowerCase().includes(search.toLowerCase().trim())
+    )
     : products;
 
   const options = filteredOptions.map((item) => (
@@ -164,26 +164,25 @@ export default function ProductSelection({ form }: Props) {
                   <div>
                     <div className='text-xs'>
                       <span className='mr-2'>{parsed.article}</span>
-                      {/* FIXME */}
-                      {/* <CustomBadge
+                      <CustomBadge
                         palette={{
                           'in stock': '#389B48',
                           'out of stock': '#B4B4B4',
                         }}
                         color={parsed.productStatus.toLowerCase()}
                         name={parsed.productStatus}
-                      /> */}
+                      />
                     </div>
                     <p className='py-1 font-bold'>{parsed.name}</p>
-                    {/* {parsed.productStatus === 'IN STOCK' && (
+                    {parsed.productStatus === 'IN STOCK' && (
                       <p className='text-sm'>Price: ${parsed.price}</p>
-                      )} */}
-                    
+                    )}
+
                     <p className='text-sm'>Price: ${parsed.price}</p>
-                    
+
                     <div className='mt-3 flex font-bold'>
                       <button
-                        // disabled={!(parsed.productStatus === 'IN STOCK')}
+                        disabled={!(parsed.productStatus === 'IN STOCK')}
                         className='border-gray flex w-8 items-center justify-center border-[1px]'
                         onClick={() =>
                           changeItemQuantity('INCREASE', parsed.id)
@@ -192,14 +191,13 @@ export default function ProductSelection({ form }: Props) {
                         <Plus size={16} />
                       </button>
                       <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                        {/* {
-                        parsed.productStatus === 'IN STOCK'
-                          ? parsed.totalQuantity
-                          : 0} */}
-                          {parsed.totalQuantity}
+                        {
+                          parsed.productStatus === 'IN STOCK'
+                            ? parsed.totalQuantity
+                            : 0}
                       </span>
                       <button
-                        // disabled={!(parsed.productStatus === 'IN STOCK')}
+                        disabled={!(parsed.productStatus === 'IN STOCK')}
                         className='border-gray flex w-8 items-center justify-center border-[1px]'
                         onClick={() =>
                           changeItemQuantity('DECREASE', parsed.id)
@@ -217,12 +215,12 @@ export default function ProductSelection({ form }: Props) {
                       Remove
                     </button>
                     {
-                    // parsed.productStatus === 'IN STOCK' && 
-                    (
-                      <span className='whitespace-pre text-xl font-bold'>
-                        $ {(parsed.price * parsed.totalQuantity).toFixed(2)}
-                      </span>
-                    )}
+                      parsed.productStatus === 'IN STOCK' &&
+                      (
+                        <span className='whitespace-pre text-xl font-bold'>
+                          $ {(parsed.price * parsed.totalQuantity).toFixed(2)}
+                        </span>
+                      )}
                   </div>
                 </div>
               );

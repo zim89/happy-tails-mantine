@@ -47,7 +47,7 @@ export default function ProductPage({ params }: Props) {
     description: data.description,
     offers: {
       '@type': 'Offer',
-      // availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
+      availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
       url: `https://happy-tails-mantine.vercel.app/products/${data.id}`,
       category: data.categoryName,
       itemCondition: 'https://schema.org/NewCondition',

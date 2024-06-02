@@ -27,8 +27,7 @@ export default function OrderTotal({ form }: Props) {
 
   const subTotal = form.values.items.reduce((acc, prev) => {
     const parsed: Product = JSON.parse(prev);
-    // FIX ME
-    // if (parsed.productStatus !== "IN STOCK") return acc;
+    if (parsed.productStatus !== "IN STOCK") return acc;
     return acc + parsed.price * parsed.totalQuantity;
   }, 0);
 
@@ -40,7 +39,6 @@ export default function OrderTotal({ form }: Props) {
     (async () => {
       try {
         const res = await getDiscount(promoCode);
-        console.log("Results: ",res);
         setDiscount(res.data.discount);
       } catch(err) {
         if (err instanceof AxiosError) {

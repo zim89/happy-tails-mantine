@@ -28,19 +28,20 @@ interface Props {
 
 export default function ProductDetails({ product }: Props) {
   const [opened, { close, toggle, open }] = useDisclosure();
-  // FIXME
   const sliderData = useSelectProducts(state => state
     .filter(prod => prod.id !== product.id && product.categoryId === prod.categoryId 
-          // && prod.productStatus === "IN STOCK"
+          && prod.productStatus === "IN STOCK"
     )
   );
+
+      console.log("Product: ", product);
 
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
     product.totalQuantity === 0 ? 0 : 1
   );
 
-  // const isAvailable = product.productStatus === 'IN STOCK';
+  const isAvailable = product.productStatus === 'IN STOCK';
 
   return (
     <>
@@ -122,12 +123,11 @@ export default function ProductDetails({ product }: Props) {
                 <div className='flex w-[158px] items-center rounded-[2px] border border-brand-grey-400'>
                   <button
                     onClick={() => handlersRef.current?.decrement()}
-                    // disabled={quantity === 1 || !isAvailable}
-                    disabled={quantity === 1}
+                    disabled={quantity === 1 || !isAvailable}
                     className={cn(
                       'px-4 py-3',
                       (quantity === 1 
-                        // || !isAvailable
+                        || !isAvailable
                       ) && 'text-brand-grey-400'
                     )}
                   >
@@ -153,12 +153,12 @@ export default function ProductDetails({ product }: Props) {
                   <button
                     onClick={() => handlersRef.current?.increment()}
                     disabled={quantity === product.totalQuantity
-                      // || !isAvailable
+                      || !isAvailable
                       }
                     className={cn(
                       'px-4 py-3',
                       (quantity === product.totalQuantity
-                        // || !isAvailable
+                        || !isAvailable
                         ) &&
                         'text-brand-grey-400'
                     )}

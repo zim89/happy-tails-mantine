@@ -82,13 +82,14 @@ export interface Product {
   article: string;
   name: string;
   price: number;
-  color: ProductColor;
-  onSale?: boolean;
+  color: ProductColor | null;
+  onSale: boolean;
   salePrice: number | null;
   categoryId: number;
   categoryName: string;
   description: string;
-  productType?: ProductType;
+  productType: ProductType;
+  productStatus: ProductStatus;
   productSizes: ProductSize[] | null;
   relatedProducts: RelatedProduct[] | null;
   totalQuantity: number;

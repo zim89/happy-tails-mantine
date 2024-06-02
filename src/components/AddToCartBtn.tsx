@@ -11,7 +11,7 @@ interface Props {
 export default function AddToCartBtn({ product }: Props) {
   const dispatch = useAppDispatch();
   // FIX ME
-  // const isAvailable = product.productStatus === 'IN STOCK';
+  const isAvailable = product.productStatus === 'IN STOCK';
 
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -21,14 +21,13 @@ export default function AddToCartBtn({ product }: Props) {
 
   return (
     <button
-      // disabled={!isAvailable}
+      disabled={!isAvailable}
       onClick={onClick}
-      className={cn('btn w-full',
-      //  !isAvailable ? 'btn-disabled' : 'btn-cart'
+      className={cn('btn w-full btn-cart',
+       !isAvailable ? 'btn-disabled' : 'btn-cart'
       )}
     >
-      Add to cart
-      {/* {isAvailable ? 'Add to cart' : 'Out of stock'} */}
+      {isAvailable ? 'Add to cart' : 'Out of stock'}
     </button>
   );
 }
