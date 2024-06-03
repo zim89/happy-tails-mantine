@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
 
-import { Order, Product, AxiosQueryError, ProductStatus } from '../types/types';
+import { Order, AxiosQueryError, ProductStatus } from '../types/types';
 import { ErrorResponse } from './constants';
+
+export const formatDateToClockTime = (date: string | number) => {
+  return dayjs(date).format("HH:mm");
+}
 
 export const formatDate = (date: string | number, format = "MMMM D, YYYY") => {
   return dayjs(date).format(format);

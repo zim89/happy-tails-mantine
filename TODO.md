@@ -1,6 +1,6 @@
 - Add pagination search params in URL 
 - Adjust components dependable to updated product's interface:
-    5. Shipping Modal (Add order, admin)
+    1. Shipping Modal (Add order, admin)
 
 Done (05/12/2024)
 - Init testing framework (vitest)

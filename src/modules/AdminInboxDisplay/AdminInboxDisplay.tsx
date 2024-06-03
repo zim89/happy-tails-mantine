@@ -2,6 +2,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 
 import classes from "./classes.module.css";
 import { Table } from "./components/Table";
+import { messages } from "./lib/mock";
 
 export default function AdminInboxDisplay() {
     return (
@@ -21,7 +22,7 @@ export default function AdminInboxDisplay() {
                     <p>Manage user messages and requests</p>
                 </hgroup>
             </div>
-            <Table data={[]} />
+            <Table data={messages} />
         </>
     );
 }
