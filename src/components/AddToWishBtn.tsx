@@ -38,7 +38,7 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
           onClick={toggleFavorite}
           disabled={disabled}
           className={clsx(
-            'group/fav flex items-center gap-2 bg-primary px-4 py-3 transition-colors duration-300',
+            'group/fav flex items-center gap-2 whitespace-nowrap bg-primary px-4 py-3 transition-colors duration-300',
             isFavorite
               ? 'text-brand-orange-400 hover:text-brand-orange-500'
               : 'text-secondary hover:text-brand-orange-500',

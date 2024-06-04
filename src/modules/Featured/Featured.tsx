@@ -21,7 +21,7 @@ export default function Featured() {
             </h3>
             <Button
               component={Link}
-              href='/products'
+              href='/clothing'
               className='h-11 min-w-full rounded-sm bg-black md:min-w-[232px]'
             >
               View Products
@@ -41,7 +41,7 @@ export default function Featured() {
             <h3 className='mb-4 text-2xl uppercase'>Leads Collection</h3>
             <Button
               component={Link}
-              href='/products'
+              href='/leads'
               className='h-11 min-w-full rounded-sm bg-black md:max-w-[232px]'
             >
               View Products

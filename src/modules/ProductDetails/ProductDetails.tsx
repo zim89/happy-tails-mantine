@@ -18,9 +18,9 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { cn } from '@/shared/lib/utils';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
-import { useSelectProducts } from "@/shared/hooks/useSelectProducts";
+import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 
-const ProductSlider = dynamic(() => import("./ui/ProductSlider"));
+const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
 
 interface Props {
   product: Product;
@@ -50,11 +50,13 @@ export default function ProductDetails({ product }: Props) {
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
-              { href: `/${product.categoryName.toLowerCase()}`, text: product.categoryName },
+              {
+                href: `/${product.categoryName.toLowerCase()}`,
+                text: product.categoryName,
+              },
               { text: product.name },
             ]}
-
-            classNames={{ root: "p-0 pt-4" }}
+            classNames={{ root: 'p-0 pt-4' }}
           />
           <div className='mb-16 block md:mb-20 lg:mb-28 lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
@@ -115,12 +117,12 @@ export default function ProductDetails({ product }: Props) {
               </p>
 
               {/* Size guiding table */}
-              <SizeGuide opened={opened} onClose={close} onToggle={toggle}/>
+              <SizeGuide opened={opened} onClose={close} onToggle={toggle} />
 
               {/*ProductDetails footer*/}
               <div className='mb-6 flex items-center justify-between md:mb-12'>
                 {/*Number Input*/}
-                <div className='flex w-[158px] items-center rounded-[2px] border border-brand-grey-400'>
+                <div className='flex w-[158px] min-w-[158px] items-center rounded-[2px] border border-brand-grey-400'>
                   <button
                     onClick={() => handlersRef.current?.decrement()}
                     disabled={quantity === 1 || !isAvailable}
@@ -147,7 +149,8 @@ export default function ProductDetails({ product }: Props) {
                     onChange={setQuantity}
                     readOnly
                     classNames={{
-                      input: 'form-input border-0 px-4 py-2 text-center text-base font-bold',
+                      input:
+                        'form-input border-0 px-4 py-2 text-center text-base font-bold',
                     }}
                   />
                   <button
@@ -167,8 +170,8 @@ export default function ProductDetails({ product }: Props) {
                   </button>
                 </div>
 
-                <div className='flex gap-3'>
-                  <div className='hidden md:block md:w-[274px]'>
+                <div className='flex w-[458px] gap-3'>
+                  <div className='hidden w-full md:block md:max-w-[274px]'>
                     <AddToCartBtn product={product} />
                   </div>
 
@@ -190,7 +193,12 @@ export default function ProductDetails({ product }: Props) {
             </div>
           </div>
 
-          {sliderData.length > 0 && <ProductSlider data={sliderData} targetCategory={product.categoryName}/>}
+          {sliderData.length > 0 && (
+            <ProductSlider
+              data={sliderData}
+              targetCategory={product.categoryName}
+            />
+          )}
         </Container>
       </section>
     </>
