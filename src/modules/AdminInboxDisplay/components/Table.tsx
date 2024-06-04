@@ -12,7 +12,7 @@ import {
 } from '@tanstack/react-table';
 import { Table as MantineTable, Checkbox, Menu, UnstyledButton } from '@mantine/core';
 import { useState, useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Mail, Star as StarIcon, Trash2 } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
@@ -67,12 +67,12 @@ type Props = {
 const columnHelper = createColumnHelper<Message & { checked: boolean }>();
 
 const columns = [
-  columnHelper.accessor("starred", {
-    header: "",
-    enableSorting: false,
-    cell: info => <Star starred={info.getValue()} />,
-    size: 45,
-  }),
+  // columnHelper.accessor("starred", {
+  //   header: "",
+  //   enableSorting: false,
+  //   cell: info => <Star starred={info.getValue()} />,
+  //   size: 45,
+  // }),
   columnHelper.accessor('sender', {
     header: "",
     enableSorting: false,
@@ -113,6 +113,8 @@ export const Table = ({ data }: Props) => {
   const [checked, setChecked] = useState(false);
   const [filter, setFilter] = useState<string>("ALL");
   const [selected, setSelected] = useState<number[]>([]);
+  const [starred, setStarred] = useState<number[]>([]);
+  const [statuses, setStatuses] = useState<{id: number, value: typeof data[number]["status"]}[]>([...data.map(item => ({ id: item.id, value: item.status}) )]);
   const [opened, setOpened] = useState(false);
 
   let tableData = useMemo(() => {
@@ -120,52 +122,80 @@ export const Table = ({ data }: Props) => {
       return {
         ...msg,
         checked: selected.includes(msg.id) ? true : false,
+        starred: starred.includes(msg.id) ? true : false,
+        status: statuses.find(({ id }) => id === msg.id)?.value || msg.status
       }
     });
 
     if (!checked) return copy;
 
+    let selectedMsgs: number[] = [];
     switch (filter) {
       case "ALL":
         copy.forEach(msg => {
+          selectedMsgs.push(msg.id);
           msg.checked = true;
         });
+
+        setSelected(selectedMsgs);
         break;
       case "NONE":
+        // Change the table
         copy.forEach(msg => {
           msg.checked = false;
         });
+        // If the checkbox is unchecked, still preserve all messages unselected
+        setSelected([]);
         break;
       case "STARRED":
         copy.forEach(msg => {
-          if (msg.starred) msg.checked = true;
+          if (msg.starred) { 
+            selectedMsgs.push(msg.id);
+            msg.checked = true;
+          }
           else msg.checked = false;
         });
+
+        setSelected(selectedMsgs);
         break;
       case "UNSTARRED":
         copy.forEach(msg => {
-          if (!msg.starred) msg.checked = true;
+          if (!msg.starred) { 
+            msg.checked = true;
+            selectedMsgs.push(msg.id);
+          }
           else msg.checked = false;
         });
+
+        setSelected(selectedMsgs);
         break;
       case "READ":
         copy.forEach(msg => {
-          if (msg.status === "read") msg.checked = true;
+          if (msg.status === "read") { 
+            msg.checked = true;
+            selectedMsgs.push(msg.id);
+          }
           else msg.checked = false;
         });
+
+        setSelected(selectedMsgs);
         break;
       case "UNREAD":
         copy.forEach(msg => {
-          if (msg.status === "unread") msg.checked = true;
+          if (msg.status === "unread") { 
+            msg.checked = true;
+          }
           else msg.checked = false;
         });
+
+        setSelected(selectedMsgs);
         break;
       default:
         break;
     }
 
     return copy;
-  }, [filter, data, selected, checked]);
+  }, [filter, data, selected.length, checked, starred.length, statuses]);
 
   const table = useReactTable({
     data: tableData,
@@ -179,6 +209,22 @@ export const Table = ({ data }: Props) => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
+
+  const handleMarkAsRead = () => {
+    setMarkedStatus(selected);
+  }
+
+  const handleAddStar = () => {
+    setStarred(selected);
+  };
+
+  const handleDelete = () => {
+    console.log("Messages to delete: ", selected);
+  }
+
+  const setMarkedStatus = (msgs: number[]) => {
+    setStatuses(prev => prev.map(msg => msgs.includes(msg.id) && msg.value === "unread" ? { id: msg.id, value: "read"} : msg))
+  }
 
   return (
     <>
@@ -217,6 +263,13 @@ export const Table = ({ data }: Props) => {
                   <Menu.Target>
                     <ChevronDown onClick={() => setOpened(true)} size={16} className='cursor-pointer' />
                   </Menu.Target>
+                  {((selected.length > 0) || (checked && selected.length > 0)) && (
+                    <div className="flex gap-12">
+                      <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleMarkAsRead}><Mail size={16} />Mark as read</UnstyledButton>
+                      <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleAddStar}><StarIcon size={16} />Add star</UnstyledButton>
+                      <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleDelete}><Trash2 size={16} />Delete</UnstyledButton>
+                    </div>
+                  )}
                 </div>
                 <Menu.Dropdown classNames={{ dropdown: "flex flex-col text-sm" }}>
                   {filterOptions.map(fil =>
@@ -234,10 +287,15 @@ export const Table = ({ data }: Props) => {
           {table.getRowModel().rows.length > 0 &&
             table.getRowModel().rows.map((row) => (
               <MantineTable.Tr key={row.id}>
-                <Checkbox size="xs" checked={row.original.checked} onChange={() => {
-                  !row.original.checked && setSelected(prev => [...prev, row.original.id]);
-                  row.original.checked && setSelected(prev => prev.filter(id => id !== row.original.id));
-                }} classNames={{ root: "mx-4" }} color='black' styles={{ icon: { stroke: "black" } }} />
+                <MantineTable.Td>
+                  <Checkbox size="xs" checked={row.original.checked} onChange={() => {
+                    !row.original.checked && setSelected(prev => [...prev, row.original.id]);
+                    row.original.checked && setSelected(prev => prev.filter(id => id !== row.original.id));
+                  }} classNames={{ root: "mx-4" }} color='black' styles={{ icon: { stroke: "black" } }} />
+                </MantineTable.Td>
+                <MantineTable.Td>
+                  <Star id={row.original.id} starred={row.original.starred} setStarred={setStarred} />
+                </MantineTable.Td>
                 {row.getVisibleCells().map((cell) => {
                   return <MantineTable.Td key={cell.id} styles={{ td: { width: `${cell.column.getSize()}px` } }} classNames={{ td: "p-4" }}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
