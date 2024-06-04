@@ -3,9 +3,18 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BackendResponse, Order, Product, Sort } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
+type Address = {
+  firstName: string;
+    secondName: string;
+    country: string;
+    city: string;
+    street: string;
+    apartment: string;
+}
+
 type OrderPayload = {
-  shippingAddress: string;
-  billingAddress: string;
+  shippingAddress: Address;
+  billingAddress: Address;
   shippingMethod: string;
   items: string[];
   paymentMethod: string;
@@ -48,7 +57,7 @@ export const ordersApi = createApi({
         if (sort) params.append('sort', sort.join(','));
 
         return {
-          url: `/orders?${params}`,
+          url: `/orders/all?${params}`,
           headers: {
             'Content-type': 'application/json'
           },

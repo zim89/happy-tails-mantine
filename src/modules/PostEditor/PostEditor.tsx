@@ -14,7 +14,7 @@ import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/lib/context';
-import ImageResizeControl from '@/components/ImageResizeControl';
+// import ImageResizeControl from '@/components/ImageResizeControl';
 
 export const sharedProps = {
 	toolbarBtn: {

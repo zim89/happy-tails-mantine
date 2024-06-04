@@ -45,11 +45,11 @@ export default function NewOrder() {
         items: values.items,
         count: 1,
         billingAddress: sameAsDelivery
-          ? JSON.stringify(values.address)
-          : JSON.stringify(billing),
-        email: currentUser.email,
+          ? values.address
+          : billing,
+        email: values.email,
         paymentMethod: values.paymentMethod,
-        shippingAddress: JSON.stringify(values.address),
+        shippingAddress: values.address,
         shippingMethod: values.shippingMethod,
       }).unwrap();
 
