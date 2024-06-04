@@ -1,4 +1,4 @@
-import { LayoutList, LayoutDashboard, FileText, UsersRound, Newspaper, LucideIcon } from 'lucide-react';
+import { LayoutList, LayoutDashboard, FileText, UsersRound, Newspaper, LucideIcon, MessagesSquare } from 'lucide-react';
 
 type SharedLinkProps = {
   label: string;
@@ -41,17 +41,17 @@ export const links: SidebarLinks = [
     icon: FileText,
     link: '/admin/orders',
   },
-//   {
-//     id: 'link',
-//     label: 'Seo',
-//     icon: SearchCheck,
-//     link: '/admin/auth',
-//   },
   {
     id: 'link',
     label: 'Users',
     icon: UsersRound,
     link: '/admin/users',
+  },
+  {
+    id: "link",
+    label: "Messages",
+    icon: MessagesSquare,
+    link: "/admin/inbox"
   },
   {
     id: "link",

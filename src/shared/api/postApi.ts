@@ -96,7 +96,7 @@ export const postApi = createApi({
           authorName: authorName,
           posterImgSrc: posterImgSrc,
           content: content,
-          postStatus: "ARCHIVED"
+          postStatus: "PUBLISHED"
         },
         headers: {
           "Content-Type": "application/json"

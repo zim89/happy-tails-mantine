@@ -41,10 +41,14 @@ const ImageControl = ({ handleImageUpload }: Props) => {
 
     const handleImage = (file: File | null) => {
         if (!file) return;
-        // handleImageUpload(file).then((url) => {
-           
+
+        if (process.env.NODE_ENV === "development") {
             editor?.chain().focus().setImage({ src: url.src }).run();
-        // });
+        } else {
+            handleImageUpload(file).then((url) => {
+                editor?.chain().focus().setImage({ src: url }).run();
+            });
+        }
     };
 
     return (

@@ -51,7 +51,7 @@
 }
 
 .modalContent {
-    @apply py-[14px] px-6;
+    @apply py-[14px] px-6 bg-white;
 }
 
 .fileWrapper {

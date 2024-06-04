@@ -18,7 +18,7 @@ export const TablePagination = <T,>({ visible, table }: Props<T>) => {
 
   return (
     <div className='mt-[46px] flex flex-col gap-4 md:items-center md:flex-row justify-between'>
-      <Select
+      {table.getRowCount() > 0 && <Select
         label='Results Per Page'
         withCheckIcon={false}
         rightSection={<ChevronDown className='text-secondary' />}
@@ -32,7 +32,7 @@ export const TablePagination = <T,>({ visible, table }: Props<T>) => {
           label: 'form-label mr-2',
           input: 'form-input w-[4.3125rem] font-bold',
         }}
-      />
+      />}
 
       {visible && <Pagination.Root
         value={table.getState().pagination.pageIndex + 1}

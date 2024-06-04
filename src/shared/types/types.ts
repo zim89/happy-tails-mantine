@@ -1,4 +1,4 @@
-type ProductStatus = 'DELETE' | 'ACTIVE' | 'TEMPORARILY_ABSENT' | 'IN STOCK';
+export type ProductStatus = 'OUT OF STOCK' | 'IN STOCK';
 type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =
@@ -10,51 +10,129 @@ type OrderStatus =
   | 'RETURN_PROCESSING'
   | 'COMPLETED';
 
+export enum ProductColor {
+  Black = "Black",
+  White = "White",
+  Blue = "Blue",
+  Pink = "Pink",
+  Yellow = "Yellow",
+  Green = "Green",
+  Red = "Red",
+  Purple = "Purple",
+  Orange = "Orange",
+  Gray = "Gray",
+  Brown = "Brown",
+  "ONE COLOR" = "ONE COLOR"
+}
+
+export enum ProductSizeEnum {
+  XS = "XS",
+  S = "S",
+  M = "M",
+  L = "L",
+  XL = "XL",
+  XXL = "XXL",
+  "ONE SIZE" = "ONE SIZE"
+}
+
+type ShippingAddress = {
+  company: string;
+  country: string;
+  zip: string;
+  state: string;
+  city: string;
+  addressLine1: string;
+  addressLine2: string;
+  phoneNumber: string;
+}
+
+type BillingAddress = ShippingAddress;
+
+type ShippingMethod = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  daysOfDelivery: number;
+}
+
+type Discount = {
+  id: number;
+  code: string;
+  discount: number;
+  minPrice: number;
+  beginningDate: string;
+  expirationDate: string;
+}
+
+type ProductSize = {
+  size: ProductSizeEnum;
+  quantity: number;
+  productStatus: ProductStatus;
+}
+
+type RelatedProduct = {
+  relatedProductId: number;
+  relatedProductColorEnum: ProductColor;
+  relatedProductImagePath: string;
+}
+
 export interface Product {
   id: number;
   article: string;
   name: string;
   price: number;
+  color: ProductColor | null;
+  onSale: boolean;
+  salePrice: number | null;
   categoryId: number;
   categoryName: string;
   description: string;
-  quantity: number;
+  productType: ProductType;
   productStatus: ProductStatus;
-  imagePath: string;
+  productSizes: ProductSize[] | null;
+  relatedProducts: RelatedProduct[] | null;
+  totalQuantity: number;
   unitsSold?: number;
-  onSale?: boolean;
-  salePrice: number | null;
-  productType?: ProductType;
-  updatedAt: number | null;
   createdAt: number;
+  updatedAt: number | null;
+  imagePath: string;
 }
 
 export interface Order {
-  billingAddress: string;
-  createdDate: string;
-  statusLastUpdatedAt: number | null;
-  commentOfManager: string | null;
-  discountCode: string | null;
-  email: string;
   id: string;
   number: string;
+  orderStatus: OrderStatus;
+  createdDate: string;
+  statusLastUpdatedAt: number | null;
+  email: string;
+  userId: string;
   orderProductDTOList: {
-    id: number;
     orderNumber: string;
     productId: number;
     productName: string;
     productImagePath: string;
     productPrice: number;
+    productSize: ProductSizeEnum;
+    productColor: ProductColor;
+    productArticle: string;
     onSale: boolean;
     salePrice: number;
     count: number;
   }[];
-  orderStatus: OrderStatus;
+  shippingAddress: ShippingAddress;
+  billingAddress: BillingAddress;
   paymentMethod: string;
-  price: number;
-  purchasedDate: string;
-  shippingAddress: string;
-  shippingMethod: string;
+  shippingMethodDTO: ShippingMethod;
+  eta: string;
+  priceOfProducts: number;
+  taxAmount: number;
+  discountAmount: number;
+  discountDTO: Discount;
+  totalPrice: number;
+  agreementToTerms: boolean;
+  emailMeWithOffersAndNews: boolean;
+  commentOfManager: string;
 }
 
 export type ParsedShippingAddress = {

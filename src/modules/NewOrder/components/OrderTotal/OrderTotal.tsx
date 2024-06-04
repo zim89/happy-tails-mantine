@@ -28,7 +28,7 @@ export default function OrderTotal({ form }: Props) {
   const subTotal = form.values.items.reduce((acc, prev) => {
     const parsed: Product = JSON.parse(prev);
     if (parsed.productStatus !== "IN STOCK") return acc;
-    return acc + parsed.price * parsed.quantity;
+    return acc + parsed.price * parsed.totalQuantity;
   }, 0);
 
   const shipping = subTotal === 0 ? 0 : form.values.shippingMethod === "fast" ? 20 : 10;
@@ -36,12 +36,9 @@ export default function OrderTotal({ form }: Props) {
   useEffect(() => {
     if (!promoCode.trim()) return;
 
-    
-
     (async () => {
       try {
         const res = await getDiscount(promoCode);
-        console.log("Results: ",res);
         setDiscount(res.data.discount);
       } catch(err) {
         if (err instanceof AxiosError) {

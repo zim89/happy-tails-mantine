@@ -10,6 +10,8 @@ import noImage from '@/assets/icons/no-image.512x512.png';
 import { Category } from '@/shared/types/types';
 
 export default function CategoryRow(category: Category) {
+  console.log(category);
+
   return (
     <Table.Tr className={styles.categoryRow}>
       <Table.Td>

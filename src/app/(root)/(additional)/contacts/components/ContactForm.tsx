@@ -31,7 +31,7 @@ export const ContactForm = () => {
 
     validate: {
       email: isEmail('Invalid email'),
-      content: hasLength({ min: 30, max: 255 }, 'Please describe your problem'),
+      content: hasLength({ min: 30, max: 255 }, 'Minimum message length is 30 characters. Please extend your message.'),
       userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       termsOfService: (value) =>
         !value && 'You must agree to the Terms of Service',

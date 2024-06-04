@@ -3,9 +3,18 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BackendResponse, Order, Product, Sort } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
+type Address = {
+  firstName: string;
+    secondName: string;
+    country: string;
+    city: string;
+    street: string;
+    apartment: string;
+}
+
 type OrderPayload = {
-  shippingAddress: string;
-  billingAddress: string;
+  shippingAddress: Address;
+  billingAddress: Address;
   shippingMethod: string;
   items: string[];
   paymentMethod: string;
@@ -65,6 +74,21 @@ export const ordersApi = createApi({
             ]
           : [{ type: 'Orders', id: 'LIST' }],
     }),
+    findOne: builder.query<Order, { orderNumber: string }>({
+      query: ({ orderNumber }) => ({
+        url: `/order/${orderNumber}`
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              {
+                type: 'Orders' as const,
+                id: result.number,
+              },
+              { type: 'Orders', id: 'LIST' },
+            ]
+          : [{ type: 'Orders', id: 'LIST' }],
+    }),
     createOrder: builder.mutation<Order, OrderPayload>({
       query: ({ count, items, ...params }) => ({
         url: '/orders',
@@ -75,7 +99,7 @@ export const ordersApi = createApi({
           
           return {
             productId: orderItem.id,
-            count: orderItem.quantity
+            count
           }
         }),
         headers: {
@@ -139,7 +163,7 @@ export const ordersApi = createApi({
   }),
 });
 
-export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation, useAddCommentMutation } = ordersApi;
+export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation, useAddCommentMutation, useFindOneQuery } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {

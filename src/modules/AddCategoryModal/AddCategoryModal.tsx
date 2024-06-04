@@ -167,10 +167,10 @@ export default function AddCategoryModal() {
             classNames={{
               root: 'form-root',
               label: 'form-label',
-              wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
+              wrapper: 'flex border-2 gap-2 focus:outline outline-2',
               section: 'static w-auto text-[#161616] whitespace-nowrap',
               input: cn(
-                'form-input rounded-sm border-0 p-0 outline-none',
+                'form-input rounded-sm border-0 p-1 outline-none h-[40px]',
                 form?.errors?.categoryName && 'form-error--input'
               ),
               error: 'form-error',

@@ -6,12 +6,13 @@ import { Post } from "@/shared/api/postApi";
 import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
 import DeletePostModal from "@/modules/DeletePostModal"
+import ArchivePostModal from '@/modules/ArchivePostModal';
 
 type Props = {
   post: Post
 }
 export const Actions = ({ post }: Props) => {
-  const [setNotification, { props, clear }] = useNotification({
+  const [setNotification_deleted, { props: props_deleted, clear: clear_deleted }] = useNotification({
     failed: {
       text: 'Article deletion failed!',
       icon: <AlertTriangle size={24} fill="#DC362E" />,
@@ -23,6 +24,19 @@ export const Actions = ({ post }: Props) => {
       color: '#389B48',
     }
   });
+
+  const [setNotification_archived, { props: props_archived, clear: clear_archived }] = useNotification({
+    failed: {
+        color: "transparent",
+        icon: <AlertTriangle size={24} fill='#DC362E' />,
+        text: 'Post archiving failed!',
+    },
+    success: {
+        color: '#389B48',
+        icon: <Check size={24} />,
+        text: 'Post archived successfully!',
+    },
+});
 
   return (
       <div className='flex justify-end gap-4'>
@@ -36,7 +50,9 @@ export const Actions = ({ post }: Props) => {
         <UnstyledButton
           classNames={{ root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]' }}
         >
-          <Edit2 size={16} color='black' />
+          <Link href={`/admin/blogs/${post.id}`}>
+            <Edit2 size={16} color='black' />
+          </Link>
         </UnstyledButton>
 
         <Menu width={148} position='bottom-end' keepMounted>
@@ -53,18 +69,19 @@ export const Actions = ({ post }: Props) => {
               leftSection={<FolderDown size={16} />}
               className='mb-1 rounded-none hover:bg-brand-grey-200'
             >
-              <Link href={`/admin/blogs`}>Archive</Link>
+              <ArchivePostModal id={post.id} setNotification={setNotification_archived} />
             </Menu.Item>
             <Menu.Item
               leftSection={<Trash2 size={16} />}
               className='rounded-none hover:bg-brand-grey-200'
             >
-              <DeletePostModal id={post.id} setNotification={setNotification} />
+              <DeletePostModal id={post.id} setNotification={setNotification_deleted} />
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
 
-        <Notify {...props} onClose={clear} />
+        <Notify {...props_deleted} onClose={clear_deleted} />
+        <Notify {...props_archived} onClose={clear_archived} />
       </div>
   );
 };

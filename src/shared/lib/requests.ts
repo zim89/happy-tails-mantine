@@ -68,10 +68,10 @@ export const fetchAllPosts = async (
   size = 6
 ): Promise<BackendResponse<Post[]>> => {
   try {
-    const res = await fetch(
+    const res = await axios(
       `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published?page=${page}&size=${size}`
     );
-    return res.json();
+    return res.data;
   } catch (error) {
     throw new Error('Failed to fetch posts');
   }
@@ -79,10 +79,10 @@ export const fetchAllPosts = async (
 
 export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
   try {
-    const res = await fetch(
+    const res = await axios(
       `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published`
     );
-    return res.json();
+    return res.data;
   } catch (error) {
     throw new Error('Failed to fetch posts');
   }
@@ -91,9 +91,9 @@ export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
 export const fetchOnePost = async (id: string): Promise<Post | null> => {
   unstable_noStore();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
+    const res = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
     if (res.status === 404) return null;
-    return res.json();
+    return res.data;
   } catch (error) {
     throw new Error('Failed to fetch post');
   }
@@ -101,8 +101,8 @@ export const fetchOnePost = async (id: string): Promise<Post | null> => {
 
 export const fetchHeroPost = async (): Promise<Post> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/hero`);
-    return res.json();
+    const res = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/hero`);
+    return res.data;
   } catch (error) {
     throw new Error('Failed to fetch hero post');
   }
@@ -110,10 +110,10 @@ export const fetchHeroPost = async (): Promise<Post> => {
 
 export const fetchLastFivePosts = async (): Promise<Post[]> => {
   try {
-    const res = await fetch(
+    const res = await axios(
       `${process.env.NEXT_PUBLIC_BASE_URL}/posts/last-five`
     );
-    return res.json();
+    return res.data;
   } catch (error) {
     throw new Error('Failed to fetch last posts');
   }

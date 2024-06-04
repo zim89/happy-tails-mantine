@@ -28,19 +28,19 @@ interface Props {
 
 export default function ProductDetails({ product }: Props) {
   const [opened, { close, toggle, open }] = useDisclosure();
-  const sliderData = useSelectProducts((state) =>
-    state.filter(
-      (prod) =>
-        prod.id !== product.id &&
-        product.categoryId === prod.categoryId &&
-        prod.productStatus === 'IN STOCK'
+  const sliderData = useSelectProducts(state => state
+    .filter(prod => prod.id !== product.id && product.categoryId === prod.categoryId 
+          && prod.productStatus === "IN STOCK"
     )
   );
 
+      console.log("Product: ", product);
+
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
-    product.quantity === 0 ? 0 : 1
+    product.totalQuantity === 0 ? 0 : 1
   );
+
   const isAvailable = product.productStatus === 'IN STOCK';
 
   return (
@@ -92,10 +92,10 @@ export default function ProductDetails({ product }: Props) {
                 <span
                   className={cn(
                     'badge',
-                    product.quantity > 0 ? 'badge-success' : 'badge-muted'
+                    product.totalQuantity > 0 ? 'badge-success' : 'badge-muted'
                   )}
                 >
-                  {product.quantity > 0 ? 'in stock' : 'out of stock'}
+                  {product.totalQuantity > 0 ? 'in stock' : 'out of stock'}
                 </span>
               </div>
 
@@ -128,7 +128,9 @@ export default function ProductDetails({ product }: Props) {
                     disabled={quantity === 1 || !isAvailable}
                     className={cn(
                       'px-4 py-3',
-                      (quantity === 1 || !isAvailable) && 'text-brand-grey-400'
+                      (quantity === 1 
+                        || !isAvailable
+                      ) && 'text-brand-grey-400'
                     )}
                   >
                     <Minus className='h-5 w-5' />
@@ -142,7 +144,7 @@ export default function ProductDetails({ product }: Props) {
                     allowDecimal={false}
                     step={1}
                     min={1}
-                    max={product.quantity}
+                    max={product.totalQuantity}
                     value={quantity}
                     onChange={setQuantity}
                     readOnly
@@ -153,10 +155,14 @@ export default function ProductDetails({ product }: Props) {
                   />
                   <button
                     onClick={() => handlersRef.current?.increment()}
-                    disabled={quantity === product.quantity || !isAvailable}
+                    disabled={quantity === product.totalQuantity
+                      || !isAvailable
+                      }
                     className={cn(
                       'px-4 py-3',
-                      (quantity === product.quantity || !isAvailable) &&
+                      (quantity === product.totalQuantity
+                        || !isAvailable
+                        ) &&
                         'text-brand-grey-400'
                     )}
                   >

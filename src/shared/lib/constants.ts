@@ -40,11 +40,9 @@ export const orderStatusList: Order['orderStatus'][] = [
   'COMPLETED',
 ];
 
-export const productStatusList: Product['productStatus'][] = [
-  'ACTIVE',
-  'DELETE',
-  'IN STOCK',
-  'TEMPORARILY_ABSENT'
+export const productTypeList: ("INDOORS" | "OUTDOORS")[] = [
+  "INDOORS",
+  "OUTDOORS"
 ];
 
 export const isOrderStatus = (param: any): param is Order['orderStatus'] => {

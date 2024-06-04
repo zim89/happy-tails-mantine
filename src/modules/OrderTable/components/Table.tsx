@@ -13,21 +13,14 @@ import {
 
 import {
   Button,
-  Group,
-  Input,
   Table as MantineTable,
-  Pagination,
-  Select,
 } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
 import { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { cn } from '@/shared/lib/utils';
-import { ChevronDown, ChevronUp, Search } from 'lucide-react';
 import dayjs from 'dayjs';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';
@@ -86,7 +79,7 @@ const columns = [
     filterFn: 'equalsString',
     enableSorting: false,
   }),
-  columnHelper.accessor('price', {
+  columnHelper.accessor('totalPrice', {
     cell: (info) => <span>$ {info.getValue()}</span>,
     header: () => 'Total Paid',
     enableSorting: false,

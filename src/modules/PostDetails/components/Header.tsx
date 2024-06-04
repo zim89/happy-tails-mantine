@@ -75,7 +75,9 @@ export const Header = ({ editor, post }: Props) => {
                     {isEdited && post.postStatus === "ARCHIVED" && <ArchivedController setNotification={setNotification} postId={post.id} refetch={() => {
                         form.resetDirty();
                     }} />}
-                    {post.postStatus === "DRAFT" && <DraftController setNotification={setNotification} postId={post.id} />}
+                    {post.postStatus === "DRAFT" && <DraftController setNotification={setNotification} postId={post.id} refetch={() => {
+                        form.resetDirty();
+                    }} />}
                 </div>
             </div>
             <Notify {...props} onClose={clear} />

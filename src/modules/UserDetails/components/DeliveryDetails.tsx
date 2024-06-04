@@ -17,6 +17,7 @@ export const DeliveryDetails = ({ user }: Props) => {
         </p>
         <p className='p-4 py-7'>{user.attributes?.billingAddress}</p>
       </>
+      
       <>
         <p className='inline-flex whitespace-nowrap items-center gap-2 border-t-[1px] border-r-[1px] border-l-0 border-[#EEE] p-4 py-7 font-black uppercase text-[#787878]'>
           <Truck size={16} /> Shipping Address

@@ -6,7 +6,7 @@ import styles from '@/modules/AddProductModal/AddProductModal.module.css';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Form, useForm } from '@mantine/form';
-import { Order, ParsedShippingAddress } from '@/shared/types/types';
+import { Order } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import { useEffect } from 'react';
 import Checkbox from '@/components/Checkbox';
@@ -33,29 +33,39 @@ export const ShippingModal = ({ order }: Props) => {
     },
   });
 
-  const billingAddress: ParsedShippingAddress = JSON.parse(
-    order.billingAddress
-  );
-  const shippingAddress: ParsedShippingAddress = JSON.parse(
-    order.shippingAddress
-  );
+  // const billingAddress: ParsedShippingAddress = JSON.parse(
+  //   order.billingAddress
+  // );
+  // const shippingAddress: ParsedShippingAddress = JSON.parse(
+  //   order.shippingAddress
+  // );
+
+  // FIXME
 
   const form = useForm({
     initialValues: {
       billingAddress: {
-        country: billingAddress.country,
-        city: billingAddress.city,
-        street: billingAddress.street,
-        apartment: billingAddress.apartment,
+        country: order.billingAddress.country,
+        city: order.billingAddress.city,
+        addressLine1: order.billingAddress.addressLine1,
+        addressLine2: order.billingAddress.addressLine2,
+        state: order.billingAddress.state,
+        zip: order.billingAddress.zip,
+        phone: order.billingAddress.phoneNumber,
+        company: order.billingAddress.company,
         sameAsDelivery: false,
       },
       shippingAddress: {
-        country: shippingAddress.country,
-        city: shippingAddress.city,
-        street: shippingAddress.street,
-        apartment: shippingAddress.apartment,
+        country: order.shippingAddress.country,
+        city: order.shippingAddress.city,
+        addressLine1: order.shippingAddress.addressLine1,
+        addressLine2: order.shippingAddress.addressLine2,
+        state: order.shippingAddress.state,
+        zip: order.shippingAddress.zip,
+        phone: order.shippingAddress.phoneNumber,
+        company: order.shippingAddress.company,
       },
-      shippingMethod: order.shippingMethod,
+      shippingMethod: order.shippingMethodDTO.name,
     },
   });
 
@@ -84,7 +94,7 @@ export const ShippingModal = ({ order }: Props) => {
           sameAsDelivery: form.values.billingAddress.sameAsDelivery,
         })
       : form.setFieldValue('billingAddress', {
-          ...billingAddress,
+          ...form.values.billingAddress,
           sameAsDelivery: form.values.billingAddress.sameAsDelivery,
         });
   }, [form.values.billingAddress.sameAsDelivery]);

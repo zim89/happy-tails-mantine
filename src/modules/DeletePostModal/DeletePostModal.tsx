@@ -2,6 +2,7 @@
 
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 
 import DeleteModal from '@/components/DeleteModal';
 import file_attention from '@/assets/icons/categories/file_attention.svg';
@@ -11,17 +12,21 @@ import { useDeletePostMutation } from '@/shared/api/postApi';
 type Props = {
     id: number;
     setNotification: (type: "Success" | "Failed", text?: string) => void;
+    customHandler?: (openHandler: () => void) => React.ReactNode;
+    redirect?: string;
 };
 
-export default function DeletePostModal({ id, setNotification }: Props) {
+export default function DeletePostModal({ id, setNotification, customHandler, redirect }: Props) {
     const [dispatch] = useDeletePostMutation();
+    const router = useRouter();
 
     const handleDelete = async () => {
         try {
             await dispatch({ id }).unwrap();
-            
+
             closeMain();
             setNotification('Success');
+            redirect && router.replace(redirect);
         } catch (err) {
             closeMain();
             if (isAxiosQueryError(err)) {
@@ -39,9 +44,9 @@ export default function DeletePostModal({ id, setNotification }: Props) {
             {(Modal) => (
                 <>
                     {/* Opens a modal window */}
-                    <span onClick={openMain} className='block p-0 text-black'>
+                    {customHandler ? customHandler(openMain) : <span onClick={openMain} className='block p-0 text-black'>
                         Delete
-                    </span>
+                    </span>}
 
                     <Modal
                         onClose={closeMain}
@@ -63,7 +68,7 @@ export default function DeletePostModal({ id, setNotification }: Props) {
                                 height={64}
                             />
                             <hgroup>
-                                <h2 className="mb-3 font-bold">{`Delete user #${id}?`}</h2>
+                                <h2 className="mb-3 font-bold">{`Delete article #${id}?`}</h2>
                                 <p>Are you sure you want to delete the selected article?</p>
                             </hgroup>
                         </div>

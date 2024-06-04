@@ -86,7 +86,7 @@ export default function OrdersList({ orders }: Props) {
               )}
             >
               <span>Order amount</span>
-              <span className='pt-[6px] text-sm'>{order.price}$</span>
+              <span className='pt-[6px] text-sm'>{order.totalPrice}$</span>
             </div>
 
             <button
