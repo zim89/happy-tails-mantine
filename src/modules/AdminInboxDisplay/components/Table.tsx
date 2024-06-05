@@ -12,7 +12,7 @@ import {
 } from '@tanstack/react-table';
 import { Table as MantineTable, Checkbox, Menu, UnstyledButton } from '@mantine/core';
 import { useState, useMemo } from 'react';
-import { ChevronDown, Mail, Star as StarIcon, Trash2 } from 'lucide-react';
+import { AlertTriangle, Check, ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
@@ -25,6 +25,9 @@ import { formatDateToClockTime } from '@/shared/lib/helpers';
 import { Actions } from './Actions';
 import { CustomBadge } from '@/components/Badge';
 import { cn } from "@/shared/lib/utils";
+import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
+import { useNotification } from '@/shared/hooks/useNotification';
+import Notify from '@/components/Notify';
 
 const filterOptions = [
   {
@@ -67,12 +70,6 @@ type Props = {
 const columnHelper = createColumnHelper<Message & { checked: boolean }>();
 
 const columns = [
-  // columnHelper.accessor("starred", {
-  //   header: "",
-  //   enableSorting: false,
-  //   cell: info => <Star starred={info.getValue()} />,
-  //   size: 45,
-  // }),
   columnHelper.accessor('sender', {
     header: "",
     enableSorting: false,
@@ -98,17 +95,23 @@ const columns = [
     enableSorting: false,
     cell: info => <span>{formatDateToClockTime(info.getValue())}</span>,
     size: 30
-  }),
-  columnHelper.display({
-    id: 'actions',
-    cell: (info) => <Actions message={info.row.original} />,
-    header: '',
-    enableSorting: false,
-    size: 10
-  }),
+  })
 ];
 
 export const Table = ({ data }: Props) => {
+  const [setNotification, { props, clear }] = useNotification({
+    failed: {
+      text: 'Messages deletion failed!',
+      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      color: 'transparent',
+    },
+    success: {
+      text: 'Messages successfully deleted!',
+      icon: <Check size={24} />,
+      color: '#389B48',
+    }
+  });
+
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);
   const [filter, setFilter] = useState<string>("ALL");
@@ -127,7 +130,13 @@ export const Table = ({ data }: Props) => {
       }
     });
 
-    if (!checked) return copy;
+    if (!checked) {
+      // After ALL filter option is disabled, uncheck everything
+      if (filter === "ALL") {
+        setSelected([]);
+      } 
+      return copy
+    };
 
     let selectedMsgs: number[] = [];
     switch (filter) {
@@ -215,12 +224,13 @@ export const Table = ({ data }: Props) => {
   }
 
   const handleAddStar = () => {
-    setStarred(selected);
-  };
+    const filtered = selected.filter(item => {
+      if (!starred.includes(item)) return true;
+      else false;
+    })
 
-  const handleDelete = () => {
-    console.log("Messages to delete: ", selected);
-  }
+    setStarred(filtered);
+  };
 
   const setMarkedStatus = (msgs: number[]) => {
     setStatuses(prev => prev.map(msg => msgs.includes(msg.id) && msg.value === "unread" ? { id: msg.id, value: "read"} : msg))
@@ -267,7 +277,7 @@ export const Table = ({ data }: Props) => {
                     <div className="flex gap-12">
                       <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleMarkAsRead}><Mail size={16} />Mark as read</UnstyledButton>
                       <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleAddStar}><StarIcon size={16} />Add star</UnstyledButton>
-                      <UnstyledButton className="text-sm flex items-center gap-2" onClick={handleDelete}><Trash2 size={16} />Delete</UnstyledButton>
+                      <DeleteMessagesModal setNotification={setNotification} messages={selected} />
                     </div>
                   )}
                 </div>
@@ -301,14 +311,18 @@ export const Table = ({ data }: Props) => {
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </MantineTable.Td>
                 })}
+                <MantineTable.Td>
+                  <Actions message={row.original} setMarked={setMarkedStatus} setNotification={setNotification}/>
+                </MantineTable.Td>
               </MantineTable.Tr>
             ))}
         </MantineTable.Tbody>
       </MantineTable>
 
       <EmptyRow visible={table.getRowModel().rows.length === 0} message="No new messages. Please check back later." />
-
       <TablePagination visible={table.getPageCount() > 1} table={table} />
+
+      <Notify {...props} onClose={clear}/>
     </>
   );
 };

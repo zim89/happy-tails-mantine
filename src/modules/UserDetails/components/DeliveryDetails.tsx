@@ -5,6 +5,8 @@ type Props = {
   user: User;
 };
 export const DeliveryDetails = ({ user }: Props) => {
+  console.log(user);
+
   return (
     <div className='grid grid-cols-[min-content_1fr] grid-rows-[56px_1fr_1fr] bg-white border-[1px] border-[#EEE]'>
       <h2 className='col-span-2 border-b-[1px] text-xl border-[#EEE] p-4 font-black'>
@@ -15,7 +17,12 @@ export const DeliveryDetails = ({ user }: Props) => {
         <p className='inline-flex whitespace-nowrap items-center gap-2 border-r-[1px] border-[#EEE] p-4 py-7 font-black uppercase text-[#787878]'>
           <Banknote size={16} /> Billing address
         </p>
-        <p className='p-4 py-7'>{user.attributes?.billingAddress}</p>
+        <p className='p-4 py-7'>
+        {Object.values(user.billingAddress).reduceRight((address, segment) => {
+            if (!address.trim()) return segment;
+            return segment + ", " + address;
+          }, "")}
+        </p>
       </>
       
       <>
@@ -23,7 +30,10 @@ export const DeliveryDetails = ({ user }: Props) => {
           <Truck size={16} /> Shipping Address
         </p>
         <p className='border-t-[1px] border-[#EEE] p-4 py-7'>
-          {user.attributes?.shippingAddress}
+        {Object.values(user.shippingAddress).reduceRight((address, segment) => {
+            if (!address.trim()) return segment;
+            return segment + ", " + address;
+          }, "")}
         </p>
       </>
     </div>

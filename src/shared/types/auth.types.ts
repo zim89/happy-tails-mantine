@@ -1,4 +1,13 @@
-export type Attributes = { [P in string]: string[] } | null;
+type Address = {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  company: string;
+  country: string;
+  phoneNumber: string;
+  state: string;
+  zip: string;
+}
 
 export interface User {
   userId: string;
@@ -7,7 +16,8 @@ export interface User {
   lastName: string;
   registerDate: number[];
   roles: string[];
-  attributes: Attributes;
+  billingAddress: Address;
+  shippingAddress: Address;
 }
 
 export interface RegisterData {
