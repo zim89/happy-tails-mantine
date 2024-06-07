@@ -6,48 +6,48 @@ import { getUserByEmail } from '@/shared/lib/requests';
 
 type Props = {
   userEmail: string;
-}
-export const ClientDetails = ({
-  userEmail
-}: Props) =>  {
-    const [user, setUser] = useState<User | null>(null);
+};
+export const ClientDetails = ({ userEmail }: Props) => {
+  const [user, setUser] = useState<User | null>(null);
 
-    useEffect(() => {
-      if (!userEmail) return;
+  useEffect(() => {
+    if (!userEmail) return;
 
-      (async () => {
-        const user = await getUserByEmail(userEmail);
-        setUser(user)
-      })();
-    }, [userEmail]);
+    (async () => {
+      const user = await getUserByEmail(userEmail);
+      setUser(user);
+    })();
+  }, [userEmail]);
 
-    if (!user) return null;
+  if (!user) return null;
 
-    return (
-      <div className='rounded-[4px] border-[1px] border-[#EEE] bg-white'>
-        <div className='flex items-center justify-between'>
-          <h2 className='p-4 py-[22px] text-xl font-bold'>Client details</h2>
-          <p>Customer since</p>
-        </div>
-        <div className='grid grid-cols-[min-content_1fr] grid-rows-3 border-y-[1px] border-[#EEE]'>
-          <p className='flex items-center gap-2 border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
-            <Banknote width={16} />
-            <span>Name</span>
-          </p>
-          <p className='flex items-center text-ellipsis px-4 text-sm'>{user.firstName} {user.firstName}</p>
-          <p className='flex items-center gap-2 border-y-[1px] border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
-            <Banknote width={16} />
-            <span>Email</span>
-          </p>
-          <p className='border-[#EEE} flex items-center border-y-[1px] px-4 text-sm'>
-            {userEmail}
-          </p>
-          <p className='flex items-center gap-2 border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
-            <Package width={16} />
-            <span>Phone</span>
-          </p>
-          <p className='flex items-center px-4 text-sm'>{user?.attributes?.phone}</p>
-        </div>
+  return (
+    <div className='rounded-[4px] border-[1px] border-[#EEE] bg-white'>
+      <div className='flex items-center justify-between'>
+        <h2 className='p-4 py-[22px] text-xl font-bold'>Client details</h2>
+        <p>Customer since</p>
       </div>
-    );
-  };
+      <div className='grid grid-cols-[min-content_1fr] grid-rows-3 border-y-[1px] border-[#EEE]'>
+        <p className='flex items-center gap-2 border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
+          <Banknote width={16} />
+          <span>Name</span>
+        </p>
+        <p className='flex items-center text-ellipsis px-4 text-sm'>
+          {user.firstName} {user.firstName}
+        </p>
+        <p className='flex items-center gap-2 border-y-[1px] border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
+          <Banknote width={16} />
+          <span>Email</span>
+        </p>
+        <p className='border-[#EEE} flex items-center border-y-[1px] px-4 text-sm'>
+          {userEmail}
+        </p>
+        <p className='flex items-center gap-2 border-r-[1px] border-[#EEE] p-3 text-sm font-bold uppercase text-[#787878]'>
+          <Package width={16} />
+          <span>Phone</span>
+        </p>
+        {/* <p className='flex items-center px-4 text-sm'>{user?.attributes?.phone}</p> */}
+      </div>
+    </div>
+  );
+};

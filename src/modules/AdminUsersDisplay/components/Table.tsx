@@ -54,22 +54,29 @@ const columns = [
     header: 'Email',
     enableSorting: false,
   }),
-  columnHelper.accessor('attributes', {
-    cell: (info) => (
-      <span>{info.row.original.attributes?.phone || 'None'}</span>
-    ),
-    header: 'Phone',
-    enableSorting: false,
-  }),
+  // columnHelper.accessor('attributes', {
+  //   cell: (info) => (
+  //     <span>{info.row.original.attributes?.phone || 'None'}</span>
+  //   ),
+  //   header: 'Phone',
+  //   enableSorting: false,
+  // }),
   columnHelper.accessor('registerDate', {
     cell: (info) => {
       // Apr 26, 2024 (22:18) => ['Apr 26,', '2024', '(22:18)']
-      const splittedDate = formatDateFromArray(info.getValue()).split(/(\w{4})/g);
+      const splittedDate = formatDateFromArray(info.getValue()).split(
+        /(\w{4})/g
+      );
 
-      return <div>
-        <span className="whitespace-pre">{splittedDate[0]}{splittedDate[1]}</span>
-        <span>{splittedDate[2]}</span>
-      </div>;
+      return (
+        <div>
+          <span className='whitespace-pre'>
+            {splittedDate[0]}
+            {splittedDate[1]}
+          </span>
+          <span>{splittedDate[2]}</span>
+        </div>
+      );
     },
     header: 'Date',
   }),
@@ -122,12 +129,20 @@ export const Table = ({ data }: Props) => {
         <SearchEntry value={search} handleChange={setSearch} />
       </div>
 
-      <MantineTable highlightOnHover bgcolor='white' withTableBorder borderColor='#EEE'>
-        <TableHead headerGroup={table.getHeaderGroups()}/>
+      <MantineTable
+        highlightOnHover
+        bgcolor='white'
+        withTableBorder
+        borderColor='#EEE'
+      >
+        <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />
       </MantineTable>
 
-      <EmptyRow visible={table.getRowModel().rows.length === 0} message="You have no any users yet" />
+      <EmptyRow
+        visible={table.getRowModel().rows.length === 0}
+        message='You have no any users yet'
+      />
 
       <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>
