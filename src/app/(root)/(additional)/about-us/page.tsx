@@ -2,6 +2,8 @@ import { Container } from '@mantine/core';
 import classes from './classes.module.css';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Introduction from '@/modules/Introduction';
+import TeamList from '@/modules/TeamList';
+import Technologies from '@/modules/Technologies';
 
 export default function Page() {
   return (
@@ -21,6 +23,8 @@ export default function Page() {
         </hgroup>
       </Container>
       <Introduction />
+      <TeamList />
+      <Technologies />
     </>
   );
 }

@@ -67,7 +67,7 @@ export default function Introduction() {
         </Container>
       </div>
       <Container>
-        <div className='my-[40px] md:my-12 md:flex md:flex-row md:justify-between'>
+        <div className='mb-32 mt-[40px] md:my-12 md:mb-[136px] md:flex md:flex-row md:justify-between'>
           <hgroup className=' lg:py-[45px]'>
             <h2 className='mb-4 text-xl leading-8 md:max-w-[253px] md:text-[28px]'>
               What is our goal?

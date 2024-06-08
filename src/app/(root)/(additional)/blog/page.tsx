@@ -1,4 +1,5 @@
 import { Container } from '@mantine/core';
+
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HeroBlog from './ui/HeroBlog';
 import PostList from './ui/PostList';
@@ -11,9 +12,10 @@ export default async function BlogPage() {
   return (
     <>
       <Container>
-        <Breadcrumbs crumbs={[{ href: '/', text: 'Home' }, { text: 'Blog' }]} 
+        <Breadcrumbs
+          crumbs={[{ href: '/', text: 'Home' }, { text: 'Blog' }]}
           classNames={{
-            root: "p-0 pt-4"
+            root: 'p-0 pt-4',
           }}
         />
 

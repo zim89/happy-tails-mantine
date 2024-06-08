@@ -1,22 +1,21 @@
 'use client';
-import { Carousel } from '@mantine/carousel';
-import '@mantine/carousel/styles.css';
-import Slide from './components/Slide';
-import { useDeviceSize } from '@/shared/lib/hooks';
-import Autoplay from 'embla-carousel-autoplay';
 import { useRef } from 'react';
+import { Carousel } from '@mantine/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+
+import Slide from './components/Slide';
 
 export default function HeroCarousel() {
-  const autoplay = useRef(Autoplay({ delay: 10000000 }));
+  const autoplay = useRef(Autoplay({ delay: 10000 }));
 
   return (
-    <div className="flex h-full w-full max-h-[200px] md:max-h-[360px] lg:min-h-[560px]">
+    <div className='flex h-full max-h-[200px] w-full md:max-h-[360px] lg:min-h-[560px]'>
       <Carousel
         withIndicators
         withControls={false}
         loop
         style={{ flex: 1 }}
-        height="100%"
+        height='100%'
         plugins={[autoplay.current]}
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={autoplay.current.reset}

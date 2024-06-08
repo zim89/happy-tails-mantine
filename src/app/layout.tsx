@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import theme from '@/shared/config/theme';
 import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
+import '@mantine/carousel/styles.css';
 // Styles for rich text editor
 import '@mantine/tiptap/styles.css';
 
@@ -32,8 +33,8 @@ const inter = Inter({
   subsets: ['latin'],
   style: ['normal'],
   variable: '--font-inter',
-  display: 'swap'
-})
+  display: 'swap',
+});
 
 export default function RootLayout({
   children,
@@ -46,7 +47,9 @@ export default function RootLayout({
         <Sitelinks />
         <ColorSchemeScript defer />
       </head>
-      <body className={`${lato.variable} ${msMadi.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${lato.variable} ${msMadi.variable} ${inter.variable} antialiased`}
+      >
         <AppProviders>
           <MantineProvider theme={theme}>
             {children}

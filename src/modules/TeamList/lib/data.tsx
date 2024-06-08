@@ -10,14 +10,17 @@ import vladinov from '@/assets/images/additional/about-us/vladinov.png';
 import github from '@/assets/icons/additional/Github.svg';
 import behance from '@/assets/icons/additional/Behance.svg';
 import linkedIn from '@/assets/icons/additional/LinkedIn.svg';
+import { StaticImageData } from 'next/image';
+import { CSSProperties } from 'react';
 
 type TeamLink = {
   href: string;
-  icon: React.ReactNode;
+  icon: StaticImageData;
 };
 
 export type TeamMember = {
   avatar: string;
+  avatarStyles?: CSSProperties;
   name: string;
   occupation: string;
   desc: string;
@@ -27,6 +30,10 @@ export type TeamMember = {
 export const team: TeamMember[] = [
   {
     avatar: zahrebelna.src,
+    avatarStyles: {
+      objectPosition: '-23px -34px',
+      transform: 'scale(2.5)',
+    },
     name: 'Daria Zahrebelna',
     occupation: 'Project Manager',
     desc: 'I am always up for a challenge, constantly exploring new ways to grow and make every day exciting.',
@@ -39,6 +46,10 @@ export const team: TeamMember[] = [
   },
   {
     avatar: melnyk.src,
+    avatarStyles: {
+      transform: 'scale(1.6)',
+      objectPosition: '0px -10px',
+    },
     name: 'Oleksandr Melnyk',
     occupation: 'Backend Developer',
     desc: 'Motivated backend developer with great knowledge of Java and Spring, also with an understanding of how to make things work',
@@ -55,6 +66,10 @@ export const team: TeamMember[] = [
   },
   {
     avatar: bilyk.src,
+    avatarStyles: {
+      transform: 'scale(1.3)',
+      objectPosition: '-5px 15px',
+    },
     name: 'Inesa Bilyk',
     occupation: 'UX/UI Designer',
     desc: 'I specialize in creating designs that blend aesthetics with user-friendly functionality, ensuring the successful achievement of project goals',
@@ -87,6 +102,9 @@ export const team: TeamMember[] = [
   },
   {
     avatar: lisova.src,
+    avatarStyles: {
+      objectPosition: 'top',
+    },
     name: 'Olena Lisova',
     occupation: 'Manual QA Engineer',
     desc: '"When you step out of your comfort zone, you are stepping into your path of personal growth." — Robert Allen',
@@ -115,6 +133,11 @@ export const team: TeamMember[] = [
   },
   {
     avatar: honcharenko.src,
+    avatarStyles: {
+      transform: 'scale(2.2)',
+      objectPosition: '-8px -16px',
+      filter: 'brightness(1.4)',
+    },
     name: 'Dima Honcharenko',
     occupation: 'Front-end Developer',
     desc: 'I turn designs into interactive web applications, bringing ideas to life on the web.',
@@ -131,6 +154,10 @@ export const team: TeamMember[] = [
   },
   {
     avatar: vladinov.src,
+    avatarStyles: {
+      border: '1px solid #C8C8C8',
+      borderRadius: '50%',
+    },
     name: 'Vladyslav Vladinov',
     occupation: 'Front-end Developer',
     desc: 'Building performant solutions with nice visuals.',
