@@ -28,20 +28,20 @@ type PostRequest = {
   posterImgSrc: string;
   content: string;
   hero: boolean;
-}
+};
 
 type PutRequest = PostRequest & {
   id: string;
-}
+};
 
 type DeleteRequest = {
   id: number;
-}
+};
 
 type PostStatusRequest = {
   id: number;
-  status: Post["postStatus"];
-}
+  status: Post['postStatus'];
+};
 
 export const postApi = createApi({
   reducerPath: 'postApi',
@@ -64,66 +64,82 @@ export const postApi = createApi({
       },
       providesTags: ['Posts'],
     }),
+    getHero: builder.query<Post, void>({
+      query: () => ({
+        url: `/posts/hero`,
+      }),
+    }),
     findOne: builder.query<Post, { id: string }>({
       query: ({ id }) => ({
-        url: `/posts/${id}`
-      })
+        url: `/posts/${id}`,
+      }),
     }),
     updatePost: builder.mutation<Post, PutRequest>({
       query: ({ id, title, authorName, posterImgSrc, content, hero }) => ({
         url: `/posts`,
-        method: "put",
+        method: 'put',
         data: {
           id,
           title,
           authorName,
           posterImgSrc,
           content,
-          hero
+          hero,
         },
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
     createPost: builder.mutation<Post, PostRequest>({
       query: ({ title, authorName, posterImgSrc, content, hero }) => ({
         url: `/posts`,
-        method: "post",
+        method: 'post',
         data: {
           title: title,
           authorName: authorName,
           posterImgSrc: posterImgSrc,
           content: content,
-          postStatus: "PUBLISHED"
+          postStatus: 'PUBLISHED',
         },
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
     deletePost: builder.mutation<void, DeleteRequest>({
       query: ({ id }) => ({
         url: `/posts/${id}`,
-        method: "delete"
+        method: 'delete',
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
     changePostStatus: builder.mutation<Post, PostStatusRequest>({
       query: ({ id, status }) => {
-        const params = new URLSearchParams({ id: id.toString(), postStatus: status });
-        
+        const params = new URLSearchParams({
+          id: id.toString(),
+          postStatus: status,
+        });
+
         return {
           url: `/posts/update-status`,
-          method: "put",
+          method: 'put',
           params,
-        }
+        };
       },
-      invalidatesTags: ["Posts"]
-    })
+      invalidatesTags: ['Posts'],
+    }),
   }),
 });
 
-export const { useFindManyQuery, useFindOneQuery, useUpdatePostMutation, useCreatePostMutation, useDeletePostMutation, useChangePostStatusMutation } = postApi;
+export const {
+  useFindManyQuery,
+  useFindOneQuery,
+  useUpdatePostMutation,
+  useCreatePostMutation,
+  useDeletePostMutation,
+  useChangePostStatusMutation,
+  useGetHeroQuery,
+} = postApi;

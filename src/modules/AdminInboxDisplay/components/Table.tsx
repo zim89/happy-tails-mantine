@@ -159,10 +159,6 @@ export const Table = ({ data }: Props) => {
     });
 
     if (!checked) {
-      // After ALL filter option is disabled, uncheck everything
-      if (filter === 'ALL') {
-        setSelected([]);
-      }
       return copy;
     }
 
@@ -248,12 +244,12 @@ export const Table = ({ data }: Props) => {
   };
 
   const handleAddStar = () => {
-    const filtered = selected.filter((item) => {
-      if (!starred.includes(item)) return true;
-      else false;
-    });
-
-    setStarred(filtered);
+    setStarred((prev) =>
+      selected.filter((item) => {
+        if (!prev.includes(item)) return true;
+        else false;
+      })
+    );
   };
 
   const setMarkedStatus = (msgs: number[]) => {
@@ -371,6 +367,7 @@ export const Table = ({ data }: Props) => {
           </MantineTable.Tr>
         </MantineTable.Thead>
 
+        {/* Table body */}
         <MantineTable.Tbody>
           {table.getRowModel().rows.length > 0 &&
             table.getRowModel().rows.map((row) => (
@@ -378,6 +375,7 @@ export const Table = ({ data }: Props) => {
                 <MantineTable.Td>
                   <Checkbox
                     size='xs'
+                    disabled={checked && filter === 'ALL'}
                     checked={row.original.checked}
                     onChange={() => {
                       !row.original.checked &&

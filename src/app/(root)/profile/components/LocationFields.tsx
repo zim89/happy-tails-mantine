@@ -19,7 +19,7 @@ type Props = {
     addressTwo: string;
     contactNumber: string;
     county: string;
-  }>
+  }>;
 };
 
 const countries = ['Canada', 'United States'];
@@ -40,7 +40,7 @@ export const LocationFields = ({ form }: Props) => {
       const res = await axios.post(
         'https://countriesnow.space/api/v0.1/countries/cities',
         {
-          country: updated
+          country: updated,
         }
       );
       setFound(true);
@@ -68,7 +68,7 @@ export const LocationFields = ({ form }: Props) => {
           findCountries(updated);
           form.getInputProps('country').onChange(updated);
           onResetCity();
-          form.setFieldValue("postcode", "");
+          form.setFieldValue('postcode', '');
         }}
       />
       <Autocomplete
@@ -85,10 +85,7 @@ export const LocationFields = ({ form }: Props) => {
         rightSection={
           form.values.city &&
           form.values.country && (
-            <button
-              className='group absolute right-2'
-              onClick={onResetCity}
-            >
+            <button className='group absolute right-2' onClick={onResetCity}>
               <XCircle className={classes.clearField} />
             </button>
           )

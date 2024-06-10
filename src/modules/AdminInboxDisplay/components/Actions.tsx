@@ -1,7 +1,6 @@
 import { Menu, UnstyledButton } from '@mantine/core';
 import { Eye, MoreHorizontal, MessageSquareDot } from 'lucide-react';
 
-import Notify from '@/components/Notify';
 import { Message } from '../lib/mock';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import Link from 'next/link';
@@ -15,7 +14,7 @@ type Props = {
 export const Actions = ({ message, setNotification, setMarked }: Props) => {
   return (
     <div className='m-4 flex justify-end gap-4'>
-      <Menu width={148} position='bottom-end'>
+      <Menu width={148} position='bottom-end' keepMounted>
         <Menu.Target>
           <UnstyledButton
             classNames={{

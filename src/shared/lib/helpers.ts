@@ -4,14 +4,17 @@ import { Order, AxiosQueryError, ProductStatus } from '../types/types';
 import { ErrorResponse } from './constants';
 
 export const formatDateToClockTime = (date: string | number) => {
-  return dayjs(date).format("HH:mm");
-}
+  return dayjs(date).format('HH:mm');
+};
 
-export const formatDate = (date: string | number, format = "MMMM D, YYYY") => {
+export const formatDate = (date: string | number, format = 'MMMM D, YYYY') => {
   return dayjs(date).format(format);
-} 
+};
 
-export const formatDateToLongString = (date: string | number, format = "MMMM D, YYYY") => {
+export const formatDateToLongString = (
+  date: string | number,
+  format = 'MMMM D, YYYY'
+) => {
   return dayjs(date).format(format);
 };
 
@@ -34,10 +37,13 @@ export const formatUserAttributes = (obj: { [P in string]: string }) => {
 };
 
 export const formatDateTimeWithBrackets = (raw: string | number) => {
-  return dayjs(raw).format('MMM DD, YYYY (HH:mm)')
-}
+  return dayjs(raw).format('MMM DD, YYYY (HH:mm)');
+};
 
-export const formatDateFromArray = (array: number[], format = 'MMM DD, YYYY (HH:mm)') => {
+export const formatDateFromArray = (
+  array: number[],
+  format = 'MMM DD, YYYY (HH:mm)'
+) => {
   const dateArray = array;
   const date = dayjs(
     new Date(
@@ -56,12 +62,16 @@ export const formatDateFromArray = (array: number[], format = 'MMM DD, YYYY (HH:
 };
 
 export const formatDateFromTimestamp = (date: number) => {
-  return dayjs(new Date(date)).format("MMMM D, YYYY");
-}
+  return dayjs(new Date(date)).format('MMMM D, YYYY');
+};
+
+export const formatDateFromUnix = (date: number) => {
+  return dayjs.unix(date).format('MMMM D, YYYY');
+};
 
 export const formatYearFromDate = (date: number) => {
-  return dayjs(new Date(date)).format("YYYY");
-}
+  return dayjs(new Date(date)).format('YYYY');
+};
 
 export const cleanPostcode = (input: string): string => {
   // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
@@ -93,7 +103,8 @@ export const availabilityMap: {
   [P in NonNullable<ProductStatus>]: string;
 } = {
   'IN STOCK': 'https://schema.org/InStock',
-  "OUT OF STOCK": 'https://schema.org/OutOfStock: The item is currently out of stock.'
+  'OUT OF STOCK':
+    'https://schema.org/OutOfStock: The item is currently out of stock.',
 
   // https://schema.org/BackOrder: The item is on back order.
   // https://schema.org/Discontinued: The item has been discontinued.

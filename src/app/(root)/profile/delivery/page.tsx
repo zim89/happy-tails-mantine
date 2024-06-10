@@ -1,7 +1,6 @@
-import { cn } from "@/shared/lib/utils";
-import { DeliveryForm } from "../components/DeliveryForm";
+import { DeliveryForm } from '../components/DeliveryForm';
 
-import classes from "../styles.module.css";
+import classes from '../styles.module.css';
 
 export default function DeliveryPage() {
   return (

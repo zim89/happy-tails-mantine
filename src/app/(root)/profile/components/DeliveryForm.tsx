@@ -16,7 +16,7 @@ import { PostalCodeField } from './PostalCodeField';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
-  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
+  const [updateUser] = useUpdateDetailsMutation();
 
   const form = useForm({
     initialValues: {
@@ -181,10 +181,7 @@ export const DeliveryForm = () => {
           placeholder='Enter County'
         />
       </Group>
-      <Button
-        type='submit'
-        className={classes.submitAddress}
-      >
+      <Button type='submit' className={classes.submitAddress}>
         Add Address
       </Button>
     </form>

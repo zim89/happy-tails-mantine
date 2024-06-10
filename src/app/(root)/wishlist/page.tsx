@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import { Breadcrumbs, Container, Group, Pagination } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
