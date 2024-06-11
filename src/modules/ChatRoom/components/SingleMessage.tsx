@@ -22,7 +22,6 @@ export const SingleMessage = ({
   senderEmail,
   sentAt,
   status,
-  threadId,
   title,
 }: Props) => {
   const [opened, { toggle }] = useDisclosure();
@@ -30,7 +29,7 @@ export const SingleMessage = ({
   return (
     <Box
       key={id}
-      className='rounded border border-[#EEEEEE] bg-white px-4 py-4 md:px-6'
+      className='rounded border border-[#EEEEEE] bg-[#FDFDFD] px-4 py-4 md:px-6'
     >
       <div className='flex items-center justify-between'>
         <div onClick={toggle} className='cursor-pointer'>

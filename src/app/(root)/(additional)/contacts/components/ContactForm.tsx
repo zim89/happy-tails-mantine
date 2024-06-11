@@ -1,7 +1,7 @@
 'use client';
 import { Paperclip } from 'lucide-react';
 import axios from 'axios';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 import Checkbox from '@/components/Checkbox';
 import { postRequest } from '@/shared/api/contactsApi';
@@ -31,7 +31,10 @@ export const ContactForm = () => {
 
     validate: {
       email: isEmail('Invalid email'),
-      content: hasLength({ min: 30, max: 255 }, 'Minimum message length is 30 characters. Please extend your message.'),
+      content: hasLength(
+        { min: 30, max: 255 },
+        'Minimum message length is 30 characters. Please extend your message.'
+      ),
       userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       termsOfService: (value) =>
         !value && 'You must agree to the Terms of Service',
@@ -73,7 +76,7 @@ export const ContactForm = () => {
 
       // Make a request to feedback-controller
       await postRequest(request);
-      router.push("/contacts/thank-you");
+      router.push('/contacts/thank-you');
       form.reset();
     } catch (err) {
       if (err instanceof Error)
@@ -150,7 +153,7 @@ export const ContactForm = () => {
           tabIndex={-1}
           size='xs'
           mr={8}
-          classNames={{ input: "cursor-pointer", error: 'form-error p-0', }}
+          classNames={{ input: 'cursor-pointer', error: 'form-error p-0' }}
           aria-hidden
           color='#161616'
           {...form.getInputProps('termsOfService', { type: 'checkbox' })}

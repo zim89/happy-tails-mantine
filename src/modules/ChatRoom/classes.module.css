@@ -1,0 +1,24 @@
+.form {
+  @apply rounded-bl rounded-br border border-t-0 border-[#EEE] bg-[#FDFDFD] p-6;
+}
+
+.form label {
+  @apply mb-1 max-w-52 text-sm leading-[21px];
+}
+
+.form input,
+.form textarea {
+  @apply w-full;
+}
+
+.message {
+  @apply relative mt-8;
+}
+
+.message svg {
+  @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
+}
+
+.message p {
+  @apply absolute;
+}

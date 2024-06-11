@@ -1,7 +1,7 @@
 'use client';
 
 import { Menu, UnstyledButton } from '@mantine/core';
-import { MoreHorizontal, MessageSquareDot } from 'lucide-react';
+import { MoreHorizontal, Mail, Trash2, Star } from 'lucide-react';
 
 type Props = {
   messageId: number;
@@ -23,12 +23,21 @@ export const Actions = ({ messageId }: Props) => {
 
         <Menu.Dropdown className='p-0 py-2'>
           <Menu.Item
-            leftSection={<MessageSquareDot size={16} />}
+            leftSection={<Star size={16} />}
+            className='mb-1 rounded-none hover:bg-brand-grey-200'
+          >
+            Unstarred
+          </Menu.Item>
+          <Menu.Item
+            leftSection={<Mail size={16} />}
             className='mb-1 rounded-none hover:bg-brand-grey-200'
           >
             Mark as read
           </Menu.Item>
-          <Menu.Item className='rounded-none hover:bg-brand-grey-200'>
+          <Menu.Item
+            className='rounded-none hover:bg-brand-grey-200'
+            leftSection={<Trash2 size={16} />}
+          >
             Delete
           </Menu.Item>
         </Menu.Dropdown>
