@@ -4,7 +4,7 @@ import { Menu, UnstyledButton } from '@mantine/core';
 import { MoreHorizontal, MessageSquareDot } from 'lucide-react';
 
 type Props = {
-  messageId: string;
+  messageId: number;
 };
 
 export const Actions = ({ messageId }: Props) => {

@@ -30,7 +30,7 @@ export const Actions = ({ message, setNotification, setMarked }: Props) => {
             leftSection={<Eye size={16} />}
             className='mb-1 rounded-none hover:bg-brand-grey-200'
           >
-            <Link href={`/admin/inbox/${message.id}`}>View</Link>
+            <Link href={`/admin/inbox/${message.threadId}`}>View</Link>
           </Menu.Item>
           <Menu.Item
             leftSection={<MessageSquareDot size={16} />}

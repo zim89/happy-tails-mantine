@@ -73,6 +73,10 @@ export const formatYearFromDate = (date: number) => {
   return dayjs(new Date(date)).format('YYYY');
 };
 
+export const formatShortDateFromUnix = (date: number) => {
+  return dayjs(date).format('DD MMM, YYYY');
+};
+
 export const cleanPostcode = (input: string): string => {
   // This regex matches the postcode pattern and captures the postcode part before the space and parenthesis
   const regex = /^([A-Za-z0-9]+) \(.+\)$/;
@@ -166,4 +170,16 @@ export const isErrorDataString = (
   payload: AxiosQueryError['data']
 ): payload is string => {
   return typeof payload === 'string';
+};
+
+export const convertBytes = (bytes: number) => {
+  if (bytes < 1024) {
+    return `${bytes} bytes`;
+  } else if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(2)} KB`;
+  } else if (bytes < 1024 * 1024 * 1024) {
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  } else {
+    return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+  }
 };

@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import DOMPurify from "dompurify";
+import DOMPurify from 'dompurify';
 
-import classes from "../classes.module.css";
+import classes from '../classes.module.css';
 
 type Props = {
-	content: string;
-}
+  content: string;
+};
 
 export const PostContent = ({ content }: Props) => {
-	const sanitizedData = DOMPurify.sanitize(content, { USE_PROFILES: { html: true } });
+  const sanitizedData = DOMPurify.sanitize(content, {
+    USE_PROFILES: { html: true },
+  });
 
-	return (
-		<div className={classes.content} dangerouslySetInnerHTML={{ __html: sanitizedData }} />
-	);
-}
+  return (
+    <div
+      className={classes.content}
+      dangerouslySetInnerHTML={{ __html: sanitizedData }}
+    />
+  );
+};
