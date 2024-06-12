@@ -17,8 +17,6 @@ export default function Technologies() {
     // If it's not scrolled, then skip
     if (slidesInView.length === 8) return;
 
-    console.log('Turning back');
-
     inst.scrollTo(3);
   }, 500);
 

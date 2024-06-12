@@ -1,49 +1,46 @@
 import { Container } from '@mantine/core';
 import Image from 'next/image';
 
-import team1 from '@/assets/images/additional/about-us/team1.jpeg';
-import team2 from '@/assets/images/additional/about-us/team2.jpeg';
-import team3 from '@/assets/images/additional/about-us/team3.jpeg';
-import team4 from '@/assets/images/additional/about-us/team4.jpeg';
+import { teams } from './lib/data';
 
 export default function Introduction() {
   return (
     <>
       <div className='max-w-screen flex justify-between gap-2 lg:gap-7'>
-        <div className='relative min-h-[125px] min-w-[200px] flex-1 md:h-[115px] md:w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
+        <div className='relative min-h-[125px] min-w-[200px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
           <Image
             className='object-cover'
-            src={team1.src}
+            src={teams[0].src}
             layout='fill'
             sizes='100%'
-            alt=''
+            alt={teams[0].alt}
           />
         </div>
         <div className='relative min-h-[125px] min-w-[200px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
           <Image
             className='object-cover'
-            src={team2.src}
+            src={teams[1].src}
             layout='fill'
             sizes='100%'
-            alt=''
+            alt={teams[1].alt}
           />
         </div>
         <div className='relative hidden flex-1 md:block md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
           <Image
             className='object-cover'
-            src={team3.src}
+            src={teams[2].src}
             layout='fill'
             sizes='100%'
-            alt=''
+            alt={teams[2].alt}
           />
         </div>
         <div className='relative hidden flex-1 md:block md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
           <Image
             className='object-cover'
-            src={team4.src}
+            src={teams[3].src}
             layout='fill'
             sizes='100%'
-            alt=''
+            alt={teams[3].alt}
           />
         </div>
       </div>
@@ -83,7 +80,7 @@ export default function Introduction() {
           <div className='relative w-full md:max-w-[256px] lg:max-w-[386px]'>
             <Image
               className='hidden object-contain md:block'
-              src={team1.src}
+              src={teams[0].src}
               layout='fill'
               sizes='100%'
               alt=''

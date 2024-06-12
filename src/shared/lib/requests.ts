@@ -1,4 +1,4 @@
-import axios, { AxiosError, isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
 import { BackendResponse, Category, Product } from '../types/types';
@@ -140,7 +140,7 @@ export const publishImage = async (
 
     return res.data.data.link;
   } catch (err) {
-    if (err instanceof AxiosError) console.log(err);
+    if (isAxiosError(err)) console.log(err);
     throw err;
   }
 };
