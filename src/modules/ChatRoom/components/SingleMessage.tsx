@@ -31,7 +31,7 @@ export const SingleMessage = ({
       key={id}
       className='rounded border border-[#EEEEEE] bg-[#FDFDFD] px-4 py-4 md:px-6'
     >
-      <div className='flex items-center justify-between'>
+      <div className='flex justify-between'>
         <div onClick={toggle} className='cursor-pointer'>
           <b className='mr-2'>{sender}</b>
           {opened && (
@@ -45,13 +45,15 @@ export const SingleMessage = ({
             />
           )}
           {!opened && (
-            <p className='mt-2 max-w-[630px] overflow-hidden text-ellipsis whitespace-nowrap text-sm text-[#5A5A5A]'>
+            <p className='mt-3 max-w-[630px] overflow-hidden text-ellipsis whitespace-nowrap text-sm text-[#5A5A5A]'>
               {message}
             </p>
           )}
         </div>
-        <div className='flex items-center gap-6'>
-          <span className='text-sm text-[#5A5A5A]'>{sentAt}</span>
+        <div className='flex items-center gap-6 self-start'>
+          <span className='whitespace-pre text-sm text-[#5A5A5A]'>
+            {sentAt}
+          </span>
           <Actions messageId={id} />
         </div>
       </div>
