@@ -25,7 +25,10 @@ export const ReplyMessage = ({ threadId }: Props) => {
     },
     validate: {
       title: isInRange({ min: 6 }, 'Please enter a bigger title'),
-      content: isNotEmpty('Please enter a message'),
+      content: isInRange(
+        { min: 30 },
+        'Minimum message length is 30 characters. Please extend your message.'
+      ),
     },
   });
 

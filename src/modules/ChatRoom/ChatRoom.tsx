@@ -3,6 +3,7 @@
 import { mockChat } from './lib';
 import { SingleMessage } from './components/SingleMessage';
 import { ReplyMessage } from './components/ReplyMessage';
+import { notFound } from 'next/navigation';
 
 type Props = {
   id: string;
@@ -11,7 +12,7 @@ type Props = {
 export default function ChatRoom({ id }: Props) {
   const messages = mockChat.filter((msg) => msg.threadId === +id);
 
-  if (!messages) return null;
+  if (!messages) return notFound();
 
   return (
     <>
