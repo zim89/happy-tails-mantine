@@ -191,3 +191,14 @@ export const convertBytes = (bytes: number) => {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
   }
 };
+
+export const convertMeasurement = (value: number) => {
+  const stringifiedValue = value.toString();
+
+  if (value <= 3) return stringifiedValue;
+  else if (value < 1000000)
+    return stringifiedValue.slice(0, stringifiedValue.length - 3) + 'K';
+  else if (value < 1000000000)
+    return stringifiedValue.slice(0, stringifiedValue.length - 6) + 'M';
+  else return stringifiedValue.slice(0, stringifiedValue.length - 9) + 'B';
+};

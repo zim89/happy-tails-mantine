@@ -1,5 +1,6 @@
 'use client';
 
+import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { redirect, useSearchParams } from 'next/navigation';
@@ -39,6 +40,7 @@ export default function Page() {
 
   return (
     <div>
+      <BarChart />
       <LineChart />
     </div>
   );
