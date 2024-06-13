@@ -3,14 +3,14 @@ import { cn } from '@/shared/lib/utils';
 import { Button, TextInput } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 
-import classes from "../styles.module.css";
+import classes from '../styles.module.css';
 import { dirtyFields } from '@/shared/lib/helpers';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import { useAuth } from '@/shared/hooks/useAuth';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
-  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
+  const [updateUser] = useUpdateDetailsMutation();
 
   const form = useForm({
     initialValues: {
@@ -19,33 +19,39 @@ export const UpdateUserForm = () => {
       email: '',
     },
 
-    validate: {      
-      firstName: val => {
+    validate: {
+      firstName: (val) => {
         let error = null;
 
         if (val.trim().length) {
-          error = hasLength({ min: 2 }, "Field must have 2 or more characters")(val);
+          error = hasLength(
+            { min: 2 },
+            'Field must have 2 or more characters'
+          )(val);
         }
 
         return error;
       },
-      lastName: val => {
+      lastName: (val) => {
         let error = null;
 
         if (val.trim().length) {
-          error = hasLength({ min: 2 }, "Field must have 2 or more characters")(val);
+          error = hasLength(
+            { min: 2 },
+            'Field must have 2 or more characters'
+          )(val);
         }
 
-        return error; 
+        return error;
       },
-      email: val => {
+      email: (val) => {
         let error = null;
 
         if (val.trim().length) {
-          error = isEmail("Invalid email")(val);
+          error = isEmail('Invalid email')(val);
         }
-        
-        return error; 
+
+        return error;
       },
     },
   });
@@ -60,7 +66,7 @@ export const UpdateUserForm = () => {
           if (count === 0) return;
           if (!currentUser) return;
 
-          const { registerDate, userId, roles, ...prevUser } = currentUser;  
+          const { registerDate, userId, roles, ...prevUser } = currentUser;
           await updateUser({ ...prevUser, ...updatedUser });
 
           form.clearErrors();

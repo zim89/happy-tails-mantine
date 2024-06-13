@@ -1,64 +1,64 @@
 .content {
-    @apply flex flex-col items-center;
+  @apply flex flex-col items-center;
 }
 
 .content > * {
-    @apply max-w-[572px];
+  @apply max-w-[572px];
 }
 
 .heading {
-    @apply mt-8 mb-12 text-center md:my-12;
+  @apply mb-12 mt-8 text-center md:my-12;
 }
 
 .heading > h1 {
-    @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
+  @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
 }
 
 .heading > p {
-    @apply leading-6;
+  @apply leading-6;
 }
 
 .form {
-    @apply py-9 px-12 bg-[#F7F7F7];
+  @apply bg-[#F7F7F7] px-12 py-9;
 }
 
 .form label {
-    @apply text-sm mb-1 leading-[21px] max-w-52;
+  @apply mb-1 max-w-52 text-sm leading-[21px];
 }
 
 .form input,
 .form textarea {
-    @apply w-full;
+  @apply w-full;
 }
 
 .message {
-    @apply relative mb-[30px] mt-8;
+  @apply relative mb-[30px] mt-8;
 }
 
 .message svg {
-    @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
+  @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
 }
 
 .message p {
-    @apply absolute;
+  @apply absolute;
 }
 
 .terms {
-    @apply flex relative;
+  @apply relative flex;
 }
 
 .terms span {
-    @apply text-[14px] text-[#5A5A5A] leading-[21px];
+  @apply text-[14px] leading-[21px] text-[#5A5A5A];
 }
 
 .terms span a {
-    @apply border-b border-[#5A5A5A];
+  @apply border-b border-[#5A5A5A];
 }
 
-.form button[type=submit] {
-    @apply mt-8 md:mt-12 bg-[#161616] px-[54px] py-[10px] text-base font-bold text-white;
+.form button[type='submit'] {
+  @apply mt-8 bg-[#161616] px-[54px] py-[10px] text-base font-bold text-white md:mt-12;
 }
 
 .partner_message {
-    @apply text-lg mb-12 mt-8 leading-[27px];
+  @apply mb-12 mt-8 text-lg leading-[27px];
 }

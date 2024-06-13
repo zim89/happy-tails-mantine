@@ -4,19 +4,18 @@ import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import RegisterForm from '@/components/RegisterForm';
 
 export const metadata: Metadata = {
-  title: "Happy Tails | Register Page",
+  title: 'Happy Tails | Register Page',
   description: null,
   robots: {
-    index: false
-  }
-}
+    index: false,
+  },
+};
 
 export default function Page() {
   return (
     <div className='space-y-4 bg-primary px-7 pb-14 pt-12 md:mx-auto md:w-[458px] md:px-12 md:pb-16 lg:w-[469px]'>
       {/* Heading */}
       <div>
-        {/*<h2 className='mb-4 text-2xl/normal font-light'>Welcome !</h2>*/}
         <h1 className='text-[32px]/[1.2] font-bold'>Sign Up</h1>
         <p className='text-base'>
           Have an account?{' '}

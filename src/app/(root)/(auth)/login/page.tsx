@@ -4,22 +4,21 @@ import LoginForm from '@/components/LoginForm';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Happy Tails | Login Page",
+  title: 'Happy Tails | Login Page',
   description: null,
   robots: {
-    index: false
-  }
-}
+    index: false,
+  },
+};
 
 export default function Page() {
   return (
     <div className='space-y-4 bg-primary px-7 pb-14 pt-12 md:mx-auto md:w-[458px] md:px-12 md:pb-16 lg:w-[469px]'>
       {/* Heading */}
       <div>
-        {/*<h2 className='mb-4 text-2xl/normal font-light'>Welcome !</h2>*/}
         <h1 className='text-[32px]/[1.2] font-bold'>Sign in</h1>
         <p className='flex justify-between text-base md:justify-start md:gap-1'>
-          <span>{"Don’t have an account?"}</span>
+          <span>{'Don’t have an account?'}</span>
           <Link href={'/register'} className='text-brand-orange-400'>
             Create an account
           </Link>

@@ -1,6 +1,7 @@
 'use client';
+
 import { Button, PasswordInput } from '@mantine/core';
-import { useForm, hasLength, matchesField, isNotEmpty,  } from '@mantine/form';
+import { useForm, hasLength, matchesField, isNotEmpty } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
 import axios from '@/shared/lib/interceptor';
 
@@ -12,7 +13,7 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 type Props = {
   nextStep: () => void;
-}
+};
 export const UpdatePasswordForm = ({ nextStep }: Props) => {
   const form = useForm({
     initialValues: {
@@ -25,57 +26,57 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
       code: (val) => {
         let error = null;
 
-        error = isNotEmpty("The code must be provisioned")(val);
+        error = isNotEmpty('The code must be provisioned')(val);
 
         if (error) return error;
 
         const reg = /^\d+$/;
-        error = val.search(reg)
+        error = val.search(reg);
 
-        if (error === -1) return "Code must contain only numbers";
+        if (error === -1) return 'Code must contain only numbers';
 
         return null;
       },
       password: (val) => {
         let error = null;
 
-          error = hasLength(
-            { min: 6 },
-            'Password must have 6 or more symbols'
-          )(val);
-        
+        error = hasLength(
+          { min: 6 },
+          'Password must have 6 or more symbols'
+        )(val);
+
         return error;
       },
       confirmPassword: (val, values) => {
         let error = null;
 
-          error = matchesField('password', 'Passwords do not match')(
-            val,
-            values
-          );
-        
+        error = matchesField('password', 'Passwords do not match')(val, values);
+
         return error;
       },
-    }
+    },
   });
 
   const { currentUser } = useAuth();
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
 
-  const updatePassword = async ({ code, newPassword }: { code: string, newPassword: string }) => {
+  const updatePassword = async ({
+    code,
+    newPassword,
+  }: {
+    code: string;
+    newPassword: string;
+  }) => {
     try {
       const request = new URLSearchParams({
         email: currentUser.email,
         newPassword,
         confirmPassword: newPassword,
-        code
+        code,
       });
-      
-      await axios.post(
-        '/users/reset-password/verify',
-        request,
-      );
+
+      await axios.post('/users/reset-password/verify', request);
     } catch (err) {
       console.error(err);
     }
@@ -85,8 +86,11 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
     <form
       className={cn('mt-8', classes.form)}
       onSubmit={form.onSubmit(async (values) => {
-        // const res = await updatePassword({ code: values.code, newPassword: values.password });
-        // console.log(res);
+        const res = await updatePassword({
+          code: values.code,
+          newPassword: values.password,
+        });
+
         nextStep();
         form.clearErrors();
         form.reset();

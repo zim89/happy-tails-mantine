@@ -29,7 +29,7 @@ export const Profile = ({ user }: Props) => {
         <p className='inline-flex items-center gap-2 border-r-[1px] border-[#EEE] p-4 font-black uppercase text-[#787878]'>
           <Smartphone size={16} /> Phone
         </p>
-        <p className='p-4'>{user.attributes?.phone}</p>
+        <p className='p-4'>{user.shippingAddress.phoneNumber}</p>
       </>
     </div>
   );

@@ -38,7 +38,7 @@ export const userApi = createApi({
         },
         providesTags: ['User'],
       }),
-      deleteUser: builder.mutation<void, { userId: string }>({
+      deleteUser: builder.mutation<void, DeleteUserParams>({
         query: ({ userId }) => {
           return {
             url: `/users/${userId}`,

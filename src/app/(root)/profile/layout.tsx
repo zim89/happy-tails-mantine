@@ -1,13 +1,14 @@
 'use client';
+
 import { Container } from '@mantine/core';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import SliderMenu from '@/modules/ProfileMenu/mobile';
 import SidebarMenu from '@/modules/ProfileMenu/laptop';
 
 import classes from './styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 type Props = {

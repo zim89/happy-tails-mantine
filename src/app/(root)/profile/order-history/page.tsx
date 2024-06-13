@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Button } from '@mantine/core';
@@ -7,29 +8,39 @@ import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';
 import classes from '../styles.module.css';
 import { BackendResponse, Order } from '@/shared/types/types';
-import axios from "@/shared/lib/interceptor";
+import axios from '@/shared/lib/interceptor';
 
 function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     (async () => {
-      const res = await axios<BackendResponse<Order[]>>("https://happytails-backend.lav.net.ua/happytails/api/orders?page=0&size=10");
+      const res = await axios<BackendResponse<Order[]>>(
+        'https://happytails-backend.lav.net.ua/happytails/api/orders?page=0&size=10'
+      );
 
       setOrders(res.data.content);
-    })(); 
+    })();
   }, []);
 
   return (
     <>
-      <h1 className={cn('heading hidden lg:block mt-10 px-6', orders.length === 0 && "text-center")}>Order History</h1>
+      <h1
+        className={cn(
+          'heading mt-10 hidden px-6 lg:block',
+          orders.length === 0 && 'text-center'
+        )}
+      >
+        Order History
+      </h1>
       {orders.length > 0 ? (
         <OrderTabs orders={orders} />
       ) : (
         <div className={classes.box}>
           <hgroup>
-            <h1 className="text-2xl md:whitespace-pre font-light">
-              Your Order History is Currently Empty, <span className="text-[#925816]">Start Shopping now</span>
+            <h1 className='text-2xl font-light md:whitespace-pre'>
+              Your Order History is Currently Empty,{' '}
+              <span className='text-[#925816]'>Start Shopping now</span>
             </h1>
             <p className={classes.boxParagraph}>
               Your Order History keeps track of all your purchases, making it
@@ -39,7 +50,9 @@ function OrderPage() {
               products and find something that catches your eye!
             </p>
           </hgroup>
-          <Button classNames={{ root: 'bg-black font-bold mb-8' }}><Link href="/products">Continue shopping</Link></Button>
+          <Button classNames={{ root: 'bg-black font-bold mb-8' }}>
+            <Link href='/products'>Continue shopping</Link>
+          </Button>
         </div>
       )}
     </>

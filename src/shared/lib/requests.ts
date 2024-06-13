@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
 import { BackendResponse, Category, Product } from '../types/types';
@@ -104,6 +104,9 @@ export const fetchHeroPost = async (): Promise<Post> => {
     const res = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/hero`);
     return res.data;
   } catch (error) {
+    if (isAxiosError(error)) {
+      console.log(error);
+    }
     throw new Error('Failed to fetch hero post');
   }
 };
@@ -119,7 +122,10 @@ export const fetchLastFivePosts = async (): Promise<Post[]> => {
   }
 };
 
-export const publishImage = async (image: Blob | string, title: string): Promise<string> => {
+export const publishImage = async (
+  image: Blob | string,
+  title: string
+): Promise<string> => {
   const params = new FormData();
   params.append('image', image);
   params.append('title', title);
@@ -134,8 +140,7 @@ export const publishImage = async (image: Blob | string, title: string): Promise
 
     return res.data.data.link;
   } catch (err) {
-    if (err instanceof AxiosError)
-      console.log(err);
+    if (isAxiosError(err)) console.log(err);
     throw err;
   }
-}
+};

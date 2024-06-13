@@ -1,0 +1,11 @@
+.heading {
+  @apply mb-12 mt-8 flex flex-col items-center text-center md:my-12;
+}
+
+.heading > h1 {
+  @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
+}
+
+.heading > p {
+  @apply max-w-[476px] font-light leading-6 text-[#161616];
+}

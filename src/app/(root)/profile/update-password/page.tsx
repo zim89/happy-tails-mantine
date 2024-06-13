@@ -1,16 +1,17 @@
 'use client';
+
 import { Button, Stepper } from '@mantine/core';
 import { useState } from 'react';
-import axios from '@/shared/lib/interceptor';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
+import Link from 'next/link';
 
+import axios from '@/shared/lib/interceptor';
 import { cn } from '@/shared/lib/utils';
 import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import Link from 'next/link';
 
 export default function UpdatePassword() {
   const { currentUser } = useAuth();
@@ -27,10 +28,7 @@ export default function UpdatePassword() {
         email: currentUser.email,
       });
 
-      await axios.post(
-        '/users/reset-password',
-        request
-      );
+      await axios.post('/users/reset-password', request);
 
       nextStep();
     } catch (err) {
@@ -69,9 +67,7 @@ export default function UpdatePassword() {
       </Stepper.Step>
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className='text-[32px]/[38.4px]'>
-            Update your password
-          </h1>
+          <h1 className='text-[32px]/[38.4px]'>Update your password</h1>
           <p className={classes.profileParagraph}>
             <span className='inline-block max-w-[360px]'>
               Enter the verification code we just sent to email and create a new
@@ -84,9 +80,9 @@ export default function UpdatePassword() {
       <Stepper.Completed>
         <div className='flex flex-col'>
           <hgroup className='text-center'>
-            <h1 className='text-[32px]/[38.4px] whitespace-pre font-black'>
+            <h1 className='whitespace-pre text-[32px]/[38.4px] font-black'>
               <span>Password Updated</span>
-              <Check className='inline-block ml-4' size={36}/>
+              <Check className='ml-4 inline-block' size={36} />
             </h1>
             <p className={classes.profileParagraph}>
               <span className='inline-block max-w-[360px]'>
