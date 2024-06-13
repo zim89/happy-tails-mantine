@@ -6,6 +6,7 @@ import theme from '@/shared/config/theme';
 import '@/app/globals.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '@mantine/carousel/styles.css';
+import '@mantine/charts/styles.css';
 // Styles for rich text editor
 import '@mantine/tiptap/styles.css';
 

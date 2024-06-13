@@ -40,6 +40,10 @@ export const formatDateTimeWithBrackets = (raw: string | number) => {
   return dayjs(raw).format('MMM DD, YYYY (HH:mm)');
 };
 
+export const formatDateWithoutTime = (raw: string | number) => {
+  return dayjs(raw).format('MMM DD, YYYY');
+};
+
 export const formatDateFromArray = (
   array: number[],
   format = 'MMM DD, YYYY (HH:mm)'
@@ -75,6 +79,10 @@ export const formatYearFromDate = (date: number) => {
 
 export const formatShortDateFromUnix = (date: number) => {
   return dayjs(date).format('DD MMM, YYYY');
+};
+
+export const formatDateToDashedOne = (date: number) => {
+  return dayjs(date).format('YYYY-MM-DD');
 };
 
 export const cleanPostcode = (input: string): string => {
