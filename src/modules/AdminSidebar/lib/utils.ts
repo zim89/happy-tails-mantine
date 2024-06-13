@@ -32,7 +32,7 @@ export const links: SidebarLinks = [
     label: 'Dashboard',
     icon: LayoutDashboard,
     initiallyOpened: true,
-    link: '/admin/auth',
+    link: '/admin',
   },
   {
     id: 'links-group',

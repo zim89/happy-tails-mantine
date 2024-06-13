@@ -22,7 +22,10 @@ import {
 
 export default function Analitycs() {
   const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState<FilterTypes[]>(['clicks']);
+  const [filters, setFilters] = useState<FilterTypes[]>([
+    'clicks',
+    'impressions',
+  ]);
   const [rows, setRows] = useState<
     AggregatedAnalyticsResponse['message']['rows']
   >([]);
@@ -76,8 +79,8 @@ export default function Analitycs() {
   return (
     <>
       <div className='rounded-sm border border-[#EEE] bg-white'>
-        <h2 className='p-4 font-bold uppercase'>Seo</h2>
-        <div className='flex justify-start bg-[#FDFDFD]'>
+        <h2 className='p-4 text-xl font-bold uppercase'>Seo</h2>
+        <div className='flex justify-start border-t-2 border-[#EEE] bg-[#FDFDFD]'>
           {filtersData.map((entry) => (
             <Filter
               key={entry.id}
@@ -94,12 +97,16 @@ export default function Analitycs() {
           ))}
         </div>
       </div>
+      <div className='flex justify-between border border-b-0 border-[#EEE] bg-[#FDFDFD] px-4 pb-2 pt-4 text-sm capitalize text-[#B4B4B4]'>
+        {filters.length <= 2 &&
+          filters.map((entry, index) => <div key={index}>{entry}</div>)}
+      </div>
       <ResponsiveContainer width='100%' height={300}>
         <LineChart
           width={500}
           height={300}
           data={rows}
-          className='rounded-bl rounded-br border border-[#EEE] bg-[#FDFDFD]'
+          className='rounded-bl rounded-br border border-t-0 border-[#EEE] bg-[#FDFDFD]'
         >
           <XAxis
             axisLine={false}
@@ -108,7 +115,6 @@ export default function Analitycs() {
             style={{
               fill: '#B4B4B4',
               fontSize: '12px',
-              padding: '1em',
             }}
             fontFamily='__Lato_814572'
             tickMargin={8}
@@ -121,7 +127,9 @@ export default function Analitycs() {
             filters.map((filter, index) => {
               return (
                 <YAxis
+                  key={index}
                   axisLine={false}
+                  width={40}
                   tickLine={false}
                   orientation={index === 0 ? 'left' : 'right'}
                   yAxisId={filter}
@@ -142,7 +150,7 @@ export default function Analitycs() {
             stroke='#eee'
             strokeDasharray='1000 0'
           />
-          <Tooltip />
+          <Tooltip contentStyle={{ fontWeight: 'bold' }} />
           {filters.map((filter, index) => (
             <Line
               key={index}

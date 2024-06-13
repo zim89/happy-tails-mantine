@@ -1,11 +1,11 @@
 'use client';
 
-import Analytics from '@/modules/Analytics';
+import LineChart from '@/modules/LineChart';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
-import { useSearchParams } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function SeoPage() {
+export default function Page() {
   const tokenFromStore = retrieveToken();
   const [token, setToken] = useState(tokenFromStore);
 
@@ -35,5 +35,11 @@ export default function SeoPage() {
     })();
   }, [code]);
 
-  return <div>{token && <Analytics />}</div>;
+  if (!token) redirect('/admin/auth');
+
+  return (
+    <div>
+      <LineChart />
+    </div>
+  );
 }

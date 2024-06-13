@@ -1,5 +1,4 @@
 import Checkbox from '@/components/Checkbox';
-import { cn } from '@/shared/lib/utils';
 import { FilterTypes } from '../lib/data';
 
 type Props = {
@@ -24,7 +23,10 @@ export const Filter = ({
   return (
     <div
       className='flex w-full max-w-[200px] flex-col px-3 pb-4 pt-3 transition-colors'
-      style={{ backgroundColor: checked ? color : '#EEE' }}
+      style={{
+        backgroundColor: checked ? color : '#FDFDFD',
+        borderRight: !checked ? '2px solid #EEE' : '',
+      }}
     >
       <Checkbox
         checked={checked}
@@ -34,6 +36,8 @@ export const Filter = ({
         styles={{
           label: {
             color: (checked && additionalColor) || 'black',
+            fontSize: '16px',
+            paddingLeft: '8px',
           },
         }}
         classNames={{
