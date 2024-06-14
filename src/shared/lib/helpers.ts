@@ -195,10 +195,14 @@ export const convertBytes = (bytes: number) => {
 export const convertMeasurement = (value: number) => {
   const stringifiedValue = value.toString();
 
-  if (value <= 3) return stringifiedValue;
+  if (value < 1000) return stringifiedValue;
   else if (value < 1000000)
     return stringifiedValue.slice(0, stringifiedValue.length - 3) + 'K';
   else if (value < 1000000000)
     return stringifiedValue.slice(0, stringifiedValue.length - 6) + 'M';
   else return stringifiedValue.slice(0, stringifiedValue.length - 9) + 'B';
+};
+
+export const getCurrentMonth = () => {
+  return dayjs(Date.now()).format('MMMM');
 };

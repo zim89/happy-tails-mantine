@@ -9,14 +9,16 @@ import {
   CartesianGrid,
   Bar,
 } from 'recharts';
+import { Select } from '@mantine/core';
 
 import { monthlyData, reversedMonthMap } from './lib/mock';
-import { convertMeasurement } from '@/shared/lib/helpers';
-import { Select } from '@mantine/core';
+import { convertMeasurement, getCurrentMonth } from '@/shared/lib/helpers';
+import { useMediaQuery } from '@mantine/hooks';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
-  const [selectedMonth, setSelectedMonth] = useState('January');
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
+  const matches = useMediaQuery('(min-width: 768px)');
 
   return (
     <div className='overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
@@ -72,11 +74,15 @@ export default function BarChart() {
               : monthlyData[reversedMonthMap[selectedMonth]].days
           }
           barSize={62}
+          barGap={20}
         >
           <XAxis
             dataKey={barChartType === 'Year' ? 'name' : 'label'}
             scale='point'
-            padding={{ left: 40, right: 40 }}
+            tickMargin={8}
+            padding={
+              matches ? { left: 40, right: 40 } : { left: 20, right: 20 }
+            }
             axisLine={false}
             tickLine={false}
           />
@@ -84,12 +90,19 @@ export default function BarChart() {
             dataKey={barChartType === 'Year' ? 'total' : 'revenue'}
             axisLine={false}
             tickLine={false}
-            tickMargin={20}
+            tickMargin={matches ? 15 : 10}
             tickFormatter={(value: number) => {
               return convertMeasurement(value);
             }}
           />
-          <Tooltip />
+          <Tooltip
+            formatter={(value) => {
+              return `${value}$`;
+            }}
+            labelFormatter={(label) => {
+              return `Day ${label}`;
+            }}
+          />
           <CartesianGrid vertical stroke='#EEE' />
           <Bar
             dataKey={barChartType === 'Year' ? 'total' : 'revenue'}

@@ -1,7 +1,9 @@
 'use client';
 
+import DonutChart from '@/components/DonutChart';
 import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
+import OrdersChart from '@/modules/OrdersChart';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { redirect, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -40,6 +42,7 @@ export default function Page() {
 
   return (
     <div>
+      <OrdersChart />
       <BarChart />
       <LineChart />
     </div>
