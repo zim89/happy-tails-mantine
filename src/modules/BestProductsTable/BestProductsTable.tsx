@@ -92,7 +92,12 @@ export default function ProductsTable({ data }: Props) {
         </h2>
       </div>
 
-      <Table bgcolor='white' withTableBorder borderColor='transparent'>
+      <Table
+        bgcolor='white'
+        withTableBorder
+        borderColor='transparent'
+        classNames={{ tr: 'border-t border-[#EEE]' }}
+      >
         <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />
       </Table>

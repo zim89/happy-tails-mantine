@@ -6,9 +6,9 @@ import { Plus, Minus } from 'lucide-react';
 
 import { CustomBadge } from '@/components/Badge/Badge';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
-import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
+import { data } from './lib/mock';
 
 type Props = {
   form: UseFormReturnType<
@@ -33,19 +33,15 @@ export default function ProductSelection({ form }: Props) {
     form.setFieldValue('items', (prev) => prev.filter((v) => v !== value));
   };
 
-  const products = useSelectProducts((res) =>
-    res.map((product) => {
-      return { ...product, totalQuantity: 1 };
-    })
-  );
+  const products = data.map((product) => {
+    return { ...product, totalQuantity: 1 };
+  });
 
   const shouldFilterOptions = useMemo<boolean>(() => {
     return products.every(
       (item) => item.name.toLocaleLowerCase() !== search.toLowerCase()
     );
   }, [products.length, search]);
-
-  console.log(products);
 
   const filteredOptions = shouldFilterOptions
     ? products.filter(
@@ -55,19 +51,32 @@ export default function ProductSelection({ form }: Props) {
       )
     : products;
 
-  const options = filteredOptions.map((item) => (
-    <Combobox.Option
-      value={JSON.stringify(item)}
-      key={item.name}
-      classNames={{ option: 'flex gap-6' }}
-    >
-      <Image width={64} height={64} src={item.imagePath} alt={item.name} />
-      <div>
-        <p className='mb-1 font-bold'>{item.name}</p>
-        <span>$ {item.price.toFixed(2)}</span>
-      </div>
-    </Combobox.Option>
-  ));
+  const options = filteredOptions.map((item) => {
+    return (
+      <>
+        {item.productSizes?.map((productSize) => (
+          <Combobox.Option
+            value={JSON.stringify(item)}
+            key={item.name + productSize.size}
+            classNames={{ option: 'flex gap-6' }}
+          >
+            <Image
+              width={64}
+              height={64}
+              src={item.imagePath}
+              alt={item.name}
+            />
+            <div>
+              <p className='mb-1 font-bold'>
+                {item.name} {productSize.size}
+              </p>
+              <span>$ {item.price.toFixed(2)}</span>
+            </div>
+          </Combobox.Option>
+        ))}
+      </>
+    );
+  });
 
   const changeItemQuantity = (op: 'DECREASE' | 'INCREASE', id: number) => {
     const [candidate] = form.values.items.reduce<Product[]>((acc, prev) => {
@@ -149,12 +158,12 @@ export default function ProductSelection({ form }: Props) {
 
         {form.values.items.length > 0 && (
           <div className='mt-6'>
-            {form.values.items.map((item) => {
+            {form.values.items.map((item, index) => {
               const parsed: Product = JSON.parse(item);
 
               return (
                 <div
-                  key={parsed.id}
+                  key={index}
                   className='flex items-center gap-6 bg-[#F7F7F7] p-4'
                 >
                   <Image
@@ -176,6 +185,17 @@ export default function ProductSelection({ form }: Props) {
                       />
                     </div>
                     <p className='py-1 font-bold'>{parsed.name}</p>
+                    {parsed.color && (
+                      <p className='flex items-center gap-2'>
+                        <span
+                          className='inline-block h-4 w-4 rounded-full border border-[#C8C8C8]'
+                          style={{
+                            backgroundColor: parsed.color?.toLowerCase(),
+                          }}
+                        />
+                        <span>{parsed.color}</span>
+                      </p>
+                    )}
                     {parsed.productStatus === 'IN STOCK' && (
                       <p className='text-sm'>Price: ${parsed.price}</p>
                     )}
