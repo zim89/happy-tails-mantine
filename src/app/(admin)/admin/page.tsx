@@ -4,6 +4,7 @@ import DonutChart from '@/components/DonutChart';
 import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
 import OrdersChart from '@/modules/OrdersChart';
+import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { redirect, useSearchParams } from 'next/navigation';
@@ -43,6 +44,7 @@ export default function Page() {
 
   return (
     <div className='flex flex-col gap-6'>
+      <Stats />
       <BarChart />
       <OrdersChart />
       <TopCategories />
