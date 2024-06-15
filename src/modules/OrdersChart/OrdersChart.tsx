@@ -36,7 +36,7 @@ export default function OrdersChart() {
 
   return (
     <div className='flex gap-6'>
-      <div className='max-w-min rounded rounded-b border border-[#EEE] bg-[#FDFDFD]'>
+      <div className='max-w-min overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
         <div className='flex items-center justify-between border-b border-b-[#EEE] bg-white p-4'>
           <h2 className='text-xl font-bold'>Orders Reports</h2>
           <MultiSelect

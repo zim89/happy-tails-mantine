@@ -77,7 +77,7 @@ export default function Analitycs() {
   stats.position = stats.position / rows.length;
 
   return (
-    <>
+    <div>
       <div className='rounded-sm border border-[#EEE] bg-white'>
         <h2 className='p-4 text-xl font-bold uppercase'>Seo</h2>
         <div className='flex justify-start border-t-2 border-[#EEE] bg-[#FDFDFD]'>
@@ -164,6 +164,6 @@ export default function Analitycs() {
           ))}
         </LineChart>
       </ResponsiveContainer>
-    </>
+    </div>
   );
 }

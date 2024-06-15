@@ -23,8 +23,6 @@ export default function AdminProductsDisplay() {
   if (isError) return <p>Oops, something went wrong</p>;
   if (!data) return <ProductsTable data={[]} />;
 
-  console.log('Products: ', data);
-
   return (
     <>
       <AddProductModal />

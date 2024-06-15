@@ -42,10 +42,10 @@ export default function Page() {
   if (!token) redirect('/admin/auth');
 
   return (
-    <div>
-      <TopCategories />
-      <OrdersChart />
+    <div className='flex flex-col gap-6'>
       <BarChart />
+      <OrdersChart />
+      <TopCategories />
       <LineChart />
     </div>
   );

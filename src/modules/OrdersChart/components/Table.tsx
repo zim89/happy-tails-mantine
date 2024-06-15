@@ -111,13 +111,12 @@ export default function Table({ data }: { data: Order[] }) {
   }, []);
 
   return (
-    <div className='flex-1'>
+    <div className='flex-1 overflow-hidden rounded border border-[#EEE]'>
       <div>
-        <h3 className='flex-1 bg-white p-4 text-xl font-bold'>Recent Orders</h3>
+        <h3 className='bg-white p-4 text-xl font-bold'>Recent Orders</h3>
       </div>
 
       <MantineTable
-        highlightOnHover
         horizontalSpacing={16}
         width={'100%'}
         border={1}
@@ -147,10 +146,8 @@ export default function Table({ data }: { data: Order[] }) {
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}
         message='You have no any orders yet'
-        className='h-full'
+        className='border-0'
       />
-
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </div>
   );
 }
