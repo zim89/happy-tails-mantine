@@ -100,7 +100,7 @@ export default function BarChart() {
               return `${value}$`;
             }}
             labelFormatter={(label) => {
-              return `Day ${label}`;
+              return barChartType === 'Year' ? label : `Day ${label}`;
             }}
           />
           <CartesianGrid vertical stroke='#EEE' />
