@@ -16,7 +16,10 @@ import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
 import styles from './AddProductModal.module.css';
-import { DEFAULT_CATEGORY_IMAGE, productTypeList } from '@/shared/lib/constants';
+import {
+  DEFAULT_CATEGORY_IMAGE,
+  productTypeList,
+} from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
 import Notify from '@/components/Notify';
@@ -40,14 +43,14 @@ export default function AddProductModal() {
   const [setNotification, { props, clear }] = useNotification({
     failed: {
       color: 'transparent',
-      icon: <AlertTriangle size={24} fill="#DC362E" />,
+      icon: <AlertTriangle size={24} fill='#DC362E' />,
       text: 'Product adding failed!',
     },
     success: {
       icon: <Check size={24} />,
       color: '#389B48',
       text: 'Product successfully added!',
-    }
+    },
   });
 
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
@@ -92,10 +95,7 @@ export default function AddProductModal() {
     close();
   };
 
-  const handleSubmit = async ({
-    image,
-    ...rest
-  }: (typeof form)['values']) => {
+  const handleSubmit = async ({ image, ...rest }: (typeof form)['values']) => {
     try {
       let imagePath = DEFAULT_CATEGORY_IMAGE;
 
@@ -116,12 +116,15 @@ export default function AddProductModal() {
 
       const newProduct: Partial<Product> = {
         ...rest,
-        productSizes: [{
-          size: ProductSizeEnum["M"],
-          quantity: 1,
-          productStatus: "IN STOCK"
-        }],
-        imagePath
+        productSizes: [
+          {
+            size: ProductSizeEnum['M'],
+            quantity: 1,
+            productStatus: 'IN STOCK',
+            description: null,
+          },
+        ],
+        imagePath,
       };
 
       const candidate = categoryList.find(
@@ -132,13 +135,16 @@ export default function AddProductModal() {
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();
-      setNotification("Success");
+      setNotification('Success');
     } catch (err) {
       clearAndClose();
       console.error(err);
 
       if (isAxiosQueryError(err)) {
-        setNotification("Failed", isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
     }
   };
@@ -150,7 +156,10 @@ export default function AddProductModal() {
           <h2>Products</h2>
           <p>Manage your product catalog</p>
         </hgroup>
-        <UnstyledButton className='bg-black text-white flex gap-2 items-center font-black rounded px-4 py-[10px]' onClick={open}>
+        <UnstyledButton
+          className='flex items-center gap-2 rounded bg-black px-4 py-[10px] font-black text-white'
+          onClick={open}
+        >
           <PlusCircle width={20} />
           Add product
         </UnstyledButton>
@@ -163,7 +172,7 @@ export default function AddProductModal() {
           header: styles.modalHeader,
           content: styles.modalContent,
         }}
-        onChange={() => { }}
+        onChange={() => {}}
         onClose={close}
       >
         <ModalHeader heading='Add New Product' handleClose={close} />
@@ -226,7 +235,7 @@ export default function AddProductModal() {
                 label='Price'
               />
               <Select
-                defaultValue={"INDOORS"}
+                defaultValue={'INDOORS'}
                 {...form.getInputProps('productType')}
                 classNames={{
                   root: 'form-root w-full',

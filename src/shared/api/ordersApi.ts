@@ -1,16 +1,16 @@
-import axios from "@/shared/lib/interceptor";
+import axios from '@/shared/lib/interceptor';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BackendResponse, Order, Product, Sort } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
 type Address = {
   firstName: string;
-    secondName: string;
-    country: string;
-    city: string;
-    street: string;
-    apartment: string;
-}
+  secondName: string;
+  country: string;
+  city: string;
+  street: string;
+  apartment: string;
+};
 
 type OrderPayload = {
   shippingAddress: Address;
@@ -21,23 +21,23 @@ type OrderPayload = {
   email: string;
   count: number;
   discountCode?: string;
-}
+};
 
 type DeleteOrderProps = {
   number: string;
-}
+};
 
 type UpdateOrderProps = {
   orderNumber: string;
   shippingAddress: string;
   billingAddress: string;
   shippingMethod: string;
-}
+};
 
 type CommentOrder = {
   orderNumber: string;
   comment: string;
-}
+};
 
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
@@ -59,7 +59,7 @@ export const ordersApi = createApi({
         return {
           url: `/orders/all?${params}`,
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
           },
         };
       },
@@ -76,7 +76,7 @@ export const ordersApi = createApi({
     }),
     findOne: builder.query<Order, { orderNumber: string }>({
       query: ({ orderNumber }) => ({
-        url: `/order/${orderNumber}`
+        url: `/order/${orderNumber}`,
       }),
       providesTags: (result) =>
         result
@@ -93,45 +93,50 @@ export const ordersApi = createApi({
       query: ({ count, items, ...params }) => ({
         url: '/orders',
         method: 'post',
-        params,
-        data: items.map(str => {
+
+        data: items.map((str) => {
           const orderItem: Product = JSON.parse(str);
-          
           return {
             productId: orderItem.id,
-            count
-          }
+            count,
+            ...params,
+          };
         }),
         headers: {
           'Content-type': 'application/json',
         },
       }),
-      invalidatesTags: ["Orders"]
+      invalidatesTags: ['Orders'],
     }),
-    changeStatus: builder.mutation<Order, { number: string, status: Order["orderStatus"] }>({
+    changeStatus: builder.mutation<
+      Order,
+      { number: string; status: Order['orderStatus'] }
+    >({
       query: ({ number, status }) => {
         const params = new URLSearchParams({
-          orderStatus: status
+          orderStatus: status,
         });
 
-        return {url: `/order/${number}`,
-        method: "put",
-        params,
-        headers: {
-          'Content-type': 'application/json',
-        }
-      }},
-      invalidatesTags: ["Orders"]
+        return {
+          url: `/order/${number}`,
+          method: 'put',
+          params,
+          headers: {
+            'Content-type': 'application/json',
+          },
+        };
+      },
+      invalidatesTags: ['Orders'],
     }),
     deleteOrder: builder.mutation<void, DeleteOrderProps>({
       query: ({ number }) => ({
         url: `/order/${number}`,
-        method: "delete",
+        method: 'delete',
         headers: {
           'Content-type': 'application/json',
         },
       }),
-      invalidatesTags: ["Orders"]
+      invalidatesTags: ['Orders'],
     }),
     updateOrder: builder.mutation<Order, UpdateOrderProps>({
       query: (payload) => ({
@@ -142,35 +147,46 @@ export const ordersApi = createApi({
           'Content-type': 'application/json',
         },
       }),
-      invalidatesTags: ["Orders"]
+      invalidatesTags: ['Orders'],
     }),
     addComment: builder.mutation<void, CommentOrder>({
       query: ({ orderNumber, comment }) => {
         const params = new URLSearchParams({
-          comment
+          comment,
         });
 
-        return {url: `/order/${orderNumber}/comment`,
-        method: 'put',
-        params,
-        headers: {
-          'Content-type': 'application/json',
-        },
-      }
+        return {
+          url: `/order/${orderNumber}/comment`,
+          method: 'put',
+          params,
+          headers: {
+            'Content-type': 'application/json',
+          },
+        };
       },
-      invalidatesTags: ["Orders"]
+      invalidatesTags: ['Orders'],
     }),
   }),
 });
 
-export const { useFindManyQuery, useCreateOrderMutation, useDeleteOrderMutation, useChangeStatusMutation, useUpdateOrderMutation, useAddCommentMutation, useFindOneQuery } = ordersApi;
+export const {
+  useFindManyQuery,
+  useCreateOrderMutation,
+  useDeleteOrderMutation,
+  useChangeStatusMutation,
+  useUpdateOrderMutation,
+  useAddCommentMutation,
+  useFindOneQuery,
+} = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {
     // TODO: replace this with env var
-    const res = await axios.get("https://happytails-backend.lav.net.ua/happytails/api/discount/" + code);
+    const res = await axios.get(
+      'https://happytails-backend.lav.net.ua/happytails/api/discount/' + code
+    );
     return res.data;
   } catch (err) {
     throw err;
   }
-}
+};

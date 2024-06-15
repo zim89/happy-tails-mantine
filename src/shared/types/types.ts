@@ -11,28 +11,28 @@ type OrderStatus =
   | 'COMPLETED';
 
 export enum ProductColor {
-  Black = "Black",
-  White = "White",
-  Blue = "Blue",
-  Pink = "Pink",
-  Yellow = "Yellow",
-  Green = "Green",
-  Red = "Red",
-  Purple = "Purple",
-  Orange = "Orange",
-  Gray = "Gray",
-  Brown = "Brown",
-  "ONE COLOR" = "ONE COLOR"
+  Black = 'Black',
+  White = 'White',
+  Blue = 'Blue',
+  Pink = 'Pink',
+  Yellow = 'Yellow',
+  Green = 'Green',
+  Red = 'Red',
+  Purple = 'Purple',
+  Orange = 'Orange',
+  Gray = 'Gray',
+  Brown = 'Brown',
+  'ONE COLOR' = 'ONE COLOR',
 }
 
 export enum ProductSizeEnum {
-  XS = "XS",
-  S = "S",
-  M = "M",
-  L = "L",
-  XL = "XL",
-  XXL = "XXL",
-  "ONE SIZE" = "ONE SIZE"
+  XS = 'XS',
+  S = 'S',
+  M = 'M',
+  L = 'L',
+  XL = 'XL',
+  XXL = 'XXL',
+  'ONE SIZE' = 'ONE SIZE',
 }
 
 type ShippingAddress = {
@@ -44,7 +44,7 @@ type ShippingAddress = {
   addressLine1: string;
   addressLine2: string;
   phoneNumber: string;
-}
+};
 
 type BillingAddress = ShippingAddress;
 
@@ -54,7 +54,7 @@ type ShippingMethod = {
   description: string;
   price: number;
   daysOfDelivery: number;
-}
+};
 
 type Discount = {
   id: number;
@@ -63,19 +63,20 @@ type Discount = {
   minPrice: number;
   beginningDate: string;
   expirationDate: string;
-}
+};
 
 type ProductSize = {
   size: ProductSizeEnum;
   quantity: number;
   productStatus: ProductStatus;
-}
+  description: string | null;
+};
 
 type RelatedProduct = {
   relatedProductId: number;
   relatedProductColorEnum: ProductColor;
   relatedProductImagePath: string;
-}
+};
 
 export interface Product {
   id: number;
@@ -179,12 +180,12 @@ export type ErrorData = {
   path: string;
   timestamp: number;
   message: string;
-}
+};
 
 export type AxiosQueryError = {
   status?: number;
   data: ErrorData | string;
-}
+};
 
 export type ID = number | string;
 

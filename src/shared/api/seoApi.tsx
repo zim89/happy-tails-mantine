@@ -77,10 +77,12 @@ axiosInstance.interceptors.response.use(
 
 export const retrieveToken = () => {
   const candidate = localStorage.getItem('google_verification');
-  let verification: Verification | null = candidate ? JSON.parse(candidate) : null;
+  let verification: Verification | null = candidate
+    ? JSON.parse(candidate)
+    : null;
 
   return verification?.access_token;
-}
+};
 
 export const getAccessToken = async (code: string) => {
   try {
@@ -109,6 +111,21 @@ export const refreshAccessToken = async (refresh_token: string) => {
   }
 };
 
+export type AggregatedAnalyticsResponse = {
+  message: {
+    responseAggregationType: string;
+    rows: Entry[];
+  };
+};
+
+type Entry = {
+  keys: string[];
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+};
+
 type DimensionFilterGroup = {
   groupType: string;
   filter: {
@@ -135,9 +152,14 @@ type AnalyticsQuery = {
 };
 export const getAnalytics = async (params: AnalyticsQuery) => {
   try {
-    const res = await axiosInstance.post('analytics', params);
+    const res = await axiosInstance.post<AggregatedAnalyticsResponse>(
+      'analytics',
+      params
+    );
 
-    return res;
+    if (!res) throw new Error('No data returned.');
+
+    return res.data;
   } catch (err) {
     if (err instanceof AxiosError) throw err;
     else console.log(err);

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect } from 'react';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import AddProductModal from '@/modules/AddProductModal';
 import ProductsTable from '@/modules/ProductsTable';
-import { AdminPanelContext } from "@/shared/lib/context";
+import { AdminPanelContext } from '@/shared/lib/context';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
@@ -16,12 +16,12 @@ export default function AdminProductsDisplay() {
   const { update } = useContext(AdminPanelContext);
 
   useEffect(() => {
-    update(prev => ({ ...prev, openedLink: "Products" }));
+    update((prev) => ({ ...prev, openedLink: 'Products' }));
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Oops, something went wrong</p>;
-  if (!data) return <ProductsTable data={[]}/>
+  if (!data) return <ProductsTable data={[]} />;
 
   return (
     <>

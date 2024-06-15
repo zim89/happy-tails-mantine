@@ -40,6 +40,10 @@ export const formatDateTimeWithBrackets = (raw: string | number) => {
   return dayjs(raw).format('MMM DD, YYYY (HH:mm)');
 };
 
+export const formatDateWithoutTime = (raw: string | number) => {
+  return dayjs(raw).format('MMM DD, YYYY');
+};
+
 export const formatDateFromArray = (
   array: number[],
   format = 'MMM DD, YYYY (HH:mm)'
@@ -75,6 +79,10 @@ export const formatYearFromDate = (date: number) => {
 
 export const formatShortDateFromUnix = (date: number) => {
   return dayjs(date).format('DD MMM, YYYY');
+};
+
+export const formatDateToDashedOne = (date: number) => {
+  return dayjs(date).format('YYYY-MM-DD');
 };
 
 export const cleanPostcode = (input: string): string => {
@@ -182,4 +190,19 @@ export const convertBytes = (bytes: number) => {
   } else {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
   }
+};
+
+export const convertMeasurement = (value: number) => {
+  const stringifiedValue = value.toString();
+
+  if (value < 1000) return stringifiedValue;
+  else if (value < 1000000)
+    return stringifiedValue.slice(0, stringifiedValue.length - 3) + 'K';
+  else if (value < 1000000000)
+    return stringifiedValue.slice(0, stringifiedValue.length - 6) + 'M';
+  else return stringifiedValue.slice(0, stringifiedValue.length - 9) + 'B';
+};
+
+export const getCurrentMonth = () => {
+  return dayjs(Date.now()).format('MMMM');
 };

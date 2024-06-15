@@ -6,7 +6,8 @@ const searchConsoleApi = google.searchconsole('v1');
 const getAnalytics = async (token: string, payload: object) => {
   try {
     const res = await searchConsoleApi.searchanalytics.query({
-      siteUrl: 'https://happy-tails-mantine.vercel.app/',
+      // The slash is important, cause it's registered such in screen consent
+      siteUrl: process.env.NEXT_PUBLIC_SITE_DOMAIN + '/',
       key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
       access_token: token,
       requestBody: {
@@ -35,9 +36,6 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: res });
   } catch (err) {
     if (err instanceof Error)
-      return Response.json(
-        { message: err.message },
-        { status: 500 }
-      );
+      return Response.json({ message: err.message }, { status: 500 });
   }
 }

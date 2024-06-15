@@ -1,4 +1,12 @@
-import { LayoutList, LayoutDashboard, FileText, UsersRound, Newspaper, LucideIcon, MessagesSquare } from 'lucide-react';
+import {
+  LayoutList,
+  LayoutDashboard,
+  FileText,
+  UsersRound,
+  Newspaper,
+  LucideIcon,
+  MessagesSquare,
+} from 'lucide-react';
 
 type SharedLinkProps = {
   label: string;
@@ -24,7 +32,7 @@ export const links: SidebarLinks = [
     label: 'Dashboard',
     icon: LayoutDashboard,
     initiallyOpened: true,
-    link: '/admin/',
+    link: '/admin',
   },
   {
     id: 'links-group',
@@ -48,15 +56,15 @@ export const links: SidebarLinks = [
     link: '/admin/users',
   },
   {
-    id: "link",
-    label: "Messages",
+    id: 'link',
+    label: 'Messages',
     icon: MessagesSquare,
-    link: "/admin/inbox"
+    link: '/admin/inbox',
   },
   {
-    id: "link",
-    label: "Blogs",
+    id: 'link',
+    label: 'Blogs',
     icon: Newspaper,
-    link: '/admin/blogs'
-  }
+    link: '/admin/blogs',
+  },
 ] as const;

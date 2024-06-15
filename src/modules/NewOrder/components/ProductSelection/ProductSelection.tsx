@@ -1,14 +1,13 @@
 import { Card, Combobox, Divider, InputBase, useCombobox } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import Image from 'next/image';
-import { useMemo, useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import { Fragment, useMemo, useState } from 'react';
 
-import { CustomBadge } from '@/components/Badge/Badge';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
-import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
+import { data } from '../../lib/mock';
+import Option from '../Option';
+import SelectedProduct from '../SelectedProduct';
 
 type Props = {
   form: UseFormReturnType<
@@ -33,11 +32,9 @@ export default function ProductSelection({ form }: Props) {
     form.setFieldValue('items', (prev) => prev.filter((v) => v !== value));
   };
 
-  const products = useSelectProducts((res) =>
-    res.map((product) => {
-      return { ...product, quantity: 1 };
-    })
-  );
+  const products = data.map((product) => {
+    return { ...product, totalQuantity: 1 };
+  });
 
   const shouldFilterOptions = useMemo<boolean>(() => {
     return products.every(
@@ -47,25 +44,38 @@ export default function ProductSelection({ form }: Props) {
 
   const filteredOptions = shouldFilterOptions
     ? products.filter(
-      (item) =>
-        item.productStatus === 'IN STOCK' &&
-        item.name.toLowerCase().includes(search.toLowerCase().trim())
-    )
+        (item) =>
+          item.productStatus === 'IN STOCK' &&
+          item.name.toLowerCase().includes(search.toLowerCase().trim())
+      )
     : products;
 
-  const options = filteredOptions.map((item) => (
-    <Combobox.Option
-      value={JSON.stringify(item)}
-      key={item.name}
-      classNames={{ option: 'flex gap-6' }}
-    >
-      <Image width={64} height={64} src={item.imagePath} alt={item.name} />
-      <div>
-        <p className='mb-1 font-bold'>{item.name}</p>
-        <span>$ {item.price.toFixed(2)}</span>
-      </div>
-    </Combobox.Option>
-  ));
+  const options = filteredOptions.map((item, option_index) => {
+    return (
+      <Fragment key={option_index}>
+        {/* Renders each size of the product as a distinct product */}
+        {item.productSizes?.length ? (
+          item.productSizes?.map((productSize, size_index) => (
+            <Option
+              key={size_index}
+              product={{
+                ...item,
+                size: productSize.size,
+              }}
+            />
+          ))
+        ) : (
+          // If there is no sizes, render the option without size
+          <Option
+            product={{
+              ...item,
+              size: null,
+            }}
+          />
+        )}
+      </Fragment>
+    );
+  });
 
   const changeItemQuantity = (op: 'DECREASE' | 'INCREASE', id: number) => {
     const [candidate] = form.values.items.reduce<Product[]>((acc, prev) => {
@@ -147,82 +157,16 @@ export default function ProductSelection({ form }: Props) {
 
         {form.values.items.length > 0 && (
           <div className='mt-6'>
-            {form.values.items.map((item) => {
+            {form.values.items.map((item, index) => {
               const parsed: Product = JSON.parse(item);
 
               return (
-                <div
-                  key={parsed.id}
-                  className='flex items-center gap-6 bg-[#F7F7F7] p-4'
-                >
-                  <Image
-                    src={parsed.imagePath}
-                    height={115}
-                    width={104}
-                    alt={parsed.name}
-                  />
-                  <div>
-                    <div className='text-xs'>
-                      <span className='mr-2'>{parsed.article}</span>
-                      <CustomBadge
-                        palette={{
-                          'in stock': '#389B48',
-                          'out of stock': '#B4B4B4',
-                        }}
-                        color={parsed.productStatus.toLowerCase()}
-                        name={parsed.productStatus}
-                      />
-                    </div>
-                    <p className='py-1 font-bold'>{parsed.name}</p>
-                    {parsed.productStatus === 'IN STOCK' && (
-                      <p className='text-sm'>Price: ${parsed.price}</p>
-                    )}
-
-                    <p className='text-sm'>Price: ${parsed.price}</p>
-
-                    <div className='mt-3 flex font-bold'>
-                      <button
-                        disabled={!(parsed.productStatus === 'IN STOCK')}
-                        className='border-gray flex w-8 items-center justify-center border-[1px]'
-                        onClick={() =>
-                          changeItemQuantity('INCREASE', parsed.id)
-                        }
-                      >
-                        <Plus size={16} />
-                      </button>
-                      <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                        {
-                          parsed.productStatus === 'IN STOCK'
-                            ? parsed.totalQuantity
-                            : 0}
-                      </span>
-                      <button
-                        disabled={!(parsed.productStatus === 'IN STOCK')}
-                        className='border-gray flex w-8 items-center justify-center border-[1px]'
-                        onClick={() =>
-                          changeItemQuantity('DECREASE', parsed.id)
-                        }
-                      >
-                        <Minus size={16} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className='ml-auto flex flex-col items-end justify-between self-stretch'>
-                    <button
-                      className='text-xs text-[#DC362E]'
-                      onClick={() => removeItem(item)}
-                    >
-                      Remove
-                    </button>
-                    {
-                      parsed.productStatus === 'IN STOCK' &&
-                      (
-                        <span className='whitespace-pre text-xl font-bold'>
-                          $ {(parsed.price * parsed.totalQuantity).toFixed(2)}
-                        </span>
-                      )}
-                  </div>
-                </div>
+                <SelectedProduct
+                  key={index}
+                  product={parsed}
+                  changeItemQuantity={changeItemQuantity}
+                  handleRemove={() => removeItem(item)}
+                />
               );
             })}
           </div>

@@ -3,6 +3,7 @@ class PAGES {
 
   HOME = this.root;
   ADMIN = `/admin`;
+  ADMIN_AUTH = `/admin/auth`;
   // AUTH
   REGISTER = `/auth/register`;
   LOGIN = `/auth/login`;

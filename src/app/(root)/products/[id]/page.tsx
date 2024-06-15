@@ -1,11 +1,12 @@
 'use client';
-import dynamic from 'next/dynamic';
 
+import dynamic from 'next/dynamic';
 import { Container, Loader } from '@mantine/core';
-import { useFindOneQuery } from '@/shared/api/productApi';
-import Script from 'next/script';
-import { availabilityMap } from '@/shared/lib/helpers';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
+
+import { useFindOneQuery } from '@/shared/api/productApi';
+import { availabilityMap } from '@/shared/lib/helpers';
 
 const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
 
