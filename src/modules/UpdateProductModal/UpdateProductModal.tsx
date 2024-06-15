@@ -68,7 +68,6 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
     productLine.price,
   ]);
 
-
   const previewImage = useRef<PreviewImage>({ name: '', path: '' });
 
   const [dispatch] = useUpdateMutation();
@@ -89,17 +88,24 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
     close();
   };
 
-  const handleSubmit = async ({ image, productType, ...rest }: typeof form.values) => {
+  const handleSubmit = async ({
+    image,
+    productType,
+    ...rest
+  }: typeof form.values) => {
     try {
       let requestBody: Product = {
         ...productLine,
-        productSizes: productLine?.productSizes ? [
-          {
-            size: productLine.productSizes[0].size,
-            quantity: productLine.productSizes[0].quantity,
-            productStatus: productLine.productSizes[0].productStatus
-          }
-        ] : null,
+        productSizes: productLine?.productSizes
+          ? [
+              {
+                size: productLine.productSizes[0].size,
+                quantity: productLine.productSizes[0].quantity,
+                productStatus: productLine.productSizes[0].productStatus,
+                description: productLine.productSizes[0].description,
+              },
+            ]
+          : null,
         ...rest,
       };
 
@@ -222,7 +228,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                 label='Price'
               />
               <Select
-                defaultValue="INDOORS"
+                defaultValue='INDOORS'
                 {...form.getInputProps('productType')}
                 classNames={{
                   root: 'form-root w-full',
