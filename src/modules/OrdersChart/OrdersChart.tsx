@@ -30,7 +30,9 @@ export default function OrdersChart() {
   if (error)
     return (
       <p>
-        Whoops, it shouldn't have happened, our experts are already fixing this
+        {
+          "Whoops, it shouldn't have happened, our experts are already fixing this"
+        }
       </p>
     );
 

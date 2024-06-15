@@ -4,7 +4,7 @@ export const oauth2Client = new google.auth.OAuth2(
   process.env.NEXT_GOOGLE_API_CLIENT_ID,
   process.env.NEXT_GOOGLE_API_CLIENT_SECRET,
   process.env.NODE_ENV === 'production'
-    ? 'https://happy-tails-mantine.vercel.app/admin/'
+    ? process.env.NEXT_PUBLIC_SITE_DOMAIN + '/admin/'
     : 'http://localhost:3000/admin/'
 );
 

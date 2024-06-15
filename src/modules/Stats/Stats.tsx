@@ -17,6 +17,7 @@ export default function Stats() {
               </p>
               <p className='mt-1 text-[28px] font-bold'>
                 {stat.type === 'currency' && '$'}
+                {/* Comma separated numbers */}
                 {stat.value.toLocaleString('en-IN')}
               </p>
             </div>

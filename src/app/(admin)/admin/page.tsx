@@ -1,12 +1,13 @@
 'use client';
 
-import DonutChart from '@/components/DonutChart';
 import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
 import OrdersChart from '@/modules/OrdersChart';
 import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { KEYS } from '@/shared/constants/localStorageKeys';
 import { redirect, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -24,7 +25,7 @@ export default function Page() {
       const res = await getAccessToken(code);
 
       localStorage.setItem(
-        'google_verification',
+        KEYS['google_verification'],
         JSON.stringify({
           access_token: res.data.tokens.access_token,
           refresh_token: res.data.tokens.refresh_token,
@@ -40,7 +41,7 @@ export default function Page() {
     })();
   }, [code]);
 
-  if (!token) redirect('/admin/auth');
+  if (!token) redirect(APP_PAGES['ADMIN_AUTH']);
 
   return (
     <div className='flex flex-col gap-6'>
