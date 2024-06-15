@@ -35,7 +35,7 @@ export default function ProductSelection({ form }: Props) {
 
   const products = useSelectProducts((res) =>
     res.map((product) => {
-      return { ...product, quantity: 1 };
+      return { ...product, totalQuantity: 1 };
     })
   );
 
@@ -45,12 +45,14 @@ export default function ProductSelection({ form }: Props) {
     );
   }, [products.length, search]);
 
+  console.log(products);
+
   const filteredOptions = shouldFilterOptions
     ? products.filter(
-      (item) =>
-        item.productStatus === 'IN STOCK' &&
-        item.name.toLowerCase().includes(search.toLowerCase().trim())
-    )
+        (item) =>
+          item.productStatus === 'IN STOCK' &&
+          item.name.toLowerCase().includes(search.toLowerCase().trim())
+      )
     : products;
 
   const options = filteredOptions.map((item) => (
@@ -178,8 +180,6 @@ export default function ProductSelection({ form }: Props) {
                       <p className='text-sm'>Price: ${parsed.price}</p>
                     )}
 
-                    <p className='text-sm'>Price: ${parsed.price}</p>
-
                     <div className='mt-3 flex font-bold'>
                       <button
                         disabled={!(parsed.productStatus === 'IN STOCK')}
@@ -191,10 +191,9 @@ export default function ProductSelection({ form }: Props) {
                         <Plus size={16} />
                       </button>
                       <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
-                        {
-                          parsed.productStatus === 'IN STOCK'
-                            ? parsed.totalQuantity
-                            : 0}
+                        {parsed.productStatus === 'IN STOCK'
+                          ? parsed.totalQuantity
+                          : 0}
                       </span>
                       <button
                         disabled={!(parsed.productStatus === 'IN STOCK')}
@@ -214,13 +213,11 @@ export default function ProductSelection({ form }: Props) {
                     >
                       Remove
                     </button>
-                    {
-                      parsed.productStatus === 'IN STOCK' &&
-                      (
-                        <span className='whitespace-pre text-xl font-bold'>
-                          $ {(parsed.price * parsed.totalQuantity).toFixed(2)}
-                        </span>
-                      )}
+                    {parsed.productStatus === 'IN STOCK' && (
+                      <span className='whitespace-pre text-xl font-bold'>
+                        $ {(parsed.price * parsed.totalQuantity).toFixed(2)}
+                      </span>
+                    )}
                   </div>
                 </div>
               );
