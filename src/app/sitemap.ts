@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 import { fetchPostList } from '@/shared/lib/requests';
 import { getProductList, getAllCategories } from '@/shared/lib/requests';
@@ -8,7 +8,7 @@ const URL = process.env.NEXT_PUBLIC_SITE_DOMAIN;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productsRequest = await getProductList();
   const products = productsRequest || [];
-  
+
   const categoriesRequest = await getAllCategories();
   const categories = categoriesRequest || [];
 
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const parsedCategories = categories.map(({ path, createdAt, updatedAt }) => ({
     url: `${URL}/${encodeURIComponent(path)}`,
-    lastModified: new Date(updatedAt || createdAt!).toISOString()
+    lastModified: new Date(updatedAt || createdAt!).toISOString(),
   }));
 
   const parsedProducts = products.map(({ id, updatedAt, createdAt }) => ({
@@ -25,10 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(updatedAt || createdAt!).toISOString(),
   }));
 
-  const parsedPosts = posts.map(({ id, createdAt,  updatedAt }) => ({
+  const parsedPosts = posts.map(({ id, createdAt, updatedAt }) => ({
     url: `${URL}/blog/${id}`,
     lastModified: new Date(updatedAt || createdAt).toISOString(),
-  }));  
+  }));
 
   const routes = [
     '',
