@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
+import { KEYS } from '../constants/localStorageKeys';
+
 type Verification = {
   refresh_token: string;
   access_token: string;
@@ -9,8 +11,8 @@ type Verification = {
 const axiosInstance = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
-      ? `https://happy-tails-mantine.vercel.app/api`
-      : `http://localhost:3000/api`,
+      ? `https://happy-tails-mantine.vercel.app/api/`
+      : `http://localhost:3000/api/`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,7 +20,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const candidate = localStorage.getItem('google_verification');
+    const candidate = localStorage.getItem(KEYS['google_verification']);
     let verification: Verification | null = candidate
       ? JSON.parse(candidate)
       : null;
@@ -37,7 +39,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const candidate = localStorage.getItem('google_verification');
+    const candidate = localStorage.getItem(KEYS['google_verification']);
     let verification: Verification = JSON.parse(candidate!);
 
     if (
@@ -58,7 +60,7 @@ axiosInstance.interceptors.response.use(
         `Bearer ${access_token}`;
 
       localStorage.setItem(
-        'google_verification',
+        KEYS['google_verification'],
         JSON.stringify({
           access_token,
           refresh_token: verification.refresh_token,
@@ -76,7 +78,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export const retrieveToken = () => {
-  const candidate = localStorage.getItem('google_verification');
+  const candidate = localStorage.getItem(KEYS['google_verification']);
   let verification: Verification | null = candidate
     ? JSON.parse(candidate)
     : null;

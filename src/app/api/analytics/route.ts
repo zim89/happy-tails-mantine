@@ -1,13 +1,13 @@
 import { google } from 'googleapis';
 import { NextRequest } from 'next/server';
+import { setToken } from '../utils';
 
 const searchConsoleApi = google.searchconsole('v1');
 
 const getAnalytics = async (token: string, payload: object) => {
   try {
     const res = await searchConsoleApi.searchanalytics.query({
-      // The slash is important, cause it's registered such in screen consent
-      siteUrl: process.env.NEXT_PUBLIC_SITE_DOMAIN + '/',
+      siteUrl: 'https://happy-tails-mantine.vercel.app/',
       key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
       access_token: token,
       requestBody: {
@@ -27,10 +27,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     if (!token || !body)
       return Response.json(
-        { message: 'Hello' },
+        { message: 'Unauthorized' },
         { status: 401, statusText: 'Unauthorized' }
       );
     const [_, parsedToken] = token.split(' ');
+    await setToken(parsedToken);
     const res = await getAnalytics(parsedToken.trim(), body);
 
     return Response.json({ message: res });

@@ -6,7 +6,6 @@ import OrdersChart from '@/modules/OrdersChart';
 import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
-import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { KEYS } from '@/shared/constants/localStorageKeys';
 import { redirect, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -41,7 +40,8 @@ export default function Page() {
     })();
   }, [code]);
 
-  if (!token) redirect(APP_PAGES['ADMIN_AUTH']);
+  if (!code && !token)
+    return redirect(`${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}`);
 
   return (
     <div className='flex flex-col gap-6'>
@@ -49,7 +49,7 @@ export default function Page() {
       <BarChart />
       <OrdersChart />
       <TopCategories />
-      <LineChart />
+      {token && <LineChart />}
     </div>
   );
 }

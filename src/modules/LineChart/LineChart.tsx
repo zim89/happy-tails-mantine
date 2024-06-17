@@ -33,14 +33,20 @@ export default function Analitycs() {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const res = await getAnalytics({
-        startDate: '2024-03-01',
-        endDate: formatDateToDashedOne(Date.now()),
-        dimensions: ['DATE'],
-      });
+      try {
+        const res = await getAnalytics({
+          startDate: '2024-03-01',
+          endDate: formatDateToDashedOne(Date.now()),
+          dimensions: ['DATE'],
+        });
 
-      setRows(res!.message.rows);
-      setIsLoading(false);
+        setRows(res!.message.rows);
+        setIsLoading(false);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(err);
+        }
+      }
     })();
   }, []);
 
