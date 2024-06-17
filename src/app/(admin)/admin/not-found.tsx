@@ -19,8 +19,8 @@ export default function NotFound() {
         <div className='max-w-[382px]'>
           <h2 className='text-4xl/[44px]'>Ooops...! Page not found</h2>
           <p className='my-4'>
-            The page you are looking for doesn’t exist or an other error
-            occurred.
+            {`The page you are looking for doesn’t exist or an other error
+            occurred.`}
           </p>
           <Link
             className='rounded-sm bg-black px-14 py-[10px] text-white'
