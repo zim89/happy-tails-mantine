@@ -3,6 +3,7 @@ import classes from '../classes.module.css';
 import { Button, UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
+import PageHeader from '@/components/PageHeader';
 
 export const Header = () => {
   return (
@@ -16,20 +17,27 @@ export const Header = () => {
           root: 'p-0 m-0 mb-8',
         }}
       />
-      <div className={classes.header}>
-        <hgroup className={classes.pageHeading}>
-          <h2>Blogs</h2>
-          <p>Streamlining content management on your store</p>
-        </hgroup>
-
-        <UnstyledButton
-          component={Link}
-          href='/admin/blogs/new'
-          className='bg-black gap-2 text-white font-bold flex items-center py-[10px] px-4 rounded'
-        >
-          <PlusCircle size={20} />Add a new article
-        </UnstyledButton>
-      </div>
+      <PageHeader
+        rightSection={
+          <UnstyledButton
+            component={Link}
+            href='/admin/blogs/new'
+            className='flex items-center gap-2 rounded bg-black px-4 py-[10px] font-bold text-white'
+          >
+            <PlusCircle size={20} />
+            Add a new article
+          </UnstyledButton>
+        }
+      >
+        {(Group) => (
+          <>
+            <Group
+              title='Blogs'
+              additional='Streamlining content management on your store'
+            />
+          </>
+        )}
+      </PageHeader>
     </>
   );
 };

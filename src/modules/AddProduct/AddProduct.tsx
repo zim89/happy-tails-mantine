@@ -10,6 +10,7 @@ import { Form } from './components/Form';
 import { Variants } from './components/Variants';
 import { AddProductProvider } from './lib/utils';
 import { Controls } from './components/Controls';
+import PageHeader from '@/components/PageHeader';
 
 export default function AddProduct() {
   const [setNotification, { props, clear }] = useNotification({
@@ -27,12 +28,16 @@ export default function AddProduct() {
 
   return (
     <AddProductProvider>
-      <hgroup className={classes.pageHeader}>
-        <h2>Add New Product</h2>
-        <p>
-          Product addition by manager. Fields marked with (*) are mandatory.
-        </p>
-      </hgroup>
+      <PageHeader>
+        {(Group) => (
+          <>
+            <Group
+              title='Add New Product'
+              additional='Product addition by manager. Fields marked with (*) are mandatory.'
+            />
+          </>
+        )}
+      </PageHeader>
 
       <Form />
       <Variants />
