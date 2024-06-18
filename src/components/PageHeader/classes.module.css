@@ -1,0 +1,7 @@
+.header {
+  @apply mb-6 flex items-center justify-between;
+}
+
+.header h2 {
+  @apply text-[32px]/[38.4px] font-bold;
+}
