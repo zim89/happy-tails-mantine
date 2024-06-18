@@ -1,9 +1,8 @@
-import { Button, Modal, Radio, TextInput, UnstyledButton } from '@mantine/core';
+import { Modal, Radio, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2, Dot, Check, AlertTriangle } from 'lucide-react';
 import { useEffect } from 'react';
 
-import styles from '@/modules/AddProductModal/AddProductModal.module.css';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Form, useForm } from '@mantine/form';
@@ -107,8 +106,8 @@ export const ShippingModal = ({ order }: Props) => {
         opened={isOpened}
         onClose={close}
         classNames={{
-          header: styles.modalHeader,
-          content: styles.modalContent,
+          header: 'hidden',
+          content: 'py-[14px] px-6',
         }}
       >
         <ModalHeader heading='Edit Order Details' handleClose={close} />

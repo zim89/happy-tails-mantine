@@ -41,7 +41,9 @@ export default function Page() {
   }, [code]);
 
   if (!code && !token)
-    return redirect(`${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}`);
+    return redirect(
+      `${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_PROD : process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_DEV}`
+    );
 
   return (
     <div className='flex flex-col gap-6'>
