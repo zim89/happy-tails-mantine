@@ -49,6 +49,8 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
     initialValues: {
       category: category.id.toString(),
       price: 'none',
+      size: 'none',
+      color: 'none',
       onlyInStock: false,
     },
   });
@@ -58,10 +60,12 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
 
     const category = params.get('category');
     const price = params.get('price');
+    const size = params.get('productSize');
     const inStock = params.get('inStock');
 
     if (category) form.setFieldValue('category', category);
     if (price) form.setFieldValue('price', price);
+    if (size) form.setFieldValue('size', size);
     if (inStock) form.setFieldValue('onlyInStock', inStock === 'true');
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,6 +79,8 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
           createQueryString({
             category: form.values.category,
             price: form.values.price,
+            productSize: form.values.size,
+            color: form.values.color,
             inStock: String(form.values.onlyInStock),
           })
       );
@@ -85,7 +91,7 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
 
   return (
     <div>
-      <div className='mb-4 flex gap-4 items-center text-sm/4 md:py-2 md:text-base'>
+      <div className='mb-4 flex items-center gap-4 text-sm/4 md:py-2 md:text-base'>
         <Filter
           target={`#${CSS.escape(collapseId)}`}
           form={form}

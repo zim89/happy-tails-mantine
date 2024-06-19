@@ -8,6 +8,8 @@ import { FormEvent } from 'react';
 export type FilterFormValues = {
   category: string;
   price: string;
+  size: string;
+  color: string;
   onlyInStock: boolean;
 };
 
@@ -77,6 +79,38 @@ export default function FilterForm({
             </li>
             <li>
               <RadioCheck value='90-' label='$90 & Above' />
+            </li>
+          </ul>
+        </Radio.Group>
+
+        <Radio.Group
+          label='Price'
+          classNames={{
+            label: 'font-bold mb-4 text-base',
+          }}
+          {...form.getInputProps('size')}
+        >
+          <ul className='space-y-3.5'>
+            <li>
+              <RadioCheck value='XS' label='XS' />
+            </li>
+            <li>
+              <RadioCheck value='S' label='S' />
+            </li>
+            <li>
+              <RadioCheck value='M' label='M' />
+            </li>
+            <li>
+              <RadioCheck value='L' label='L' />
+            </li>
+            <li>
+              <RadioCheck value='XL' label='XL' />
+            </li>
+            <li>
+              <RadioCheck value='XXL' label='XXL' />
+            </li>
+            <li>
+              <RadioCheck value='ONE SIZE' label='ONE SIZE' />
             </li>
           </ul>
         </Radio.Group>
