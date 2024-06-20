@@ -61,11 +61,13 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
     const category = params.get('category');
     const price = params.get('price');
     const size = params.get('productSize');
+    const color = params.get('color');
     const inStock = params.get('inStock');
 
     if (category) form.setFieldValue('category', category);
     if (price) form.setFieldValue('price', price);
     if (size) form.setFieldValue('size', size);
+    if (color) form.setFieldValue('color', color);
     if (inStock) form.setFieldValue('onlyInStock', inStock === 'true');
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -115,6 +115,128 @@ export default function FilterForm({
           </ul>
         </Radio.Group>
 
+        <Radio.Group
+          label='Color'
+          classNames={{
+            label: 'font-bold mb-4 text-base',
+          }}
+          variant='outline'
+          {...form.getInputProps('color')}
+        >
+          <ul className='grid grid-cols-5 gap-4 lg:grid-cols-2'>
+            <li>
+              <Radio
+                value='White'
+                color='#ffffff'
+                iconColor='#ffffff'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#ffffff] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Gray'
+                color='#969696'
+                iconColor='#969696'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#969696] border-[#787878] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Black'
+                color='#000000'
+                iconColor='#000000'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#000000] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Pink'
+                color='#F4C1BE'
+                iconColor='#F4C1BE'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#F4C1BE] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Yellow'
+                color='#FFE605'
+                iconColor='#FFE605'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#FFE605] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Green'
+                color='#389B48'
+                iconColor='#389B48'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#389B48] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Red'
+                color='#DC362E'
+                iconColor='#DC362E'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#DC362E] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Orange'
+                color='#F39324'
+                iconColor='#F39324'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#F39324] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Purple'
+                color='#9747FF'
+                iconColor='#9747FF'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#9747FF] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+            <li>
+              <Radio
+                value='Blue'
+                color='#4285F4'
+                iconColor='#4285F4'
+                classNames={{
+                  radio:
+                    'size-[1.875rem] bg-[#4285F4] border-[#C8C8C8] checked:border-black border-2',
+                }}
+              />
+            </li>
+          </ul>
+        </Radio.Group>
+
         <div>
           <div className='mb-4 text-base font-bold'>Availability</div>
           {/* TODO: add styles for turned off switch */}

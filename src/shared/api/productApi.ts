@@ -48,6 +48,10 @@ export const productApi = createApi({
             params.append('sizeOfProduct', filter.size);
           }
 
+          if (filter.color !== 'none') {
+            params.append('color', filter.color);
+          }
+
           params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
 
           return {

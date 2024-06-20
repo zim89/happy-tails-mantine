@@ -24,7 +24,8 @@ export default function Badges({
   if (
     values.category !== category.id.toString() ||
     values.price !== 'none' ||
-    values.size !== 'none'
+    values.size !== 'none' ||
+    values.color !== 'none'
   )
     return (
       <ul
@@ -95,6 +96,26 @@ export default function Badges({
             <button
               aria-label='remove size filter'
               onClick={() => form.setFieldValue('size', 'none')}
+              type='button'
+            >
+              <X width={16} height={16} />
+            </button>
+          </Badge>
+        ) : null}
+        {values.color !== 'none' ? (
+          <Badge
+            color='gray'
+            variant='outline'
+            size='xl'
+            className='h-9 border-brand-grey-400 font-normal normal-case text-secondary'
+            classNames={{
+              label: 'flex items-center gap-2',
+            }}
+          >
+            {values.color}
+            <button
+              aria-label='remove size filter'
+              onClick={() => form.setFieldValue('color', 'none')}
               type='button'
             >
               <X width={16} height={16} />
