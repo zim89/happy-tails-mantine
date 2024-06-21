@@ -1,9 +1,7 @@
 'use client';
 
 import { Check, AlertTriangle } from 'lucide-react';
-import { useState } from 'react';
 
-import classes from './classes.module.css';
 import Notify from '@/components/Notify';
 import { useNotification } from '@/shared/hooks/useNotification';
 import { Form } from './components/Form';

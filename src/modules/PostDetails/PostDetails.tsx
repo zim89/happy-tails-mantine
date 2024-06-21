@@ -7,27 +7,29 @@ import { Header } from './components/Header';
 import ImageBox from '@/modules/ImageBox';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { notFound } from 'next/navigation';
+import { useFindOneQuery } from '@/shared/api/postApi';
+import Loader from '@/components/Loader';
 
 type Props = {
   postId: string;
 };
 export default function PostDetails({ postId }: Props) {
-  const post = useSelectPosts((posts) =>
-    posts.find((post) => post.id === Number(postId))
-  );
+  const { data, isLoading, error } = useFindOneQuery({ id: postId });
 
-  if (!post) notFound();
+  if (isLoading) return <Loader size={164} />;
+
+  if (!data) notFound();
 
   return (
     <>
       <EditorWrapper>
         {(editor) => (
           <>
-            <Header editor={editor} post={post} />
+            <Header editor={editor} post={data} />
             <div className='flex flex-col gap-16 lg:flex-row'>
               <PostEditor editor={editor} />
               <div className='flex-1'>
-                <Details status={post.postStatus} />
+                <Details status={data.postStatus} />
                 <ImageBox />
               </div>
             </div>
