@@ -1,4 +1,3 @@
-import { Form as MantineForm } from '@mantine/form';
 import { useContext } from 'react';
 import { FileInput, Select, TextInput, Textarea, Tooltip } from '@mantine/core';
 import Image from 'next/image';
@@ -34,7 +33,7 @@ export const Form = () => {
             <TextInput
               {...productForm.getInputProps('name')}
               classNames={{
-                root: 'form-root w-full ',
+                root: 'form-root w-full',
                 label: 'form-label',
                 wrapper: 'flex gap-2 focus:outline outline-2',
                 section: 'static w-auto text-[#161616] whitespace-nowrap',
@@ -125,7 +124,7 @@ export const Form = () => {
                   </Tooltip>
                 </p>
                 <div>
-                  <label htmlFor='file'>
+                  <label htmlFor='file' className=''>
                     <UploadCloud color='white' />
                     <span>Select Image</span>
                   </label>
@@ -136,8 +135,14 @@ export const Form = () => {
                     {...productForm.getInputProps('image')}
                     accept='.png,.jpeg,.gif,.webp'
                     classNames={{
+                      root: 'form-root',
                       wrapper: classes.fileWrapper,
-                      input: cn('form-input', classes.fileInput),
+                      error: 'form-error -left-[155px]',
+                      input: cn(
+                        'form-input',
+                        classes.fileInput,
+                        productForm?.errors?.image && 'form-error--input'
+                      ),
                     }}
                   />
                 </div>
@@ -161,14 +166,14 @@ export const Form = () => {
         </div>
         <Textarea
           classNames={{
-            root: 'form-root w-full',
+            root: 'form-root w-full mb-6',
             label: 'form-label',
-            wrapper: 'grid h-full pb-[28px]',
+            wrapper: 'grid h-full',
             input: cn(
               'form-input textarea p-2',
               productForm?.errors?.description && 'form-error--input'
             ),
-            error: 'form-error',
+            error: 'form-error -bottom-11',
           }}
           label='Description'
           {...productForm.getInputProps('description')}

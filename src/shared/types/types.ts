@@ -10,30 +10,52 @@ type OrderStatus =
   | 'RETURN_PROCESSING'
   | 'COMPLETED';
 
-export enum ProductColor {
-  Black = 'Black',
-  White = 'White',
-  Blue = 'Blue',
-  Pink = 'Pink',
-  Yellow = 'Yellow',
-  Green = 'Green',
-  Red = 'Red',
-  Purple = 'Purple',
-  Orange = 'Orange',
-  Gray = 'Gray',
-  Brown = 'Brown',
-  'ONE COLOR' = 'ONE COLOR',
-}
+export type ProductColor =
+  | 'Black'
+  | 'White'
+  | 'Blue'
+  | 'Pink'
+  | 'Yellow'
+  | 'Green'
+  | 'Red'
+  | 'Purple'
+  | 'Orange'
+  | 'Gray'
+  | 'Brown'
+  | 'ONE COLOR';
 
-export enum ProductSizeEnum {
-  XS = 'XS',
-  S = 'S',
-  M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
-  'ONE SIZE' = 'ONE SIZE',
-}
+type ProductColorSizes = {
+  color: Product['color'];
+  productSizes: {
+    size: ProductSizeValues;
+    quantity: number;
+    productStatus: ProductStatus;
+    description: Product['description'];
+  }[];
+  imagePath: Product['imagePath'];
+}[];
+
+export type CreateProductBody = {
+  name: Product['name'];
+  price: Product['price'];
+  onSale: Product['onSale'];
+  salePrice: Product['salePrice'];
+  categoryId: Product['categoryId'];
+  description: Product['description'];
+  totalQuantity: Product['totalQuantity'];
+  productColorSizes: ProductColorSizes;
+  productType: Product['productType'];
+  imagePath: Product['imagePath'];
+};
+
+export type ProductSizeValues =
+  | 'XS'
+  | 'S'
+  | 'M'
+  | 'L'
+  | 'XL'
+  | 'XXL'
+  | 'ONE SIZE';
 
 type ShippingAddress = {
   company: string;
@@ -66,7 +88,7 @@ type Discount = {
 };
 
 type ProductSize = {
-  size: ProductSizeEnum;
+  size: ProductSize;
   quantity: number;
   productStatus: ProductStatus;
   description: string | null;
@@ -114,7 +136,7 @@ export interface Order {
     productName: string;
     productImagePath: string;
     productPrice: number;
-    productSize: ProductSizeEnum;
+    productSize: ProductSizeValues;
     productColor: ProductColor;
     productArticle: string;
     onSale: boolean;

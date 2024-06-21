@@ -79,11 +79,7 @@
 }
 
 .deleteBtn {
-  background: linear-gradient(
-    to right,
-    rgb(153 0 0 / 88%) 50%,
-    rgb(27 27 27) 50%
-  );
+  background: linear-gradient(to right, rgb(220 54 46) 50%, rgb(27 27 27) 50%);
   background-size: 200% 100%;
   background-position: right bottom;
   transition: all 0.4s ease;

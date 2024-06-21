@@ -1,6 +1,6 @@
 import { UseFormReturnType, isNotEmpty, useForm } from '@mantine/form';
 
-import { Product, ProductColor, ProductSizeEnum } from '@/shared/types/types';
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 import {
   Dispatch,
   MutableRefObject,
@@ -12,20 +12,20 @@ import {
 
 export type VariantForm = UseFormReturnType<
   {
-    size: ProductSizeEnum;
+    size: ProductSizeValues;
     color: ProductColor;
     quantity: number;
     price: number;
     variantImage: File | null;
   },
   (values: {
-    size: ProductSizeEnum;
+    size: ProductSizeValues;
     color: ProductColor;
     quantity: number;
     price: number;
     variantImage: File | null;
   }) => {
-    size: ProductSizeEnum;
+    size: ProductSizeValues;
     color: ProductColor;
     quantity: number;
     price: number;
@@ -101,6 +101,7 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
       name: isNotEmpty('Entered an invalid product name'),
       categoryName: isNotEmpty('Pick a category for the product'),
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
+      image: isNotEmpty('Please select a product image'),
       description: isNotEmpty('Enter a description'),
     },
   });

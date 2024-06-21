@@ -5,7 +5,6 @@ import PostEditor from '@/modules/PostEditor';
 import { Details } from './components/Details';
 import { Header } from './components/Header';
 import ImageBox from '@/modules/ImageBox';
-import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { notFound } from 'next/navigation';
 import { useFindOneQuery } from '@/shared/api/postApi';
 import Loader from '@/components/Loader';
@@ -19,6 +18,15 @@ export default function PostDetails({ postId }: Props) {
   if (isLoading) return <Loader size={164} />;
 
   if (!data) notFound();
+
+  if (error)
+    return (
+      <p>
+        {
+          "Whoops, it shouldn't have happened, our experts are already fixing this!"
+        }
+      </p>
+    );
 
   return (
     <>

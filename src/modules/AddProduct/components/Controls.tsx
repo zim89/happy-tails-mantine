@@ -1,12 +1,11 @@
-import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { Product, ProductSizeEnum } from '@/shared/types/types';
+import { CreateProductBody } from '@/shared/types/types';
 import { UnstyledButton } from '@mantine/core';
-import axios from 'axios';
 import { ProductForm, context } from '../lib/utils';
 import { useContext } from 'react';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { publishImage } from '@/shared/lib/requests';
 
 type Props = {
   setNotification: (
@@ -33,41 +32,82 @@ export const Controls = ({ setNotification }: Props) => {
     clearFile();
   };
 
-  const handleSubmit = async ({ image, ...rest }: ProductForm['values']) => {
+  const handleSubmit = async ({
+    image,
+    categoryName,
+    ...rest
+  }: ProductForm['values']) => {
+    const { hasErrors } = productForm.validate();
+    if (hasErrors) return;
+
+    const variantErrors = variants.some((variant) => {
+      if (!variant) return;
+      const { hasErrors } = variant.validate();
+      return hasErrors;
+    });
+
+    if (variantErrors) return;
+
     try {
-      let imagePath = DEFAULT_CATEGORY_IMAGE;
-
+      let imagePath = '';
       if (image) {
-        const form = new FormData();
-        form.append('image', image);
-        form.append('title', `PRODUCT: ${name}`);
-
-        const res = await axios.post('https://api.imgur.com/3/image/', form, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        imagePath = res.data.data.link;
+        imagePath = await publishImage(image, rest.name);
       }
 
-      const newProduct: Partial<Product> = {
+      let productColorSizes: CreateProductBody['productColorSizes'] = [];
+      if (variants.length) {
+        variants.forEach(async (variant) => {
+          if (!variant) return;
+          let candidateIndex = productColorSizes.findIndex(
+            (v) => v.color === variant.values.color
+          );
+
+          if (candidateIndex !== -1) {
+            productColorSizes[candidateIndex].productSizes.push({
+              size: variant.values.size,
+              productStatus:
+                variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+              quantity: variant.values.quantity,
+              description: `${rest.description} (${variant.values.color})`,
+            });
+          } else {
+            let variantImagePath = '';
+
+            if (variant.values.variantImage) {
+              variantImagePath = await publishImage(
+                variant.values.variantImage,
+                `${rest.name} in ${variant.values.color}`
+              );
+            }
+
+            productColorSizes.push({
+              color: variant.values.color,
+              imagePath: variantImagePath,
+              productSizes: [
+                {
+                  size: variant.values.size,
+                  quantity: variant.values.quantity,
+                  productStatus:
+                    variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+                  description: `${rest.description} (${variant.values.color})`,
+                },
+              ],
+            });
+          }
+        });
+      }
+
+      const newProduct: Partial<CreateProductBody> = {
         ...rest,
-        productSizes: [
-          {
-            size: ProductSizeEnum['M'],
-            quantity: 1,
-            productStatus: 'IN STOCK',
-            description: null,
-          },
-        ],
+        productColorSizes: productColorSizes,
         imagePath,
+        totalQuantity: 1,
+        onSale: true,
+        salePrice: 0,
       };
 
-      const candidate = categoryList.find(
-        (cat) => cat.name === newProduct.categoryName
-      );
+      const candidate = categoryList.find((cat) => cat.name === categoryName);
+
       candidate && (newProduct.categoryId = candidate.id);
 
       await dispatch({ req: newProduct }).unwrap();
@@ -99,7 +139,7 @@ export const Controls = ({ setNotification }: Props) => {
         classNames={{
           root: 'bg-black text-white py-[10px] px-[55px] font-bold rounded-sm',
         }}
-        onClick={() => console.log(productForm.values, variants)}
+        onClick={() => handleSubmit(productForm.values)}
       >
         Save
       </UnstyledButton>

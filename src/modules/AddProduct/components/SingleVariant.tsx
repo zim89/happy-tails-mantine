@@ -1,13 +1,12 @@
-import { ProductColor, ProductSizeEnum } from '@/shared/types/types';
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { FileInput, Select, TextInput, Tooltip } from '@mantine/core';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { ChevronDown, Info, Trash2, UploadCloud, X } from 'lucide-react';
+import Image from 'next/image';
 
 import classes from '../classes.module.css';
 import { VariantForm } from '../lib/utils';
 import { cn } from '@/shared/lib/utils';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
-import { ChevronDown, Info, Trash2, UploadCloud, X } from 'lucide-react';
-import Image from 'next/image';
 
 type PreviewImage = {
   name: string | null;
@@ -24,8 +23,8 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
 
   const form = useForm({
     initialValues: {
-      size: ProductSizeEnum['ONE SIZE'],
-      color: ProductColor['ONE COLOR'],
+      size: 'ONE SIZE',
+      color: 'ONE COLOR',
       quantity: 0,
       price: 0,
       variantImage: null as File | null,
@@ -36,6 +35,14 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
         variantImage.current.path = URL.createObjectURL(values.variantImage);
         variantImage.current.name = values.variantImage.name;
       }
+    },
+
+    validate: {
+      size: isNotEmpty('Please select a size'),
+      color: isNotEmpty('Please select a color'),
+      quantity: isNotEmpty('Please enter a quantity'),
+      price: isNotEmpty('Please enter a price'),
+      variantImage: isNotEmpty('Please upload an image'),
     },
   }) as VariantForm;
 
@@ -168,37 +175,41 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
         />
       </div>
       {!variantImage.current?.path || !variantImage.current?.name ? (
-        <>
-          <div className={classes.upload}>
-            <p className='m-0 flex items-center gap-1'>
-              <span>Image</span>
-              <Tooltip label='.jpeg,.jpg,.png,.gif,.apng,.tiff' withArrow>
-                <Info
-                  size={16}
-                  className='-mb-[3px] cursor-pointer'
-                  color='#5A5A5A'
-                />
-              </Tooltip>
-            </p>
-            <div>
-              <label htmlFor={`variant-image-${index}`}>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id={`variant-image-${index}`}
-                w='100%'
-                placeholder='Max file size 500 kB'
-                {...form.getInputProps('variantImage')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: classes.fileWrapper,
-                  input: cn('form-input', classes.fileInput),
-                }}
+        <div className={classes.upload}>
+          <p className='m-0 flex items-center gap-1'>
+            <span>Image</span>
+            <Tooltip label='.jpeg,.jpg,.png,.gif,.apng,.tiff' withArrow>
+              <Info
+                size={16}
+                className='-mb-[3px] cursor-pointer'
+                color='#5A5A5A'
               />
-            </div>
+            </Tooltip>
+          </p>
+          <div>
+            <label htmlFor={`variant-image-${index}`}>
+              <UploadCloud color='white' />
+              <span>Select Image</span>
+            </label>
+            <FileInput
+              id={`variant-image-${index}`}
+              w='100%'
+              placeholder='Max file size 500 kB'
+              {...form.getInputProps('variantImage')}
+              accept='.png,.jpeg,.gif,.webp'
+              classNames={{
+                root: 'form-root',
+                wrapper: classes.fileWrapper,
+                error: 'form-error -left-[155px]',
+                input: cn(
+                  'form-input',
+                  classes.fileInput,
+                  form?.errors?.variantImage && 'form-error--input'
+                ),
+              }}
+            />
           </div>
-        </>
+        </div>
       ) : (
         <div className={classes.previewWrapper}>
           <Image
