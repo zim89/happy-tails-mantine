@@ -162,7 +162,7 @@ export default function ConfirmationPage() {
                   <span>Discount:</span>
                   <NumberFormatter
                     prefix='$'
-                    value={order.discountAmount}
+                    value={order.discountAmount ?? 0}
                     decimalScale={2}
                     className='whitespace-nowrap pl-2'
                   />
