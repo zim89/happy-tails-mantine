@@ -1,8 +1,8 @@
 'use client';
 
-import { Box, Menu, UnstyledButton } from '@mantine/core';
+import { Menu, UnstyledButton } from '@mantine/core';
 import { Minus } from 'lucide-react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { LinksGroup } from '../lib/utils';
 import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
@@ -51,8 +51,10 @@ export const MobileMenu = ({ linksGroup }: Props) => {
             onClick={() => setIsOpened(!openedLink)}
             title='Open catalog'
             className={cn(
-              'flex w-full justify-center py-2 text-[#C8C8C8]',
-              isOpened && areThereLinksSelected && 'bg-[#F39324] text-[#FDFDFD]'
+              'flex w-full justify-center py-2 text-brand-grey-400',
+              isOpened &&
+                areThereLinksSelected &&
+                'bg-brand-orange-400 text-primary'
             )}
           >
             <linksGroup.icon size={20} />

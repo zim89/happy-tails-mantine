@@ -2,7 +2,7 @@
 
 import { Box, Collapse, Group, Text, UnstyledButton } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import { Minus } from "lucide-react";
+import { Minus } from 'lucide-react';
 
 import { LinksGroup } from '../lib/utils';
 import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
@@ -37,19 +37,24 @@ export const Dropdown = ({ linksGroup }: Props) => {
   };
 
   return (
-    <div className="hidden md:block w-full">
+    <div className='hidden w-full md:block'>
       <UnstyledButton
         // It's highlighted when it's clicked or when the page to which child link forwards is opened
-        className={cn('w-full py-2 md:pl-10 text-[#C8C8C8]', (isOpened && areThereLinksSelected) && 'bg-[#F39324] text-[#FDFDFD]')}
+        className={cn(
+          'w-full py-2 text-brand-grey-400 md:pl-10',
+          isOpened &&
+            areThereLinksSelected &&
+            'bg-brand-orange-400 text-primary'
+        )}
         onClick={() => {
           if (unsavedChanges) return;
           setIsOpened(!isOpened);
         }}
-        title="Open catalog"
+        title='Open catalog'
       >
         <Group>
           <Box className='flex'>
-            <Box className='text-xl font-bold leading-6 inline-flex gap-3 items-center pr-3 ml-3 md:ml-4'>
+            <Box className='ml-3 inline-flex items-center gap-3 pr-3 text-xl font-bold leading-6 md:ml-4'>
               <linksGroup.icon size={20} />
               <span className='hidden md:inline'>{linksGroup.label}</span>
             </Box>
@@ -69,11 +74,13 @@ export const Dropdown = ({ linksGroup }: Props) => {
             onClick={() => {
               setOpened(link.label);
             }}
-            classNames={{ root: "pl-4 md:pl-14 pr-4" }}
+            classNames={{ root: 'pl-4 md:pl-14 pr-4' }}
             key={linkKey}
             title={link.label}
           >
-            <BlockLink href={link.link} className='pt-2 inline-flex text-lg'><Minus width={7} className='mr-3' /> {link.label}</BlockLink>
+            <BlockLink href={link.link} className='inline-flex pt-2 text-lg'>
+              <Minus width={7} className='mr-3' /> {link.label}
+            </BlockLink>
           </Text>
         ))}
       </Collapse>

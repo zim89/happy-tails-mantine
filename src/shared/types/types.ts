@@ -58,6 +58,8 @@ export type ProductSizeValues =
   | 'ONE SIZE';
 
 type ShippingAddress = {
+  firstName: string;
+  lastName: string;
   company: string;
   country: string;
   zip: string;
@@ -88,7 +90,7 @@ type Discount = {
 };
 
 type ProductSize = {
-  size: ProductSize;
+  size: ProductSizeValues;
   quantity: number;
   productStatus: ProductStatus;
   description: string | null;
@@ -121,6 +123,23 @@ export interface Product {
   updatedAt: number | null;
   imagePath: string;
 }
+
+export type CreateOrderBody = {
+  cartProducts: {
+    productId: number;
+    sizeEnum: ProductSizeValues;
+    count: number;
+  }[];
+  shippingAddress: Partial<ShippingAddress>;
+  billingAddress: Partial<BillingAddress>;
+  shippingMethodId: number;
+  paymentMethod: string;
+  email: string;
+  agreementToTerms: boolean;
+  emailMeWithOffersAndNews: boolean;
+  discountCode?: string;
+  commentOfManager?: string;
+};
 
 export interface Order {
   id: string;

@@ -1,9 +1,9 @@
 import { Menu, UnstyledButton } from '@mantine/core';
 import { Eye, MoreHorizontal, MessageSquareDot } from 'lucide-react';
+import Link from 'next/link';
 
 import { Message } from '../lib/mock';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import Link from 'next/link';
 
 type Props = {
   message: Message;

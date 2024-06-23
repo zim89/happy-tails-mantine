@@ -254,13 +254,13 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <MantineTable
-        bgcolor='white'
         withTableBorder
         borderColor='#EEE'
+        className='bg-primary'
         styles={{ td: { padding: '16px 0px' }, tr: { verticalAlign: 'sub' } }}
       >
         {/* Table header */}
-        <MantineTable.Thead classNames={{ thead: 'bg-[#EEE]' }}>
+        <MantineTable.Thead classNames={{ thead: 'bg-brand-grey-300' }}>
           <MantineTable.Tr>
             <MantineTable.Th colSpan={7} classNames={{ th: 'py-5 px-4' }}>
               <Menu
