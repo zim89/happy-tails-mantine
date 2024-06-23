@@ -78,26 +78,6 @@ export default function Table({ data }: { data: Order[] }) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  // While printing it reveals all table records
-  useEffect(() => {
-    const beforePrintHandler = () => {
-      // Used to update the state before revealing a printing modal
-      flushSync(() => table.setPageSize(Number.MAX_SAFE_INTEGER));
-    };
-
-    const afterPrintHandler = () => {
-      table.setPageSize(10);
-    };
-
-    window.addEventListener('beforeprint', beforePrintHandler);
-    window.addEventListener('afterprint', afterPrintHandler);
-
-    return () => {
-      window.removeEventListener('beforeprint', beforePrintHandler);
-      window.removeEventListener('afterprint', afterPrintHandler);
-    };
-  }, []);
-
   return (
     <div className='flex-1 overflow-hidden rounded border border-[#EEE]'>
       <div>
@@ -108,8 +88,10 @@ export default function Table({ data }: { data: Order[] }) {
         horizontalSpacing={16}
         width={'100%'}
         border={1}
+        bg='#FFF'
         borderColor='#EEE'
         withTableBorder
+        classNames={{ td: 'py-3' }}
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
         <MantineTable.Tbody>

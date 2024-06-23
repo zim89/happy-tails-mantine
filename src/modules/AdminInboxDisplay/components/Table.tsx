@@ -16,7 +16,7 @@ import {
   Menu,
   UnstyledButton,
 } from '@mantine/core';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import {
   AlertTriangle,
   Check,
@@ -39,6 +39,7 @@ import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
 import { filterOptions } from '../lib/data';
+import { AdminPanelContext } from '@/shared/lib/context';
 
 type Props = {
   data: Message[];
@@ -92,6 +93,12 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update((prev) => ({ ...prev, openedLink: 'Messages' }));
+  }, []);
+
   const [setNotification, { props, clear }] = useNotification({
     failed: {
       text: 'Messages deletion failed!',

@@ -17,7 +17,7 @@ export default function OrdersChart() {
     isLoading,
   } = useFindManyQuery({
     page: 0,
-    limit: 1000000,
+    limit: 6,
   });
 
   const [selected, setSelected] = useState<string[]>([
@@ -38,8 +38,8 @@ export default function OrdersChart() {
 
   return (
     <div className='flex gap-6'>
-      <div className='max-w-min overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
-        <div className='flex items-center justify-between border-b border-b-[#EEE] bg-white p-4'>
+      <div className='max-w-min overflow-hidden rounded border border-brand-grey-300 bg-primary'>
+        <div className='flex items-center justify-between border-b border-b-brand-grey-300 bg-white p-4'>
           <h2 className='text-xl font-bold'>Orders Reports</h2>
           <MultiSelect
             value={selected}
