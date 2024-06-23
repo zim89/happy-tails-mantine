@@ -65,11 +65,10 @@ export const authApi = createApi({
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterData>({
-      query: ({ rememberMe, ...payload }) => ({
+      query: (payload) => ({
         url: '/users/register',
         method: 'post',
         data: payload,
-        params: { rememberMe },
       }),
     }),
     verifyEmail: builder.mutation<LoginResponse, VerifyEmailData>({
