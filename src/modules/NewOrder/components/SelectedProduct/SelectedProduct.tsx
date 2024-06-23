@@ -27,7 +27,9 @@ type Props = {
 };
 
 const SizeIconFactory = (value: ProductSizeValues) => {
-  return () => <span className='block'>{value}</span>;
+  const SizeIcon = () => <span className='block'>{value}</span>;
+
+  return SizeIcon;
 };
 
 export default function SelectedProduct({
