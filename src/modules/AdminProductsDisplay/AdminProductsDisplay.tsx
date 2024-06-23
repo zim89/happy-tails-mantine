@@ -1,11 +1,13 @@
 'use client';
 
 import { useContext, useEffect } from 'react';
+import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
-import AddProductModal from '@/modules/AddProductModal';
 import ProductsTable from '@/modules/ProductsTable';
 import { AdminPanelContext } from '@/shared/lib/context';
+import PageHeader from '@/components/PageHeader';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
@@ -25,7 +27,23 @@ export default function AdminProductsDisplay() {
 
   return (
     <>
-      <AddProductModal />
+      <PageHeader
+        rightSection={
+          <Link
+            className='flex items-center gap-2 rounded bg-secondary px-4 py-[10px] font-black text-primary'
+            href='/admin/products/new'
+          >
+            <PlusCircle width={20} />
+            Add product
+          </Link>
+        }
+      >
+        {(Group) => (
+          <>
+            <Group title='Products' additional='Manage your product catalog' />
+          </>
+        )}
+      </PageHeader>
       <ProductsTable data={data.content} />
     </>
   );

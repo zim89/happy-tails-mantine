@@ -1,3 +1,5 @@
+import { rem } from '@mantine/core';
+
 import { cn } from '@/shared/lib/utils';
 
 type Props = {
@@ -11,7 +13,7 @@ export const EmptyRow = ({ visible, message, className }: Props) => {
   return (
     <p
       className={cn(
-        'border-[1px] border-[#EEE] p-4 text-sm/[21px] text-[#787878]',
+        `border border-brand-grey-300 p-4 text-sm/[${rem(21)}] text-brand-grey-800`,
         className
       )}
     >

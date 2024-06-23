@@ -1,6 +1,12 @@
 import axios from '@/shared/lib/interceptor';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import type { BackendResponse, Order, Product, Sort } from '../types/types';
+import type {
+  BackendResponse,
+  CreateOrderBody,
+  Order,
+  Product,
+  Sort,
+} from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
 type Address = {
@@ -12,16 +18,7 @@ type Address = {
   apartment: string;
 };
 
-type OrderPayload = {
-  shippingAddress: Address;
-  billingAddress: Address;
-  shippingMethod: string;
-  items: string[];
-  paymentMethod: string;
-  email: string;
-  count: number;
-  discountCode?: string;
-};
+type OrderPayload = CreateOrderBody;
 
 type DeleteOrderProps = {
   number: string;
@@ -90,18 +87,11 @@ export const ordersApi = createApi({
           : [{ type: 'Orders', id: 'LIST' }],
     }),
     createOrder: builder.mutation<Order, OrderPayload>({
-      query: ({ count, items, ...params }) => ({
+      query: (params) => ({
         url: '/orders',
         method: 'post',
 
-        data: items.map((str) => {
-          const orderItem: Product = JSON.parse(str);
-          return {
-            productId: orderItem.id,
-            count,
-            ...params,
-          };
-        }),
+        data: params,
         headers: {
           'Content-type': 'application/json',
         },

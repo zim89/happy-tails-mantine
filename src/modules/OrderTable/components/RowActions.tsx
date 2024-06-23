@@ -21,8 +21,8 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
       text: 'Successfully deleted!',
       icon: <Check size={24} />,
       color: '#389B48',
-    }
-  })
+    },
+  });
   const [dispatch] = useDeleteOrderMutation();
   const order = ctx.row.original;
 
@@ -32,7 +32,10 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
       setNotification('Success');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
       console.error(err);
     }
@@ -43,7 +46,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
       <Menu width={148} position='bottom-end'>
         <Menu.Target>
           <ActionIcon className='size-9 border border-brand-grey-400 bg-primary text-secondary hover:bg-brand-grey-300 data-[expanded=true]:bg-brand-grey-300'>
-            <MoreHorizontal size={16} />
+            <MoreHorizontal size={16} color='black' />
           </ActionIcon>
         </Menu.Target>
 
@@ -68,7 +71,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
         </Menu.Dropdown>
       </Menu>
 
-      <Notify {...props} onClose={clear} />      
+      <Notify {...props} onClose={clear} />
     </>
   );
 };

@@ -72,7 +72,7 @@ export default function CartItem({ product }: Props) {
         <div className={'flex items-center justify-between'}>
           <ul
             className={
-              'flex w-[110px] items-center rounded-[2px] border border-brand-grey-400'
+              'flex w-[110px] items-center rounded-sm border border-brand-grey-400'
             }
           >
             <li className={'relative'}>
@@ -120,7 +120,8 @@ export default function CartItem({ product }: Props) {
                 onClick={() => handleIncrement(product.id)}
                 className={clsx(
                   'p-2',
-                  product.count === product.totalQuantity && 'text-brand-grey-400'
+                  product.count === product.totalQuantity &&
+                    'text-brand-grey-400'
                 )}
                 disabled={product.count === product.totalQuantity}
               >

@@ -21,7 +21,7 @@ export default function BarChart() {
   const matches = useMediaQuery('(min-width: 768px)');
 
   return (
-    <div className='overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
+    <div className='overflow-hidden rounded border border-brand-grey-300 bg-primary'>
       <div className='mb-[18px] flex justify-between bg-white p-4'>
         <h2 className=' text-xl font-bold'>Sales Details</h2>
         <div className='flex gap-3'>
@@ -32,7 +32,7 @@ export default function BarChart() {
             data={['Year', 'Month']}
             classNames={{
               root: 'max-w-[100px] w-full',
-              input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
+              input: 'font-lato text-xs bg-primary text-brand-grey-500',
             }}
             rightSection={<ChevronDown size={20} />}
           />
@@ -57,7 +57,7 @@ export default function BarChart() {
               ]}
               classNames={{
                 root: 'max-w-[100px] w-full',
-                input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
+                input: 'font-lato text-xs bg-primary text-brand-grey-500',
               }}
               rightSection={<ChevronDown size={20} />}
             />

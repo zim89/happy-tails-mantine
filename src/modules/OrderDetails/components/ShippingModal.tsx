@@ -1,18 +1,17 @@
-import { Button, Modal, Radio, TextInput } from '@mantine/core';
+import { Modal, Radio, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2, Dot, Check, AlertTriangle } from 'lucide-react';
+import { useEffect } from 'react';
 
-import styles from '@/modules/AddProductModal/AddProductModal.module.css';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { Form, useForm } from '@mantine/form';
 import { Order } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
-import { useEffect } from 'react';
 import Checkbox from '@/components/Checkbox';
 import Notify from '@/components/Notify';
 import { useNotification } from '@/shared/hooks/useNotification';
-import { useUpdateOrderMutation } from "@/shared/api/ordersApi";
+import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
 
 type Props = {
   order: Order;
@@ -32,15 +31,6 @@ export const ShippingModal = ({ order }: Props) => {
       text: 'Changes saved!',
     },
   });
-
-  // const billingAddress: ParsedShippingAddress = JSON.parse(
-  //   order.billingAddress
-  // );
-  // const shippingAddress: ParsedShippingAddress = JSON.parse(
-  //   order.shippingAddress
-  // );
-
-  // FIXME
 
   const form = useForm({
     initialValues: {
@@ -76,8 +66,8 @@ export const ShippingModal = ({ order }: Props) => {
         billingAddress: JSON.stringify(values.billingAddress),
         shippingAddress: JSON.stringify(values.shippingAddress),
         shippingMethod: values.shippingMethod,
-      }
-      await dispatch(request)
+      };
+      await dispatch(request);
       close();
       setNotification('Success');
     } catch (err) {
@@ -101,22 +91,23 @@ export const ShippingModal = ({ order }: Props) => {
 
   return (
     <>
-      <Button
+      <UnstyledButton
         classNames={{
-          root: 'border-[1px] border-[#C8C8C8] w-[36px] h-[36px] p-0',
+          root: 'p-[10px] rounded-sm',
         }}
+        styles={{ root: { border: '1px solid #C8C8C8' } }}
         onClick={open}
       >
         <Edit2 size={16} color='black' />
-      </Button>
+      </UnstyledButton>
 
       <Modal
         size={765}
         opened={isOpened}
         onClose={close}
         classNames={{
-          header: styles.modalHeader,
-          content: styles.modalContent,
+          header: 'hidden',
+          content: 'py-[14px] px-6',
         }}
       >
         <ModalHeader heading='Edit Order Details' handleClose={close} />
@@ -336,7 +327,7 @@ export const ShippingModal = ({ order }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={close}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit(values => {
+          primaryBtnOnClick={form.onSubmit((values) => {
             if (form.isDirty()) handleUpdate(values);
           })}
         />

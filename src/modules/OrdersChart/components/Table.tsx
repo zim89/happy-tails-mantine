@@ -10,21 +10,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-
-import { Button, Table as MantineTable } from '@mantine/core';
-
-import type { Order } from '@/shared/types/types';
 import { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
-import { cn } from '@/shared/lib/utils';
 import dayjs from 'dayjs';
 import { useDebouncedState } from '@mantine/hooks';
+import { Table as MantineTable } from '@mantine/core';
+
+import type { Order } from '@/shared/types/types';
 import { CustomBadge } from '@/components/Badge/Badge';
-import UpdateStatus from '@/modules/OrderTable/components/UpdateStatus';
-import { EntriesCount } from '@/components/EntriesCount';
-import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
 import { TableHead } from '@/components/TableHead';
 
 const columnHelper = createColumnHelper<Order>();
@@ -49,16 +43,10 @@ const columns = [
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
-      <UpdateStatus orderRow={info.cell.row.original}>
-        {(toggle) => (
-          <Button onClick={toggle} classNames={{ root: 'p-0' }}>
-            <CustomBadge
-              color={info.getValue().toLowerCase()}
-              name={info.getValue()}
-            />
-          </Button>
-        )}
-      </UpdateStatus>
+      <CustomBadge
+        color={info.getValue().toLowerCase()}
+        name={info.getValue()}
+      />
     ),
     header: () => 'Status',
     filterFn: 'equalsString',

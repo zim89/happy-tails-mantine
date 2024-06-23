@@ -1,10 +1,10 @@
-import { Product, ProductColor } from '@/shared/types/types';
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 import { Combobox } from '@mantine/core';
 import Image from 'next/image';
 
 type Props = {
   product: Product & {
-    size: string | null;
+    colors: { value: ProductColor; sizes: ProductSizeValues[] }[];
   };
 };
 
@@ -22,23 +22,6 @@ const Option = ({ product }: Props) => {
       />
       <div>
         <p className='mb-1 font-bold'>{product.name}</p>
-        <p className='flex items-center gap-2'>
-          {product.color && product.color !== ProductColor['ONE COLOR'] && (
-            <span
-              className='inline-block h-4 w-4 rounded-full'
-              style={{ backgroundColor: product.color.toLowerCase() }}
-            />
-          )}
-          {product.size ? (
-            <span>
-              {product.color
-                ? `${product.color} / ${product.size}`
-                : product.size}
-            </span>
-          ) : (
-            <span>{product.color}</span>
-          )}
-        </p>
         <span>$ {product.price.toFixed(2)}</span>
       </div>
     </Combobox.Option>

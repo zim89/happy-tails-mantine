@@ -85,9 +85,9 @@ export default function ProductsTable({ data }: Props) {
   });
 
   return (
-    <div className='h-full w-full overflow-hidden rounded border border-[#EEE]'>
+    <div className='h-full w-full overflow-hidden rounded border border-brand-grey-300'>
       <div className='flex items-center justify-between bg-white px-4 py-6'>
-        <h2 className='mr-6 text-base/[24px] font-bold'>
+        <h2 className='mr-6 text-base/[1.5rem] font-bold'>
           Best Selling Products
         </h2>
       </div>

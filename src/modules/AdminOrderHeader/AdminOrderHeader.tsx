@@ -57,9 +57,7 @@ export default function AdminOrderHeader() {
   return (
     <div className={classes.header}>
       <hgroup className='mr-auto'>
-        <h2>
-          Order List
-        </h2>
+        <h2>Order List</h2>
         <p>View and check all orders registered on your store</p>
       </hgroup>
       <Menu
@@ -71,7 +69,7 @@ export default function AdminOrderHeader() {
         radius={2}
         classNames={{
           dropdown: classes.dropdown,
-          item: 'py-[10p] px-4 hover:bg-[#F7F7F7] cursor-pointer',
+          item: 'py-[10px] px-4 hover:bg-primary cursor-pointer',
         }}
       >
         <Menu.Target>
@@ -86,9 +84,11 @@ export default function AdminOrderHeader() {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item onClick={() => {
-            window.print();
-          }}>
+          <Menu.Item
+            onClick={() => {
+              window.print();
+            }}
+          >
             <Printer size={16} className='mr-2 inline-block' /> Print
           </Menu.Item>
           <Menu.Item>
@@ -108,7 +108,7 @@ export default function AdminOrderHeader() {
       <div>
         <Link
           href='/admin/orders/new'
-          className='ml-6 bg-black whitespace-pre flex items-center gap-2 px-4 py-2 font-bold rounded-[2px] text-white'
+          className='ml-6 flex items-center gap-2 whitespace-pre rounded-[2px] bg-secondary px-4 py-2 font-bold text-primary'
         >
           <PlusCircle size={20} />
           Add a new order

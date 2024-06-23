@@ -107,11 +107,11 @@ export const Table = ({ data }: Props) => {
 
   return (
     <>
-      <div className='mt-10 flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
+      <div className='mt-10 flex items-center justify-between border border-b-0 bg-white p-4'>
         <h2 className='mr-6 text-xl/[24px] font-bold'>Users</h2>
       </div>
 
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
+      <div className='flex items-center justify-between border border-b-0 bg-white p-4'>
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *

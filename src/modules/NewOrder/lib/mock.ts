@@ -1,34 +1,12 @@
-import { Product, ProductColor, ProductSizeEnum } from '@/shared/types/types';
+import { Product } from '@/shared/types/types';
 
 export const data: Product[] = [
-  {
-    id: 17,
-    article: 'ABA4541',
-    name: 'Charming Pet Thunda Tugga',
-    price: 23.58,
-    color: null,
-    onSale: false,
-    salePrice: null,
-    categoryId: 3,
-    categoryName: 'Toys',
-    description: 'Charming Pet Thunda Tugga',
-    productType: 'OUTDOORS',
-    productSizes: null,
-    relatedProducts: null,
-    totalQuantity: 1,
-    unitsSold: 0,
-    productStatus: 'IN STOCK',
-    createdAt: 1717918937.074295,
-    updatedAt: null,
-    imagePath:
-      'https://cdn.shopify.com/s/files/1/0702/9579/files/outward-hound-charming-pet-thunda-tugga-bunny-14888644313190.jpg?v=1692404647',
-  },
   {
     id: 18,
     article: 'ABA4541',
     name: 'Charming Pet Thunda Tugga',
     price: 23.58,
-    color: ProductColor['ONE COLOR'],
+    color: 'ONE COLOR',
     onSale: false,
     salePrice: null,
     categoryId: 3,
@@ -50,7 +28,7 @@ export const data: Product[] = [
     article: 'ABA4541',
     name: 'Charming Pet Thunda Tugga',
     price: 23.58,
-    color: ProductColor['Blue'],
+    color: 'Blue',
     onSale: false,
     salePrice: null,
     categoryId: 3,
@@ -59,19 +37,19 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['XS'],
+        size: 'XS',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['L'],
+        size: 'L',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['M'],
+        size: 'M',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
@@ -91,7 +69,7 @@ export const data: Product[] = [
     article: 'ABA4541',
     name: 'Charming Pet Thunda Tugga',
     price: 23.58,
-    color: ProductColor['Pink'],
+    color: 'Pink',
     onSale: false,
     salePrice: null,
     categoryId: 3,
@@ -100,19 +78,19 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['XS'],
+        size: 'XS',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['L'],
+        size: 'L',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['M'],
+        size: 'M',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
@@ -132,7 +110,7 @@ export const data: Product[] = [
     article: 'ABA4541',
     name: 'Charming Pet Thunda Tugga',
     price: 23.58,
-    color: ProductColor['Gray'],
+    color: 'Gray',
     onSale: false,
     salePrice: null,
     categoryId: 3,
@@ -141,19 +119,19 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['XS'],
+        size: 'XS',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['L'],
+        size: 'L',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
       },
       {
-        size: ProductSizeEnum['M'],
+        size: 'M',
         quantity: 12,
         productStatus: 'IN STOCK',
         description: null,
@@ -182,7 +160,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -212,7 +190,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -242,7 +220,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -272,7 +250,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -302,7 +280,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -332,7 +310,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -362,7 +340,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -392,7 +370,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -422,7 +400,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -452,7 +430,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -482,7 +460,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -534,7 +512,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -586,7 +564,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -615,7 +593,7 @@ export const data: Product[] = [
     productType: 'INDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,
@@ -667,7 +645,7 @@ export const data: Product[] = [
     productType: 'OUTDOORS',
     productSizes: [
       {
-        size: ProductSizeEnum['ONE SIZE'],
+        size: 'ONE SIZE',
         quantity: 123,
         productStatus: 'IN STOCK',
         description: null,

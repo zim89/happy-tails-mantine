@@ -42,7 +42,7 @@ export default function CartButton() {
           offset={5}
           inline
           classNames={{
-            indicator: 'p-0 text-[10px]/[21px] font-bold text-black',
+            indicator: 'p-0 text-[0.625rem]/[1.313rem] font-bold text-black',
           }}
         >
           <ShoppingBag className='iconBtn' />

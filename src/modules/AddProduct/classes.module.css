@@ -1,0 +1,105 @@
+.pageHeader {
+  @apply mb-8;
+}
+
+.pageHeader h2 {
+  @apply text-[2rem]/[2.4rem] font-bold;
+}
+
+.form {
+  @apply bg-white p-4 pb-[38px];
+}
+
+.fileWrapper {
+  @apply pointer-events-none h-full;
+}
+
+.fileInput {
+  @apply h-full rounded-sm;
+}
+
+.fileLabel {
+  @apply mb-1 mt-7 flex items-center gap-[10px];
+}
+
+.clearImage {
+  @apply ml-[42px];
+}
+
+.previewWrapper {
+  @apply mt-[48px] flex max-w-max items-center gap-2 border border-brand-grey-400 bg-primary px-4 py-1;
+}
+
+.previewImage {
+  @apply h-8 w-8 object-contain;
+}
+
+.upload {
+  @apply mt-6 lg:mt-[48px];
+}
+
+.upload > div {
+  @apply flex;
+}
+
+.upload label {
+  @apply flex cursor-pointer items-center justify-evenly gap-2 bg-brand-grey-900 px-4 py-[10px];
+}
+
+.upload label span {
+  @apply whitespace-nowrap font-bold leading-4 text-primary;
+}
+
+.inputRow {
+  @apply flex flex-col gap-4 lg:flex-row lg:gap-10;
+}
+
+.inputRow + .inputRow {
+  @apply mt-[30px];
+}
+
+.variant {
+  @apply w-full max-w-[670px];
+}
+
+.variant:hover .deleteBtn {
+  @apply scale-100 opacity-100;
+}
+
+.variant + .variant {
+  @apply mt-10 border-t border-t-brand-grey-400 pt-5;
+}
+
+.variantInputs {
+  @apply flex flex-col gap-4 lg:flex-row lg:gap-10;
+}
+
+.variantInputs + .variantInputs {
+  @apply mt-2;
+}
+
+.deleteBtn {
+  background: linear-gradient(to right, rgb(220 54 46) 50%, rgb(27 27 27) 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.4s ease;
+  @apply relative scale-0 cursor-pointer overflow-hidden rounded px-4 py-[10px] text-white opacity-0;
+}
+
+.deleteBtn:hover {
+  @apply bg-left-bottom;
+}
+
+.deleteBtn:hover > span {
+  @apply text-transparent;
+}
+
+.deleteBtn::before {
+  content: 'OK?';
+  transform: translate(50%, -50%);
+  @apply absolute right-2/4 top-2/4 text-[0.75rem] opacity-0 transition-opacity duration-300 ease-in;
+}
+
+.deleteBtn:hover::before {
+  @apply opacity-100;
+}

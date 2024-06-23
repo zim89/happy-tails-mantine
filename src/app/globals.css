@@ -74,7 +74,7 @@
     @apply text-secondary transition-all duration-300 hover:text-brand-grey-800 group-hover:text-brand-grey-800;
   }
 
-  .iconBtn>svg {
+  .iconBtn > svg {
     @apply h-6 w-6 stroke-2;
   }
 
@@ -197,7 +197,7 @@
   }
 
   .form-input {
-    @apply font-lato rounded-0.5 border text-black border-brand-grey-400 bg-primary px-4 py-2.5 text-sm/normal placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
+    @apply rounded-0.5 border border-brand-grey-400 bg-primary px-4 py-2.5 font-lato text-sm/normal text-black placeholder:text-sm/normal placeholder:text-brand-grey-500 hover:border-secondary focus:border-secondary;
   }
 
   .form-label {
@@ -211,21 +211,6 @@
   .form-error--input {
     @apply border-brand-red-400 text-secondary;
   }
-}
-
-.tiptap .resize-handle {
-  position: absolute; top: 0px; right: 0px;
-  background-image: url("/resize.png");
-  cursor: ne-resize;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.3;
-  width: 1rem;
-  height: 1rem;
-}
-
-.tiptap .resize-handle:hover {
-  opacity: 1;
 }
 
 /*noinspection CssInvalidFunction*/

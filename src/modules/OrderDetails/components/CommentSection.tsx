@@ -1,17 +1,17 @@
 'use client';
 import { useState } from 'react';
-import { Textarea, Button } from '@mantine/core';
+import { Textarea, Button, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2, AlertTriangle, Check } from 'lucide-react';
 
 import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
-import { useAddCommentMutation } from "@/shared/api/ordersApi";
+import { useAddCommentMutation } from '@/shared/api/ordersApi';
 
 type Props = {
   orderNumber: string;
   commentOfManager: string;
-}
+};
 
 export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
   const [comment, setComment] = useState('');
@@ -51,14 +51,15 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
     <div className='col-span-2 rounded-[4px] border-[1px] border-[#EEE] bg-white'>
       <div className='flex items-center justify-between border-b-[1px] border-[#EEE] p-4'>
         <h2 className='text-xl font-bold'>Comments</h2>
-        <Button
+        <UnstyledButton
           classNames={{
-            root: 'border-[1px] border-[#C8C8C8] w-[36px] h-[36px] p-0',
+            root: 'p-[10px] rounded-sm',
           }}
+          styles={{ root: { border: '1px solid #C8C8C8' } }}
           onClick={toggleComments}
         >
           <Edit2 size={16} color='black' />
-        </Button>
+        </UnstyledButton>
       </div>
       {areCommentsOpened ? (
         <div className='p-4'>
@@ -69,24 +70,27 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
             rows={10}
             mb={22}
           />
-          <Button
-            px={50}
+          <UnstyledButton
             mr={42}
-            radius={2}
-            c='black'
-            classNames={{ root: 'border-[1px] border-[#EEE]' }}
+            classNames={{
+              root: 'rounded-sm text-black py-[10px] px-[47px] font-bold',
+            }}
+            styles={{ root: { border: '1px solid #C8C8C8' } }}
             onClick={closeComments}
           >
             Cancel
-          </Button>
-          <Button px={50} radius={2} bg='black' onClick={sendFeedback}>
+          </UnstyledButton>
+          <UnstyledButton
+            classNames={{
+              root: 'bg-black text-white rounded-sm py-[10px] px-[55px] font-bold',
+            }}
+            onClick={sendFeedback}
+          >
             Save
-          </Button>
+          </UnstyledButton>
         </div>
       ) : (
-        <div className="p-4">
-          {commentOfManager}
-        </div>
+        <div className='p-4'>{commentOfManager}</div>
       )}
       <Notify {...props} onClose={clear} />
     </div>

@@ -1,9 +1,9 @@
 import { Menu, UnstyledButton } from '@mantine/core';
 import { Eye, MoreHorizontal, MessageSquareDot } from 'lucide-react';
+import Link from 'next/link';
 
 import { Message } from '../lib/mock';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import Link from 'next/link';
 
 type Props = {
   message: Message;
@@ -18,7 +18,7 @@ export const Actions = ({ message, setNotification, setMarked }: Props) => {
         <Menu.Target>
           <UnstyledButton
             classNames={{
-              root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]',
+              root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-600 p-2 rounded-sm',
             }}
           >
             <MoreHorizontal size={16} color='black' />

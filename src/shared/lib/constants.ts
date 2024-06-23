@@ -40,9 +40,9 @@ export const orderStatusList: Order['orderStatus'][] = [
   'COMPLETED',
 ];
 
-export const productTypeList: ("INDOORS" | "OUTDOORS")[] = [
-  "INDOORS",
-  "OUTDOORS"
+export const productTypeList: ('INDOORS' | 'OUTDOORS')[] = [
+  'INDOORS',
+  'OUTDOORS',
 ];
 
 export const isOrderStatus = (param: any): param is Order['orderStatus'] => {

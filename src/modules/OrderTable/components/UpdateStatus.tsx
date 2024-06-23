@@ -1,5 +1,6 @@
 'use client';
-import { Button, Popover, Select } from '@mantine/core';
+
+import { Button, Popover, Select, UnstyledButton } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { Check, X, ChevronDown, AlertTriangle } from 'lucide-react';
 
@@ -105,18 +106,21 @@ export default function UpdateStatus({ children, orderRow }: Props) {
               rightSection={<ChevronDown size={16} color='black' />}
             />
             <div>
-              <Button
-                classNames={{ root: 'bg-black mr-2' }}
+              <UnstyledButton
+                classNames={{ root: 'bg-black mr-2 p-[10px] rounded-sm' }}
                 onClick={handleSubmit}
               >
-                <Check size={16} />
-              </Button>
-              <Button
-                classNames={{ root: 'border-[1px] border-[#EEE]' }}
+                <Check size={16} color='white' />
+              </UnstyledButton>
+              <UnstyledButton
+                classNames={{
+                  root: 'p-[10px] rounded-sm relative z-10',
+                }}
+                styles={{ root: { border: '1px solid #C8C8C8' } }}
                 onClick={close}
               >
                 <X size={16} color='black' />
-              </Button>
+              </UnstyledButton>
             </div>
           </div>
         </Popover.Dropdown>
