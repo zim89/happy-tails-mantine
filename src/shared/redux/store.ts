@@ -21,6 +21,11 @@ import { ordersApi } from '@/shared/api/ordersApi';
 import { oauthApi } from '@/shared/api/oauthApi';
 import { userApi } from '@/shared/api/usersApi';
 import { postApi } from '@/shared/api/postApi';
+import { checkoutReducer } from './checkout/checkoutSlice';
+import { shippingMethodsApi } from '../api/shippingMethodsApi';
+import { discountApi } from '../api/discountApi';
+import { taxApi } from '../api/taxApi';
+import { cartApi } from '../api/cartApi';
 
 const createNoopStorage = () => {
   return {
@@ -61,7 +66,7 @@ const authPersistConfig = {
 const ouathApiPersistConfig = {
   key: 'oauth_tokens',
   storage,
-}
+};
 
 const favoritesPersistedReducer = persistReducer(
   favoritesPersistConfig,
@@ -69,7 +74,10 @@ const favoritesPersistedReducer = persistReducer(
 );
 const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
 const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
-const oauthPerstistedReducer = persistReducer(ouathApiPersistConfig, oauthApi.reducer);
+const oauthPerstistedReducer = persistReducer(
+  ouathApiPersistConfig,
+  oauthApi.reducer
+);
 
 export const store = configureStore({
   reducer: {
@@ -80,9 +88,14 @@ export const store = configureStore({
     [ordersApi.reducerPath]: ordersApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
     [oauthApi.reducerPath]: oauthPerstistedReducer,
+    [shippingMethodsApi.reducerPath]: shippingMethodsApi.reducer,
+    [discountApi.reducerPath]: discountApi.reducer,
+    [taxApi.reducerPath]: taxApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
+    checkout: checkoutReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -96,7 +109,11 @@ export const store = configureStore({
       .concat(ordersApi.middleware)
       .concat(oauthApi.middleware)
       .concat(userApi.middleware)
-      .concat(postApi.middleware),
+      .concat(postApi.middleware)
+      .concat(discountApi.middleware)
+      .concat(shippingMethodsApi.middleware)
+      .concat(taxApi.middleware)
+      .concat(cartApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
