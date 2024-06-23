@@ -2,10 +2,12 @@ import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { CreateProductBody } from '@/shared/types/types';
 import { UnstyledButton } from '@mantine/core';
 import { ProductForm, context } from '../lib/utils';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { publishImage } from '@/shared/lib/requests';
+import { UnsavedChangesContext } from '@/shared/lib/context';
+import BlockLink from '@/modules/BlockLink';
 
 type Props = {
   setNotification: (
@@ -16,8 +18,16 @@ type Props = {
 
 export const Controls = ({ setNotification }: Props) => {
   const { productForm, previewImage, variants } = useContext(context);
+  const { update: setUnsavedState } = useContext(UnsavedChangesContext);
+
   const [dispatch] = useCreateMutation();
   const categoryList = useSelectCategories((cats) => cats);
+
+  // Handle leaving while there are unsaved changes
+  useEffect(() => {
+    const res = !!variants.length || productForm.isDirty();
+    setUnsavedState((prev) => ({ ...prev, unsavedChanges: res }));
+  }, [productForm.values, variants]);
 
   const clearFile = () => {
     previewImage.current = {
@@ -133,7 +143,7 @@ export const Controls = ({ setNotification }: Props) => {
         classNames={{ root: 'rounded-sm font-bold px-12 py-[10px] bg-white' }}
         styles={{ root: { border: '1px solid #C8C8C8' } }}
       >
-        Cancel
+        <BlockLink href='/admin/products'>Cancel</BlockLink>
       </UnstyledButton>
       <UnstyledButton
         classNames={{

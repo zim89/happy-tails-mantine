@@ -1,25 +1,19 @@
 'use client';
 
-import {
-  Button,
-  Table,
-  Badge,
-} from '@mantine/core';
+import { Button, Table, Badge } from '@mantine/core';
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
   getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel
+  getSortedRowModel,
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
 
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
-import classes from './classes.module.css';
-import { Actions } from './ui/Actions';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
@@ -27,6 +21,8 @@ import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { TablePagination } from '@/components/TablePagination';
 import { EmptyRow } from '@/components/EmptyRow';
+import classes from './classes.module.css';
+import { Actions } from './ui/Actions';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -134,19 +130,19 @@ export default function ProductsTable({ data }: Props) {
 
   return (
     <>
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
+      <div className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'>
         <h2 className='mr-6 text-base/[24px] font-bold'>Products Catalog</h2>
         <div className='flex gap-6'>
           <Button
-            variant="transparent"
+            variant='transparent'
             onClick={() =>
               table.getColumn('categoryName')?.setFilterValue(null)
             }
             classNames={{
               root: cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-secondary hover:bg-brand-grey-200 hover:text-secondary',
                 !table.getColumn('categoryName')?.getFilterValue() &&
-                  'bg-gray-300'
+                  'bg-brand-grey-300'
               ),
             }}
           >
@@ -155,16 +151,16 @@ export default function ProductsTable({ data }: Props) {
           {categories.length > 0 &&
             categories.map(({ name, title }, index) => (
               <Button
-                variant="transparent"
+                variant='transparent'
                 onClick={() =>
                   table.getColumn('categoryName')?.setFilterValue(name)
                 }
                 key={index}
                 classNames={{
                   root: cn(
-                    'rounded-sm px-3 py-2 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
+                    'rounded-sm px-3 py-2 text-sm text-secondary hover:bg-brand-grey-200 hover:text-secondary',
                     table.getColumn('categoryName')?.getFilterValue() ===
-                      name && 'bg-gray-300'
+                      name && 'bg-brand-grey-300'
                   ),
                 }}
               >
@@ -174,7 +170,7 @@ export default function ProductsTable({ data }: Props) {
         </div>
       </div>
 
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
+      <div className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'>
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *
@@ -193,11 +189,14 @@ export default function ProductsTable({ data }: Props) {
       </div>
 
       <Table bgcolor='white' withTableBorder borderColor='#EEE'>
-        <TableHead headerGroup={table.getHeaderGroups()}/>
+        <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />
       </Table>
 
-      <EmptyRow visible={table.getRowModel().rows.length === 0} message="You have no any product yet" />
+      <EmptyRow
+        visible={table.getRowModel().rows.length === 0}
+        message='You have no any product yet'
+      />
 
       <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>

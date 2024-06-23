@@ -3,7 +3,7 @@
 }
 
 .pageHeader h2 {
-  @apply text-[32px]/[38.4px] font-bold;
+  @apply text-[2rem]/[2.4rem] font-bold;
 }
 
 .form {
@@ -27,7 +27,7 @@
 }
 
 .previewWrapper {
-  @apply mt-[48px] flex max-w-max items-center gap-2 border-[1px] border-[#C8C8C8] bg-[#f7f7f7] px-4 py-1;
+  @apply mt-[48px] flex max-w-max items-center gap-2 border border-brand-grey-400 bg-primary px-4 py-1;
 }
 
 .previewImage {
@@ -43,11 +43,11 @@
 }
 
 .upload label {
-  @apply flex cursor-pointer items-center justify-evenly gap-2 bg-[#5A5A5A] px-4 py-[10px];
+  @apply flex cursor-pointer items-center justify-evenly gap-2 bg-brand-grey-900 px-4 py-[10px];
 }
 
 .upload label span {
-  @apply whitespace-nowrap font-bold leading-4 text-white;
+  @apply whitespace-nowrap font-bold leading-4 text-primary;
 }
 
 .inputRow {
@@ -67,7 +67,7 @@
 }
 
 .variant + .variant {
-  @apply mt-10 border-t border-t-[#C8C8C8] pt-5;
+  @apply mt-10 border-t border-t-brand-grey-400 pt-5;
 }
 
 .variantInputs {
@@ -87,24 +87,19 @@
 }
 
 .deleteBtn:hover {
-  background-position: left bottom;
+  @apply bg-left-bottom;
 }
 
 .deleteBtn:hover > span {
-  color: transparent;
+  @apply text-transparent;
 }
 
 .deleteBtn::before {
   content: 'OK?';
-  position: absolute;
-  right: 50%;
-  top: 50%;
   transform: translate(50%, -50%);
-  opacity: 0;
-  font-size: 0.75rem;
-  transition: opacity 0.3s ease;
+  @apply absolute right-2/4 top-2/4 text-[0.75rem] opacity-0 transition-opacity duration-300 ease-in;
 }
 
 .deleteBtn:hover::before {
-  opacity: 1;
+  @apply opacity-100;
 }

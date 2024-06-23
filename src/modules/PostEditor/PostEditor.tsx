@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useCallback, useContext } from 'react';
 import { Editor } from '@tiptap/react';
-import { TextInput, Button } from '@mantine/core';
+import { TextInput, rem } from '@mantine/core';
 
 // Rich text editor libraries
 import { RichTextEditor } from '@mantine/tiptap';
@@ -14,7 +14,6 @@ import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/lib/context';
-// import ImageResizeControl from '@/components/ImageResizeControl';
 
 export const sharedProps = {
   toolbarBtn: {
@@ -66,7 +65,9 @@ export default function PostEditor({ editor }: Props) {
   }, []);
 
   return (
-    <div className='flex w-full max-w-[700px] flex-col gap-12 rounded border border-[#C8C8C8] bg-white p-4 lg:pb-8 min-[2000px]:max-w-[60%]'>
+    <div
+      className={`flex w-full max-w-[700px] flex-col gap-12 rounded border border-brand-grey-400 bg-primary p-4 lg:pb-8 min-[2000px]:max-w-[60%]`}
+    >
       <div>
         <label className='mb-1'>Title</label>
         <TextInput
@@ -154,16 +155,12 @@ export default function PostEditor({ editor }: Props) {
                 <ImageControl handleImageUpload={handleImageUpload} />
                 <RichTextEditor.Link {...sharedProps.toolbarBtn} />
               </RichTextEditor.ControlsGroup>
-              {/* TODO: Image resize */}
-              {/* <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-								<ImageResizeControl />
-							</RichTextEditor.ControlsGroup> */}
             </RichTextEditor.Toolbar>
             <RichTextEditor.Content />
           </RichTextEditor>
         </div>
         {form.errors?.content && (
-          <p className='py-1 text-[10px] text-[#dc362e]'>
+          <p className='py-1 text-[0.675rem] text-brand-red-400'>
             {form.errors.content}
           </p>
         )}

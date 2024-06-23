@@ -60,15 +60,18 @@ export const Details = ({ status }: Props) => {
 
   return (
     <>
-      <div className='mb-8 rounded border border-[#C8C8C8] bg-white'>
+      <div className='mb-8 rounded border border-brand-grey-400 bg-primary'>
         <p className={classes.auxiliaryHeading}>Details</p>
         <Checkbox
           color='black'
-          label={'Assign as the main article'}
+          label='Assign as the main article'
           checked={value}
           {...rest}
           classNames={{
-            root: cn('group bg-[#EEE] px-4 py-6', status === 'DRAFT' && 'mb-8'),
+            root: cn(
+              'group bg-brand-grey-300 px-4 py-6',
+              status === 'DRAFT' && 'mb-8'
+            ),
             body: 'checkbox-body',
             inner: 'checkbox-inner',
             input: 'checkbox-input',
@@ -88,7 +91,7 @@ export const Details = ({ status }: Props) => {
                     );
                     router.push(`/admin/blogs/${form.values.id}/preview`);
                   }}
-                  className='inline-flex items-center gap-2 p-0 text-sm text-black outline-none'
+                  className='inline-flex items-center gap-2 p-0 text-sm text-secondary outline-none'
                 >
                   <Eye size={16} />
                   View the page
@@ -99,7 +102,7 @@ export const Details = ({ status }: Props) => {
                   customHandler={(openModal) => (
                     <UnstyledButton
                       onClick={openModal}
-                      className='inline-flex items-center gap-2 p-0 text-sm text-black outline-none'
+                      className='inline-flex items-center gap-2 p-0 text-sm text-secondary outline-none'
                     >
                       <FolderDown size={16} />
                       Add to archive
@@ -115,7 +118,7 @@ export const Details = ({ status }: Props) => {
               customHandler={(openModal) => (
                 <UnstyledButton
                   onClick={openModal}
-                  className='inline-flex items-center gap-2 p-0 text-sm text-black outline-none'
+                  className='inline-flex items-center gap-2 p-0 text-sm text-secondary outline-none'
                 >
                   <Trash2 size={16} /> Delete article
                 </UnstyledButton>

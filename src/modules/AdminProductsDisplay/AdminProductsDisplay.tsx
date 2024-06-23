@@ -1,13 +1,12 @@
 'use client';
 
 import { useContext, useEffect } from 'react';
+import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import ProductsTable from '@/modules/ProductsTable';
 import { AdminPanelContext } from '@/shared/lib/context';
-import { UnstyledButton } from '@mantine/core';
-import { PlusCircle } from 'lucide-react';
-import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 
 export default function AdminProductsDisplay() {
@@ -31,7 +30,7 @@ export default function AdminProductsDisplay() {
       <PageHeader
         rightSection={
           <Link
-            className='flex items-center gap-2 rounded bg-black px-4 py-[10px] font-black text-white'
+            className='flex items-center gap-2 rounded bg-black px-4 py-[10px] font-black text-primary'
             href='/admin/products/new'
           >
             <PlusCircle width={20} />

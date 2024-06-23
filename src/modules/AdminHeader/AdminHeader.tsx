@@ -3,7 +3,7 @@ import { ChevronLeft, LogOut } from 'lucide-react';
 import classes from './AdminHeader.module.css';
 import { User } from '@/shared/types/auth.types';
 import Logout from '@/components/Logout';
-import BlockLink from "@/modules/BlockLink";
+import BlockLink from '@/modules/BlockLink';
 import BlockButton from '@/components/BlockButton';
 
 type Props = {
@@ -18,7 +18,9 @@ export default function AdminHeader({ user }: Props) {
       </BlockLink>
       <div className={classes.controls}>
         <div className={classes.avatar}>
-          <span className={classes.avatarLogo}>{user.firstName[0].toUpperCase()}</span>
+          <span className={classes.avatarLogo}>
+            {user.firstName[0].toUpperCase()}
+          </span>
           <span>{user.firstName}</span>
         </div>
 
@@ -26,7 +28,7 @@ export default function AdminHeader({ user }: Props) {
           {(logOut) => (
             <BlockButton
               classNames={{
-                root: "flex gap-2 font-bold py-2 px-6 border border-solid rounded border-[#C8C8C8] text-sm items-center"
+                root: 'flex gap-2 font-bold py-2 px-6 border border-solid rounded border-brand-grey-400 text-sm items-center',
               }}
               onClick={logOut}
             >

@@ -1,11 +1,12 @@
 'use client';
 
+import { notFound } from 'next/navigation';
+
 import EditorWrapper from '@/modules/EditorWrapper';
 import PostEditor from '@/modules/PostEditor';
 import { Details } from './components/Details';
 import { Header } from './components/Header';
 import ImageBox from '@/modules/ImageBox';
-import { notFound } from 'next/navigation';
 import { useFindOneQuery } from '@/shared/api/postApi';
 import Loader from '@/components/Loader';
 
@@ -16,9 +17,7 @@ export default function PostDetails({ postId }: Props) {
   const { data, isLoading, error } = useFindOneQuery({ id: postId });
 
   if (isLoading) return <Loader size={164} />;
-
   if (!data) notFound();
-
   if (error)
     return (
       <p>

@@ -5,7 +5,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
-  getSortedRowModel
+  getSortedRowModel,
 } from '@tanstack/react-table';
 import { Button, Table as MantineTable, Select } from '@mantine/core';
 
@@ -18,26 +18,28 @@ import { TablePagination } from '@/components/TablePagination';
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 
-import { CustomTableRow } from "./CustomTableRow";
+import { CustomTableRow } from './CustomTableRow';
 
-const sortingFieldsMap: { [P in string]: { field: string, order: "desc" | "asc" } } = {
-  "Date (new to old)": {
-    field: "createdAt",
-    order: "desc"
+const sortingFieldsMap: {
+  [P in string]: { field: string; order: 'desc' | 'asc' };
+} = {
+  'Date (new to old)': {
+    field: 'createdAt',
+    order: 'desc',
   },
-  "Date (old to new)": {
-    field: "createdAt",
-    order: "asc"
+  'Date (old to new)': {
+    field: 'createdAt',
+    order: 'asc',
   },
-  "Name A - Z": {
-    field: "title",
-    order: "asc"
+  'Name A - Z': {
+    field: 'title',
+    order: 'asc',
   },
-  "Name Z - A": {
-    field: "title",
-    order: "desc"
-  }
-}
+  'Name Z - A': {
+    field: 'title',
+    order: 'desc',
+  },
+};
 
 type Props = {
   data: Post[];
@@ -49,7 +51,7 @@ const columnHelper = createColumnHelper<Post>();
 const columns = [
   columnHelper.accessor('title', {}),
   columnHelper.accessor('postStatus', {}),
-  columnHelper.accessor('createdAt', { sortingFn: "alphanumeric" })
+  columnHelper.accessor('createdAt', { sortingFn: 'alphanumeric' }),
 ];
 
 export const Table = ({ data }: Props) => {
@@ -59,7 +61,7 @@ export const Table = ({ data }: Props) => {
     data,
     columns,
     state: {
-      globalFilter: search
+      globalFilter: search,
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
@@ -72,17 +74,17 @@ export const Table = ({ data }: Props) => {
 
   return (
     <>
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
-        <h2 className='mr-6 text-xl/[24px] font-bold'>Articles</h2>
+      <div className='flex items-center justify-between border border-b-0 bg-white p-4'>
+        <h2 className='mr-6 text-xl/[1.5rem] font-bold'>Articles</h2>
         <div className='flex gap-6'>
           <Button
             variant='transparent'
             onClick={() => table.getColumn('postStatus')?.setFilterValue(null)}
             classNames={{
               root: cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-secondary hover:bg-brand-grey-300 hover:text-secondary',
                 !table.getColumn('postStatus')?.getFilterValue() &&
-                'bg-gray-300'
+                  'bg-brand-grey-300'
               ),
             }}
           >
@@ -98,9 +100,9 @@ export const Table = ({ data }: Props) => {
               key={status}
               variant='transparent'
               className={cn(
-                'rounded-sm px-2 py-1 text-sm text-[#161616] hover:bg-brand-grey-300 hover:text-[#161616]',
+                'rounded-sm px-2 py-1 text-sm text-secondary hover:bg-brand-grey-300 hover:text-secondary',
                 table.getColumn('postStatus')?.getFilterValue() === status &&
-                'bg-brand-grey-300'
+                  'bg-brand-grey-300'
               )}
               onClick={() =>
                 table.getColumn('postStatus')?.setFilterValue(status)
@@ -112,24 +114,31 @@ export const Table = ({ data }: Props) => {
         </div>
       </div>
 
-      <div className='flex items-center justify-between border-[1px] bg-white p-4'>
+      <div className='flex items-center justify-between border bg-white p-4'>
         <Select
-          label="Sort By"
+          label='Sort By'
           allowDeselect={false}
           rightSection={<ChevronDown size={16} />}
-          defaultValue="Date (new to old)"
+          defaultValue='Date (new to old)'
           onChange={(e) => {
             if (e && sortingFieldsMap[e]) {
               const { field, order } = sortingFieldsMap[e];
-              table.getColumn(field)?.toggleSorting(order === "desc");
+              table.getColumn(field)?.toggleSorting(order === 'desc');
             }
           }}
           classNames={{
-            input: "border-0 form-input font-bold user-select-none",
-            root: "flex items-center",
-            section: "right-8"
+            input: 'border-0 form-input font-bold user-select-none',
+            root: 'flex items-center',
+            section: 'right-8',
           }}
-          data={["Date (new to old)", "Date (old to new)", "Name A - Z", "Name Z - A"] as const}
+          data={
+            [
+              'Date (new to old)',
+              'Date (old to new)',
+              'Name A - Z',
+              'Name Z - A',
+            ] as const
+          }
         />
 
         <SearchEntry value={search} handleChange={setSearch} />
@@ -138,15 +147,17 @@ export const Table = ({ data }: Props) => {
       <MantineTable
         highlightOnHover
         classNames={{
-          tr: 'bg-white shadow-[0px_0px_1px_1px_#EEE] hover:shadow-[0px_8px_4px_#EEE] cursor-pointer',
+          tr: 'bg-primary shadow-[0px_0px_1px_1px_#EEE] hover:shadow-[0px_8px_4px_#EEE] cursor-pointer',
           td: classes.td,
           table: 'border-spacing-y-4 border-separate',
         }}
       >
-        <MantineTable.Tbody className="gap-4 flex flex-col"> 
+        <MantineTable.Tbody className='flex flex-col gap-4'>
           {rowModel.rows.length > 0 &&
             rowModel.rows.map((row) => {
-                return <CustomTableRow key={row.original.id} row={row.original} />
+              return (
+                <CustomTableRow key={row.original.id} row={row.original} />
+              );
             })}
         </MantineTable.Tbody>
       </MantineTable>
@@ -155,7 +166,6 @@ export const Table = ({ data }: Props) => {
         visible={table.getRowModel().rows.length === 0}
         message='You have no written blog yet'
       />
-
 
       <TablePagination visible={table.getPageCount() > 1} table={table} />
     </>

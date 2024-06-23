@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Extension } from '@tiptap/react';
-import { Node, mergeAttributes } from '@tiptap/core'
+import { Node, mergeAttributes } from '@tiptap/core';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,7 +34,7 @@ export const FontFamily = Extension.create({
   addOptions() {
     return {
       types: ['textStyle'],
-      lastFamily: ""
+      lastFamily: '',
     };
   },
 
@@ -49,7 +49,7 @@ export const FontFamily = Extension.create({
               { style: element.style.fontFamily?.replace(/['"]+/g, '') },
             ],
             renderHTML: (attributes) => {
-              this.options.lastFamily = attributes.fontFamily || "";
+              this.options.lastFamily = attributes.fontFamily || '';
               if (!attributes.fontFamily) {
                 return {};
               }
@@ -69,9 +69,10 @@ export const FontFamily = Extension.create({
       setFont:
         (fontFamily) =>
         ({ chain }) => {
-          if (fontFamily === this.options.lastFamily) return chain().toggleMark('textStyle', { fontFamily: null }).run();
+          if (fontFamily === this.options.lastFamily)
+            return chain().toggleMark('textStyle', { fontFamily: null }).run();
           return chain().setMark('textStyle', { fontFamily }).run();
-        }
+        },
     };
   },
 });
@@ -138,24 +139,21 @@ export const isContentEmptyOrShort = (input: string): boolean => {
   }
 
   return false;
-}
-
-export interface ImageResizeOptions {
-  inline: boolean,
-  allowBase64: boolean,
-  HTMLAttributes: Record<string, any>,
-}
+};
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     image: {
-      setImage: (options: { src: string, alt?: string, title?: string, scale?: number }) => ReturnType,
-      resizeImage: (scale: number) => ReturnType,
-    }
+      setImage: (options: {
+        src: string;
+        alt?: string;
+        title?: string;
+      }) => ReturnType;
+    };
   }
 }
 
-export const ImageResize = Node.create<ImageResizeOptions>({
+export const ImageResize = Node.create({
   name: 'image',
 
   addOptions() {
@@ -163,15 +161,15 @@ export const ImageResize = Node.create<ImageResizeOptions>({
       inline: false,
       allowBase64: false,
       HTMLAttributes: {},
-    }
+    };
   },
 
   inline() {
-    return this.options.inline
+    return this.options.inline;
   },
 
   group() {
-    return this.options.inline ? 'inline' : 'block'
+    return this.options.inline ? 'inline' : 'block';
   },
 
   draggable: true,
@@ -187,47 +185,41 @@ export const ImageResize = Node.create<ImageResizeOptions>({
       title: {
         default: null,
       },
-      scale: {
-        default: 1,
-      }
-    }
+    };
   },
 
   parseHTML() {
     return [
       {
-        tag: this.options.allowBase64 ? 'img[src]' : 'img[src]:not([src^="data:"])',
+        tag: this.options.allowBase64
+          ? 'img[src]'
+          : 'img[src]:not([src^="data:"])',
       },
-    ]
+    ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { scale, ...rest } = HTMLAttributes;
+    const attrs = HTMLAttributes;
+
     return [
       'div',
-      { 
-        class: 'resizable-image-wrapper', 
-        style: `position: relative; display: inline-block; transform: scale(${scale});`
+      {
+        style: `position: relative; display: inline-block;`,
       },
-      ['img', mergeAttributes(this.options.HTMLAttributes, rest)],
-      ['div', {
-        class: 'resize-handle',
-      }]
-    ]
+      ['img', mergeAttributes(this.options.HTMLAttributes, attrs)],
+    ];
   },
 
   addCommands() {
     return {
-      setImage: options => ({ commands }) => {
-        console.log("Options: ",options);
-        return commands.insertContent({
-          type: this.name,
-          attrs: options,
-        })
-      },
-      resizeImage: (scale) => ({ commands }) => {
-        return commands.updateAttributes('image', { scale });
-      },
-    }
+      setImage:
+        (options) =>
+        ({ commands }) => {
+          return commands.insertContent({
+            type: this.name,
+            attrs: options,
+          });
+        },
+    };
   },
-})
+});

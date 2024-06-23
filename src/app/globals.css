@@ -213,23 +213,6 @@
   }
 }
 
-.tiptap .resize-handle {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  background-image: url('/resize.png');
-  cursor: ne-resize;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.3;
-  width: 1rem;
-  height: 1rem;
-}
-
-.tiptap .resize-handle:hover {
-  opacity: 1;
-}
-
 /*noinspection CssInvalidFunction*/
 .mantine-Container-root {
   width: 100%;
