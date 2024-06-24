@@ -6,8 +6,9 @@ import Link from 'next/link';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import ProductsTable from '@/modules/ProductsTable';
-import { AdminPanelContext } from '@/shared/lib/context';
+
 import PageHeader from '@/components/PageHeader';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({

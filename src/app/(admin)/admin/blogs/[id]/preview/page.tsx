@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Container, rem } from '@mantine/core';
 import { AlignLeft, Heart, Search, ShoppingBag, UserRound } from 'lucide-react';
 
-import { PostFormContext } from '@/shared/lib/context';
 import { PostContent } from '@/app/(root)/(additional)/blog/[id]/ui/PostContent';
 import { KEYS } from '@/shared/constants/localStorageKeys';
 import { formatDateToLongString } from '@/shared/lib/helpers';
@@ -15,6 +14,7 @@ import HeaderTemplate from '@/components/HeaderTemplate/HeaderTemplate';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import PostList from '@/components/PostList';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 export default function Page() {
   const { form } = useContext(PostFormContext);

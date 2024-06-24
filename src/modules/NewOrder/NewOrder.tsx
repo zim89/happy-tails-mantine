@@ -1,7 +1,6 @@
 'use client';
 
 import { UnstyledButton } from '@mantine/core';
-import { AlertTriangle, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 
@@ -13,36 +12,23 @@ import OrderTotal from './components/OrderTotal';
 import AddComments from './components/AddComments';
 import { useCreateOrderMutation } from '@/shared/api/ordersApi';
 import { useAuth } from '@/shared/hooks/useAuth';
-import Notify from '@/components/Notify';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { ErrorResponse } from '@/shared/lib/constants';
 import { CreateOrderBody } from '@/shared/types/types';
 import { SelectedItem } from './lib/types';
-import { UnsavedChangesContext } from '@/shared/lib/context';
 import BlockButton from '@/components/BlockButton';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export default function NewOrder() {
   const [dispatch] = useCreateOrderMutation();
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
   const form = useModel();
   const { currentUser } = useAuth();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'Order creation failed!',
-    },
-    success: {
-      color: '#389B48',
-      icon: <Check size={24} />,
-      text: 'Order creation succeeded!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   useEffect(() => {
     const res = form.isDirty();
-    console.log(res);
     setUnsavedState((prev) => ({ ...prev, unsavedChanges: res }));
   }, [form.values]);
 
@@ -87,7 +73,7 @@ export default function NewOrder() {
 
       await dispatch(orderRequest).unwrap();
       form.reset();
-      setNotification('Success');
+      setNotification('Success', 'Order creation succeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);
@@ -133,8 +119,6 @@ export default function NewOrder() {
           </UnstyledButton>
         </div>
       </form>
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 }

@@ -3,9 +3,10 @@
 import { useContext, useEffect } from 'react';
 
 import { useFindManyQuery } from '@/shared/api/postApi';
-import { AdminPanelContext } from '@/shared/lib/context';
+
 import { Table } from './components/Table';
 import { Header } from './components/Header';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 export default function AdminBlogsDisplay() {
   const { update } = useContext(AdminPanelContext);

@@ -9,10 +9,11 @@ import {
   useChangePostStatusMutation,
   useUpdatePostMutation,
 } from '@/shared/api/postApi';
-import { PostFormContext } from '@/shared/lib/context';
+
 import { publishImage } from '@/shared/lib/requests';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { KEYS } from '@/shared/constants/localStorageKeys';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 type PublishedControllerProps = {
   handleCancel: () => void;

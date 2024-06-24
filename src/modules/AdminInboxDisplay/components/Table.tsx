@@ -39,7 +39,7 @@ import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
 import { filterOptions } from '../lib/data';
-import { AdminPanelContext } from '@/shared/lib/context';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 type Props = {
   data: Message[];

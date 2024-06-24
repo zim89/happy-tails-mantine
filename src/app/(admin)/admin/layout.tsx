@@ -1,11 +1,14 @@
-"use client";
+'use client';
+
 import { notFound, usePathname } from 'next/navigation';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import classes from './layout.module.css';
 import AdminSidebar from '@/modules/AdminSidebar';
 import AdminHeader from '@/modules/AdminHeader';
-import { AdminPanelProvider, UnsavedChangesProvider } from '@/shared/lib/context';
+import { UnsavedChangesProvider } from '@/shared/context/unsaved.context';
+import { AdminPanelProvider } from '@/shared/context/panel.context';
+import { NotifyProvider } from '@/shared/context/notification.context';
 
 const regex = /\/preview/;
 
@@ -20,11 +23,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AdminPanelProvider>
       <UnsavedChangesProvider>
-        {!isPreviewed ? <div className={classes.layoutWrapper}>
-          <AdminSidebar />
-          <AdminHeader user={currentUser} />
-          <div className={classes.content}>{children}</div>
-        </div> : <div>{children}</div>}
+        <NotifyProvider>
+          {!isPreviewed ? (
+            <div className={classes.layoutWrapper}>
+              <AdminSidebar />
+              <AdminHeader user={currentUser} />
+              <div className={classes.content}>{children}</div>
+            </div>
+          ) : (
+            <div>{children}</div>
+          )}
+        </NotifyProvider>
       </UnsavedChangesProvider>
     </AdminPanelProvider>
   );

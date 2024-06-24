@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tiptap/react';
 import { AlertTriangle, Check } from 'lucide-react';
 
-import { PostFormContext } from '@/shared/lib/context';
-import { UnsavedChangesContext } from '@/shared/lib/context';
 import { Post } from '@/shared/api/postApi';
 import { formatDate } from '@/shared/lib/helpers';
 import { CustomBadge } from '@/components/Badge';
@@ -14,6 +12,8 @@ import {
 } from './Controllers';
 import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
+import { PostFormContext } from '@/shared/context/postform.context';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 type Props = {
   editor: Editor;

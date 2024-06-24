@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
 import OrderHeader from '@/modules/AdminOrderHeader';
 import OrderTable from '@/modules/OrderTable';
-import classes from "./styles.module.css";
+import classes from './styles.module.css';
 
 export default function Page() {
   return (
@@ -10,7 +10,7 @@ export default function Page() {
         <Breadcrumbs
           crumbs={[{ href: '/admin/', text: 'Dashboard' }, { text: 'Orders' }]}
           classNames={{
-            root: "p-0 m-0"
+            root: 'p-0 m-0',
           }}
         />
       </div>

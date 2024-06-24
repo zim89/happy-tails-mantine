@@ -6,16 +6,15 @@ import { Editor } from '@tiptap/react';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 
-import { PostFormContext } from '@/shared/lib/context';
-import { UnsavedChangesContext } from '@/shared/lib/context';
 import { useCreatePostMutation } from '@/shared/api/postApi';
 
-import thumbnail from '@/assets/images/categories-dog.png';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { AlertTriangle, Check } from 'lucide-react';
 import Notify from '@/components/Notify';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import PageHeader from '@/components/PageHeader';
+import { PostFormContext } from '@/shared/context/postform.context';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { useNotification } from '@/shared/hooks/useNotification';
 
 type Props = {
   editor: Editor;
@@ -134,7 +133,7 @@ export const Header = ({ editor }: Props) => {
             <div className='mt-4 flex gap-3 md:mt-0'>
               <UnstyledButton
                 classNames={{
-                  root: 'text-black text-sm font-bold border w-[150px] text-center rounded-[2px] border-[#C8C8C8] border-solid py-[10px]',
+                  root: 'text-black text-sm font-bold border w-[150px] text-center rounded-sm border-brand-grey-400 border-solid py-[10px]',
                 }}
                 onClick={handleCancel}
               >
@@ -142,7 +141,7 @@ export const Header = ({ editor }: Props) => {
               </UnstyledButton>
               <UnstyledButton
                 classNames={{
-                  root: 'rounded-[2px] text-sm font-bold bg-black w-[150px] text-center py-[10px] text-white',
+                  root: 'rounded-sm text-sm font-bold bg-black w-[150px] text-center py-[10px] text-white',
                 }}
                 onClick={handleSave}
               >

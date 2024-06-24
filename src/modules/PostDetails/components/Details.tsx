@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { UnstyledButton, Checkbox } from '@mantine/core';
 import { Eye, Trash2, FolderDown, AlertTriangle, Check } from 'lucide-react';
 
-import { PostFormContext } from '@/shared/lib/context';
 import classes from '../classes.module.css';
 import { Post } from '@/shared/api/postApi';
 import { cn } from '@/shared/lib/utils';
@@ -14,6 +13,7 @@ import { useNotification } from '@/shared/hooks/useNotification';
 import Notify from '@/components/Notify';
 import DeletePostModal from '@/modules/DeletePostModal';
 import ArchivePostModal from '@/modules/ArchivePostModal';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 type Props = {
   status: Post['postStatus'];

@@ -6,8 +6,9 @@ import { useContext, useEffect } from 'react';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { publishImage } from '@/shared/lib/requests';
-import { UnsavedChangesContext } from '@/shared/lib/context';
+
 import BlockLink from '@/modules/BlockLink';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 type Props = {
   setNotification: (
