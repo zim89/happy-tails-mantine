@@ -39,7 +39,7 @@ export default function OrderTable() {
       <OrderCounter
         className={styles.counter}
         newOrders={calculated['NEW']}
-        inProgress={calculated['IN_PROGRESS']}
+        inProgress={calculated['IN PROGRESS']}
         completed={calculated['COMPLETED']}
         canceled={calculated['CANCELLED']}
       />

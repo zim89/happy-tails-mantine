@@ -35,7 +35,7 @@ export default function Slide({ title, subtitle, description }: SlideProps) {
           <UnstyledButton
             component={Link}
             href='/products'
-            className='mt-[10%] h-3.5 min-w-[4.6875rem] rounded-sm bg-black p-2 text-center text-[0.32375rem] font-bold text-primary md:h-7 md:min-w-[8.75rem] md:text-[0.6rem] lg:h-11 lg:min-w-[14.5rem] lg:text-base'
+            className='mt-[10%] h-3.5 min-w-[4.6875rem] rounded-sm bg-black py-1 text-center text-[0.32375rem] font-bold text-primary md:h-7 md:min-w-[8.75rem] md:text-[0.6rem] lg:h-11 lg:min-w-[14.5rem] lg:text-base'
           >
             Shop now
           </UnstyledButton>

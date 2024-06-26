@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import {
   Button,
   FileInput,
@@ -8,14 +8,7 @@ import {
   TextInput,
   Tooltip,
 } from '@mantine/core';
-import {
-  Info,
-  PlusCircle,
-  UploadCloud,
-  X,
-  Check,
-  AlertTriangle,
-} from 'lucide-react';
+import { Info, PlusCircle, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
@@ -26,36 +19,20 @@ import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow';
-import Notify from '@/components/Notify';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-      text: 'Category creating failed',
-    },
-    success: {
-      icon: <Check size={24} />,
-      color: '#389B48',
-      text: 'Category successfully added!',
-    }
-  })
+  const { setNotification } = useContext(notifyContext);
 
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
     name: null,
   });
-
-  const handleClose = () => {
-    clear();
-  };
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -124,11 +101,14 @@ export default function AddCategoryModal() {
       await dispatch(newCategory).unwrap();
 
       clearAndClose();
-      setNotification('Success');
+      setNotification('Success', 'Category successfully created!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
       console.error(err);
     }
@@ -170,7 +150,7 @@ export default function AddCategoryModal() {
               wrapper: 'flex border-2 gap-2 focus:outline outline-2',
               section: 'static w-auto text-[#161616] whitespace-nowrap',
               input: cn(
-                'form-input rounded-sm border-0 p-1 outline-none h-[40px]',
+                'form-input h-[40px] rounded-sm border-0 p-1 outline-none',
                 form?.errors?.categoryName && 'form-error--input'
               ),
               error: 'form-error',
@@ -235,8 +215,6 @@ export default function AddCategoryModal() {
           primaryBtnOnClick={form.onSubmit((values) => handleSubmit(values))}
         />
       </Modal>
-
-      <Notify {...props} onClose={handleClose} />
     </>
   );
 }

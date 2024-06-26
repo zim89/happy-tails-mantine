@@ -1,12 +1,12 @@
 'use client';
-import { useState } from 'react';
-import { Textarea, Button, UnstyledButton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { Edit2, AlertTriangle, Check } from 'lucide-react';
 
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notify from '@/components/Notify';
+import { useContext, useState } from 'react';
+import { Textarea, UnstyledButton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Edit2 } from 'lucide-react';
+
 import { useAddCommentMutation } from '@/shared/api/ordersApi';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   orderNumber: string;
@@ -18,19 +18,7 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
   const [areCommentsOpened, { close: closeComments, toggle: toggleComments }] =
     useDisclosure(false);
   const [dispatch] = useAddCommentMutation();
-
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Failed to add comment.',
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-    },
-    success: {
-      text: 'Comment posted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const closeSection = () => {
     setComment('');
@@ -41,7 +29,7 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
     try {
       await dispatch({ comment, orderNumber }).unwrap();
       closeSection();
-      setNotification('Success');
+      setNotification('Success', 'Comment posted!');
     } catch (err) {
       if (err instanceof Error) setNotification('Failed', err.message);
     }
@@ -92,7 +80,6 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
       ) : (
         <div className='p-4'>{commentOfManager}</div>
       )}
-      <Notify {...props} onClose={clear} />
     </div>
   );
 };

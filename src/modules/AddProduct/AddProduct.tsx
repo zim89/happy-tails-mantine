@@ -1,28 +1,16 @@
 'use client';
 
-import { Check, AlertTriangle } from 'lucide-react';
+import { useContext } from 'react';
 
-import Notify from '@/components/Notify';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { Form } from './components/Form';
 import { Variants } from './components/Variants';
 import { AddProductProvider } from './lib/utils';
 import { Controls } from './components/Controls';
 import PageHeader from '@/components/PageHeader';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export default function AddProduct() {
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'Product adding failed!',
-    },
-    success: {
-      icon: <Check size={24} />,
-      color: '#389B48',
-      text: 'Product successfully added!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   return (
     <AddProductProvider>
@@ -40,8 +28,6 @@ export default function AddProduct() {
       <Form />
       <Variants />
       <Controls setNotification={setNotification} />
-
-      <Notify {...props} onClose={clear} />
     </AddProductProvider>
   );
 }

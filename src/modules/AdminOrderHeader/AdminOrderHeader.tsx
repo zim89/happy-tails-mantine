@@ -2,39 +2,18 @@
 
 import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import { Button, Menu } from '@mantine/core';
-import {
-  AlertTriangle,
-  Check,
-  Download,
-  File,
-  Files,
-  PlusCircle,
-  Printer,
-} from 'lucide-react';
+import { Download, File, Files, PlusCircle, Printer } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { json2csv } from 'json-2-csv';
 
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notification from '@/components/Notify';
 import classes from './classes.module.css';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export default function AdminOrderHeader() {
   const [opened, setOpened] = useState(false);
   const orders = useSelectOrders((state) => state);
-
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-      text: "Couldn't copy. Please try again.",
-    },
-    success: {
-      icon: <Check size={24} />,
-      color: '#389B48',
-      text: 'Copied!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const copyToClipboard = async () => {
     try {
@@ -47,10 +26,10 @@ export default function AdminOrderHeader() {
         document.execCommand('copy', true, data);
       }
 
-      setNotification('Success');
+      setNotification('Success', 'Copied!');
     } catch (err) {
       console.log(err);
-      setNotification('Failed');
+      setNotification('Failed', "Couldn't copy. Please try again.");
     }
   };
 
@@ -114,7 +93,6 @@ export default function AdminOrderHeader() {
           Add a new order
         </Link>
       </div>
-      <Notification {...props} onClose={clear} />
     </div>
   );
 }

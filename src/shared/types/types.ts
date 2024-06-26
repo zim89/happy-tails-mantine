@@ -3,11 +3,11 @@ type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =
   | 'NEW'
-  | 'IN_PROGRESS'
+  | 'IN PROGRESS'
   | 'PROCESSING'
   | 'CANCELLED'
   | 'SHIPPED'
-  | 'RETURN_PROCESSING'
+  | 'RETURN PROCESSING'
   | 'COMPLETED';
 
 export type ProductColor =

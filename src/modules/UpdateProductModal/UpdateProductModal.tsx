@@ -5,12 +5,12 @@ import { Form, useForm } from '@mantine/form';
 import Image from 'next/image';
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
+import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
 import { Product } from '@/shared/types/types';
 import { useUpdateMutation } from '@/shared/api/productApi';
@@ -132,7 +132,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
 
       await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setNotification('Success');
+      setNotification('Success', 'Product updated successfully!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {

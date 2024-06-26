@@ -8,6 +8,7 @@ import { productTypeList } from '@/shared/lib/constants';
 import { cn } from '@/shared/lib/utils';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
+import { ProductStatus } from '@/shared/types/types';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -23,7 +24,7 @@ export const Form = () => {
 
   return (
     <div className={classes.form}>
-      <h3 className='mb-6 border-b border-b-[#C8C8C8] py-2 text-xl font-bold'>
+      <h3 className='mb-6 border-b border-b-brand-grey-400 py-2 text-xl font-bold'>
         Product Options
       </h3>
 
@@ -36,7 +37,7 @@ export const Form = () => {
                 root: 'form-root w-full',
                 label: 'form-label',
                 wrapper: 'flex gap-2 focus:outline outline-2',
-                section: 'static w-auto text-[#161616] whitespace-nowrap',
+                section: 'static w-auto text-secondary whitespace-nowrap',
                 input: cn(
                   'form-input px-2 outline-none',
                   productForm?.errors?.name && 'form-error--input'
@@ -52,7 +53,7 @@ export const Form = () => {
                 root: 'form-root w-full',
                 label: 'form-label',
                 wrapper: 'flex gap-2 focus:outline outline-2',
-                section: 'static w-auto text-[#161616] whitespace-nowrap',
+                section: 'static w-auto text-secondary whitespace-nowrap',
                 input: cn(
                   'form-input rounded-sm px-2 outline-none',
                   productForm?.errors?.price && 'form-error--input'
@@ -62,7 +63,47 @@ export const Form = () => {
               type='number'
               min={0}
               max={Number.MAX_SAFE_INTEGER}
-              label='Price'
+              label='Price, $'
+            />
+          </div>
+          <div className={classes.inputRow}>
+            <Select
+              {...productForm.getInputProps('productStatus')}
+              classNames={{
+                root: 'form-root w-full',
+                label: 'form-label',
+                wrapper:
+                  'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                section: 'static w-auto text-secondary whitespace-nowrap',
+                option: 'text-xs',
+                input: cn(
+                  'form-input border-0 p-0 outline-none',
+                  productForm?.errors?.productStatus && 'form-error--input'
+                ),
+                error: 'form-error',
+              }}
+              rightSection={<ChevronDown color='black' size={16} />}
+              type='text'
+              label='Status'
+              data={['IN STOCK', 'OUT OF STOCK'] as ProductStatus[]}
+            />
+            <TextInput
+              {...productForm.getInputProps('quantity')}
+              classNames={{
+                root: 'form-root w-full',
+                label: 'form-label',
+                wrapper: 'flex gap-2 focus:outline outline-2',
+                section: 'static w-auto text-secondary whitespace-nowrap',
+                input: cn(
+                  'form-input rounded-sm px-2 outline-none',
+                  productForm?.errors?.quantity && 'form-error--input'
+                ),
+                error: 'form-error',
+              }}
+              type='number'
+              min={0}
+              max={Number.MAX_SAFE_INTEGER}
+              label='Quantity'
             />
           </div>
           <div className={classes.inputRow}>
@@ -72,8 +113,8 @@ export const Form = () => {
                 root: 'form-root w-full',
                 label: 'form-label',
                 wrapper:
-                  'flex border border-[#C8C8C8] rounded-sm px-2 gap-2 focus:outline outline-2 bg-[#FDFDFD]',
-                section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                section: 'static w-auto text-secondary whitespace-nowrap',
                 option: 'text-xs',
                 input: cn(
                   'form-input border-0 p-0 outline-none',
@@ -94,8 +135,8 @@ export const Form = () => {
                 root: 'form-root w-full',
                 label: 'form-label',
                 wrapper:
-                  'flex border border-[#C8C8C8] rounded-sm px-2 gap-2 focus:outline outline-2 bg-[#FDFDFD]',
-                section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                section: 'static w-auto text-secondary whitespace-nowrap',
                 option: 'text-xs',
                 input: cn(
                   'form-input border-0 p-0 outline-none',

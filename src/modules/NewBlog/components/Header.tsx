@@ -8,13 +8,11 @@ import { useRouter } from 'next/navigation';
 
 import { useCreatePostMutation } from '@/shared/api/postApi';
 
-import { AlertTriangle, Check } from 'lucide-react';
-import Notify from '@/components/Notify';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import PageHeader from '@/components/PageHeader';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
-import { useNotification } from '@/shared/hooks/useNotification';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   editor: Editor;
@@ -22,20 +20,9 @@ type Props = {
 export const Header = ({ editor }: Props) => {
   const { form, defaultValues } = useContext(PostFormContext);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
+  const { setNotification } = useContext(notifyContext);
   const [dispatch] = useCreatePostMutation();
   const router = useRouter();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'post creation failed!',
-    },
-    success: {
-      color: '#389B48',
-      icon: <Check size={24} />,
-      text: 'Post creation succeeded!',
-    },
-  });
 
   const [isEdited, setIsEdited] = useState(false);
   const editorContent = editor?.getHTML();
@@ -113,7 +100,7 @@ export const Header = ({ editor }: Props) => {
       }).unwrap();
       setIsEdited(false);
       router.push(`/admin/blogs/${id}`);
-      setNotification('Success');
+      setNotification('Success', 'Post creation succeeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);
@@ -160,8 +147,6 @@ export const Header = ({ editor }: Props) => {
           </>
         )}
       </PageHeader>
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 };

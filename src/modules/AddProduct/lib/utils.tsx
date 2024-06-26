@@ -37,23 +37,29 @@ export type ProductForm = UseFormReturnType<
   {
     name: string;
     categoryName: string;
+    productStatus: string;
     price: number;
     productType: Product['productType'];
+    quantity: number;
     description: string;
     image: File | null;
   },
   (values: {
     name: string;
     categoryName: string;
+    productStatus: string;
     price: number;
     productType: Product['productType'];
+    quantity: number;
     description: string;
     image: File | null;
   }) => {
     name: string;
     categoryName: string;
+    productStatus: string;
     price: number;
     productType: Product['productType'];
+    quantity: number;
     description: string;
     image: File | null;
   }
@@ -86,7 +92,9 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
       categoryName: '' as Product['categoryName'],
       price: 0,
       productType: 'INDOORS' as Product['productType'],
+      quantity: 0,
       description: '',
+      productStatus: '',
       image: null as File | null,
     },
 
@@ -103,6 +111,8 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       image: isNotEmpty('Please select a product image'),
       description: isNotEmpty('Enter a description'),
+      productStatus: isNotEmpty('Enter a product status'),
+      quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
     },
   });
 

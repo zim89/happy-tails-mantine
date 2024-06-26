@@ -1,4 +1,4 @@
-import { isNotEmpty, useForm } from '@mantine/form';
+import { isInRange, isNotEmpty, useForm } from '@mantine/form';
 import { FileInput, Select, TextInput, Tooltip } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { ChevronDown, Info, Trash2, UploadCloud, X } from 'lucide-react';
@@ -40,8 +40,8 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
     validate: {
       size: isNotEmpty('Please select a size'),
       color: isNotEmpty('Please select a color'),
-      quantity: isNotEmpty('Please enter a quantity'),
-      price: isNotEmpty('Please enter a price'),
+      quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
+      price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       variantImage: isNotEmpty('Please upload an image'),
     },
   }) as VariantForm;
@@ -88,8 +88,8 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
             root: 'form-root w-full',
             label: 'form-label',
             wrapper:
-              'flex border border-[#C8C8C8] rounded-sm px-2 gap-2 focus:outline outline-2 bg-[#FDFDFD]',
-            section: 'static w-auto text-[#161616] whitespace-nowrap',
+              'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+            section: 'static w-auto text-secondary whitespace-nowrap',
             option: 'text-xs',
             input: cn(
               'form-input border-0 p-0 outline-none',
@@ -109,8 +109,8 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
             root: 'form-root w-full',
             label: 'form-label',
             wrapper:
-              'flex border border-[#C8C8C8] rounded-sm px-2 gap-2 focus:outline outline-2 bg-[#FDFDFD]',
-            section: 'static w-auto text-[#161616] whitespace-nowrap',
+              'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+            section: 'static w-auto text-secondary whitespace-nowrap',
             option: 'text-xs',
             input: cn(
               'form-input border-0 p-0 outline-none',
@@ -145,7 +145,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
             root: 'form-root w-full ',
             label: 'form-label',
             wrapper: 'flex gap-2 focus:outline outline-2',
-            section: 'static w-auto text-[#161616] whitespace-nowrap',
+            section: 'static w-auto text-secondary whitespace-nowrap',
             input: cn(
               'form-input px-2 outline-none',
               form?.errors?.quantity && 'form-error--input'
@@ -161,7 +161,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
             root: 'form-root w-full',
             label: 'form-label',
             wrapper: 'flex gap-2 focus:outline outline-2',
-            section: 'static w-auto text-[#161616] whitespace-nowrap',
+            section: 'static w-auto text-secondary whitespace-nowrap',
             input: cn(
               'form-input rounded-sm px-2 outline-none',
               form?.errors?.price && 'form-error--input'

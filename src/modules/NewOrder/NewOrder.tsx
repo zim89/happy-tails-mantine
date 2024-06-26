@@ -73,7 +73,7 @@ export default function NewOrder() {
 
       await dispatch(orderRequest).unwrap();
       form.reset();
-      setNotification('Success', 'Order creation succeded!');
+      setNotification('Success', 'Order creation succeeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);

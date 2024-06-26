@@ -1,8 +1,9 @@
+import { UnstyledButton } from '@mantine/core';
+import { useContext, useEffect } from 'react';
+
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { CreateProductBody } from '@/shared/types/types';
-import { UnstyledButton } from '@mantine/core';
 import { ProductForm, context } from '../lib/utils';
-import { useContext, useEffect } from 'react';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { publishImage } from '@/shared/lib/requests';
@@ -46,6 +47,7 @@ export const Controls = ({ setNotification }: Props) => {
   const handleSubmit = async ({
     image,
     categoryName,
+    quantity,
     ...rest
   }: ProductForm['values']) => {
     const { hasErrors } = productForm.validate();
@@ -61,14 +63,22 @@ export const Controls = ({ setNotification }: Props) => {
 
     try {
       let imagePath = '';
+
       if (image) {
         imagePath = await publishImage(image, rest.name);
       }
+
+      let totalQuantity = Number(quantity);
 
       let productColorSizes: CreateProductBody['productColorSizes'] = [];
       if (variants.length) {
         variants.forEach(async (variant) => {
           if (!variant) return;
+
+          // Update total quantity of the product
+          totalQuantity += Number(variant.values.quantity);
+
+          // Add size for each color
           let candidateIndex = productColorSizes.findIndex(
             (v) => v.color === variant.values.color
           );
@@ -112,7 +122,7 @@ export const Controls = ({ setNotification }: Props) => {
         ...rest,
         productColorSizes: productColorSizes,
         imagePath,
-        totalQuantity: 1,
+        totalQuantity,
         onSale: true,
         salePrice: 0,
       };
@@ -121,10 +131,12 @@ export const Controls = ({ setNotification }: Props) => {
 
       candidate && (newProduct.categoryId = candidate.id);
 
+      console.log(newProduct);
+
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();
-      setNotification('Success');
+      setNotification('Success', 'Product created successfully!');
     } catch (err) {
       clearAndClose();
       console.error(err);

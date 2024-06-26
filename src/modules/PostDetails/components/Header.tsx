@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tiptap/react';
-import { AlertTriangle, Check } from 'lucide-react';
 
 import { Post } from '@/shared/api/postApi';
 import { formatDate } from '@/shared/lib/helpers';
@@ -10,10 +9,9 @@ import {
   DraftController,
   PublishedController,
 } from './Controllers';
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notify from '@/components/Notify';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   editor: Editor;
@@ -22,18 +20,7 @@ type Props = {
 export const Header = ({ editor, post }: Props) => {
   const { form, defaultValues } = useContext(PostFormContext);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'Post update failed!',
-    },
-    success: {
-      color: '#389B48',
-      icon: <Check size={24} />,
-      text: 'Post update succeeded!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const [isEdited, setIsEdited] = useState(false);
   const editorContent = editor?.getHTML();
@@ -100,7 +87,6 @@ export const Header = ({ editor, post }: Props) => {
           )}
         </div>
       </div>
-      <Notify {...props} onClose={clear} />
     </>
   );
 };
