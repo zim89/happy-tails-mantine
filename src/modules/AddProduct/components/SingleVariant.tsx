@@ -1,4 +1,4 @@
-import { isInRange, isNotEmpty, useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { FileInput, Select, TextInput, Tooltip } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { ChevronDown, Info, Trash2, UploadCloud, X } from 'lucide-react';
@@ -74,13 +74,6 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
 
   return (
     <div className={classes.variant}>
-      <div className='flex justify-end'>
-        <button className={classes.deleteBtn} onClick={handleDelete}>
-          <span className='flex items-center gap-[2px] text-xs'>
-            <Trash2 size={16} />
-          </span>
-        </button>
-      </div>
       <div className={classes.variantInputs}>
         <Select
           {...form.getInputProps('size')}

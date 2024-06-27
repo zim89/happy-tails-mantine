@@ -1,6 +1,8 @@
 'use client';
 
 import { notFound, usePathname } from 'next/navigation';
+import { useContext, useEffect } from 'react';
+import { AlertTriangle, Check } from 'lucide-react';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import classes from './layout.module.css';
@@ -9,8 +11,6 @@ import AdminHeader from '@/modules/AdminHeader';
 import { UnsavedChangesProvider } from '@/shared/context/unsaved.context';
 import { AdminPanelProvider } from '@/shared/context/panel.context';
 import { notifyContext } from '@/shared/context/notification.context';
-import { useContext, useEffect } from 'react';
-import { AlertTriangle, Check } from 'lucide-react';
 import Notify from '@/components/Notify';
 
 const regex = /\/preview/;
