@@ -36,12 +36,12 @@ export default function Stats() {
               <stat.icon color='#F39324' size={24} />
             </span>
           </div>
-          {/* {stat.todayIncome > 0 && (
+          {values[stat.propertyInWeek] > 0 && (
             <p className='mt-4 flex max-w-max items-center gap-2 rounded-lg bg-brand-green-100 px-2 py-[5px] text-brand-green-400'>
               <TrendingUp strokeWidth='3px' size={16} />
-              <span>+{stat.todayIncome} today</span>
+              <span>+{values[stat.propertyInWeek]} this week</span>
             </p>
-          )} */}
+          )}
         </div>
       ))}
     </div>

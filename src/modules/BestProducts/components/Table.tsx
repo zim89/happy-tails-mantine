@@ -5,18 +5,16 @@ import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
 } from '@tanstack/react-table';
-import { useDebouncedState } from '@mantine/hooks';
 
 import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow';
+import { useEffect } from 'react';
 
-const columnHelper = createColumnHelper<Product>();
+const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 
 const badgePalette: {
   [P in string]: string;
@@ -33,15 +31,13 @@ const columns = [
     size: 10,
   }),
   columnHelper.accessor('name', {
-    cell: (info) => <span>{info.getValue()}</span>,
+    cell: (info) => (
+      <span className='block max-w-36 overflow-hidden text-ellipsis whitespace-nowrap'>
+        {info.getValue()}
+      </span>
+    ),
     header: 'Total order',
     enableSorting: false,
-  }),
-  columnHelper.accessor('price', {
-    cell: (info) => <span className='whitespace-pre'>$ {info.getValue()}</span>,
-    header: 'Price',
-    enableSorting: false,
-    size: 10,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
@@ -62,24 +58,34 @@ const columns = [
     enableSorting: false,
     size: 10,
   }),
+  columnHelper.accessor('totalPaid', {
+    cell: (info) => <span className='whitespace-pre'>$ {info.getValue()}</span>,
+    header: 'Total paid',
+    enableSorting: true,
+    size: 10,
+  }),
 ];
 
 type Props = {
   data: Product[];
 };
 export default function ProductsTable({ data }: Props) {
-  const [search, setSearch] = useDebouncedState('', 200);
-
   const table = useReactTable({
-    data,
+    // This is used, just to make possible to sort total paid
+    data: data.map((prod) => ({
+      ...prod,
+      totalPaid: (prod.unitsSold || 0) * prod.price,
+    })),
     columns,
-    state: {
-      globalFilter: search,
+    initialState: {
+      sorting: [
+        {
+          id: 'totalPaid',
+          desc: true,
+        },
+      ],
     },
-    onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
@@ -95,7 +101,7 @@ export default function ProductsTable({ data }: Props) {
         bgcolor='white'
         withTableBorder
         borderColor='transparent'
-        classNames={{ tr: 'border-t border-[#EEE]' }}
+        classNames={{ tr: 'border-t border-brand-grey-300' }}
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />

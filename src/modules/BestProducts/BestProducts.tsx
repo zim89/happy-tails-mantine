@@ -1,20 +1,13 @@
 'use client';
 
-import { useFindManyQuery } from '@/shared/api/productApi';
+import { useFindBestSellersQuery } from '@/shared/api/productApi';
 import ProductsTable from './components/Table';
 import Loader from '@/components/Loader';
 
 export const BestProducts = () => {
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useFindManyQuery({
-    limit: 5,
-    page: 0,
-  });
+  const { data: products, error, isLoading } = useFindBestSellersQuery();
 
-  if (isLoading) return <Loader size={64} />;
+  if (!products || isLoading) return <Loader size={64} />;
   if (error)
     return (
       <p>
@@ -26,7 +19,7 @@ export const BestProducts = () => {
 
   return (
     <>
-      <ProductsTable data={products?.content || []} />
+      <ProductsTable data={products.content} />
     </>
   );
 };

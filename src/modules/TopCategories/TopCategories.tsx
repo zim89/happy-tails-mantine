@@ -2,7 +2,7 @@
 
 import { cn } from '@/shared/lib/utils';
 import { useTopCategoriesQuery } from '@/shared/api/dashboardApi';
-import { BestProducts } from '../BestProductsTable/BestProducts';
+import { BestProducts } from '../BestProducts/BestProducts';
 import { COLOR_MAP } from './lib/data';
 import { CircleChartSkeleton } from './components/Skeleton';
 
