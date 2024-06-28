@@ -17,7 +17,7 @@ export default function OrdersChart() {
     isLoading,
   } = useFindManyQuery({
     page: 0,
-    limit: 6,
+    limit: 10000000,
   });
 
   const [selected, setSelected] = useState<string[]>([
@@ -26,7 +26,7 @@ export default function OrdersChart() {
     'In progress',
   ]);
 
-  if (isLoading) return <Loader size={64} />;
+  if (!orders || isLoading) return <Loader size={64} />;
   if (error)
     return (
       <p>
@@ -71,7 +71,7 @@ export default function OrdersChart() {
           height={325}
         />
       </div>
-      <Table data={orders?.content || []} />
+      <Table data={orders.content} />
     </div>
   );
 }

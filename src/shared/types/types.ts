@@ -145,7 +145,7 @@ export interface Order {
   id: string;
   number: string;
   orderStatus: OrderStatus;
-  createdDate: string;
+  createdDate: number;
   statusLastUpdatedAt: number | null;
   email: string;
   userId: string;

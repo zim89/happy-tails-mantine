@@ -1,19 +1,13 @@
 'use client';
 
 import {
-  ColumnFiltersState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
+import { useMemo } from 'react';
 import dayjs from 'dayjs';
-import { useDebouncedState } from '@mantine/hooks';
 import { Table as MantineTable } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
@@ -36,7 +30,7 @@ const columns = [
   }),
   columnHelper.accessor('createdDate', {
     cell: (info) => (
-      <span>{dayjs(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
+      <span>{dayjs.unix(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
     ),
     header: () => 'Date',
     enableSorting: false,
@@ -60,26 +54,21 @@ const columns = [
 ];
 
 export default function Table({ data }: { data: Order[] }) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = useDebouncedState('', 200);
+  const tableRows = useMemo(() => {
+    return data
+      .slice(0)
+      .sort((a, b) => (a.createdDate < b.createdDate ? 1 : -1))
+      .slice(0, 6);
+  }, [data]);
 
   const table = useReactTable({
     columns,
-    data,
-    state: {
-      columnFilters,
-      globalFilter,
-    },
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
+    data: tableRows,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
-    <div className='flex-1 overflow-hidden rounded border border-[#EEE]'>
+    <div className='flex-1 overflow-hidden rounded border border-brand-grey-300'>
       <div>
         <h3 className='bg-white p-4 text-xl font-bold'>Recent Orders</h3>
       </div>

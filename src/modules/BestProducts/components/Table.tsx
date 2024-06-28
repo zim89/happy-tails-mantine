@@ -12,7 +12,7 @@ import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 
@@ -28,7 +28,7 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Product',
     enableSorting: false,
-    size: 10,
+    size: 200,
   }),
   columnHelper.accessor('name', {
     cell: (info) => (
@@ -38,6 +38,7 @@ const columns = [
     ),
     header: 'Total order',
     enableSorting: false,
+    size: 200,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
@@ -56,12 +57,16 @@ const columns = [
     ),
     header: 'Status',
     enableSorting: false,
-    size: 10,
+    size: 250,
   }),
   columnHelper.accessor('totalPaid', {
-    cell: (info) => <span className='whitespace-pre'>$ {info.getValue()}</span>,
+    cell: (info) => (
+      <div className='flex justify-end'>
+        <span className='whitespace-pre'>$ {info.getValue()}</span>
+      </div>
+    ),
     header: 'Total paid',
-    enableSorting: true,
+    enableSorting: false,
     size: 10,
   }),
 ];
@@ -70,27 +75,25 @@ type Props = {
   data: Product[];
 };
 export default function ProductsTable({ data }: Props) {
+  const tableRows = useMemo(() => {
+    return data
+      .map((prod) => ({
+        ...prod,
+        totalPaid: (prod.unitsSold || 0) * prod.price,
+      }))
+      .sort((a, b) => (a.totalPaid < b.totalPaid ? 1 : -1));
+  }, [data]);
+
   const table = useReactTable({
-    // This is used, just to make possible to sort total paid
-    data: data.map((prod) => ({
-      ...prod,
-      totalPaid: (prod.unitsSold || 0) * prod.price,
-    })),
+    // This is used, just to make possible to initially sort total paid
+    data: tableRows,
     columns,
-    initialState: {
-      sorting: [
-        {
-          id: 'totalPaid',
-          desc: true,
-        },
-      ],
-    },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
   return (
-    <div className='h-full w-full overflow-hidden rounded border border-brand-grey-300'>
+    <div className='w-full overflow-hidden rounded border border-brand-grey-300'>
       <div className='flex items-center justify-between bg-white px-4 py-6'>
         <h2 className='mr-6 text-base/[1.5rem] font-bold'>
           Best Selling Products
@@ -101,7 +104,10 @@ export default function ProductsTable({ data }: Props) {
         bgcolor='white'
         withTableBorder
         borderColor='transparent'
-        classNames={{ tr: 'border-t border-brand-grey-300' }}
+        classNames={{
+          table: 'h-[calc(100%-5em)]',
+          tr: 'border-t border-brand-grey-300',
+        }}
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />
