@@ -1,13 +1,14 @@
-import { Metadata } from "next"
+'use client';
 
-export const metadata: Metadata = {
-    robots: {
-        index: false
-    }
-}
+import { AdminPanelContext } from '@/shared/context/panel.context';
+import { useContext, useEffect } from 'react';
 
-export default function Layout({children}: { children: React.ReactNode }) {
-    return (
-        <>{children}</>
-    )
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update((prev) => ({ ...prev, openedLink: 'Orders' }));
+  }, []);
+
+  return <>{children}</>;
 }

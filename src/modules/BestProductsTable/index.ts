@@ -1,1 +1,1 @@
-export { default } from './BestProductsTable';
+export { default } from './BestProducts';

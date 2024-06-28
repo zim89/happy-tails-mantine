@@ -16,7 +16,7 @@ import {
   Menu,
   UnstyledButton,
 } from '@mantine/core';
-import { useState, useMemo, useContext, useEffect } from 'react';
+import { useState, useMemo, useContext } from 'react';
 import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
@@ -30,9 +30,7 @@ import { Actions } from './Actions';
 import { CustomBadge } from '@/components/Badge';
 import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import Notify from '@/components/Notify';
 import { filterOptions } from '../lib/data';
-import { AdminPanelContext } from '@/shared/context/panel.context';
 import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
@@ -87,12 +85,7 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
-  const { update } = useContext(AdminPanelContext);
   const { setNotification } = useContext(notifyContext);
-
-  useEffect(() => {
-    update((prev) => ({ ...prev, openedLink: 'Messages' }));
-  }, []);
 
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);

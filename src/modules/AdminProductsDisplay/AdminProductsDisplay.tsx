@@ -1,6 +1,5 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -8,19 +7,12 @@ import { useFindManyQuery } from '@/shared/api/productApi';
 import ProductsTable from '@/modules/ProductsTable';
 
 import PageHeader from '@/components/PageHeader';
-import { AdminPanelContext } from '@/shared/context/panel.context';
 
 export default function AdminProductsDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
     limit: 1000000,
     page: 0,
   });
-
-  const { update } = useContext(AdminPanelContext);
-
-  useEffect(() => {
-    update((prev) => ({ ...prev, openedLink: 'Products' }));
-  }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Oops, something went wrong</p>;

@@ -10,7 +10,6 @@ import {
   getSortedRowModel,
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
-import Image from 'next/image';
 
 import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
