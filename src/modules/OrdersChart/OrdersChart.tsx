@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { MultiSelect } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 
-import { COLORS, data } from './lib/data';
+import { COLORS, summarizeOrderStatuses } from './lib/data';
 import DonutChart from '@/components/DonutChart';
 import Table from './components/Table';
 import { useFindManyQuery } from '@/shared/api/ordersApi';
@@ -20,11 +20,7 @@ export default function OrdersChart() {
     limit: 10000000,
   });
 
-  const [selected, setSelected] = useState<string[]>([
-    'New',
-    'Completed',
-    'In progress',
-  ]);
+  const [selected, setSelected] = useState<string[]>(['NEW']);
 
   if (!orders || isLoading) return <Loader size={64} />;
   if (error)
@@ -36,6 +32,8 @@ export default function OrdersChart() {
       </p>
     );
 
+  const summarizedOrders = summarizeOrderStatuses(orders.content);
+
   return (
     <div className='flex gap-6'>
       <div className='max-w-min overflow-hidden rounded border border-brand-grey-300 bg-primary'>
@@ -44,12 +42,14 @@ export default function OrdersChart() {
           <MultiSelect
             value={selected}
             placeholder={
-              selected.length === 3 ? 'View All' : selected.join(',')
+              selected.length === summarizedOrders.length
+                ? 'View All'
+                : selected.join(',')
             }
-            data={data.map((item) => item.name)}
+            data={summarizedOrders.map((item) => item.name)}
             classNames={{
               root: 'max-w-[105px] w-full',
-              input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
+              input: 'font-lato text-xs bg-primary text-[#B4B4B4]',
               pillsList: 'whitespace-nowrap overflow-hidden text-ellipsis',
               pill: 'hidden',
             }}
@@ -61,12 +61,8 @@ export default function OrdersChart() {
           />
         </div>
         <DonutChart
-          data={data.filter((item) => selected.includes(item.name))}
-          colors={{
-            New: COLORS.New,
-            Completed: COLORS.Completed,
-            'In progress': COLORS['In progress'],
-          }}
+          data={summarizedOrders.filter((item) => selected.includes(item.name))}
+          colors={COLORS}
           width={314}
           height={325}
         />

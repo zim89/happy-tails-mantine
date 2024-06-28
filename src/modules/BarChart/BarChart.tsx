@@ -20,25 +20,7 @@ import {
 } from '@/shared/lib/helpers';
 import { useFetchSalesQuery } from '@/shared/api/dashboardApi';
 import Loader from '@/components/Loader';
-
-const CustomTooltip = ({
-  active,
-  payload,
-}: {
-  active?: boolean;
-  payload?: any;
-}) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className='border border-brand-grey-400 bg-primary px-4 py-2'>
-        <p className='font-black'>{`${payload[0].payload?.date}`}</p>
-        <p className='text-brand-orange-500'>{`Total: $${payload[0]?.payload?.totalSales}`}</p>
-      </div>
-    );
-  }
-
-  return null;
-};
+import { CustomTooltip } from './components/CustomTooltip';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
@@ -160,7 +142,7 @@ export default function BarChart() {
             labelFormatter={(label) => {
               return barChartType === 'Year' ? monthMap[label] : label;
             }}
-            content={<CustomTooltip />}
+            content={<CustomTooltip kind={barChartType} />}
           />
           <CartesianGrid vertical stroke='#EEE' />
           <Bar dataKey='totalSales' fill='#4285F4' />
