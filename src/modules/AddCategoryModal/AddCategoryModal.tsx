@@ -212,7 +212,9 @@ export default function AddCategoryModal() {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit((values) => handleSubmit(values))}
+          primaryBtnOnClick={() =>
+            form.onSubmit((values) => handleSubmit(values))
+          }
         />
       </Modal>
     </>

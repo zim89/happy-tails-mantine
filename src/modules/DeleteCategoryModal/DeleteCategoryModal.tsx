@@ -54,7 +54,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
 
   return (
     <DeleteModal>
-      {(Modal, Notification) => {
+      {(Modal) => {
         return (
           <>
             {/* Button to open main modal */}

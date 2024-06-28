@@ -18,7 +18,7 @@ export const formatDateToLongString = (
   return dayjs(date).format(format);
 };
 
-export const formatDateToShortString = (raw: string) => {
+export const formatDateToShortString = (raw: string | number) => {
   return dayjs(raw).format('DD.MM.YY');
 };
 

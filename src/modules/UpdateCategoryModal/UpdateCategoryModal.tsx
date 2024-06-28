@@ -224,7 +224,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit(handleSubmit)}
+          primaryBtnOnClick={() => form.onSubmit(handleSubmit)}
         />
       </Modal>
     </>

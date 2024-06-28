@@ -4,7 +4,7 @@ import { useFindBestSellersQuery } from '@/shared/api/productApi';
 import ProductsTable from './components/Table';
 import Loader from '@/components/Loader';
 
-export const BestProducts = () => {
+export default function BestProducts() {
   const { data: products, error, isLoading } = useFindBestSellersQuery();
 
   if (!products || isLoading) return <Loader size={64} />;
@@ -22,4 +22,4 @@ export const BestProducts = () => {
       <ProductsTable data={products.content} />
     </>
   );
-};
+}
