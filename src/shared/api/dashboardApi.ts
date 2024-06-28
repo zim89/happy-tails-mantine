@@ -72,7 +72,22 @@ export const dashboardApi = createApi({
         url: '/category-stats/top-selling',
       }),
     }),
+    fetchSales: builder.query({
+      query: ({ year, month }: { year: string; month?: number }) => {
+        const form = new URLSearchParams();
+        form.append('year', year);
+        month && form.append('month', `${month}`);
+
+        return {
+          url: month
+            ? '/order-stats/total-monthly-sales'
+            : '/order-stats/total-sales',
+          params: form,
+        };
+      },
+    }),
   }),
 });
 
-export const { useStatsQuery, useTopCategoriesQuery } = dashboardApi;
+export const { useStatsQuery, useTopCategoriesQuery, useFetchSalesQuery } =
+  dashboardApi;
