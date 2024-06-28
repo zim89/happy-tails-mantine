@@ -4,3 +4,4 @@
 
 - Stopped on CartButton
 - Match User pages with updated UserDTO
+- Add skeletons for every dashboard widget
