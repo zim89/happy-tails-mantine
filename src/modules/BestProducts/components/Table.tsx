@@ -5,19 +5,16 @@ import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
 } from '@tanstack/react-table';
-import { useDebouncedState } from '@mantine/hooks';
-import Image from 'next/image';
 
 import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow';
+import { useEffect, useMemo } from 'react';
 
-const columnHelper = createColumnHelper<Product>();
+const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 
 const badgePalette: {
   [P in string]: string;
@@ -31,18 +28,17 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Product',
     enableSorting: false,
-    size: 10,
+    size: 200,
   }),
   columnHelper.accessor('name', {
-    cell: (info) => <span>{info.getValue()}</span>,
+    cell: (info) => (
+      <span className='block max-w-36 overflow-hidden text-ellipsis whitespace-nowrap'>
+        {info.getValue()}
+      </span>
+    ),
     header: 'Total order',
     enableSorting: false,
-  }),
-  columnHelper.accessor('price', {
-    cell: (info) => <span className='whitespace-pre'>$ {info.getValue()}</span>,
-    header: 'Price',
-    enableSorting: false,
-    size: 10,
+    size: 200,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
@@ -61,6 +57,16 @@ const columns = [
     ),
     header: 'Status',
     enableSorting: false,
+    size: 250,
+  }),
+  columnHelper.accessor('totalPaid', {
+    cell: (info) => (
+      <div className='flex justify-end'>
+        <span className='whitespace-pre'>$ {info.getValue()}</span>
+      </div>
+    ),
+    header: 'Total paid',
+    enableSorting: false,
     size: 10,
   }),
 ];
@@ -69,23 +75,25 @@ type Props = {
   data: Product[];
 };
 export default function ProductsTable({ data }: Props) {
-  const [search, setSearch] = useDebouncedState('', 200);
+  const tableRows = useMemo(() => {
+    return data
+      .map((prod) => ({
+        ...prod,
+        totalPaid: (prod.unitsSold || 0) * prod.price,
+      }))
+      .sort((a, b) => (a.totalPaid < b.totalPaid ? 1 : -1));
+  }, [data]);
 
   const table = useReactTable({
-    data,
+    // This is used, just to make possible to initially sort total paid
+    data: tableRows,
     columns,
-    state: {
-      globalFilter: search,
-    },
-    onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
   return (
-    <div className='h-full w-full overflow-hidden rounded border border-brand-grey-300'>
+    <div className='w-full overflow-hidden rounded border border-brand-grey-300'>
       <div className='flex items-center justify-between bg-white px-4 py-6'>
         <h2 className='mr-6 text-base/[1.5rem] font-bold'>
           Best Selling Products
@@ -96,7 +104,10 @@ export default function ProductsTable({ data }: Props) {
         bgcolor='white'
         withTableBorder
         borderColor='transparent'
-        classNames={{ tr: 'border-t border-[#EEE]' }}
+        classNames={{
+          table: 'h-[calc(100%-5em)]',
+          tr: 'border-t border-brand-grey-300',
+        }}
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
         <TableBody rowModel={table.getRowModel()} />

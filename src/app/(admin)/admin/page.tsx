@@ -7,8 +7,9 @@ import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { KEYS } from '@/shared/constants/localStorageKeys';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 import { redirect, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Page() {
   const tokenFromStore = retrieveToken();
@@ -16,6 +17,12 @@ export default function Page() {
 
   const params = useSearchParams();
   const code = params.get('code');
+
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update((prev) => ({ ...prev, openedLink: 'Dashboard' }));
+  }, []);
 
   useEffect(() => {
     if (!code) return;

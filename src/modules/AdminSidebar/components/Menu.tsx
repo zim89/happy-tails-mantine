@@ -4,11 +4,13 @@ import { Box, Group, UnstyledButton } from '@mantine/core';
 import { useContext, Fragment } from 'react';
 
 import { SidebarLinks } from '../lib/utils';
-import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
+
 import { cn } from '@/shared/lib/utils';
 import { Dropdown } from './Dropdown';
 import BlockLink from '@/modules/BlockLink';
 import { MobileMenu } from './MobileMenu';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 type Props = {
   links: SidebarLinks;

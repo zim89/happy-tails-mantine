@@ -16,14 +16,8 @@ import {
   Menu,
   UnstyledButton,
 } from '@mantine/core';
-import { useState, useMemo } from 'react';
-import {
-  AlertTriangle,
-  Check,
-  ChevronDown,
-  Mail,
-  Star as StarIcon,
-} from 'lucide-react';
+import { useState, useMemo, useContext } from 'react';
+import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
@@ -36,9 +30,8 @@ import { Actions } from './Actions';
 import { CustomBadge } from '@/components/Badge';
 import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notify from '@/components/Notify';
 import { filterOptions } from '../lib/data';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   data: Message[];
@@ -92,18 +85,7 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Messages deletion failed!',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-    },
-    success: {
-      text: 'Messages successfully deleted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);
@@ -395,8 +377,6 @@ export const Table = ({ data }: Props) => {
         message='No new messages. Please check back later.'
       />
       <TablePagination visible={table.getPageCount() > 1} table={table} />
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 };

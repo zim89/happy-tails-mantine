@@ -21,6 +21,7 @@ import { ordersApi } from '@/shared/api/ordersApi';
 import { oauthApi } from '@/shared/api/oauthApi';
 import { userApi } from '@/shared/api/usersApi';
 import { postApi } from '@/shared/api/postApi';
+import { dashboardApi } from '@/shared/api/dashboardApi';
 import { checkoutReducer } from './checkout/checkoutSlice';
 import { shippingMethodsApi } from '../api/shippingMethodsApi';
 import { discountApi } from '../api/discountApi';
@@ -88,6 +89,7 @@ export const store = configureStore({
     [ordersApi.reducerPath]: ordersApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
     [oauthApi.reducerPath]: oauthPerstistedReducer,
+    [dashboardApi.reducerPath]: dashboardApi.reducer,
     [shippingMethodsApi.reducerPath]: shippingMethodsApi.reducer,
     [discountApi.reducerPath]: discountApi.reducer,
     [taxApi.reducerPath]: taxApi.reducer,
@@ -110,6 +112,7 @@ export const store = configureStore({
       .concat(oauthApi.middleware)
       .concat(userApi.middleware)
       .concat(postApi.middleware)
+      .concat(dashboardApi.middleware)
       .concat(discountApi.middleware)
       .concat(shippingMethodsApi.middleware)
       .concat(taxApi.middleware)

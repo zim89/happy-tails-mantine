@@ -1,7 +1,7 @@
 import { Modal, Radio, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Edit2, Dot, Check, AlertTriangle } from 'lucide-react';
-import { useEffect } from 'react';
+import { Edit2, Dot } from 'lucide-react';
+import { useContext, useEffect } from 'react';
 
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
@@ -12,6 +12,8 @@ import Checkbox from '@/components/Checkbox';
 import Notify from '@/components/Notify';
 import { useNotification } from '@/shared/hooks/useNotification';
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
+import { notifyContext } from '@/shared/context/notification.context';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   order: Order;
@@ -19,18 +21,19 @@ type Props = {
 export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
   const [dispatch] = useUpdateOrderMutation();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'Delivery options update failed. Please try again later.',
-    },
-    success: {
-      color: '#389B48',
-      icon: <Check size={24} />,
-      text: 'Changes saved!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
+  // const [setNotification, { props, clear }] = useNotification({
+  //   failed: {
+  //     color: 'transparent',
+  //     icon: <AlertTriangle size={24} fill='#DC362E' />,
+  //     text: 'Delivery options update failed. Please try again later.',
+  //   },
+  //   success: {
+  //     color: '#389B48',
+  //     icon: <Check size={24} />,
+  //     text: 'Changes saved!',
+  //   },
+  // });
 
   const form = useForm({
     initialValues: {
@@ -69,11 +72,16 @@ export const ShippingModal = ({ order }: Props) => {
       };
       await dispatch(request);
       close();
-      setNotification('Success');
+      setNotification('Success', 'Changes saved!');
     } catch (err) {
       console.error(err);
       close();
-      setNotification('Failed');
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
     }
   };
 
@@ -301,7 +309,7 @@ export const ShippingModal = ({ order }: Props) => {
               icon={Dot}
               classNames={{
                 root: 'mb-3',
-                radio: 'border-[1px] border-black p-0 cursor-pointer ',
+                radio: 'border border-black p-0 cursor-pointer ',
                 icon: 'scale-[10] sm:-translate-x-[3%]',
               }}
               value='standard'
@@ -312,7 +320,7 @@ export const ShippingModal = ({ order }: Props) => {
               iconColor='black'
               icon={Dot}
               classNames={{
-                radio: 'border-[1px] border-black p-0 cursor-pointer',
+                radio: 'border border-black p-0 cursor-pointer',
                 icon: 'scale-[10] sm:-translate-x-[3%]',
               }}
               value='express'
@@ -327,13 +335,13 @@ export const ShippingModal = ({ order }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={close}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit((values) => {
-            if (form.isDirty()) handleUpdate(values);
-          })}
+          primaryBtnOnClick={() =>
+            form.onSubmit((values) => {
+              if (form.isDirty()) handleUpdate(values);
+            })
+          }
         />
       </Modal>
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 };

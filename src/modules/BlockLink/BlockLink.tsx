@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import WarnModal from '@/components/DeleteModal';
-import { UnsavedChangesContext } from '@/shared/lib/context';
 
 import file_attention from '@/assets/icons/categories/file_attention.svg';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 // If it's used outside UnsavedChangesContextProvider, it serves as a typical <Link/>
 

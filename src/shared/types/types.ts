@@ -3,11 +3,11 @@ type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =
   | 'NEW'
-  | 'IN_PROGRESS'
+  | 'IN PROGRESS'
   | 'PROCESSING'
   | 'CANCELLED'
   | 'SHIPPED'
-  | 'RETURN_PROCESSING'
+  | 'RETURN PROCESSING'
   | 'COMPLETED';
 
 export type ProductColor =
@@ -145,7 +145,7 @@ export interface Order {
   id: string;
   number: string;
   orderStatus: OrderStatus;
-  createdDate: string;
+  createdDate: number;
   statusLastUpdatedAt: number | null;
   email: string;
   userId: string;

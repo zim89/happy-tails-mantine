@@ -1,16 +1,17 @@
 'use client';
+
 import { UploadCloud, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
 import Image from 'next/image';
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
+import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 
 import styles from './classes.module.css';
 import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
 import { Product } from '@/shared/types/types';
 import { useUpdateMutation } from '@/shared/api/productApi';
@@ -132,7 +133,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
 
       await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setNotification('Success');
+      setNotification('Success', 'Product updated successfully!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
@@ -179,7 +180,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                   root: 'form-root w-full',
                   label: 'form-label',
                   wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  section: 'static w-auto text-secondary whitespace-nowrap',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
                     form?.errors?.name && 'form-error--input'
@@ -195,7 +196,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                   root: 'form-root w-full',
                   label: 'form-label',
                   wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  section: 'static w-auto text-secondary whitespace-nowrap',
                   option: 'text-xs',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
@@ -215,7 +216,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                   root: 'form-root w-full',
                   label: 'form-label',
                   wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  section: 'static w-auto text-secondary whitespace-nowrap',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
                     form?.errors?.price && 'form-error--input'
@@ -234,7 +235,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                   root: 'form-root w-full',
                   label: 'form-label',
                   wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
-                  section: 'static w-auto text-[#161616] whitespace-nowrap',
+                  section: 'static w-auto text-secondary whitespace-nowrap',
                   option: 'text-xs',
                   input: cn(
                     'form-input rounded-sm border-0 p-0 outline-none',
@@ -304,7 +305,9 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit((values) => handleSubmit(values))}
+          primaryBtnOnClick={() =>
+            form.onSubmit((values) => handleSubmit(values))
+          }
         />
       </Modal>
     </>

@@ -3,10 +3,6 @@ import { BackendResponse, Category, ID, Sort } from '../types/types';
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-type CategoryParams = {
-  limit: number;
-};
-
 export const categoriesApi = createApi({
   reducerPath: 'categoriesApi',
   tagTypes: ['Categories'],
@@ -36,7 +32,7 @@ export const categoriesApi = createApi({
                 type: 'Categories' as const,
                 id,
               })),
-              "Categories",
+              'Categories',
             ]
           : ['Categories'],
     }),
@@ -56,7 +52,7 @@ export const categoriesApi = createApi({
           },
         };
       },
-      invalidatesTags: ["Categories"],
+      invalidatesTags: ['Categories'],
     }),
     removeCategory: builder.mutation<void, { id: ID }>({
       query: (payload) => ({
@@ -77,7 +73,7 @@ export const categoriesApi = createApi({
           'Content-type': 'application/json',
         },
       }),
-      invalidatesTags: ["Categories"]
+      invalidatesTags: ['Categories'],
     }),
   }),
 });

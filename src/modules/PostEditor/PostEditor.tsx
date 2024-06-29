@@ -13,7 +13,7 @@ import classes from './classes.module.css';
 import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
-import { PostFormContext } from '@/shared/lib/context';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 export const sharedProps = {
   toolbarBtn: {

@@ -18,7 +18,7 @@ export const formatDateToLongString = (
   return dayjs(date).format(format);
 };
 
-export const formatDateToShortString = (raw: string) => {
+export const formatDateToShortString = (raw: string | number) => {
   return dayjs(raw).format('DD.MM.YY');
 };
 
@@ -133,10 +133,10 @@ export const calculateOrders = (orders: Order[]) => {
   let kinds: { [P in Order['orderStatus']]: number } = {
     CANCELLED: 0,
     COMPLETED: 0,
-    IN_PROGRESS: 0,
+    'IN PROGRESS': 0,
     NEW: 0,
     PROCESSING: 0,
-    RETURN_PROCESSING: 0,
+    'RETURN PROCESSING': 0,
     SHIPPED: 0,
   };
 

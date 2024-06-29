@@ -1,15 +1,14 @@
 'use client';
 
-import { Button, Popover, Select, UnstyledButton } from '@mantine/core';
-import { useState, useEffect } from 'react';
-import { Check, X, ChevronDown, AlertTriangle } from 'lucide-react';
+import { Popover, Select, UnstyledButton } from '@mantine/core';
+import { useState, useEffect, useContext } from 'react';
+import { Check, X, ChevronDown } from 'lucide-react';
 
-import Notify from '@/components/Notify';
 import { Order } from '@/shared/types/types';
 import { orderStatusList, isOrderStatus } from '@/shared/lib/constants';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { useChangeStatusMutation } from '@/shared/api/ordersApi';
-import { useNotification } from '@/shared/hooks/useNotification';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   children(toggle: () => void): React.ReactNode;
@@ -17,19 +16,7 @@ type Props = {
 };
 export default function UpdateStatus({ children, orderRow }: Props) {
   const [dispatch] = useChangeStatusMutation();
-
-  const [setNotification, { props: notifyProps, clear }] = useNotification({
-    failed: {
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      text: 'Changing status is failed!',
-    },
-    success: {
-      color: '#389B48',
-      icon: <Check size={24} />,
-      text: 'Changes saved!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const [opened, setOpened] = useState(false);
   const [selectedOption, setSelectedOption] = useState<
@@ -49,10 +36,6 @@ export default function UpdateStatus({ children, orderRow }: Props) {
     setSelectedOption(orderRow.orderStatus);
   }, [orderRow.orderStatus]);
 
-  const handleClose = () => {
-    clear();
-  };
-
   const handleSubmit = async () => {
     try {
       await dispatch({
@@ -60,7 +43,7 @@ export default function UpdateStatus({ children, orderRow }: Props) {
         status: selectedOption,
       }).unwrap();
       close();
-      setNotification('Success');
+      setNotification('Success', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setNotification(
@@ -84,7 +67,7 @@ export default function UpdateStatus({ children, orderRow }: Props) {
       >
         <Popover.Target>{children(toggle)}</Popover.Target>
         <Popover.Dropdown classNames={{ dropdown: 'p-0' }}>
-          <div className='bg-[#EEEEEE] px-2 py-1 text-sm font-black uppercase text-[#787878]'>
+          <div className='bg-brand-grey-300 px-2 py-1 text-sm font-black uppercase text-brand-grey-800'>
             Edit
           </div>
           <div className='flex gap-4 px-2 py-4'>
@@ -107,7 +90,7 @@ export default function UpdateStatus({ children, orderRow }: Props) {
             />
             <div>
               <UnstyledButton
-                classNames={{ root: 'bg-black mr-2 p-[10px] rounded-sm' }}
+                classNames={{ root: 'bg-secondary mr-2 p-[10px] rounded-sm' }}
                 onClick={handleSubmit}
               >
                 <Check size={16} color='white' />
@@ -125,7 +108,6 @@ export default function UpdateStatus({ children, orderRow }: Props) {
           </div>
         </Popover.Dropdown>
       </Popover>
-      <Notify {...notifyProps} onClose={handleClose} />
     </>
   );
 }

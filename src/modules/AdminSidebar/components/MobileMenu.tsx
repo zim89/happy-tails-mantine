@@ -5,9 +5,11 @@ import { Minus } from 'lucide-react';
 import { useContext, useState } from 'react';
 
 import { LinksGroup } from '../lib/utils';
-import { AdminPanelContext, UnsavedChangesContext } from '@/shared/lib/context';
+
 import { cn } from '@/shared/lib/utils';
 import BlockLink from '@/modules/BlockLink';
+import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 type Props = {
   linksGroup: LinksGroup;

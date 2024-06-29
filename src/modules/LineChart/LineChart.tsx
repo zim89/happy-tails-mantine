@@ -1,15 +1,6 @@
 'use client';
 
-import Loader from '@/components/Loader';
 import { useEffect, useState } from 'react';
-
-import { AggregatedAnalyticsResponse, getAnalytics } from '@/shared/api/seoApi';
-import {
-  formatDateToDashedOne,
-  formatDateWithoutTime,
-} from '@/shared/lib/helpers';
-import { Filter } from './components/Filter';
-import { COLORS, FilterTypes, filtersData } from './lib/data';
 import {
   CartesianGrid,
   Line,
@@ -19,6 +10,15 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { AggregatedAnalyticsResponse, getAnalytics } from '@/shared/api/seoApi';
+import {
+  formatDateToDashedOne,
+  formatDateWithoutTime,
+} from '@/shared/lib/helpers';
+import { Filter } from './components/Filter';
+import { COLORS, FilterTypes, filtersData } from './lib/data';
+import { ChartSkeleton } from './components/ChartSkeleton';
 
 export default function Analitycs() {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +50,7 @@ export default function Analitycs() {
     })();
   }, []);
 
-  if (isLoading)
-    return (
-      <div className='flex justify-center py-10'>
-        <Loader size={100} />
-      </div>
-    );
+  if (isLoading) return <ChartSkeleton />;
 
   const handleFilters = (filter: FilterTypes) => {
     setFilters((prev) =>

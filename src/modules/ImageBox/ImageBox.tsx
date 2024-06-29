@@ -6,8 +6,9 @@ import { LucideRotateCcw, UploadCloud } from 'lucide-react';
 import Image from 'next/image';
 
 import classes from './classes.module.css';
-import { PostFormContext } from '@/shared/lib/context';
+
 import { cn } from '@/shared/lib/utils';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 export default function FeaturedImage() {
   const { form } = useContext(PostFormContext);

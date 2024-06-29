@@ -32,11 +32,11 @@ Ensure your dog's safety and style during walks with our exquisite collection of
 
 export const orderStatusList: Order['orderStatus'][] = [
   'NEW',
-  'IN_PROGRESS',
+  'IN PROGRESS',
   'PROCESSING',
   'CANCELLED',
   'SHIPPED',
-  'RETURN_PROCESSING',
+  'RETURN PROCESSING',
   'COMPLETED',
 ];
 
