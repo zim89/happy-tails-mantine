@@ -22,6 +22,11 @@ import { oauthApi } from '@/shared/api/oauthApi';
 import { userApi } from '@/shared/api/usersApi';
 import { postApi } from '@/shared/api/postApi';
 import { dashboardApi } from '@/shared/api/dashboardApi';
+import { checkoutReducer } from './checkout/checkoutSlice';
+import { shippingMethodsApi } from '../api/shippingMethodsApi';
+import { discountApi } from '../api/discountApi';
+import { taxApi } from '../api/taxApi';
+import { cartApi } from '../api/cartApi';
 
 const createNoopStorage = () => {
   return {
@@ -85,9 +90,14 @@ export const store = configureStore({
     [postApi.reducerPath]: postApi.reducer,
     [oauthApi.reducerPath]: oauthPerstistedReducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
+    [shippingMethodsApi.reducerPath]: shippingMethodsApi.reducer,
+    [discountApi.reducerPath]: discountApi.reducer,
+    [taxApi.reducerPath]: taxApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
+    checkout: checkoutReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -102,7 +112,11 @@ export const store = configureStore({
       .concat(oauthApi.middleware)
       .concat(userApi.middleware)
       .concat(postApi.middleware)
-      .concat(dashboardApi.middleware),
+      .concat(dashboardApi.middleware)
+      .concat(discountApi.middleware)
+      .concat(shippingMethodsApi.middleware)
+      .concat(taxApi.middleware)
+      .concat(cartApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

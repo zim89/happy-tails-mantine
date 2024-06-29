@@ -9,15 +9,6 @@ import type {
 } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
-type Address = {
-  firstName: string;
-  secondName: string;
-  country: string;
-  city: string;
-  street: string;
-  apartment: string;
-};
-
 type OrderPayload = CreateOrderBody;
 
 type DeleteOrderProps = {
@@ -85,6 +76,14 @@ export const ordersApi = createApi({
               { type: 'Orders', id: 'LIST' },
             ]
           : [{ type: 'Orders', id: 'LIST' }],
+    }),
+    findOneByEmailAndCode: builder.query<
+      Order,
+      { email: string; orderNumber: string }
+    >({
+      query: ({ email, orderNumber }) => ({
+        url: `/orders/${email}/${orderNumber}`,
+      }),
     }),
     createOrder: builder.mutation<Order, OrderPayload>({
       query: (params) => ({
@@ -167,6 +166,7 @@ export const {
   useUpdateOrderMutation,
   useAddCommentMutation,
   useFindOneQuery,
+  useFindOneByEmailAndCodeQuery,
 } = ordersApi;
 
 export const getDiscount = async (code: string) => {

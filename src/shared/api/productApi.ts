@@ -27,7 +27,7 @@ export const productApi = createApi({
 
         if (categoryId) params.append('categoryId', categoryId.toString());
 
-        if (sort) params.append('sort', sort.join(','));
+        if (sort && sort[0] !== 'none') params.append('sort', sort.join(','));
 
         if (name) params.append('name', name);
 
@@ -42,6 +42,14 @@ export const productApi = createApi({
 
             if (min.length > 0) params.append('min', min);
             if (max.length > 0) params.append('max', max);
+          }
+
+          if (filter.size !== 'none') {
+            params.append('sizeOfProduct', filter.size);
+          }
+
+          if (filter.color !== 'none') {
+            params.append('color', filter.color);
           }
 
           params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
@@ -96,10 +104,7 @@ export const productApi = createApi({
     findBestSellers: builder.query<BackendResponse<Product[]>, void>({
       query: () => ({ url: '/products/best-sellers' }),
     }),
-    create: builder.mutation<
-      Product,
-      { req: Partial<Product> }
-    >({
+    create: builder.mutation<Product, { req: Partial<Product> }>({
       query({ req }) {
         return {
           url: '/products',
@@ -129,7 +134,7 @@ export const productApi = createApi({
       query({ id }) {
         return {
           url: `/products/${id}`,
-          method: 'delete'
+          method: 'delete',
         };
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],

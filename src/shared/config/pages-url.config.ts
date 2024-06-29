@@ -8,6 +8,7 @@ class PAGES {
   REGISTER = `/auth/register`;
   LOGIN = `/auth/login`;
   VERIFY_EMAIL = `/auth/confirm`;
+  FORGOT_PASSWORD = `/auth/forgot-password`;
   // PRODUCTS
   PRODUCTS = `/products`;
   CART = `/cart`;
