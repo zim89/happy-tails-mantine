@@ -68,10 +68,6 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
     form.setFieldValue('variantImage', null);
   };
 
-  const handleDelete = () => {
-    setVariants((prev) => prev.filter((_, vindex) => vindex !== index));
-  };
-
   return (
     <div className={classes.variant}>
       <div className={classes.variantInputs}>

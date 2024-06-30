@@ -15,6 +15,7 @@ export const formatDateToLongString = (
   date: string | number,
   format = 'MMMM D, YYYY'
 ) => {
+  if (typeof date === 'number') return dayjs.unix(date).format(format);
   return dayjs(date).format(format);
 };
 
