@@ -67,11 +67,14 @@ export const fetchAllPosts = async (
   page = 0,
   size = 6
 ): Promise<BackendResponse<Post[]>> => {
+  unstable_noStore();
+
   try {
-    const res = await axios(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published?page=${page}&size=${size}`
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published?page=${page}&size=${size}`,
+      { cache: 'no-store' }
     );
-    return res.data;
+    return await res.json();
   } catch (error) {
     throw new Error('Failed to fetch posts');
   }

@@ -5,7 +5,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
-import Option from '../Option';
+import { Option } from '../Option';
 import SelectedProduct from '../SelectedProduct';
 import { Item } from '../../lib/types';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
@@ -16,6 +16,7 @@ type Props = {
     (values: NewOrderFields) => NewOrderFields
   >;
 };
+
 export default function ProductSelection({ form }: Props) {
   const data = useSelectProducts((state) => state);
   const combobox = useCombobox();

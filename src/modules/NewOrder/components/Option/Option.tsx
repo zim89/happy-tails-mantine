@@ -1,6 +1,7 @@
-import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 import { Combobox } from '@mantine/core';
 import Image from 'next/image';
+
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 
 type Props = {
   product: Product & {
@@ -8,7 +9,7 @@ type Props = {
   };
 };
 
-const Option = ({ product }: Props) => {
+export const Option = ({ product }: Props) => {
   return (
     <Combobox.Option
       value={JSON.stringify(product)}
@@ -17,7 +18,7 @@ const Option = ({ product }: Props) => {
       <Image
         width={64}
         height={64}
-        src={product.imagePath}
+        src={product.imagePath || 'https://placehold.co/64x64.png'}
         alt={product.name}
       />
       <div>
@@ -27,5 +28,3 @@ const Option = ({ product }: Props) => {
     </Combobox.Option>
   );
 };
-
-export default Option;

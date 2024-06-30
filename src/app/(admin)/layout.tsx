@@ -1,8 +1,7 @@
 import { NotifyProvider } from '@/shared/context/notification.context';
 
-type Props = { children: React.ReactNode; params: any };
+type Props = { children: React.ReactNode };
 
-export default function Layout({ children, params }: Props) {
-  console.log(params);
+export default function Layout({ children }: Props) {
   return <NotifyProvider>{children}</NotifyProvider>;
 }

@@ -1,14 +1,15 @@
 'use client';
+
 import dynamic from 'next/dynamic';
+import { useScrollIntoView } from '@mantine/hooks';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { FilterX } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import { Group, Pagination } from '@mantine/core';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
-import { useScrollIntoView } from '@mantine/hooks';
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { FilterX } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductCountContext } from './ProductCountContext';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import type { Category, Sort } from '@/shared/types/types';

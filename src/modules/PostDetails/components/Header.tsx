@@ -45,7 +45,9 @@ export const Header = ({ editor, post }: Props) => {
         <hgroup>
           <h2 className={`mr-1 text-[2rem]/[2.4rem] font-black`}>Blog post</h2>
           <div className='flex items-baseline gap-3'>
-            <p>{formatDate(post.createdAt, 'MMM DD, YYYY, HH:mm:ss A')}</p>
+            <p>
+              {formatDate(post.createdAt, 'MMM DD, YYYY, HH:mm:ss A', true)}
+            </p>
             <CustomBadge
               color={post.postStatus.toLowerCase()}
               name={post.postStatus}

@@ -7,7 +7,12 @@ export const formatDateToClockTime = (date: string | number) => {
   return dayjs(date).format('HH:mm');
 };
 
-export const formatDate = (date: string | number, format = 'MMMM D, YYYY') => {
+export const formatDate = (
+  date: string | number,
+  format = 'MMMM D, YYYY',
+  unix?: boolean
+) => {
+  if (unix && typeof date === 'number') return dayjs.unix(date).format(format);
   return dayjs(date).format(format);
 };
 
@@ -15,6 +20,7 @@ export const formatDateToLongString = (
   date: string | number,
   format = 'MMMM D, YYYY'
 ) => {
+  if (typeof date === 'number') return dayjs.unix(date).format(format);
   return dayjs(date).format(format);
 };
 

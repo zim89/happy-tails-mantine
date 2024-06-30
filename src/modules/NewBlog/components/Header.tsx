@@ -73,34 +73,40 @@ export const Header = ({ editor }: Props) => {
       params.append('image', image!);
       params.append('title', `Post poster for: ${form.values.title}`);
 
-      let posterImgSrc = '';
+      let posterImgSrc = 'https://placehold.co/600x400.png';
 
       try {
-        const res = await axios.post('https://api.imgur.com/3/image/', params, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        if (process.env.NODE_ENV !== 'development') {
+          const res = await axios.post(
+            'https://api.imgur.com/3/image/',
+            params,
+            {
+              headers: {
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
 
-        posterImgSrc = res.data.data.link;
+          posterImgSrc = res.data.data.link;
+        }
+
+        const { id } = await dispatch({
+          authorName: author || 'Happy Tails Admin',
+          content,
+          title,
+          posterImgSrc,
+          hero: isHero,
+        }).unwrap();
+        setIsEdited(false);
+        router.push(`/admin/blogs/${id}`);
+        setNotification('Success', 'Post creation succeeded!');
       } catch (err) {
         if (err instanceof AxiosError) {
           form.setFieldError('image', err.message);
           throw err;
         }
       }
-
-      const { id } = await dispatch({
-        authorName: author || 'Happy Tails Admin',
-        content,
-        title,
-        posterImgSrc,
-        hero: isHero,
-      }).unwrap();
-      setIsEdited(false);
-      router.push(`/admin/blogs/${id}`);
-      setNotification('Success', 'Post creation succeeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.error(err);

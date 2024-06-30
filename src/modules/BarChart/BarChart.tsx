@@ -24,13 +24,15 @@ import { CustomTooltip } from './components/CustomTooltip';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
-  const [selectedMonth, setSelectedMonth] = useState(
-    reversedMonthMap[getCurrentMonth()]
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    reversedMonthMap[getCurrentMonth().slice(0, 3)]
   );
   const [selectedYear, setSelectedYear] = useState(
     formatYearFromDate(Date.now())
   );
   const matches = useMediaQuery('(min-width: 768px)');
+
+  console.log(selectedMonth);
 
   const { data, isLoading, error } = useFetchSalesQuery({
     year: selectedYear,

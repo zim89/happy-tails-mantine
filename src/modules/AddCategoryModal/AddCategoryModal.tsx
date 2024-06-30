@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 import { Info, PlusCircle, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 
@@ -51,6 +51,7 @@ export default function AddCategoryModal() {
     validate: {
       categoryName: (value) =>
         !value.trim() ? 'Entered an invalid category name' : null,
+      image: isNotEmpty('Image must not be empty'),
     },
   });
 
@@ -73,9 +74,13 @@ export default function AddCategoryModal() {
     image,
   }: (typeof form)['values']) => {
     try {
+      const res = form.validate();
+
+      if (res.hasErrors) return;
+
       let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
-      if (image) {
+      if (image && process.env.NODE_ENV === 'production') {
         const form = new FormData();
         form.append('image', image);
         form.append('title', `CATEGORY: ${categoryName}`);
@@ -185,8 +190,14 @@ export default function AddCategoryModal() {
                 {...form.getInputProps('image')}
                 accept='.png,.jpeg,.gif,.webp'
                 classNames={{
+                  root: 'form-root',
                   wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput),
+                  error: 'form-error -left-[155px]',
+                  input: cn(
+                    'form-input',
+                    styles.fileInput,
+                    form?.errors?.image && 'form-error--input'
+                  ),
                 }}
               />
             </div>
@@ -212,9 +223,9 @@ export default function AddCategoryModal() {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={() =>
-            form.onSubmit((values) => handleSubmit(values))
-          }
+          primaryBtnOnClick={() => {
+            handleSubmit(form.values);
+          }}
         />
       </Modal>
     </>
