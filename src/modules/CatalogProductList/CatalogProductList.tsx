@@ -44,6 +44,8 @@ export default function CatalogProductList({
     if (
       !searchParams.has('category') ||
       !searchParams.has('price') ||
+      !searchParams.has('productSize') ||
+      !searchParams.has('color') ||
       !searchParams.has('inStock')
     )
       return;
@@ -51,6 +53,8 @@ export default function CatalogProductList({
     return {
       category: searchParams.get('category')!,
       price: searchParams.get('price')!,
+      size: searchParams.get('productSize')!,
+      color: searchParams.get('color')!,
       onlyInStock: searchParams.get('inStock') === 'true',
     };
   }, [searchParams]);

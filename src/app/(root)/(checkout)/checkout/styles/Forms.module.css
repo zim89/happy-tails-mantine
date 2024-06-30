@@ -1,0 +1,27 @@
+.wrap {
+  @apply bg-brand-grey-200 p-6;
+}
+
+.heading2_default {
+  @apply bg-brand-grey-200 px-6 py-4 text-lg/[21.6px] font-bold text-brand-grey-900;
+}
+
+.heading2 {
+  @apply flex items-baseline justify-between border-b border-b-brand-grey-400 pb-3 text-xl/6 font-bold;
+}
+
+.heading3 {
+  @apply text-nowrap pb-3 text-lg font-bold;
+}
+
+.heading3_form {
+  @apply py-6 text-lg/[21.6px] font-bold;
+}
+
+.editButton {
+  @apply relative font-bold after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-secondary;
+}
+
+.text {
+  @apply text-sm/normal;
+}
