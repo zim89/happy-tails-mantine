@@ -7,7 +7,11 @@ import { AlignLeft, Heart, Search, ShoppingBag, UserRound } from 'lucide-react';
 
 import { PostContent } from '@/app/(root)/(additional)/blog/[id]/ui/PostContent';
 import { KEYS } from '@/shared/constants/localStorageKeys';
-import { formatDateToLongString } from '@/shared/lib/helpers';
+import {
+  formatDateToLongString,
+  formatYearFromDate,
+  getCurrentMonth,
+} from '@/shared/lib/helpers';
 import ShareInSocial from '@/app/(root)/(additional)/blog/[id]/ui/ShareInSocial';
 import Footer from '@/modules/Footer';
 import HeaderTemplate from '@/components/HeaderTemplate/HeaderTemplate';
@@ -51,9 +55,7 @@ export default function Page() {
         {({ Logo }) => (
           <>
             <Container>
-              <div
-                className={`flex h-[${rem(73)}] items-center justify-between lg:h-[${rem(83)}]`}
-              >
+              <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
                 <div className='flex gap-4'>
                   <AlignLeft className='iconBtn' />
                   <span className='md:hidden'>
@@ -79,7 +81,7 @@ export default function Page() {
         )}
       </HeaderTemplate>
 
-      <div className={`relative h-[${rem(280)}] lg:h-[${rem(350)}]`}>
+      <div className='relative h-[280px] lg:h-[350px]'>
         {typeof previewContent.image === 'string' && (
           <Image
             src={previewContent.image}
@@ -93,17 +95,15 @@ export default function Page() {
 
       <Container>
         <div className='flex flex-col gap-8 py-12 lg:flex-row lg:gap-[65px] lg:pb-[72px] lg:pt-16'>
-          <div className={`lg:w-[${731}] lg:flex-none`}>
-            <h1
-              className={`mb-4 text-[${rem(32)}]/[1.2] font-bold uppercase lg:text-4xl/normal`}
-            >
+          <div className='lg:w-[731px] lg:flex-none'>
+            <h1 className='mb-4 text-[2rem]/[1.2] font-bold uppercase lg:text-4xl/normal'>
               {previewContent.title}
             </h1>
             <p className='mb-1 text-sm/normal font-bold lg:text-base'>
               {previewContent.author}
             </p>
             <p className='mb-6 text-sm/normal font-light lg:mb-9 lg:text-base'>
-              {formatDateToLongString(Date.now())}
+              {getCurrentMonth()}, {formatYearFromDate(Date.now())}
             </p>
             <PostContent content={previewContent.content} />
           </div>
@@ -111,9 +111,7 @@ export default function Page() {
           <div className='space-y-12 lg:space-y-10'>
             <ShareInSocial />
             <div className='space-y-6 lg:space-y-8'>
-              <h2
-                className={`border-b border-b-brand-grey-600 py-2 text-[${rem(28)}]/normal font-bold capitalize`}
-              >
+              <h2 className='border-b border-b-brand-grey-600 py-2 text-[1.75rem]/normal font-bold capitalize'>
                 Most Popular
               </h2>
               <div className='pointer-events-none'>

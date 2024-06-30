@@ -55,7 +55,7 @@ export default function DeletePostModal({
           {customHandler ? (
             customHandler(openMain)
           ) : (
-            <span onClick={openMain} className='block p-0 text-black'>
+            <span onClick={openMain} className='block p-0 text-secondary'>
               Delete
             </span>
           )}

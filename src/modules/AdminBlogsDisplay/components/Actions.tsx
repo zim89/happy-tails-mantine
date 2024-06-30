@@ -1,18 +1,8 @@
 import { Menu, UnstyledButton } from '@mantine/core';
-import {
-  Eye,
-  Edit2,
-  MoreHorizontal,
-  Trash2,
-  FolderDown,
-  AlertTriangle,
-  Check,
-} from 'lucide-react';
+import { Eye, Edit2, MoreHorizontal, Trash2, FolderDown } from 'lucide-react';
 import Link from 'next/link';
 
 import { Post } from '@/shared/api/postApi';
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notify from '@/components/Notify';
 import DeletePostModal from '@/modules/DeletePostModal';
 import ArchivePostModal from '@/modules/ArchivePostModal';
 import { notifyContext } from '@/shared/context/notification.context';
@@ -26,24 +16,24 @@ export const Actions = ({ post }: Props) => {
 
   return (
     <div className='flex justify-end gap-4'>
-      <UnstyledButton
-        classNames={{
-          root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
-        }}
-      >
-        <Link href={`/admin/blogs/${post.id}/preview`}>
+      <Link href={`/admin/blogs/${post.id}/preview`}>
+        <UnstyledButton
+          classNames={{
+            root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
+          }}
+        >
           <Eye size={16} color='black' />
-        </Link>
-      </UnstyledButton>
-      <UnstyledButton
-        classNames={{
-          root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
-        }}
-      >
-        <Link href={`/admin/blogs/${post.id}`}>
+        </UnstyledButton>
+      </Link>
+      <Link href={`/admin/blogs/${post.id}`}>
+        <UnstyledButton
+          classNames={{
+            root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
+          }}
+        >
           <Edit2 size={16} color='black' />
-        </Link>
-      </UnstyledButton>
+        </UnstyledButton>
+      </Link>
 
       <Menu width={148} position='bottom-end' keepMounted>
         <Menu.Target>
