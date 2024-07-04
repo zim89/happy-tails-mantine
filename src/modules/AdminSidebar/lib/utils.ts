@@ -6,6 +6,7 @@ import {
   Newspaper,
   LucideIcon,
   MessagesSquare,
+  Settings2,
 } from 'lucide-react';
 
 type SharedLinkProps = {
@@ -66,5 +67,16 @@ export const links: SidebarLinks = [
     label: 'Blogs',
     icon: Newspaper,
     link: '/admin/blogs',
+  },
+  {
+    id: 'links-group',
+    label: 'Settings',
+    icon: Settings2,
+    links: [
+      { label: 'Main Page', link: '/admin/settings#homePage' },
+      { label: 'Delivery', link: '/admin/settings#delivery' },
+      { label: 'Promo Code', link: '/admin/settings#promo' },
+      { label: 'Tax', link: '#tax' },
+    ],
   },
 ] as const;

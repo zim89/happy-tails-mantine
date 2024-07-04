@@ -2,11 +2,11 @@ import { TrendingUp } from 'lucide-react';
 
 import { data } from './lib/data';
 import { useStatsQuery } from '@/shared/api/dashboardApi';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export default function Stats() {
   const { data: values, isLoading, error } = useStatsQuery();
 
-  if (!values || isLoading) return null;
   if (error)
     return (
       <p>
@@ -15,6 +15,7 @@ export default function Stats() {
         }
       </p>
     );
+  if (!values || isLoading) return <SkeletonLoader />;
 
   return (
     <div className='flex gap-2'>

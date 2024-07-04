@@ -3,11 +3,11 @@
 import { useFindBestSellersQuery } from '@/shared/api/productApi';
 import ProductsTable from './components/Table';
 import Loader from '@/components/Loader';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export default function BestProducts() {
   const { data: products, error, isLoading } = useFindBestSellersQuery();
 
-  if (!products || isLoading) return <Loader size={64} />;
   if (error)
     return (
       <p>
@@ -16,6 +16,7 @@ export default function BestProducts() {
         }
       </p>
     );
+  if (!products || isLoading) return <SkeletonLoader />;
 
   return (
     <>

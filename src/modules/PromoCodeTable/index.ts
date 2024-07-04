@@ -1,0 +1,1 @@
+export { PromoCodeTable } from './PromoCodeTable';

@@ -2,7 +2,7 @@
 
 import { Box, Collapse, Group, Text, UnstyledButton } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import { Minus } from 'lucide-react';
+import { ChevronDown, Minus } from 'lucide-react';
 
 import { LinksGroup } from '../lib/utils';
 
@@ -55,11 +55,12 @@ export const Dropdown = ({ linksGroup }: Props) => {
         title='Open catalog'
       >
         <Group>
-          <Box className='flex'>
+          <Box className='flex items-center'>
             <Box className='ml-3 inline-flex items-center gap-3 pr-3 text-xl font-bold leading-6 md:ml-4'>
               <linksGroup.icon size={20} />
               <span className='hidden md:inline'>{linksGroup.label}</span>
             </Box>
+            <ChevronDown size={20} className='mt-1' />
           </Box>
         </Group>
       </UnstyledButton>
