@@ -73,7 +73,7 @@ export const MobileMenu = ({ linksGroup }: Props) => {
               key={linkKey}
               title={link.label}
             >
-              <BlockLink href={link.link} className='inline-flex pt-2 text-lg'>
+              <BlockLink href={link.link} className='text-md inline-flex pt-2'>
                 <Minus width={7} className='mr-3' /> {link.label}
               </BlockLink>
             </Menu.Item>

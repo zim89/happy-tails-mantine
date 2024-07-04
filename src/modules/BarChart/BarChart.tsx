@@ -21,6 +21,7 @@ import {
 import { useFetchSalesQuery } from '@/shared/api/dashboardApi';
 import Loader from '@/components/Loader';
 import { CustomTooltip } from './components/CustomTooltip';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
@@ -39,7 +40,6 @@ export default function BarChart() {
     month: barChartType === 'Month' ? selectedMonth : undefined,
   });
 
-  if (isLoading) return <Loader size={200} />;
   if (error)
     return (
       <p>
@@ -48,6 +48,7 @@ export default function BarChart() {
         }
       </p>
     );
+  if (isLoading) return <SkeletonLoader />;
 
   return (
     <div className='overflow-hidden rounded border border-brand-grey-300 bg-primary'>

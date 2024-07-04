@@ -9,14 +9,6 @@ import { CircleChartSkeleton } from './components/Skeleton';
 export default function TopCategories() {
   const { data, isLoading, error } = useTopCategoriesQuery();
 
-  if (isLoading || !data)
-    return (
-      <div className='flex gap-6'>
-        <BestProducts />
-        <CircleChartSkeleton />
-      </div>
-    );
-
   if (error)
     return (
       <div className='flex gap-6'>
@@ -25,6 +17,14 @@ export default function TopCategories() {
           {`Whoops, it shouldn't have happened, our experts are already fixing
         this`}
         </p>
+      </div>
+    );
+
+  if (isLoading || !data)
+    return (
+      <div className='flex gap-6'>
+        <BestProducts />
+        <CircleChartSkeleton />
       </div>
     );
 

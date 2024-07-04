@@ -1,7 +1,7 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import { FileInput, Select, TextInput, Tooltip } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
-import { ChevronDown, Info, Trash2, UploadCloud, X } from 'lucide-react';
+import { ChevronDown, Info, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 
 import classes from '../classes.module.css';

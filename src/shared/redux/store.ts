@@ -27,6 +27,7 @@ import { shippingMethodsApi } from '../api/shippingMethodsApi';
 import { discountApi } from '../api/discountApi';
 import { taxApi } from '../api/taxApi';
 import { cartApi } from '../api/cartApi';
+import { bannerApi } from '../api/bannerApi';
 
 const createNoopStorage = () => {
   return {
@@ -94,6 +95,7 @@ export const store = configureStore({
     [discountApi.reducerPath]: discountApi.reducer,
     [taxApi.reducerPath]: taxApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
+    [bannerApi.reducerPath]: bannerApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
@@ -116,7 +118,8 @@ export const store = configureStore({
       .concat(discountApi.middleware)
       .concat(shippingMethodsApi.middleware)
       .concat(taxApi.middleware)
-      .concat(cartApi.middleware),
+      .concat(cartApi.middleware)
+      .concat(bannerApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -11,8 +11,8 @@ import ProblemReport from '@/modules/ProblemReport';
 import { Order } from '@/shared/types/types';
 
 type Props = {
-  orders: Order[]
-}
+  orders: Order[];
+};
 export const OrderTabs = ({ orders }: Props) => {
   return (
     <Tabs

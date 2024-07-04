@@ -36,7 +36,7 @@ const badgePalette: {
 const columns = [
   columnHelper.accessor('imagePath', {
     cell: (info) => (
-      <Image width={50} height={50} src={info.getValue()} alt='' />
+      <Image width={50} height={50} src={info.getValue() || ''} alt='' />
     ),
     header: 'Image',
     enableSorting: false,

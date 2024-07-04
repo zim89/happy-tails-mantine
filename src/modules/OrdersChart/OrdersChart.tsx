@@ -8,7 +8,7 @@ import { COLORS, summarizeOrderStatuses } from './lib/data';
 import DonutChart from '@/components/DonutChart';
 import Table from './components/Table';
 import { useFindManyQuery } from '@/shared/api/ordersApi';
-import Loader from '@/components/Loader';
+import { SkeletonLoader } from './components/Skeleton';
 
 export default function OrdersChart() {
   const {
@@ -22,7 +22,8 @@ export default function OrdersChart() {
 
   const [selected, setSelected] = useState<string[]>(['NEW']);
 
-  if (!orders || isLoading) return <Loader size={64} />;
+  if (isLoading) return <SkeletonLoader />;
+
   if (error)
     return (
       <p>
@@ -32,7 +33,7 @@ export default function OrdersChart() {
       </p>
     );
 
-  const summarizedOrders = summarizeOrderStatuses(orders.content);
+  const summarizedOrders = summarizeOrderStatuses(orders?.content || []);
 
   return (
     <div className='flex gap-6'>
@@ -67,7 +68,7 @@ export default function OrdersChart() {
           height={325}
         />
       </div>
-      <Table data={orders.content} />
+      <Table data={orders?.content || []} />
     </div>
   );
 }
