@@ -18,6 +18,7 @@ import { TableHead } from '@/components/TableHead';
 import { PromoCode } from '../lib/data';
 import { Clock3, PlusCircle } from 'lucide-react';
 import { CustomBadge } from '@/components/Badge';
+import { Actions } from './Actions';
 
 const columnHelper = createColumnHelper<PromoCode>();
 
@@ -62,11 +63,7 @@ const columns = [
   }),
   columnHelper.display({
     id: 'actions',
-    cell: (info) => (
-      <div>
-        <div>Actions</div>
-      </div>
-    ),
+    cell: (info) => <Actions {...info.row.original} />,
     header: 'Action',
   }),
 ];

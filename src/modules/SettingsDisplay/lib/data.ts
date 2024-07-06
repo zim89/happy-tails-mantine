@@ -1,6 +1,6 @@
 export const tabs = [
   { label: 'Main page', value: 'homePage' },
-  { label: 'Delivery Details', value: 'delivery' },
+  { label: 'Delivery details', value: 'delivery' },
   { label: 'Promo code', value: 'promo' },
   { label: 'Tax', value: 'tax' },
 ];
