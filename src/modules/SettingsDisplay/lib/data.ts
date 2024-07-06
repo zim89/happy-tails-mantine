@@ -11,3 +11,5 @@ export const pathMap: { [P in string]: string } = {
   promo: 'Promo Code',
   tax: 'Tax',
 };
+
+export const bannerNames = ['banner_1', 'banner_2', 'banner_3', 'banner_4'];

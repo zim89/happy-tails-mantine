@@ -14,8 +14,8 @@ export default function AdminProductsDisplay() {
     page: 0,
   });
 
-  if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Oops, something went wrong</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (!data) return <ProductsTable data={[]} />;
 
   return (
