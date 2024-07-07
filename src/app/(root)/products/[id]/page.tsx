@@ -7,6 +7,7 @@ import Script from 'next/script';
 
 import { useFindOneQuery } from '@/shared/api/productApi';
 import { availabilityMap } from '@/shared/lib/helpers';
+import noImage from '@/assets/images/no-img.png';
 
 const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
 
@@ -44,7 +45,7 @@ export default function ProductPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: data.name,
-    image: data.imagePath,
+    image: data.imagePath ? data.imagePath : noImage,
     description: data.description,
     offers: {
       '@type': 'Offer',
