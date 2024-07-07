@@ -19,6 +19,7 @@ import { cn } from '@/shared/lib/utils';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
+import noImage from '@/assets/images/no-img.png';
 
 const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
 
@@ -28,13 +29,16 @@ interface Props {
 
 export default function ProductDetails({ product }: Props) {
   const [opened, { close, toggle, open }] = useDisclosure();
-  const sliderData = useSelectProducts(state => state
-    .filter(prod => prod.id !== product.id && product.categoryId === prod.categoryId 
-          && prod.productStatus === "IN STOCK"
+  const sliderData = useSelectProducts((state) =>
+    state.filter(
+      (prod) =>
+        prod.id !== product.id &&
+        product.categoryId === prod.categoryId &&
+        prod.productStatus === 'IN STOCK'
     )
   );
 
-      console.log("Product: ", product);
+  console.log('Product: ', product);
 
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
@@ -62,7 +66,7 @@ export default function ProductDetails({ product }: Props) {
             {/*  ProductDetails Image*/}
             <div className='relative mb-9 h-[341px] w-full flex-none overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
-                src={product.imagePath}
+                src={product.imagePath ?? noImage}
                 alt={product.name}
                 blurDataURL={product.imagePath}
                 priority={true}
@@ -128,9 +132,7 @@ export default function ProductDetails({ product }: Props) {
                     disabled={quantity === 1 || !isAvailable}
                     className={cn(
                       'px-4 py-3',
-                      (quantity === 1 
-                        || !isAvailable
-                      ) && 'text-brand-grey-400'
+                      (quantity === 1 || !isAvailable) && 'text-brand-grey-400'
                     )}
                   >
                     <Minus className='h-5 w-5' />
@@ -155,14 +157,12 @@ export default function ProductDetails({ product }: Props) {
                   />
                   <button
                     onClick={() => handlersRef.current?.increment()}
-                    disabled={quantity === product.totalQuantity
-                      || !isAvailable
-                      }
+                    disabled={
+                      quantity === product.totalQuantity || !isAvailable
+                    }
                     className={cn(
                       'px-4 py-3',
-                      (quantity === product.totalQuantity
-                        || !isAvailable
-                        ) &&
+                      (quantity === product.totalQuantity || !isAvailable) &&
                         'text-brand-grey-400'
                     )}
                   >

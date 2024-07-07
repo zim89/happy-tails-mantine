@@ -1,5 +1,4 @@
 'use client';
-import React, { useEffect, useState } from 'react';
 import { NumberFormatter } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
@@ -11,8 +10,7 @@ import { Product } from '@/shared/types/types';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import { cn } from '@/shared/lib/utils';
-import { COLORS } from '@/shared/constants/colors.const';
-import { getRelatedColors } from '@/shared/helpers/colors.helpers';
+import { generateColorList } from '@/shared/helpers/colors.helpers';
 
 interface Props {
   product: Product;
@@ -21,13 +19,7 @@ interface Props {
 export default function ProductCard({ product, router }: Props) {
   const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
-
-  const color = COLORS.find((item) => item.name === product.color) ?? null;
-  const relatedColors = product.relatedProducts
-    ? getRelatedColors(product.relatedProducts)
-    : [];
-
-  console.log(relatedColors);
+  const colorList = generateColorList(product);
 
   return (
     <div
@@ -64,28 +56,21 @@ export default function ProductCard({ product, router }: Props) {
         <div className='mb-2 flex items-center justify-between'>
           <p className='text-xs leading-normal'>{product.article}</p>
           <ul className='hidden lg:flex lg:gap-2'>
-            {color && (
-              <li>
-                <Link
-                  href={`/products/${product.id}`}
-                  className={`inline-block size-[18px] rounded-full bg-[${color.hex}]`}
-                />
-              </li>
-            )}
-            {relatedColors.map((item) => {
-              const bgColor = `bg-[${item.hex}]`;
-              return (
-                <li key={item.relatedProductId}>
-                  <Link
-                    href={`/products/${item.relatedProductId}`}
-                    className={cn(
-                      `inline-block size-[18px] rounded-full`,
-                      bgColor
-                    )}
-                  />
-                </li>
-              );
-            })}
+            {colorList.length > 0 &&
+              colorList.map((item) => {
+                const bgColor = `bg-[${item.colorHex}]`;
+                return (
+                  <li key={item.productId}>
+                    <Link
+                      href={item.colorHex}
+                      className={cn(
+                        `inline-block size-[18px] rounded-full`,
+                        bgColor
+                      )}
+                    />
+                  </li>
+                );
+              })}
           </ul>
         </div>
 
