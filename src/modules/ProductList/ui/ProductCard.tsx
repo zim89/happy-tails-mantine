@@ -57,20 +57,22 @@ export default function ProductCard({ product, router }: Props) {
           <p className='text-xs leading-normal'>{product.article}</p>
           <ul className='hidden lg:flex lg:gap-2'>
             {colorList.length > 0 &&
-              colorList.map((item) => {
-                const bgColor = `bg-[${item.colorHex}]`;
-                return (
-                  <li key={item.productId}>
-                    <Link
-                      href={item.colorHex}
-                      className={cn(
-                        `inline-block size-[18px] rounded-full`,
-                        bgColor
-                      )}
-                    />
-                  </li>
-                );
-              })}
+              colorList
+                .filter((item) => item.colorName !== product.color)
+                .map((item) => {
+                  const bgColor = `bg-[${item.colorHex}]`;
+                  return (
+                    <li key={item.productId}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          `inline-block size-[18px] rounded-full`,
+                          bgColor
+                        )}
+                      />
+                    </li>
+                  );
+                })}
           </ul>
         </div>
 

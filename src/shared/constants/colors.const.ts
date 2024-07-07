@@ -6,6 +6,7 @@ export const COLORS = [
   { name: 'Yellow', hex: '#FFE605' },
   { name: 'Green', hex: '#389B48' },
   { name: 'Red', hex: '#DC362E' },
+  { name: 'Orange', hex: '#F39324' },
   { name: 'Purple', hex: '#9747FF' },
   { name: 'Blue', hex: '#4285F4' },
 ];

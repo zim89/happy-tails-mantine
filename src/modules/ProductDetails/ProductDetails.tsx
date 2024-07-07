@@ -20,6 +20,8 @@ import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import noImage from '@/assets/images/no-img.png';
+import { generateColorList } from '@/shared/helpers/colors.helpers';
+import Link from 'next/link';
 
 const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
 
@@ -38,14 +40,13 @@ export default function ProductDetails({ product }: Props) {
     )
   );
 
-  console.log('Product: ', product);
-
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
     product.totalQuantity === 0 ? 0 : 1
   );
 
   const isAvailable = product.productStatus === 'IN STOCK';
+  const colorList = generateColorList(product);
 
   return (
     <>
@@ -105,6 +106,36 @@ export default function ProductDetails({ product }: Props) {
 
               {/*  ProductDetails description*/}
               <p className='mb-6'>{product.description}</p>
+
+              {colorList.length > 0 && (
+                <div className='mb-6 space-y-6'>
+                  {product.color && (
+                    <p className='text-xl/6 font-bold'>
+                      Color:{' '}
+                      <span className='font-normal'>{product.color}</span>
+                    </p>
+                  )}
+
+                  <ul className='flex gap-4'>
+                    {colorList.map((item) => {
+                      const bgColor = `bg-[${item.colorHex}]`;
+                      const isActive = item.productId === product.id;
+                      return (
+                        <li key={item.productId}>
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              `inline-block size-[30px] rounded-full border-[2px] border-brand-grey-400`,
+                              bgColor,
+                              isActive && ' border-black'
+                            )}
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
 
               {/*  Additional text*/}
               <p className='mb-8 font-light md:mb-12 lg:mb-14'>
