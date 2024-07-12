@@ -6,7 +6,6 @@ import styles from './CategoryRow.module.css';
 import UpdateCategory from '@/modules/UpdateCategoryModal/UpdateCategoryModal';
 import DeleteCategory from '@/modules/DeleteCategoryModal/DeleteCategoryModal';
 
-import noImage from '@/assets/icons/no-image.512x512.png';
 import { Category } from '@/shared/types/types';
 
 export default function CategoryRow(category: Category) {
@@ -14,7 +13,7 @@ export default function CategoryRow(category: Category) {
     <Table.Tr className={styles.categoryRow}>
       <Table.Td>
         <Image
-          src={category.imgSrc || noImage.src}
+          src={category.imgSrc || '/images/no-image.512x512.png'}
           width={24}
           height={24}
           alt={category.name}

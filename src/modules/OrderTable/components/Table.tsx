@@ -55,7 +55,7 @@ const columns = [
   }),
   columnHelper.accessor('createdDate', {
     cell: (info) => (
-      <span>{dayjs(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
+      <span>{dayjs.unix(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
     ),
     header: () => 'Date',
   }),
@@ -163,7 +163,7 @@ export default function Table({ data }: { data: Order[] }) {
             <li key={status}>
               <UnstyledButton
                 className={cn(
-                  'h-[1.8125rem] rounded-sm px-2 text-secondary hover:bg-brand-grey-200',
+                  'h-[1.8125rem] rounded-sm px-2 capitalize text-secondary hover:bg-brand-grey-200',
                   table.getColumn('orderStatus')?.getFilterValue() === status &&
                     'bg-brand-grey-300'
                 )}
@@ -171,7 +171,7 @@ export default function Table({ data }: { data: Order[] }) {
                   table.getColumn('orderStatus')?.setFilterValue(status)
                 }
               >
-                {status}
+                {status.toLocaleLowerCase()}
               </UnstyledButton>
             </li>
           ))}

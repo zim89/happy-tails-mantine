@@ -1,7 +1,5 @@
 'use client';
 
-import packageCheck from '@/assets/icons/checkout/package-check.svg';
-import truck from '@/assets/icons/checkout/truck.svg';
 import Image from 'next/image';
 import { NumberFormatter } from '@mantine/core';
 import { useSearchParams } from 'next/navigation';
@@ -42,16 +40,21 @@ export default function ConfirmationPage() {
               </div>
               <div className='space-y-2 rounded-sm border border-brand-grey-400 p-4'>
                 <div className='flex items-center gap-2'>
-                  <Image alt='Truck icon' src={truck} width={24} height={24} />
+                  <Image
+                    alt='Truck icon'
+                    src='/icons/checkout/truck.svg'
+                    width={24}
+                    height={24}
+                  />
                   <div className='h-px w-6 bg-brand-grey-800' />
                   <Image
                     alt='Package check icon'
-                    src={packageCheck}
+                    src='/icons/checkout/package-check.svg'
                     width={24}
                     height={24}
                   />
                 </div>
-                <p className='text-lg/[21.6px]'>
+                <p className='text-lg/[1.35rem]'>
                   You order will be delivered on:
                 </p>
                 <p className='text-xl/6 font-bold'>
@@ -109,7 +112,9 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <div className='space-y-6 bg-brand-grey-200 p-6'>
-              <h2 className='text-[28px]/[33.6px] font-bold'>Order details</h2>
+              <h2 className='text-[1.75rem]/[2.1rem] font-bold'>
+                Order details
+              </h2>
               <ul className='flex flex-col gap-6'>
                 {order.orderProductDTOList.map((product) => (
                   <li
@@ -124,7 +129,7 @@ export default function ConfirmationPage() {
                         width={64}
                         style={{ objectFit: 'contain' }}
                       />
-                      <span className='absolute -right-3 -top-3 flex size-6 items-center justify-center rounded-full bg-brand-grey-900 text-sm/[16.8px] font-bold text-primary'>
+                      <span className='absolute -right-3 -top-3 flex size-6 items-center justify-center rounded-full bg-brand-grey-900 text-sm/[1.05rem] font-bold text-primary'>
                         {product.count}
                       </span>
                     </div>

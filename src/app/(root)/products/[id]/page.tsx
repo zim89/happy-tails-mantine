@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function ProductPage({ params }: Props) {
-  const { data, isError, isLoading, error } = useFindOneQuery(params.id);
+  const { data, isError, isLoading } = useFindOneQuery(params.id);
 
   if (isLoading)
     return (
@@ -44,7 +44,7 @@ export default function ProductPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: data.name,
-    image: data.imagePath,
+    image: data.imagePath || '',
     description: data.description,
     offers: {
       '@type': 'Offer',

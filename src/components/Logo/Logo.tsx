@@ -7,6 +7,8 @@ import logoDesktop from '@/assets/logo/logo-desktop.svg';
 const logoAlt =
   "The logo depicts a simplified, right-facing, bright orange dog's head with a large, floppy ear and a single black-dot eye, encased within an black circular border.";
 
+console.log(logoMobile, logoTablet, logoDesktop);
+
 function Logo() {
   return (
     <>

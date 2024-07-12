@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import { Button, Container, Group } from '@mantine/core';
+import Link from 'next/link';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
-import sender from '@/assets/images/additional/dog-sender.svg';
-import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -14,16 +13,15 @@ export default function Page() {
           { text: 'Contacts', href: '/contacts' },
           { text: 'Thank You', href: '/thank-you' },
         ]}
-
-        classNames={{ root: "p-0 pt-4 m-0 mb-6 lg:mb-8" }}
+        classNames={{ root: 'p-0 pt-4 m-0 mb-6 lg:mb-8' }}
       />
       <Group
         classNames={{
-          root: 'flex flex-col items-center py-12 px-6 mb-12 bg-[#F7F7F7]',
+          root: 'flex flex-col items-center py-12 px-6 mb-12 bg-brand-grey-200',
         }}
       >
         <Image
-          src={sender}
+          src='/images/additional/dog-sender.svg'
           width={163}
           height={120}
           alt='Dog is sending your message'
@@ -36,7 +34,7 @@ export default function Page() {
           </p>
         </hgroup>
 
-        <Button className='w-full bg-black md:w-auto'>
+        <Button className='w-full bg-secondary md:w-auto'>
           <Link href='/'>Back to homepage</Link>
         </Button>
       </Group>

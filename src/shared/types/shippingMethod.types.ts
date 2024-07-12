@@ -2,7 +2,7 @@ export type ShippingMethodName = 'Standard' | 'Fast';
 
 export interface ShippingMethod {
   id: number;
-  name: ShippingMethodName;
+  name: string;
   description: string;
   price: number;
   daysOfDelivery: number;

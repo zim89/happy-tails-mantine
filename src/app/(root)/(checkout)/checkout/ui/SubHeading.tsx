@@ -1,5 +1,3 @@
-import { cn } from '@/shared/lib/utils';
-
 type Title = 'Delivery Options' | 'Shipping Method' | 'Payment Method';
 
 export default function SubHeading({

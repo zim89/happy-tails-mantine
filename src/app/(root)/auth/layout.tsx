@@ -1,9 +1,10 @@
 'use client';
+
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import dogImg from '@/assets/images/auth-dog.png';
-import { useAuth } from '@/shared/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+
+import { useAuth } from '@/shared/hooks/useAuth';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -21,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className='container'>
         <div className='grid grid-cols-1 lg:grid-cols-2'>
           <Image
-            src={dogImg}
+            src='/images/auth-dog.png'
             alt='Authentication dog image'
             priority={true}
             width={652}

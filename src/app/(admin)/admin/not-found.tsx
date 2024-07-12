@@ -3,8 +3,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
-import illustration from '@/assets/images/404_admin.png';
 import { UnstyledButton } from '@mantine/core';
 
 export const metadata: Metadata = {
@@ -20,7 +18,7 @@ export default function NotFound() {
   return (
     <div className='mt-10 flex justify-center md:mt-24'>
       <div className='flex items-center gap-16'>
-        <Image src={illustration} alt='404' />
+        <Image src='/images/404_admin.png' height={356} width={291} alt='404' />
         <div className='max-w-[382px]'>
           <h2 className='text-4xl/[44px]'>Ooops...! Page not found</h2>
           <p className='my-4'>

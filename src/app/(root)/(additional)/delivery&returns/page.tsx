@@ -13,7 +13,7 @@ export default function DeliveryAndReturnsPage() {
       <Container>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'Shipping & Returns' }]}
-          classNames={{ root: "p-0 pt-4" }}
+          classNames={{ root: 'p-0 pt-4' }}
         />
 
         <Tabs
@@ -119,10 +119,10 @@ export default function DeliveryAndReturnsPage() {
                     after receiving your item to request a return.
                   </p>
                   <p>
-                    To be eligible for a return, your item must be in the same
+                    {`To be eligible for a return, your item must be in the same
                     condition that you received it, unworn or unused, with tags,
                     and in its original packaging. You’ll also need the receipt
-                    or proof of purchase.
+                    or proof of purchase.`}
                   </p>
                   <p>
                     To initiate a return, reply to your order confirmation email
@@ -169,12 +169,12 @@ export default function DeliveryAndReturnsPage() {
                 <div className={styles.panelContent}>
                   <h3>Refunds</h3>
                   <p>
-                    We will notify you once we’ve received and inspected your
+                    {`We will notify you once we’ve received and inspected your
                     return, and let you know if the refund was approved or not.
                     If approved, you’ll be automatically refunded on your
                     original payment method. Please remember it can take some
                     time for your bank or credit card company to process and
-                    post the refund too.
+                    post the refund too.`}
                   </p>
                 </div>
                 <p className='font-bold'>

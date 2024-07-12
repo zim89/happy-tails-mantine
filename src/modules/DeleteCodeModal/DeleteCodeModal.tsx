@@ -3,26 +3,28 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { useContext } from 'react';
 
-import file_attention from '@/assets/icons/categories/file_attention.svg';
 import classes from './classes.module.css';
-import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
+
 import DeleteModal from '@/components/DeleteModal';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { useContext } from 'react';
 import { notifyContext } from '@/shared/context/notification.context';
-import { PromoCode } from '../PromoCodeTable/lib/data';
+import {
+  Discount,
+  useDeleteDiscountCodeMutation,
+} from '@/shared/api/discountApi';
 
 type Props = {
-  promoCode: PromoCode;
+  promoCode: Discount;
 };
 export default function DeleteCodeModal({ promoCode }: Props) {
-  const [dispatch] = useRemoveCategoryMutation();
+  const [dispatch] = useDeleteDiscountCodeMutation();
   const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
-      // await dispatch({ id: categoryLine.id }).unwrap();
+      await dispatch({ id: promoCode.id }).unwrap();
 
       closeMain();
       setNotification('Success', 'Promo code successfully deleted!');
@@ -68,9 +70,14 @@ export default function DeleteCodeModal({ promoCode }: Props) {
               }}
             >
               <div className={classes.message}>
-                <Image src={file_attention.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/file_attention.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
-                  <h2>{`Delete ${promoCode.value} Promo code?`}</h2>
+                  <h2>{`Delete ${promoCode.code} Promo code?`}</h2>
                   <p>
                     The promo code will not be valid after deletion, this action
                     cannot be undone

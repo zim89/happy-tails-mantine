@@ -8,7 +8,6 @@ import Image from 'next/image';
 
 import WarnModal from '@/components/DeleteModal';
 
-import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 // If it's used outside UnsavedChangesContextProvider, it serves as a typical <Link/>
@@ -64,7 +63,7 @@ export default function BlockLink({ children, ...props }: Props) {
               >
                 <div className='flex items-center gap-3'>
                   <Image
-                    src={file_attention.src}
+                    src='/icons/file_attention.svg'
                     alt={"Attention, your changes aren't saved!"}
                     width={64}
                     height={64}

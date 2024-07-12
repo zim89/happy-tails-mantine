@@ -1,13 +1,14 @@
 'use client';
 
+import { NumberFormatter, Radio } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useState } from 'react';
+
 import {
   selectCheckout,
   setShippingMethod,
 } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { NumberFormatter, Radio } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useState } from 'react';
 import Title from './SubHeading';
 import Wrapper from './Wrapper';
 import { getDeliveryDate } from '@/shared/helpers/date.helpers';
@@ -17,8 +18,7 @@ export default function ShippingMethodForm() {
   const [isCompleted, setIsCompleted] = useState(false);
   const { data, isLoading } = useGetShippingMethodsQuery();
   const dispatch = useAppDispatch();
-  const { shippingAddress, shippingMethod } =
-    useAppSelector(selectCheckout);
+  const { shippingAddress, shippingMethod } = useAppSelector(selectCheckout);
 
   const form = useForm({
     initialValues: {
@@ -38,7 +38,7 @@ export default function ShippingMethodForm() {
 
   if (!shippingAddress) {
     return (
-      <h2 className='bg-brand-grey-200 px-6 py-4 text-lg/[21.6px] font-bold text-brand-grey-900'>
+      <h2 className='bg-brand-grey-200 px-6 py-4 text-lg/[1.35rem] font-bold text-brand-grey-900'>
         Shipping Method
       </h2>
     );
@@ -91,12 +91,12 @@ export default function ShippingMethodForm() {
                         <label className='block text-base font-bold'>
                           {method.name}
                         </label>
-                        <span className='block text-sm/[21px] md:hidden'>
+                        <span className='block text-sm/[1.3125rem] md:hidden'>
                           {getDeliveryDate(method.daysOfDelivery)}
                         </span>
                       </div>
                     </div>
-                    <span className='hidden text-sm/[21px] md:inline-block'>
+                    <span className='hidden text-sm/[1.3125rem] md:inline-block'>
                       {getDeliveryDate(method.daysOfDelivery)}
                     </span>
                     <NumberFormatter

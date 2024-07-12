@@ -1,0 +1,19 @@
+.modalHeader {
+  @apply hidden;
+}
+
+.modalContent {
+  @apply px-6 py-[14px] pt-10;
+}
+
+.message {
+  @apply flex items-center gap-3;
+}
+
+.message h2 {
+  @apply mb-3 font-bold;
+}
+
+.message p {
+  @apply text-sm text-brand-grey-600;
+}

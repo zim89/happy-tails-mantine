@@ -115,7 +115,7 @@ export const HomePageSetting = () => {
     return (
       <p>
         {
-          "Whoops, it should'n have happened. our experts are already fixing this"
+          'Whoops, it shouldn have happened. our experts are already fixing this'
         }
       </p>
     );
@@ -146,12 +146,10 @@ export const HomePageSetting = () => {
     const linkProp = `product_link_${id}`;
 
     const { hasError: bannerHasError } = form.validateField(`banner_${id}`);
-
     const { hasError: linkHasError } = form.validateField(linkProp);
 
     try {
       if (!bannerHasError && !linkHasError) {
-        console.log('Server processing...');
         const bannerProp = `banner_${id}`;
         const image = form.values[bannerProp];
 
@@ -170,121 +168,124 @@ export const HomePageSetting = () => {
 
   return (
     <>
-      <form>
-        {[bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4].map(
-          (banner, index) => (
-            <div
-              key={index}
-              className='flex flex-col items-end gap-4 md:mt-4 md:flex-row md:gap-6 md:first:mt-0'
-            >
-              <div className='mt-4 w-full md:max-w-[480px]'>
-                {!banner.current?.path ? (
-                  <div className={classes.upload}>
-                    <p className='mb-1 flex items-center gap-1 text-sm'>
-                      <span>Image</span>
-                      <Tooltip
-                        label='.jpeg,.jpg,.png,.gif,.apng,.tiff'
-                        withArrow
-                      >
-                        <Info
-                          size={16}
-                          className='-mb-[3px] cursor-pointer'
-                          color='#5A5A5A'
+      <form className='mt-8 overflow-clip rounded-t border border-brand-grey-300 bg-white'>
+        <h3 className='bg-brand-grey-300 p-4 text-xl font-bold'>Banners</h3>
+        <div className='p-4'>
+          {[bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4].map(
+            (banner, index) => (
+              <div
+                key={index}
+                className='mt-4 flex flex-col items-end md:flex-row md:gap-6 md:first:mt-0'
+              >
+                <div className='w-full md:max-w-[480px]'>
+                  {!banner.current?.path ? (
+                    <div className={classes.upload}>
+                      <p className='mb-1 flex items-center gap-1 text-sm'>
+                        <span>Image</span>
+                        <Tooltip
+                          label='.jpeg,.jpg,.png,.gif,.apng,.tiff'
+                          withArrow
+                        >
+                          <Info
+                            size={16}
+                            className='-mb-[3px] cursor-pointer'
+                            color='#5A5A5A'
+                          />
+                        </Tooltip>
+                      </p>
+                      <div>
+                        <label htmlFor={`banner-image-${index}`}>
+                          <UploadCloud color='white' />
+                          <span>Select Image</span>
+                        </label>
+                        <FileInput
+                          id={`banner-image-${index}`}
+                          w='100%'
+                          placeholder='Max file size 500 kB'
+                          {...form.getInputProps(`banner_${index + 1}`)}
+                          onChange={(evt) => {
+                            const { onChange } = form.getInputProps(
+                              `banner_${index + 1}`
+                            );
+
+                            // Call the main change event handler
+                            onChange(evt);
+
+                            handleUploadBanner(index + 1);
+                          }}
+                          accept='.png,.jpeg,.gif,.webp'
+                          styles={{
+                            input: { height: '100%' },
+                          }}
+                          classNames={{
+                            root: 'form-root',
+                            wrapper: classes.fileWrapper,
+                            error: 'form-error -left-[144px] -bottom-[1rem]',
+                            input: cn(
+                              'form-input whitespace-nowrap',
+                              classes.fileInput,
+                              form?.errors[`banner_${index + 1}`] &&
+                                'form-error--input h-full'
+                            ),
+                          }}
                         />
-                      </Tooltip>
-                    </p>
-                    <div>
-                      <label htmlFor={`banner-image-${index}`}>
-                        <UploadCloud color='white' />
-                        <span>Select Image</span>
-                      </label>
-                      <FileInput
-                        id={`banner-image-${index}`}
-                        w='100%'
-                        placeholder='Max file size 500 kB'
-                        {...form.getInputProps(`banner_${index + 1}`)}
-                        onChange={(evt) => {
-                          const { onChange } = form.getInputProps(
-                            `banner_${index + 1}`
-                          );
-
-                          // Call the main change event handler
-                          onChange(evt);
-
-                          handleUploadBanner(index + 1);
-                        }}
-                        accept='.png,.jpeg,.gif,.webp'
-                        styles={{
-                          input: { height: '100%' },
-                        }}
-                        classNames={{
-                          root: 'form-root',
-                          wrapper: classes.fileWrapper,
-                          error: 'form-error -left-[144px] -bottom-[1rem]',
-                          input: cn(
-                            'form-input whitespace-nowrap',
-                            classes.fileInput,
-                            form?.errors[`banner_${index + 1}`] &&
-                              'form-error--input h-full'
-                          ),
-                        }}
-                      />
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className={classes.previewWrapper}>
-                    <Image
-                      className={classes.previewImage}
-                      width={32}
-                      height={32}
-                      src={banner.current.path}
-                      alt=''
-                    />
-                    <p>{banner.current.name}</p>
-                    <button
-                      className={classes.clearImage}
-                      onClick={() => clearFile(banner, `banner_${index + 1}`)}
-                    >
-                      <X size={14} alignmentBaseline='central' />
-                    </button>
-                  </div>
-                )}
+                  ) : (
+                    <div className={classes.previewWrapper}>
+                      <Image
+                        className={classes.previewImage}
+                        width={32}
+                        height={32}
+                        src={banner.current.path}
+                        alt=''
+                      />
+                      <p>{banner.current.name}</p>
+                      <button
+                        className={classes.clearImage}
+                        onClick={() => clearFile(banner, `banner_${index + 1}`)}
+                      >
+                        <X size={14} alignmentBaseline='central' />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <Select
+                  {...form.getInputProps(`product_link_${index + 1}`)}
+                  data={productsPages}
+                  styles={{
+                    wrapper: {
+                      height: 40,
+                    },
+                  }}
+                  classNames={{
+                    root: 'form-root w-full',
+                    label: 'form-label',
+                    wrapper:
+                      'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                    section: 'static w-auto text-secondary whitespace-nowrap',
+                    option: 'text-xs',
+                    input: cn(
+                      'form-input h-full border-0 p-0 underline outline-none',
+                      form?.errors[`product_link_${index + 1}`] &&
+                        'form-error--input'
+                    ),
+                    error: 'form-error',
+                  }}
+                  rightSection={<ChevronDown color='black' size={16} />}
+                  renderOption={CustomSelectDropdown}
+                  onChange={(evt) => {
+                    const { onChange } = form.getInputProps(
+                      `product_link_${index + 1}`
+                    );
+                    onChange(evt);
+                    handleUploadBanner(index + 1);
+                  }}
+                />
               </div>
-              <Select
-                {...form.getInputProps(`product_link_${index + 1}`)}
-                data={productsPages}
-                styles={{
-                  wrapper: {
-                    height: 40,
-                  },
-                }}
-                classNames={{
-                  root: 'form-root w-full',
-                  label: 'form-label',
-                  wrapper:
-                    'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
-                  section: 'static w-auto text-secondary whitespace-nowrap',
-                  option: 'text-xs',
-                  input: cn(
-                    'form-input h-full border-0 p-0 outline-none',
-                    form?.errors[`product_link_${index + 1}`] &&
-                      'form-error--input'
-                  ),
-                  error: 'form-error',
-                }}
-                rightSection={<ChevronDown color='black' size={16} />}
-                renderOption={CustomSelectDropdown}
-                onChange={(evt) => {
-                  const { onChange } = form.getInputProps(
-                    `product_link_${index + 1}`
-                  );
-                  onChange(evt);
-                  handleUploadBanner(index + 1);
-                }}
-              />
-            </div>
-          )
-        )}
+            )
+          )}
+        </div>
       </form>
     </>
   );

@@ -19,7 +19,6 @@ import {
   getCurrentMonth,
 } from '@/shared/lib/helpers';
 import { useFetchSalesQuery } from '@/shared/api/dashboardApi';
-import Loader from '@/components/Loader';
 import { CustomTooltip } from './components/CustomTooltip';
 import { SkeletonLoader } from './components/SkeletonLoader';
 
@@ -32,8 +31,6 @@ export default function BarChart() {
     formatYearFromDate(Date.now())
   );
   const matches = useMediaQuery('(min-width: 768px)');
-
-  console.log(selectedMonth);
 
   const { data, isLoading, error } = useFetchSalesQuery({
     year: selectedYear,
@@ -124,9 +121,7 @@ export default function BarChart() {
             tickFormatter={(value: number) => {
               return barChartType === 'Year' ? monthMap[value] : `${value}`;
             }}
-            padding={
-              matches ? { left: 40, right: 40 } : { left: 20, right: 20 }
-            }
+            padding={{ left: 40, right: 40 }}
             axisLine={false}
             tickLine={false}
           />
@@ -149,7 +144,7 @@ export default function BarChart() {
             }}
             content={<CustomTooltip kind={barChartType} />}
           />
-          <CartesianGrid vertical stroke='#EEE' />
+          {!!data?.length && <CartesianGrid vertical stroke='#EEE' />}
           <Bar dataKey='totalSales' fill='#4285F4' />
         </NativeBarChart>
       </ResponsiveContainer>

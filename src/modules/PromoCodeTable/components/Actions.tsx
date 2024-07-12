@@ -1,11 +1,14 @@
 import DeleteCodeModal from '@/modules/DeleteCodeModal';
-import { PromoCode } from '../lib/data';
 import UpdateCodeModal from '@/modules/UpdateCodeModal';
+import { Discount } from '@/shared/api/discountApi';
 
-export const Actions = (promo: PromoCode) => {
+export const Actions = (promo: Discount) => {
   return (
     <>
-      {promo.status !== 'COMPLETED' && <UpdateCodeModal />}
+      {/* Only active promo codes could be changed */}
+      {promo.expirationDate > Date.now() && (
+        <UpdateCodeModal promoCode={promo} />
+      )}
       <DeleteCodeModal promoCode={promo} />
     </>
   );

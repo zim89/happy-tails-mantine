@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Loader } from '@mantine/core';
+
 import { cn } from '@/shared/lib/utils';
 import type { BackendResponse } from '@/shared/types/types';
 import { Post } from '@/shared/api/postApi';

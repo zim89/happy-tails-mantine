@@ -44,7 +44,7 @@ export default function Technologies() {
       >
         {technologies.map((tech) => (
           <Carousel.Slide key={tech.id}>
-            <Image layout='fill' sizes='100%' src={tech.image} alt={tech.alt} />
+            <Image fill sizes='100%' src={tech.image} alt={tech.alt} />
           </Carousel.Slide>
         ))}
       </Carousel>
