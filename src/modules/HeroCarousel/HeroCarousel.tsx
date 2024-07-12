@@ -44,20 +44,13 @@ export default function HeroCarousel() {
           indicators: '!bottom-3 md:!bottom-6 lg:!bottom-8',
           indicator: cn(
             banners.length > 1
-              ? '!size-3 cursor-pointer !bg-brand-grey-400 !opacity-100 data-[active]:!bg-black md:!size-4'
+              ? '!size-3 cursor-pointer !bg-brand-grey-400 !opacity-100 data-[active]:!bg-secondary md:!size-4'
               : 'hidden'
           ),
         }}
       >
         {banners.map((slide, index) => (
-          <Slide
-            key={index}
-            banner={slide.imagePath}
-            button={{
-              text: 'Shop Now',
-              path: '/products',
-            }}
-          />
+          <Slide key={index} banner={slide.imagePath} href='/products' />
         ))}
       </Carousel>
     </div>
