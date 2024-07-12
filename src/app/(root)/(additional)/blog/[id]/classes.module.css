@@ -1,3 +1,11 @@
+.content ul {
+  @apply m-[initial] list-[initial] py-2 pl-8;
+}
+
+.content ol {
+  @apply m-[initial] list-decimal py-2 pl-8;
+}
+
 .content a {
-	@apply underline;
+  @apply underline;
 }
