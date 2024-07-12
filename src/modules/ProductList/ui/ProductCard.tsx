@@ -1,15 +1,16 @@
 'use client';
-import React from 'react';
 import { NumberFormatter } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
-
+import noImage from '@/assets/images/no-img.png';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Product } from '@/shared/types/types';
 import AddToCartBtn from '@/components/AddToCartBtn';
 import AddToWishBtn from '@/components/AddToWishBtn';
+import { cn } from '@/shared/lib/utils';
+import { generateColorList } from '@/shared/helpers/colors.helpers';
 
 interface Props {
   product: Product;
@@ -18,6 +19,7 @@ interface Props {
 export default function ProductCard({ product, router }: Props) {
   const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
+  const colorList = generateColorList(product);
 
   return (
     <div
@@ -39,7 +41,7 @@ export default function ProductCard({ product, router }: Props) {
             )}
           >
             <Image
-              src={product.imagePath}
+              src={product.imagePath ?? noImage}
               alt={product.name}
               fill
               priority={true}
@@ -49,11 +51,34 @@ export default function ProductCard({ product, router }: Props) {
               }}
             />
           </div>
-          <p className='mb-2 text-xs leading-normal'>{product.article}</p>
-          <p className='mb-3 h-12 text-xl font-bold leading-none'>
-            {product.name}
-          </p>
         </Link>
+
+        <div className='mb-2 flex items-center justify-between'>
+          <p className='text-xs leading-normal'>{product.article}</p>
+          <ul className='hidden lg:flex lg:gap-2'>
+            {colorList.length > 0 &&
+              colorList
+                .filter((item) => item.colorName !== product.color)
+                .map((item) => {
+                  const bgColor = `bg-[${item.colorHex}]`;
+                  return (
+                    <li key={item.productId}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          `inline-block size-[18px] rounded-full`,
+                          bgColor
+                        )}
+                      />
+                    </li>
+                  );
+                })}
+          </ul>
+        </div>
+
+        <p className='mb-3 h-12 text-xl font-bold leading-none'>
+          {product.name}
+        </p>
 
         <p className={clsx('relative mb-5 text-start text-base')}>
           <NumberFormatter prefix='$ ' value={product.price} decimalScale={2} />
