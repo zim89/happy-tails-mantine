@@ -1,21 +1,8 @@
-import zahrebelna from '@/assets/images/additional/about-us/zahrebelna.png';
-import bilyk from '@/assets/images/additional/about-us/bilyk.png';
-import honcharenko from '@/assets/images/additional/about-us/honcharenko.png';
-import hurska from '@/assets/images/additional/about-us/hurska.png';
-import lisova from '@/assets/images/additional/about-us/lisova.png';
-import zimnytsia from '@/assets/images/additional/about-us/zimnytsia.png';
-import melnyk from '@/assets/images/additional/about-us/melnyk.png';
-import vladinov from '@/assets/images/additional/about-us/vladinov.png';
-
-import github from '@/assets/icons/additional/Github.svg';
-import behance from '@/assets/icons/additional/Behance.svg';
-import linkedIn from '@/assets/icons/additional/LinkedIn.svg';
-import { StaticImageData } from 'next/image';
 import { CSSProperties } from 'react';
 
 type TeamLink = {
   href: string;
-  icon: StaticImageData;
+  icon: string;
 };
 
 export type TeamMember = {
@@ -29,7 +16,7 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    avatar: zahrebelna.src,
+    avatar: '/images/additional/about-us/zahrebelna.png',
     avatarStyles: {
       objectPosition: '-23px -34px',
       transform: 'scale(2.5)',
@@ -40,12 +27,12 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/daria-zahrebelna-81aa31218/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
     ],
   },
   {
-    avatar: melnyk.src,
+    avatar: '/images/additional/about-us/melnyk.png',
     avatarStyles: {
       transform: 'scale(1.6)',
       objectPosition: '0px -10px',
@@ -56,16 +43,16 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/melnyk-alex002/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://github.com/melnyk-alex02',
-        icon: github,
+        icon: '/icons/additional/Github.svg',
       },
     ],
   },
   {
-    avatar: bilyk.src,
+    avatar: '/images/additional/about-us/bilyk.png',
     avatarStyles: {
       transform: 'scale(1.3)',
       objectPosition: '-5px 15px',
@@ -76,32 +63,32 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/inesabilyk/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://www.behance.net/b6dff318',
-        icon: behance,
+        icon: '/icons/additional/Behance.svg',
       },
     ],
   },
   {
-    avatar: hurska.src,
+    avatar: '/images/additional/about-us/hurska.png',
     name: 'Diana Hurska',
     occupation: 'UX/UI Designer',
     desc: 'Responsible for creating user-friendly and visually appealing interfaces for websites and applications to enhance the overall user experience.',
     links: [
       {
         href: 'https://www.linkedin.com/in/diana-hurska-06b064277/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://www.behance.net/d8db8e80',
-        icon: behance,
+        icon: '/icons/additional/Behance.svg',
       },
     ],
   },
   {
-    avatar: lisova.src,
+    avatar: '/images/additional/about-us/lisova.png',
     avatarStyles: {
       objectPosition: 'top',
     },
@@ -111,28 +98,28 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/lisova-olena/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
     ],
   },
   {
-    avatar: zimnytsia.src,
+    avatar: '/images/additional/about-us/zimnytsia.png',
     name: 'Olexandr Zimnytsia',
     occupation: 'Front-end Developer',
     desc: 'Fullstack developer with 1+ years of experience. I enjoy building sites & apps. My focus is React (Next.js).',
     links: [
       {
         href: 'https://www.linkedin.com/in/olexandr-zimnytsia/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://github.com/zim89',
-        icon: github,
+        icon: '/icons/additional/Github.svg',
       },
     ],
   },
   {
-    avatar: honcharenko.src,
+    avatar: '/images/additional/about-us/honcharenko.png',
     avatarStyles: {
       transform: 'scale(2.2)',
       objectPosition: '-8px -16px',
@@ -144,16 +131,16 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/dimahoncharenko-33a9a3218/',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://github.com/dimahoncharenko',
-        icon: github,
+        icon: '/icons/additional/Github.svg',
       },
     ],
   },
   {
-    avatar: vladinov.src,
+    avatar: '/images/additional/about-us/vladinov.png',
     avatarStyles: {
       border: '1px solid #C8C8C8',
       borderRadius: '50%',
@@ -164,11 +151,11 @@ export const team: TeamMember[] = [
     links: [
       {
         href: 'https://www.linkedin.com/in/vladyslav-vladinov',
-        icon: linkedIn,
+        icon: '/icons/additional/LinkedIn.svg',
       },
       {
         href: 'https://github.com/SalOne22',
-        icon: github,
+        icon: '/icons/additional/Github.svg',
       },
     ],
   },

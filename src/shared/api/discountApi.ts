@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '@/shared/api/authApi';
+import { BackendResponse } from '../types/types';
 
 export interface Discount {
   id: number;
@@ -18,6 +19,10 @@ export interface DiscountWithErrors {
   path: string;
 }
 
+export interface PostDiscount extends Omit<Discount, 'id' | 'code'> {}
+export interface UpdateDiscount extends Discount {}
+export interface DeleteDiscountCode extends Pick<Discount, 'id'> {}
+
 export const discountApi = createApi({
   reducerPath: 'discountApi',
   tagTypes: ['Discount'],
@@ -31,8 +36,45 @@ export const discountApi = createApi({
         url: `/discount/${code}`,
         method: 'get',
       }),
+      providesTags: ['Discount'],
+    }),
+    createDiscountCode: builder.mutation<Discount, PostDiscount>({
+      query: (params) => ({
+        url: '/discount',
+        method: 'post',
+        data: params,
+      }),
+      invalidatesTags: ['Discount'],
+    }),
+    deleteDiscountCode: builder.mutation<void, DeleteDiscountCode>({
+      query: ({ id }) => ({
+        url: `/discount/${id}`,
+        method: 'delete',
+      }),
+      invalidatesTags: ['Discount'],
+    }),
+    findMany: builder.query<BackendResponse<Discount[]>, void>({
+      query: () => ({
+        url: '/discount',
+        method: 'get',
+      }),
+      providesTags: ['Discount'],
+    }),
+    updateDiscountCode: builder.mutation<Discount, UpdateDiscount>({
+      query: (params) => ({
+        url: '/discount',
+        method: 'put',
+        data: params,
+      }),
+      invalidatesTags: ['Discount'],
     }),
   }),
 });
 
-export const { useGetDiscountByCodeQuery } = discountApi;
+export const {
+  useGetDiscountByCodeQuery,
+  useCreateDiscountCodeMutation,
+  useDeleteDiscountCodeMutation,
+  useFindManyQuery,
+  useUpdateDiscountCodeMutation,
+} = discountApi;

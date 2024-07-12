@@ -72,8 +72,8 @@ export const dashboardApi = createApi({
         url: '/category-stats/top-selling',
       }),
     }),
-    fetchSales: builder.query({
-      query: ({ year, month }: { year: string; month?: number }) => {
+    fetchSales: builder.query<Array<any>, { year: string; month?: number }>({
+      query: ({ year, month }) => {
         const form = new URLSearchParams();
         form.append('year', year);
         month && form.append('month', `${month}`);

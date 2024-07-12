@@ -101,6 +101,7 @@ export default function ProductSlider({
         dragFree={!alt}
         controlsOffset={0}
         classNames={{
+          slide: 'max-w-max',
           controls:
             '!hidden lg:!flex [--_controls-left:-22px_!important] [--_controls-right:-22px_!important]',
           control:

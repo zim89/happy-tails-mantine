@@ -1,12 +1,13 @@
-import { cn } from '@/shared/lib/utils';
-import { Accordion, Loader, TextInput, rem } from '@mantine/core';
+import { Accordion, Loader, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import axios from 'axios';
 import { useState } from 'react';
-import { AlertCircle } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { setDiscount } from '@/shared/redux/checkout/checkoutSlice';
 import dayjs from 'dayjs';
+import { AlertCircle } from 'lucide-react';
+
+import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
+import { cn } from '@/shared/lib/utils';
+import { setDiscount } from '@/shared/redux/checkout/checkoutSlice';
 import type { Discount } from '@/shared/api/discountApi';
 import { selectCartTotalPrice } from '@/shared/redux/cart/cartSlice';
 
@@ -108,7 +109,7 @@ export default function PromoCode() {
               />
 
               {message && (
-                <p className='absolute -bottom-[25px] left-0 text-sm/[21px] text-brand-green-400'>
+                <p className='absolute -bottom-[25px] left-0 text-sm/[1.3125rem] text-brand-green-400'>
                   {message}
                 </p>
               )}

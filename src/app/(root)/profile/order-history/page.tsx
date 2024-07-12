@@ -40,7 +40,7 @@ function OrderPage() {
           <hgroup>
             <h1 className='text-2xl font-light md:whitespace-pre'>
               Your Order History is Currently Empty,{' '}
-              <span className='text-[#925816]'>Start Shopping now</span>
+              <span className='text-brand-orange-800'>Start Shopping now</span>
             </h1>
             <p className={classes.boxParagraph}>
               Your Order History keeps track of all your purchases, making it

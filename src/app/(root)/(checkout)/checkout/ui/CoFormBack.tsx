@@ -53,7 +53,7 @@ export default function CheckoutForm() {
     <form className='pb-[72px] pt-5 md:pb-[68px] md:pt-6 lg:pb-20'>
       <div className='flex flex-col gap-12 lg:flex-row lg:gap-6'>
         <div className='flex flex-col gap-4 lg:w-[580px]'>
-          <h2 className='hidden border-b border-b-brand-grey-300 pb-2 text-[28px]/normal font-bold uppercase md:block'>
+          <h2 className='hidden border-b border-b-brand-grey-300 pb-2 text-[1.75rem]/normal font-bold uppercase md:block'>
             Checkout
           </h2>
 

@@ -3,12 +3,12 @@
 import { Button, PasswordInput } from '@mantine/core';
 import { useForm, hasLength, matchesField, isNotEmpty } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
-import axios from '@/shared/lib/interceptor';
+import { redirect } from 'next/navigation';
 
+import axios from '@/shared/lib/interceptor';
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { redirect } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 
 type Props = {
@@ -161,7 +161,7 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
       />
       <Button
         type='submit'
-        className={cn('btn mt-9 bg-black', classes.inputSizing)}
+        className={cn('btn mt-9 bg-secondary', classes.inputSizing)}
       >
         Update Password
       </Button>

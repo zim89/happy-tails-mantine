@@ -1,11 +1,12 @@
+import { Container } from '@mantine/core';
 import { TeamMember } from './components/TeamMember';
 import { team } from './lib/data';
 
 export default function TeamList() {
   return (
-    <>
+    <Container>
       <hgroup className='mx-5 mb-14 text-center'>
-        <h3 className='mb-4 text-[32px]/[38px] uppercase'>Meet our team</h3>
+        <h3 className='mb-4 text-[2rem]/[2.375rem] uppercase'>Meet our team</h3>
         <p className='font-light leading-6'>
           Meet the minds behind this site. Get to know the individuals who
           brought it to life.
@@ -16,6 +17,6 @@ export default function TeamList() {
           <TeamMember key={index} {...tm} />
         ))}
       </div>
-    </>
+    </Container>
   );
 }

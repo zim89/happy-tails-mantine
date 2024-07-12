@@ -6,9 +6,6 @@ import Image from 'next/image';
 
 import styles from './DeleteCategoryModal.module.css';
 
-import file_attention from '@/assets/icons/categories/file_attention.svg';
-import file_error from '@/assets/icons/categories/file_error.svg';
-
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
@@ -75,7 +72,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_attention.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/file_attention.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" category?`}</h2>
                   <p>
@@ -97,7 +99,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_error.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/categories/file_error.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
                   <p>

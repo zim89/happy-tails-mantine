@@ -36,6 +36,9 @@ export default function NewOrder() {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      const { hasErrors } = form.validate();
+      if (hasErrors) return;
+
       if (!currentUser)
         throw new ErrorResponse({
           status: 401,
@@ -44,6 +47,7 @@ export default function NewOrder() {
           timestamp: Date.now(),
           path: '/admin/orders/new',
         });
+
       const { sameAsDelivery, ...billing } = values.billingAddress;
       const parsed: CreateOrderBody['cartProducts'] = values.items.reduce<
         CreateOrderBody['cartProducts']
@@ -92,7 +96,7 @@ export default function NewOrder() {
 
   return (
     <>
-      <form className='space-y-12' onSubmit={form.onSubmit(handleSubmit)}>
+      <form className='space-y-12'>
         <ProductSelection form={form} />
         <DeliveryForm form={form} />
         <ShippingAndPayment form={form} />
@@ -113,7 +117,7 @@ export default function NewOrder() {
           </BlockButton>
           <UnstyledButton
             className='ml-[42px] rounded-sm bg-black px-12 py-[10px] text-primary'
-            type='submit'
+            onClick={() => handleSubmit(form.values)}
           >
             Save
           </UnstyledButton>

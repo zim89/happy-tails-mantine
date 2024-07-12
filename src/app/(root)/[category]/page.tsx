@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import ProductList from '@/modules/CatalogProductList';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -75,7 +76,7 @@ export default async function CatalogPage({ params }: Props) {
           <Breadcrumbs
             crumbs={[{ href: '/', text: 'Home' }, { text: category.name }]}
             classNames={{
-              root: "p-0 pt-2"
+              root: 'p-0 pt-2',
             }}
           />
           <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>

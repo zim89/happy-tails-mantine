@@ -1,3 +1,9 @@
+import Link from 'next/link';
+import { Check } from 'lucide-react';
+import { TextInput } from '@mantine/core';
+import { isEmail, useForm } from '@mantine/form';
+import { useEffect, useState } from 'react';
+
 import Checkbox from '@/components/Checkbox';
 import { cn } from '@/shared/lib/utils';
 import {
@@ -5,12 +11,7 @@ import {
   setContactData,
 } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { TextInput } from '@mantine/core';
-import { isEmail, useForm } from '@mantine/form';
-import { useEffect, useState } from 'react';
 import ContactLogin from './ContactLogin';
-import Link from 'next/link';
-import { Check } from 'lucide-react';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useScrollIntoView } from '@mantine/hooks';
 import { APP_PAGES } from '@/shared/config/pages-url.config';

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { XCircle } from 'lucide-react';
 import { Autocomplete, Select } from '@mantine/core';
+import axios from 'axios';
 import { UseFormReturnType } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';
-import axios from 'axios';
 import classes from '../styles.module.css';
 
 type Props = {

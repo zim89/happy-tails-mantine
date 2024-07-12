@@ -246,3 +246,7 @@ export type Category = {
 };
 
 export type Sort = [string, 'asc' | 'desc'];
+
+export type CustomComponentProps = {
+  className?: string;
+};

@@ -13,14 +13,14 @@ export default function PrivacyAndCookiesPage() {
           { href: '/', text: 'Home' },
           { text: 'Privacy & Cookies Policy', href: '/privacy&cookies' },
         ]}
-        classNames={{ root: "p-0 pt-4" }}
+        classNames={{ root: 'p-0 pt-4' }}
       />
       <hgroup className='mb-8 mt-5 flex items-center justify-center gap-6'>
-        <span className='w-full flex-1 border-b-2 border-[#C8C8C8]'></span>
+        <span className='w-full flex-1 border-b-2 border-brand-grey-400'></span>
         <h1 className='flex-2 heading text-center uppercase'>
           Privacy <br className='md:hidden' /> & Cookies Policy
         </h1>
-        <span className='w-full flex-1 border-b-2 border-[#C8C8C8]'></span>
+        <span className='w-full flex-1 border-b-2 border-brand-grey-400'></span>
       </hgroup>
       <div className={classes.section}>
         <h2 className={classes.headSection}>General Information</h2>
@@ -41,7 +41,7 @@ export default function PrivacyAndCookiesPage() {
           We may collect the following categories of information when you visit
           our website, register, place an order, or interact with our site:
         </p>
-        <ol className={cn(classes.list, "list-decimal")}>
+        <ol className={cn(classes.list, 'list-decimal')}>
           <li className='font-bold'>
             Personal Information:{' '}
             <span className='font-normal'>
@@ -70,8 +70,10 @@ export default function PrivacyAndCookiesPage() {
             </span>
           </li>
         </ol>
-        <p className='mt-4'>We use this information for the following purposes:</p>
-        <ul className={cn(classes.list, "list-disc")}>
+        <p className='mt-4'>
+          We use this information for the following purposes:
+        </p>
+        <ul className={cn(classes.list, 'list-disc')}>
           <li>Processing and fulfilling your order.</li>
           <li>Providing customer service.</li>
           <li>
@@ -99,7 +101,7 @@ export default function PrivacyAndCookiesPage() {
       <div className={classes.section}>
         <h2 className={classes.headSection}>Your Rights</h2>
         <p>You have the right to:</p>
-        <ul className={cn(classes.list, "list-disc")}>
+        <ul className={cn(classes.list, 'list-disc')}>
           <li>
             Request access to the personal information we hold about you and
             obtain a copy of this information.
@@ -124,18 +126,31 @@ export default function PrivacyAndCookiesPage() {
           this policy.
         </p>
         <p>Types of Cookies We Use:</p>
-        <ul className={cn(classes.list, "list-disc")}>
-          <li className="font-bold">
-            Essential Cookies: <span className="font-normal">Necessary for the functioning of the website.</span>
+        <ul className={cn(classes.list, 'list-disc')}>
+          <li className='font-bold'>
+            Essential Cookies:{' '}
+            <span className='font-normal'>
+              Necessary for the functioning of the website.
+            </span>
           </li>
-          <li className="font-bold">
-            Marketing Cookies: <span className="font-normal">Used to deliver personalized advertisements.</span>
+          <li className='font-bold'>
+            Marketing Cookies:{' '}
+            <span className='font-normal'>
+              Used to deliver personalized advertisements.
+            </span>
           </li>
-          <li className="font-bold">
-            Analytical Cookies: <span className="font-normal">Used to analyze website traffic and usage
-            patterns.</span>
+          <li className='font-bold'>
+            Analytical Cookies:{' '}
+            <span className='font-normal'>
+              Used to analyze website traffic and usage patterns.
+            </span>
           </li>
-          <li className="font-bold">Preference Cookies: <span className="font-normal">Remember your preferences and settings.</span></li>
+          <li className='font-bold'>
+            Preference Cookies:{' '}
+            <span className='font-normal'>
+              Remember your preferences and settings.
+            </span>
+          </li>
         </ul>
         <p className='mt-4'>
           The length of time that a cookie remains on your computer or mobile

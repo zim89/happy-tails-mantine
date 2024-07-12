@@ -69,7 +69,7 @@ export default function ProductDetails({ product }: Props) {
               <Image
                 src={product.imagePath ?? noImage}
                 alt={product.name}
-                blurDataURL={product.imagePath}
+                blurDataURL={product.imagePath || ''}
                 priority={true}
                 fill
                 sizes='(min-width: 1280px) 100vw, 50vw'

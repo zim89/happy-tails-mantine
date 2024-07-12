@@ -1,15 +1,16 @@
 'use client';
 
+import { Button } from '@mantine/core';
+
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import Logout from '@/components/Logout';
 import { cn } from '@/shared/lib/utils';
-import { Button } from '@mantine/core';
 
 export default function UserAccount() {
   const { currentUser } = useAuth();
 
-  if (!currentUser) return null;  
+  if (!currentUser) return null;
 
   return (
     <div className={classes.profileContent}>
@@ -26,7 +27,7 @@ export default function UserAccount() {
       <Logout>
         {(handleLogout) => (
           <Button
-            className='rounded-sm bg-black uppercase md:self-center'
+            className='rounded-sm bg-secondary uppercase md:self-center'
             onClick={handleLogout}
           >
             Logout

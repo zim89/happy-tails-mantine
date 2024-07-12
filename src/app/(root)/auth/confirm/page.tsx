@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import mailIcon from '@/assets/icons/mail.svg';
+import Link from 'next/link';
+
 import VerifyEmailForm from '@/components/auth/VerifyEmailForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Verify Email Page',
@@ -21,9 +21,14 @@ export default function Page({
   return (
     <div className='rounded-0.5 bg-primary px-12 pb-14 pt-12'>
       <div className='space-y-4'>
-        <Image src={mailIcon} alt='Email icon' width={52} className='h-auto' />
+        <Image
+          src='/icons/mail.svg'
+          alt='Email icon'
+          width={52}
+          className='h-auto'
+        />
 
-        <h1 className='text-[32px]/[1.2] font-bold'>Verify your identity</h1>
+        <h1 className='text-[2rem]/[1.2] font-bold'>Verify your identity</h1>
 
         <VerifyEmailForm email={searchParams.email} />
       </div>

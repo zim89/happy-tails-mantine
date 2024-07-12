@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import dog1 from '@/assets/images/featured/dog-1.png';
-import dog2 from '@/assets/images/featured/dog-2.png';
 import { Button } from '@mantine/core';
 import Link from 'next/link';
 
@@ -10,7 +8,9 @@ export default function Featured() {
       <div className='container space-y-6 md:space-y-0'>
         <div className='flex-row-reverse md:flex'>
           <Image
-            src={dog1}
+            src='/images/featured/dog-1.png'
+            height={2376}
+            width={1900}
             alt='A dog wearing clothes'
             className='mb-4 h-[314px] object-cover md:mb-0 md:h-[310px] md:max-w-[348px] lg:h-[520px] lg:max-w-[584px]'
           />
@@ -30,7 +30,9 @@ export default function Featured() {
         </div>
         <div className='md:flex'>
           <Image
-            src={dog2}
+            src='/images/featured/dog-2.png'
+            height={2554}
+            width={3826}
             alt='Old man with a dog on a leash'
             className='mb-4 h-[314px] object-cover md:mb-0 md:h-[310px] md:max-w-[348px] lg:h-[520px] lg:max-w-[584px]'
           />

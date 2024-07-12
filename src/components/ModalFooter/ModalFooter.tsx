@@ -32,7 +32,7 @@ export default function ModalFooter(props: Props) {
             props.primaryBtnClassName ||
             'cursor-pointer rounded-sm bg-secondary px-12 py-2 text-primary'
           }
-          onClick={props.primaryBtnOnClick}
+          onClick={(e) => props.primaryBtnOnClick(e)}
         >
           {props.primaryBtnText}
         </span>
@@ -58,7 +58,7 @@ export default function ModalFooter(props: Props) {
             props.primaryBtnClassName ||
             'cursor-pointer rounded-sm bg-secondary px-12 py-2 text-primary'
           }
-          onClick={props.primaryBtnOnClick}
+          onClick={(e) => props.primaryBtnOnClick(e)}
         >
           {props.primaryBtnText}
         </span>

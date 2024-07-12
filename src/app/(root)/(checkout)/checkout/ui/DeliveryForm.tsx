@@ -1,3 +1,7 @@
+import { ChevronDown } from 'lucide-react';
+import { Select, TextInput } from '@mantine/core';
+import { isNotEmpty, useForm } from '@mantine/form';
+
 import { useAuth } from '@/shared/hooks/useAuth';
 import { cn } from '@/shared/lib/utils';
 import {
@@ -6,14 +10,11 @@ import {
   setShippingData,
 } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { Select, TextInput } from '@mantine/core';
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useState, useEffect } from 'react';
 import { cleanPostcode } from '@/shared/lib/helpers';
 import Checkbox from '@/components/Checkbox';
 import { useScrollIntoView } from '@mantine/hooks';
 import styles from '../styles/Forms.module.css';
-import { ChevronDown } from 'lucide-react';
 
 const countries = ['Canada', 'United States'];
 

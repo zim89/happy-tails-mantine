@@ -22,9 +22,7 @@ export const ThankYouModal = ({ close, opened }: Props) => {
         <X />
       </span>
       <hgroup className='p-12 pb-8 text-center'>
-        <h1 className='mb-4 text-4xl leading-[43.2px]'>
-          Thank you for your request!
-        </h1>
+        <h1 className='mb-4 text-4xl/[2.7rem]'>Thank you for your request!</h1>
         <p>
           {
             "We've received your inquiry and are reviewing it carefully. Detailed instructions will follow shortly. Thank you for your patience."

@@ -16,7 +16,7 @@ export const TablePagination = <T,>({ visible, table }: Props<T>) => {
   };
 
   return (
-    <div className='mt-[46px] flex flex-col justify-between gap-4 md:flex-row md:items-center'>
+    <div className='mt-[46px] flex flex-col justify-between gap-4 md:flex-row md:items-center print:hidden'>
       {table.getRowCount() > 0 && (
         <Select
           label='Results Per Page'

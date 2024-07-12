@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function ProductPage({ params }: Props) {
-  const { data, isError, isLoading, error } = useFindOneQuery(params.id);
+  const { data, isError, isLoading } = useFindOneQuery(params.id);
 
   if (isLoading)
     return (

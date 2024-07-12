@@ -12,7 +12,7 @@ import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 
@@ -62,7 +62,7 @@ const columns = [
   columnHelper.accessor('totalPaid', {
     cell: (info) => (
       <div className='flex justify-end'>
-        <span className='whitespace-pre'>$ {info.getValue()}</span>
+        <span className='whitespace-pre'>$ {info.getValue().toFixed(2)}</span>
       </div>
     ),
     header: 'Total paid',
