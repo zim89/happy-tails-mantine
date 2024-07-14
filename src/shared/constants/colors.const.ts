@@ -1,6 +1,7 @@
 export const COLORS = [
   { name: 'White', hex: '#ffffff' },
   { name: 'Gray', hex: '#969696' },
+  { name: 'Brown', hex: '#8D5118' },
   { name: 'Black', hex: '#000000' },
   { name: 'Pink', hex: '#F4C1BE' },
   { name: 'Yellow', hex: '#FFE605' },
@@ -9,4 +10,4 @@ export const COLORS = [
   { name: 'Orange', hex: '#F39324' },
   { name: 'Purple', hex: '#9747FF' },
   { name: 'Blue', hex: '#4285F4' },
-];
+] as const;

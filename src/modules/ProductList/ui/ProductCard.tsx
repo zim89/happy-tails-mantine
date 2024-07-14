@@ -11,6 +11,8 @@ import AddToCartBtn from '@/components/AddToCartBtn';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import { cn } from '@/shared/lib/utils';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
+import { useState } from 'react';
+import { generateSizes } from '@/shared/helpers/size.helpers';
 
 interface Props {
   product: Product;
@@ -20,6 +22,10 @@ export default function ProductCard({ product, router }: Props) {
   const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
   const colorList = generateColorList(product);
+  const sizes = generateSizes(product.productSizes);
+  const [selectedSize, setSelectedSize] = useState(
+    sizes.length > 0 ? sizes.find((item) => item.isAvailable) : null
+  );
 
   return (
     <div
@@ -36,7 +42,10 @@ export default function ProductCard({ product, router }: Props) {
           <div
             className={clsx(
               'relative mb-5 transition-all duration-500',
-              desktop ? 'h-[287px] group-hover/card:h-[223px]' : 'h-[223px]',
+              desktop ? 'h-[287px]' : 'h-[223px]',
+              sizes.length > 0
+                ? 'group-hover/card:h-[170px]'
+                : 'group-hover/card:h-[223px]',
               !isAvailable ? 'grayscale' : 'grayscale-0'
             )}
           >
@@ -53,8 +62,8 @@ export default function ProductCard({ product, router }: Props) {
           </div>
         </Link>
 
-        <div className='mb-2 flex items-center justify-between'>
-          <p className='text-xs leading-normal'>{product.article}</p>
+        <div className='mb-2 flex h-[18px] items-center justify-between'>
+          <p className='text-start text-xs leading-normal'>{product.article}</p>
           <ul className='hidden lg:flex lg:gap-2'>
             {colorList.length > 0 &&
               colorList
@@ -80,14 +89,38 @@ export default function ProductCard({ product, router }: Props) {
           {product.name}
         </p>
 
-        <p className={clsx('relative mb-5 text-start text-base')}>
+        <p
+          className={clsx(
+            'relative text-start text-base',
+            sizes.length === 0 && 'mb-5'
+          )}
+        >
           <NumberFormatter prefix='$ ' value={product.price} decimalScale={2} />
           <span className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'>
             <AddToWishBtn product={product} />
           </span>
         </p>
 
-        <AddToCartBtn product={product} />
+        {sizes.length > 0 && (
+          <ul className='flex justify-between py-5'>
+            {sizes.map((item) => (
+              <li key={item.size}>
+                <button
+                  disabled={!item.isAvailable}
+                  onClick={() => setSelectedSize(item)}
+                  className={cn(
+                    'flex h-8 w-12 items-center justify-center rounded-3xl border border-brand-grey-400 text-base text-black disabled:text-brand-grey-400',
+                    item.size === selectedSize?.size && 'border-2 border-black'
+                  )}
+                >
+                  {item.size}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <AddToCartBtn product={product} size={selectedSize?.size} />
       </div>
     </div>
   );

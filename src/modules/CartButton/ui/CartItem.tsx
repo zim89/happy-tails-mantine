@@ -8,38 +8,38 @@ import {
 import Image from 'next/image';
 import { Minus, Plus } from 'lucide-react';
 import clsx from 'clsx';
-
 import { useAppDispatch } from '@/shared/redux/store';
 import {
-  CartItem as TCartItem,
+  type CartItem,
   decrementCartItem,
   incrementCartItem,
   removeFromCart,
 } from '@/shared/redux/cart/cartSlice';
+import noImage from '@/assets/images/no-img.png';
+import { COLORS } from '@/shared/constants/colors.const';
+import { cn } from '@/shared/lib/utils';
 
-interface Props {
-  product: TCartItem;
-}
-
-export default function CartItem({ product }: Props) {
+export default function CartItem({ product }: { product: CartItem }) {
   const handlersRef = useRef<NumberInputHandlers>(null);
   const dispatch = useAppDispatch();
 
-  const handleRemove = (id: number) => {
-    dispatch(removeFromCart(id));
+  const bgColor = `bg-[${COLORS.find((color) => color.name === product.color)?.hex}]`;
+
+  const handleRemove = (product: CartItem) => {
+    dispatch(removeFromCart(product));
   };
 
-  const handleIncrement = (id: number) => {
-    dispatch(incrementCartItem(id));
+  const handleIncrement = (product: CartItem) => {
+    dispatch(incrementCartItem(product));
   };
-  const handleDecrement = (id: number) => {
-    dispatch(decrementCartItem(id));
+  const handleDecrement = (product: CartItem) => {
+    dispatch(decrementCartItem(product));
   };
   return (
     <>
       <div className={'relative h-16 w-16'}>
         <Image
-          src={product.imagePath}
+          src={product.imagePath ?? noImage}
           alt={product.name}
           fill
           sizes={'33,33%'}
@@ -51,7 +51,7 @@ export default function CartItem({ product }: Props) {
         <div className={'mb-2 flex items-center justify-between'}>
           <p className={'text-xs leading-normal'}>{product.article}</p>
           <button
-            onClick={() => handleRemove(product.id)}
+            onClick={() => handleRemove(product)}
             className={
               'rounded-0.5 border border-transparent bg-primary px-2 py-1 text-xs leading-normal text-brand-red-400 transition-colors duration-300 hover:border-brand-red-400 hover:bg-brand-red-400/5'
             }
@@ -63,6 +63,24 @@ export default function CartItem({ product }: Props) {
         <p className={'mb-1 text-base font-bold leading-none'}>
           {product.name}
         </p>
+
+        {product.color && (
+          <div className='flex items-center gap-2 py-1.5'>
+            <span
+              className={cn(
+                'inline-block size-4 rounded-full border border-brand-grey-400',
+                product.color && bgColor
+              )}
+            />
+            <p className='text-sm/[21px] text-black'>
+              {product.color ? product.color : ''}{' '}
+              {product.color && product.size !== 'ONE SIZE'
+                ? `/ ${product.size}`
+                : ''}
+            </p>
+          </div>
+        )}
+
         <p className={'mb-3 text-sm leading-normal'}>
           Price:{' '}
           <NumberFormatter prefix='$ ' value={product.price} decimalScale={2} />
@@ -77,7 +95,7 @@ export default function CartItem({ product }: Props) {
           >
             <li className={'relative'}>
               <button
-                onClick={() => handleDecrement(product.id)}
+                onClick={() => handleDecrement(product)}
                 className={clsx(
                   'p-2',
                   product.count === 1 && 'text-brand-grey-400'
@@ -117,7 +135,7 @@ export default function CartItem({ product }: Props) {
             ></span>
             <li className={'relative'}>
               <button
-                onClick={() => handleIncrement(product.id)}
+                onClick={() => handleIncrement(product)}
                 className={clsx(
                   'p-2',
                   product.count === product.totalQuantity &&

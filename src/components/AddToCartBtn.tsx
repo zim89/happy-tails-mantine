@@ -7,15 +7,15 @@ import { cn } from '@/shared/lib/utils';
 
 interface Props {
   product: Product;
+  size?: string;
 }
-export default function AddToCartBtn({ product }: Props) {
+export default function AddToCartBtn({ product, size }: Props) {
   const dispatch = useAppDispatch();
-  // FIX ME
   const isAvailable = product.productStatus === 'IN STOCK';
 
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-    dispatch(addToCart(product));
+    dispatch(addToCart({ ...product, size: size ?? 'ONE SIZE' }));
     dispatch(openCartDrawer());
   };
 
@@ -23,8 +23,9 @@ export default function AddToCartBtn({ product }: Props) {
     <button
       disabled={!isAvailable}
       onClick={onClick}
-      className={cn('btn w-full btn-cart',
-       !isAvailable ? 'btn-disabled' : 'btn-cart'
+      className={cn(
+        'btn btn-cart w-full',
+        !isAvailable ? 'btn-disabled' : 'btn-cart'
       )}
     >
       {isAvailable ? 'Add to cart' : 'Out of stock'}

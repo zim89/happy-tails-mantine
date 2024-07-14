@@ -37,6 +37,5 @@ export const generateColorList = (product: Product) => {
     }
   });
 
-  console.log(colors);
   return colors;
 };

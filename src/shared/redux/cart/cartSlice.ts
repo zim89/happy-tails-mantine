@@ -4,6 +4,7 @@ import { Product } from '@/shared/types/types';
 
 export interface CartItem extends Product {
   count: number;
+  size?: string;
 }
 
 export interface CartState {
@@ -35,10 +36,13 @@ const cartSlice = createSlice({
     },
 
     addToCart: (state, action) => {
-      const item = state.items.find((obj) => obj.id === action.payload.id);
+      const item = state.items.find(
+        (obj) =>
+          obj.id === action.payload.id && obj.size === action.payload.size
+      );
 
       if (item) {
-        item.count++;
+        item.count += 1;
       } else {
         state.items.push({
           ...action.payload,
@@ -49,13 +53,22 @@ const cartSlice = createSlice({
       state.totalPrice = calcTotalPrice(state.items);
     },
 
-    removeFromCart: (state, action) => {
-      state.items = state.items.filter((obj) => obj.id !== action.payload);
-      state.totalPrice = calcTotalPrice(state.items);
+    removeFromCart: (state, action: PayloadAction<CartItem>) => {
+      const idx = state.items.findIndex(
+        (item) =>
+          item.id === action.payload.id && item.size === action.payload.size
+      );
+      if (idx !== -1) {
+        state.items.splice(idx, 1);
+        state.totalPrice = calcTotalPrice(state.items);
+      }
     },
 
-    decrementCartItem(state, action: PayloadAction<number>) {
-      const item = state.items.find((obj) => obj.id === action.payload);
+    decrementCartItem(state, action: PayloadAction<CartItem>) {
+      const item = state.items.find(
+        (obj) =>
+          obj.id === action.payload.id && obj.size === action.payload.size
+      );
 
       if (item) {
         if (item.count > 1) item.count--;
@@ -64,8 +77,11 @@ const cartSlice = createSlice({
       state.totalPrice = calcTotalPrice(state.items);
     },
 
-    incrementCartItem(state, action: PayloadAction<number>) {
-      const item = state.items.find((obj) => obj.id === action.payload);
+    incrementCartItem(state, action: PayloadAction<CartItem>) {
+      const item = state.items.find(
+        (obj) =>
+          obj.id === action.payload.id && obj.size === action.payload.size
+      );
 
       if (item) {
         if (item.count < item.totalQuantity) item.count++;

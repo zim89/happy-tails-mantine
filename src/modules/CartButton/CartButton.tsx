@@ -2,11 +2,9 @@
 import { useCallback } from 'react';
 import { Drawer, Indicator, ScrollArea, UnstyledButton } from '@mantine/core';
 import { ShoppingBag } from 'lucide-react';
-
 import CartHeader from './ui/CartHeader';
 import CartItem from './ui/CartItem';
 import CartFooter from './ui/CartFooter';
-
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import {
   closeCartDrawer,
