@@ -1,9 +1,11 @@
 'use client';
+
 import { useState } from 'react';
 import { Badge, Button } from '@mantine/core';
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
-import { formatDateToShortString } from '@/shared/lib/helpers';
 import Image from 'next/image';
+import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
+
+import { formatDateToShortString } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 
@@ -26,10 +28,7 @@ export default function OrdersList({ orders }: Props) {
   return (
     <>
       {orders.map((order) => (
-        <div
-          key={order.number}
-          className='mb-2 border-b-[1px] border-[#EEEEEE]'
-        >
+        <div key={order.number} className='mb-2 border-b border-brand-grey-300'>
           {activeOrders.includes(order.number) && (
             <div
               className='rounded-se-lg rounded-ss-lg py-1 text-center text-xs font-bold uppercase text-white md:hidden'
@@ -43,7 +42,7 @@ export default function OrdersList({ orders }: Props) {
           )}
           <div
             className={cn(
-              'grid grid-cols-3 items-center border-x-[1px] border-t-[1px] border-[#EEEEEE] p-4 md:grid-cols-5',
+              'grid grid-cols-3 items-center border-x border-t border-brand-grey-300 p-4 md:grid-cols-5',
               activeOrders.includes(order.number) &&
                 'grid-cols-[50px_auto_auto] grid-rows-2 md:grid-rows-1'
             )}
@@ -91,7 +90,7 @@ export default function OrdersList({ orders }: Props) {
 
             <button
               onClick={() => handleOpen(order.number)}
-              className='col-span-1 justify-self-end rounded-sm border-[1px] border-[#C8C8C8] p-[10px]'
+              className='col-span-1 justify-self-end rounded-sm border border-brand-grey-400 p-[10px]'
             >
               {activeOrders.includes(order.number) ? (
                 <ChevronDown color='black' size={16} />
@@ -102,11 +101,11 @@ export default function OrdersList({ orders }: Props) {
           </div>
 
           {activeOrders.includes(order.number) && (
-            <div className='flex items-center border-x-[1px] border-[#EEEEEE] p-4'>
+            <div className='flex items-center border-x border-brand-grey-300 p-4'>
               <p className='flex items-center gap-2 text-sm text-orange-500'>
                 <FileText className='inline' size={12} /> Electronic check
               </p>
-              <div className='ml-auto flex flex-col md:flex-row gap-4'>
+              <div className='ml-auto flex flex-col gap-4 md:flex-row'>
                 <Button className='bg-black'>Repeat the order</Button>
               </div>
             </div>

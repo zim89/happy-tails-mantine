@@ -71,7 +71,7 @@ export default function CheckoutForm() {
 
       try {
         const response = await createOrder(formData).unwrap();
-        console.log(response);
+
         dispatch(clearCart());
         router.push(
           APP_PAGES.CONFIRMATION +
@@ -108,7 +108,7 @@ export default function CheckoutForm() {
               <li key={product.id} className='flex items-center gap-6'>
                 <div className='h-[72px] w-[72px] flex-none self-start rounded-0.5 border border-brand-grey-400 bg-primary p-1'>
                   <Image
-                    src={product.imagePath}
+                    src={product.imagePath || '/images/no-image.512x512.png'}
                     alt={product.name}
                     height={64}
                     width={64}

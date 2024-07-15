@@ -1,5 +1,8 @@
 'use client';
 
+import { redirect, useSearchParams } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
+
 import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
 import OrdersChart from '@/modules/OrdersChart';
@@ -8,8 +11,6 @@ import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { KEYS } from '@/shared/constants/localStorageKeys';
 import { AdminPanelContext } from '@/shared/context/panel.context';
-import { redirect, useSearchParams } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
 
 export default function Page() {
   const tokenFromStore = retrieveToken();

@@ -1,3 +1,11 @@
+.content {
+  @apply leading-relaxed;
+}
+
+.content p {
+  @apply py-1;
+}
+
 .content ul {
   @apply m-[initial] list-[initial] py-2 pl-8;
 }

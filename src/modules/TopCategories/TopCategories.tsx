@@ -5,6 +5,7 @@ import { useTopCategoriesQuery } from '@/shared/api/dashboardApi';
 import BestProducts from '../BestProducts/BestProducts';
 import { COLOR_MAP } from './lib/data';
 import { CircleChartSkeleton } from './components/Skeleton';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function TopCategories() {
   const { data, isLoading, error } = useTopCategoriesQuery();
@@ -13,10 +14,7 @@ export default function TopCategories() {
     return (
       <div className='flex gap-6'>
         <BestProducts />
-        <p>
-          {`Whoops, it shouldn't have happened, our experts are already fixing
-        this`}
-        </p>
+        <SkeletonError />
       </div>
     );
 

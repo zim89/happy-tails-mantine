@@ -54,3 +54,5 @@ export const filtersData: FilterDataType[] = [
     precision: 0,
   },
 ];
+
+export const analyticsBeginningDate = '2024-03-01';

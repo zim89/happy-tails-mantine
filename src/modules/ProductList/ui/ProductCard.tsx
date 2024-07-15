@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { NumberFormatter } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -39,7 +40,7 @@ export default function ProductCard({ product, router }: Props) {
             )}
           >
             <Image
-              src={product.imagePath}
+              src={product.imagePath || '/images/no-image.512x512.png'}
               alt={product.name}
               fill
               priority={true}

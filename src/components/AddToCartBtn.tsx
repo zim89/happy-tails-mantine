@@ -1,5 +1,7 @@
 'use client';
+
 import React, { MouseEventHandler } from 'react';
+
 import { useAppDispatch } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
 import { addToCart, openCartDrawer } from '@/shared/redux/cart/cartSlice';
@@ -23,8 +25,9 @@ export default function AddToCartBtn({ product }: Props) {
     <button
       disabled={!isAvailable}
       onClick={onClick}
-      className={cn('btn w-full btn-cart',
-       !isAvailable ? 'btn-disabled' : 'btn-cart'
+      className={cn(
+        'btn btn-cart w-full',
+        !isAvailable ? 'btn-disabled' : 'btn-cart'
       )}
     >
       {isAvailable ? 'Add to cart' : 'Out of stock'}

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ProductCard from './ui/ProductCard';
 import { Product } from '@/shared/types/types';
 

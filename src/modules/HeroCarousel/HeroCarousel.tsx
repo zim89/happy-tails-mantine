@@ -25,7 +25,6 @@ export default function HeroCarousel() {
   if (isLoading) return <SkeletonLoader />;
 
   const slides: Banner[] = data?.content || [];
-
   const banners = slides.filter((banner) => bannerNames.includes(banner.name));
 
   return (

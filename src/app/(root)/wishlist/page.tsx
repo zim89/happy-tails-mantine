@@ -39,7 +39,7 @@ export default function Page() {
           <span className='text-brand-grey-600'>Wishlist</span>
         </Breadcrumbs>
 
-        <h2 className='text-center text-[28px]/normal font-bold md:text-4xl/normal'>
+        <h2 className='text-center text-[1.75rem]/normal font-bold md:text-4xl/normal'>
           Your Wishlist Products
         </h2>
       </Container>
