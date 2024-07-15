@@ -26,10 +26,12 @@ export const ClientDetails = ({ userEmail }: Props) => {
 
   return (
     <div className='rounded border border-brand-grey-300 bg-white'>
-      <div className='flex items-center justify-between'>
-        <h2 className='p-4 py-[22px] text-xl font-bold'>Client details</h2>
-        <p>Customer since</p>
-        {formatDateFromArray(user.registerDate)}
+      <div className='flex items-center justify-between px-4'>
+        <h2 className='py-[22px] text-xl font-bold'>Client details</h2>
+        <p className='whitespace-nowrap text-xs text-brand-grey-800'>
+          Customer since <br className='lg:hidden' />{' '}
+          {formatDateFromArray(user.registerDate, 'MMM DD, YYYY')}
+        </p>
       </div>
       <div className='grid grid-cols-[min-content_1fr] grid-rows-3 border-y border-brand-grey-300'>
         <p className='flex items-center gap-2 border-r border-brand-grey-300 p-3 text-sm font-bold uppercase text-brand-grey-800'>

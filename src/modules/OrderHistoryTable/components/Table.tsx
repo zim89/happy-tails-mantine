@@ -25,6 +25,7 @@ import { CustomBadge } from '@/components/Badge';
 import { TableHead } from '@/components/TableHead';
 import { EmptyRow } from '@/components/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
+import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -47,7 +48,9 @@ const columns = [
     enableSorting: false,
   }),
   columnHelper.accessor('createdDate', {
-    cell: (info) => <span>{formatDateTimeWithBrackets(info.getValue())}</span>,
+    cell: (info) => (
+      <span>{dayjs.unix(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
+    ),
     header: 'Date',
   }),
   columnHelper.accessor('orderStatus', {
