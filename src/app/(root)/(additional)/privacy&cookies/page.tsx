@@ -25,10 +25,12 @@ export default function PrivacyAndCookiesPage() {
       <div className={classes.section}>
         <h2 className={classes.headSection}>General Information</h2>
         <p>
-          This Privacy Policy describes what personal data HappyTails, which
-          owns and operates the website [insert your website name] selling pet
-          supplies, collects, uses, and protects, and how this data is
-          protected. This policy also explains your rights regarding your
+          This Privacy Policy describes what personal data{' '}
+          <span className='font-bold text-brand-orange-400'>HappyTails</span>,
+          which owns and operates the website{' '}
+          <span className='font-bold text-brand-orange-400'>Happy Tails</span>{' '}
+          selling pet supplies, collects, uses, and protects, and how this data
+          is protected. This policy also explains your rights regarding your
           personal information and how you can contact us with any questions
           related to the protection of personal data.
         </p>
@@ -166,12 +168,19 @@ export default function PrivacyAndCookiesPage() {
           experience and parts of our website may no longer be fully accessible.
         </p>
         <p>
-          {`Most browsers automatically accept cookies, but you can choose whether
+          Most browsers automatically accept cookies, but you can choose whether
           or not to accept cookies through your browser controls, often found in
-          your browser’s “Tools” or “Preferences” menu. For more information on
-          how to modify your browser settings or how to block, manage or filter
-          cookies can be found in your browser’s help file or through such sites
-          as: www.allaboutcookies.org.`}
+          your browser&apos;s “Tools” or “Preferences” menu. For more
+          information on how to modify your browser settings or how to block,
+          manage or filter cookies can be found in your browser&apos;s help file
+          or through such sites as:{' '}
+          <a
+            className='text-brand-blue underline'
+            href='www.allaboutcookies.org.'
+            target='_blank'
+          >
+            www.allaboutcookies.org.
+          </a>
         </p>
         <p>
           Additionally, please note that blocking cookies may not completely
@@ -196,7 +205,12 @@ export default function PrivacyAndCookiesPage() {
           {`If you have any questions or concerns about our Privacy & Cookies
           Policy, please contact us using the information provided below:`}
         </p>
-        <b className='block pt-4'>onlinestore.teamch2023@gmail.com</b>
+        <a
+          href='mailto:onlinestore.teamch2023@gmail.com'
+          className='block pt-4 text-brand-blue underline'
+        >
+          onlinestore.teamch2023@gmail.com
+        </a>
       </div>
       <p className='my-8'>Last Updated: 24/03/2024</p>
     </Container>

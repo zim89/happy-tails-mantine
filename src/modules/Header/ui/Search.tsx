@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useState } from 'react';
 import {
   Drawer,
@@ -14,6 +15,7 @@ import {
 import { ArrowRight, Loader2, Search, X, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import { useFindManyQuery } from '@/shared/api/productApi';
 
 export default function SearchMenu() {
@@ -63,7 +65,7 @@ export default function SearchMenu() {
       >
         <div className='relative'>
           <X className='iconBtn absolute right-0 top-0' onClick={close} />
-          <h3 className='text-[28px]/auto mb-8 font-bold'>Search</h3>
+          <h3 className='text-[1.75rem]/auto mb-8 font-bold'>Search</h3>
           <div className='relative'>
             <TextInput
               placeholder='What are you looking for?'
@@ -72,7 +74,7 @@ export default function SearchMenu() {
               onChange={(event) => setValue(event.currentTarget.value)}
               classNames={{
                 input:
-                  'rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
+                  'form-input py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
                 section: 'text-brand-grey-600',
               }}
             />
