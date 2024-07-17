@@ -48,9 +48,17 @@ export default function HeroCarousel() {
           ),
         }}
       >
-        {banners.map((slide, index) => (
-          <Slide key={index} banner={slide.imagePath} href='/products' />
-        ))}
+        {banners.length ? (
+          banners.map((slide, index) => (
+            <Slide key={index} banner={slide.imagePath} href='/products' />
+          ))
+        ) : (
+          <Slide
+            classNames={{ image: 'object-[2em_-2em]' }}
+            banner={'/images/hero-dog-bg-cleared.png'}
+            href='/products'
+          />
+        )}
       </Carousel>
     </div>
   );
