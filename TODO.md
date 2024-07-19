@@ -1,7 +1,4 @@
-- Add pagination search params in URL
-- Add a loader
-- Fix errors in User's page and table
+- Adjust edit product's modal
+- Add edit product page
 
-- Stopped on CartButton
 - Match User pages with updated UserDTO
-- Add skeletons for every dashboard widget

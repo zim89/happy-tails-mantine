@@ -208,6 +208,24 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                 label='Category'
                 data={categoryList}
               ></Select>
+              <TextInput
+                {...form.getInputProps('price')}
+                classNames={{
+                  root: 'form-root w-full',
+                  label: 'form-label',
+                  wrapper: 'flex border-2 px-2 gap-2 focus:outline outline-2',
+                  section: 'static w-auto text-secondary whitespace-nowrap',
+                  input: cn(
+                    'form-input rounded-sm border-0 p-0 outline-none',
+                    form?.errors?.price && 'form-error--input'
+                  ),
+                  error: 'form-error',
+                }}
+                type='number'
+                min={0}
+                max={Number.MAX_SAFE_INTEGER}
+                label='Price'
+              />
             </Group>
             <Group className='flex-column flex gap-[30px]'>
               <TextInput
@@ -248,6 +266,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
                 label='Type'
               ></Select>
             </Group>
+
             <Textarea
               classNames={{
                 root: 'form-root w-full',
@@ -305,9 +324,7 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={() =>
-            form.onSubmit((values) => handleSubmit(values))
-          }
+          primaryBtnOnClick={() => handleSubmit(form.values)}
         />
       </Modal>
     </>

@@ -4,7 +4,7 @@ import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
-type ProductBodyRequest = {
+type ProductPostRequest = {
   page: number;
   limit: number;
   categoryId?: number;
@@ -13,12 +13,22 @@ type ProductBodyRequest = {
   name?: string;
 };
 
+export type ProductPutRequest = Omit<
+  Product,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'unitsSold'
+  | 'categoryName'
+  | 'color'
+  | 'relatedProducts'
+>;
+
 export const productApi = createApi({
   reducerPath: 'productApi',
   tagTypes: ['Products'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    findMany: builder.query<BackendResponse<Product[]>, ProductBodyRequest>({
+    findMany: builder.query<BackendResponse<Product[]>, ProductPostRequest>({
       query: ({ page, limit, categoryId, filter, sort, name }) => {
         const params = new URLSearchParams({
           page: page.toString(),
@@ -117,7 +127,7 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    update: builder.mutation<Product, { req: Product }>({
+    update: builder.mutation<ProductPutRequest, { req: Product }>({
       query({ req }) {
         return {
           url: `/products`,

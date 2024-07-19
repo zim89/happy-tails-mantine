@@ -89,7 +89,7 @@ type Discount = {
   expirationDate: string;
 };
 
-type ProductSize = {
+export type ProductSize = {
   size: ProductSizeValues;
   quantity: number;
   productStatus: ProductStatus;

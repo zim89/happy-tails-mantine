@@ -69,7 +69,7 @@ export default function TopCategories() {
                   size={84}
                 />
                 <p className='mt-4 text-lg/[1.4] font-semibold tracking-wide text-brand-grey-900'>
-                  Users haven't made any orders to calculate top selling
+                  {"Users haven't made any orders to calculate top selling"}
                 </p>
               </div>
             )}

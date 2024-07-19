@@ -84,8 +84,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image,
   }: (typeof form)['values']) => {
     try {
+      const { updatedAt, productCount, ...category } = categoryLine;
+
       let requestBody = {
-        ...categoryLine,
+        ...category,
         name: categoryName,
       };
 
@@ -224,7 +226,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={() => form.onSubmit(handleSubmit)}
+          primaryBtnOnClick={() => handleSubmit(form.values)}
         />
       </Modal>
     </>
