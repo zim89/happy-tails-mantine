@@ -9,9 +9,14 @@ import {
   useState,
 } from 'react';
 
-import { AxiosQueryError, Product, ProductSize } from '@/shared/types/types';
+import {
+  AxiosQueryError,
+  Product,
+  ProductColor,
+  ProductSize,
+} from '@/shared/types/types';
 
-import { ProductPutRequest } from '@/shared/api/productApi';
+import { ProductPutRequest, useUpdateMutation } from '@/shared/api/productApi';
 import { publishImage } from '@/shared/lib/requests';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 
@@ -30,6 +35,7 @@ export type ProductForm = UseFormReturnType<
   {
     name: Product['name'];
     categoryName: Product['categoryName'];
+    color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
     quantity: Product['totalQuantity'];
@@ -39,6 +45,7 @@ export type ProductForm = UseFormReturnType<
   (values: {
     name: Product['name'];
     categoryName: Product['categoryName'];
+    color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
     quantity: Product['totalQuantity'];
@@ -47,6 +54,7 @@ export type ProductForm = UseFormReturnType<
   }) => {
     name: Product['name'];
     categoryName: Product['categoryName'];
+    color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
     quantity: Product['totalQuantity'];
@@ -78,6 +86,7 @@ type ProviderProps = {
 
 export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
   const categories = useSelectCategories((state) => state);
+  const [dispatch] = useUpdateMutation();
 
   const [sizes, setSizes] = useState<ContextType['sizes']>(
     product.productSizes
@@ -98,14 +107,19 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       name: product.name,
       categoryName: product.categoryName,
       price: product.price,
+      color: product.color,
       productType: product.productType,
       quantity: product.totalQuantity,
       description: product.description,
-      image: {} as File | null,
+      image: { type: 'Empty' } as File | null,
     },
 
     onValuesChange(values) {
-      if (values.image && previewImage.current) {
+      if (
+        values.image &&
+        values.image.type !== 'Empty' &&
+        previewImage.current
+      ) {
         previewImage.current.path = URL.createObjectURL(values.image);
         previewImage.current.name = values.image.name;
       }
@@ -128,7 +142,9 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
 
   useEffect(() => {
     setIsDirty(
-      !form.isDirty() && sizes.every((s) => s.id === 'form' && !s.isDirty())
+      !form.isDirty() &&
+        sizes.every((s) => s.id === 'form' && !s.isDirty()) &&
+        sizes.length === Number(product.productSizes?.length || 0)
         ? false
         : true
     );
@@ -164,6 +180,8 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       unitsSold,
       updatedAt,
       totalQuantity,
+      productSizes,
+      productStatus,
       imagePath,
       categoryId,
       ...productSelection
@@ -171,30 +189,36 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
 
     let productImage = imagePath;
     let categoryProductId = categoryId;
+
     const totalProductQuantity =
+      quantity +
       sizes.reduce((acc, curr) => {
         if (curr.id !== 'form') return acc;
 
         return acc + Number(curr.values.quantity);
-      }, 0) + Number(totalQuantity);
+      }, 0);
 
-    const productSizesArray = sizes.map<ProductSize>((s) => {
-      if (s.id === 'form') {
-        return {
-          description: s.values.description || '',
-          productStatus: s.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-          quantity: s.values.quantity,
-          size: s.values.size,
-        };
-      } else {
-        return {
-          description: s.description || '',
-          productStatus: s.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-          quantity: s.quantity,
-          size: s.size,
-        };
-      }
-    });
+    const productSizesArray =
+      sizes.length > 0
+        ? sizes.map<ProductSize>((s) => {
+            if (s.id === 'form') {
+              return {
+                description: s.values.description || '',
+                productStatus:
+                  s.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+                quantity: s.values.quantity,
+                size: s.values.size,
+              };
+            } else {
+              return {
+                description: s.description || '',
+                productStatus: s.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+                quantity: s.quantity,
+                size: s.size,
+              };
+            }
+          })
+        : null;
 
     if (categoryNameField !== categoryName) {
       const candidate = categories.find(
@@ -203,12 +227,12 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       candidate && (categoryProductId = candidate.id);
     }
 
-    if (imageField) {
+    if (imageField && imageField.type !== 'Empty') {
       // Upload the image to the server and get the public URL
       productImage =
         process.env.NODE_ENV === 'production'
           ? await publishImage(imageField, form.values.name)
-          : 'https://placehold.co/600x400.png';
+          : 'https://placehold.co/600x600.png';
     }
 
     const requestBody: ProductPutRequest = {
@@ -221,7 +245,8 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       productStatus: totalProductQuantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
     };
 
-    return requestBody;
+    const res = await dispatch({ req: requestBody }).unwrap();
+    return res;
   };
 
   return (

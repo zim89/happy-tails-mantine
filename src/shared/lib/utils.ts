@@ -152,3 +152,68 @@ declare module '@tiptap/core' {
     };
   }
 }
+
+export const Image = Node.create({
+  name: 'image',
+
+  addOptions() {},
+
+  inline() {
+    return this.options.inline;
+  },
+
+  group() {
+    return this.options.inline ? 'inline' : 'block';
+  },
+
+  draggable: true,
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+      },
+      alt: {
+        default: null,
+      },
+      title: {
+        default: null,
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: this.options.allowBase64
+          ? 'img[src]'
+          : 'img[src]:not([src^="data:"])',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    const attrs = HTMLAttributes;
+
+    return [
+      'div',
+      {
+        style: `position: relative; display: inline-block;`,
+      },
+      ['img', mergeAttributes(this.options.HTMLAttributes, attrs)],
+    ];
+  },
+
+  addCommands() {
+    return {
+      setImage:
+        (options) =>
+        ({ commands }) => {
+          return commands.insertContent({
+            type: this.name,
+            attrs: options,
+          });
+        },
+    };
+  },
+});

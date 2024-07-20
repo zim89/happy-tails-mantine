@@ -127,7 +127,7 @@ export const productApi = createApi({
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
-    update: builder.mutation<ProductPutRequest, { req: Product }>({
+    update: builder.mutation<Product, { req: ProductPutRequest }>({
       query({ req }) {
         return {
           url: `/products`,

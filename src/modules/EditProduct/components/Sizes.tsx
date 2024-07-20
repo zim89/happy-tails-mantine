@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { context } from '../lib/utils';
 import classes from '../classes.module.css';
 import { SingleSize } from './SingleSize';
+import Table from './Table';
 
 export const Sizes = () => {
   const { setSizes, sizes } = useContext(context);
@@ -45,6 +46,7 @@ export const Sizes = () => {
           />
         ))}
       </div>
+      <Table />
     </>
   );
 };

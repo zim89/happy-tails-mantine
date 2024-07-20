@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import {
   BreadcrumbsStylesNames,
   Breadcrumbs as RawBreadcrumbs,
 } from '@mantine/core';
+
 import { cn } from '@/shared/lib/utils';
 import BlockLink from '@/modules/BlockLink';
 

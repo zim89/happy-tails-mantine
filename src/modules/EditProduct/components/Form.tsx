@@ -15,6 +15,7 @@ import { productTypeList } from '@/shared/lib/constants';
 import { cn } from '@/shared/lib/utils';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
+import { ProductColor } from '@/shared/types/types';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -52,6 +53,37 @@ export const Form = () => {
               }}
               type='text'
               label='Name'
+            />
+            <Select
+              {...productForm.getInputProps('color')}
+              classNames={{
+                root: 'form-root w-full',
+                label: 'form-label',
+                wrapper:
+                  'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                section: 'static w-auto text-secondary whitespace-nowrap',
+                option: 'text-xs',
+                input: cn('form-input border-0 p-0 outline-none'),
+                error: 'form-error',
+              }}
+              rightSection={<ChevronDown color='black' size={16} />}
+              type='text'
+              label='Color'
+              data={
+                [
+                  'Black',
+                  'Blue',
+                  'Brown',
+                  'Gray',
+                  'Green',
+                  'Orange',
+                  'Pink',
+                  'Purple',
+                  'Red',
+                  'White',
+                  'Yellow',
+                ] as ProductColor[]
+              }
             />
           </div>
           <div className={classes.inputRow}>

@@ -29,12 +29,17 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
   });
 
   useEffect(() => {
-    setSizes((s) => {
-      const newSizes = [...s];
-      newSizes[index] = { id: 'form', ...form };
-      return newSizes;
-    });
-  }, [form.values.description, form.values.size, form.values.quantity]);
+    const { hasErrors } = form.validate();
+
+    // Update sizes array only when form's values are correct
+    if (!hasErrors) {
+      setSizes((s) => {
+        const newSizes = [...s];
+        newSizes[index] = { id: 'form', ...form };
+        return newSizes;
+      });
+    }
+  }, [form.values.size, form.values.quantity]);
 
   return (
     <div className={classes.variant}>

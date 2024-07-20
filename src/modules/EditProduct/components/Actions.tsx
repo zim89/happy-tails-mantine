@@ -8,7 +8,11 @@ import { notifyContext } from '@/shared/context/notification.context';
 import DeleteModal from '@/components/DeleteModal';
 import { context } from '../lib/utils';
 
-export const Actions = () => {
+type Props = {
+  index: number;
+};
+
+export const Actions = ({ index }: Props) => {
   const { setNotification, setParams } = useContext(notifyContext);
   const { sizes, setSizes } = useContext(context);
   const [opened, setOpened] = useState(false);
@@ -24,6 +28,11 @@ export const Actions = () => {
   }, []);
 
   const handleDelete = () => {
+    setSizes((prev) => {
+      const newSizes = [...prev];
+      newSizes.splice(index, 1);
+      return newSizes;
+    });
     setOpened(() => false);
     setNotification('Success', 'Variant deleted successfully!');
   };
