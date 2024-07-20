@@ -8,6 +8,8 @@ import Loader from '@/components/Loader';
 export default function AdminUsersDisplay() {
   const { data, error, isLoading } = useFindManyQuery({});
 
+  console.log(data);
+
   if (isLoading || !data)
     return (
       <div className='flex justify-center pt-16'>

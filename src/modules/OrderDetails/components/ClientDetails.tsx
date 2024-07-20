@@ -1,24 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Banknote, Package } from 'lucide-react';
 
 import { User } from '@/shared/types/auth.types';
 import { getUserByEmail } from '@/shared/lib/requests';
-import { formatDateFromArray } from '@/shared/lib/helpers';
+import {
+  formatDateFromArray,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
+import { notifyContext } from '@/shared/context/notification.context';
+import { isAxiosError } from 'axios';
 
 type Props = {
   userEmail: string;
 };
 export const ClientDetails = ({ userEmail }: Props) => {
+  const { setNotification } = useContext(notifyContext);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (!userEmail) return;
 
     (async () => {
-      const user = await getUserByEmail(userEmail);
-      setUser(user);
+      try {
+        const user = await getUserByEmail(userEmail);
+        setUser(user);
+      } catch (err) {
+        if (isAxiosError(err) && err.response?.data.status === 404) {
+          setNotification('Failed', err.response?.data.message);
+        }
+        console.error('Request failed: ', err);
+      }
     })();
   }, [userEmail]);
 
