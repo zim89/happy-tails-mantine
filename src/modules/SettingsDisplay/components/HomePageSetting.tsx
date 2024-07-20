@@ -2,11 +2,11 @@
 
 import { useForm, isNotEmpty } from '@mantine/form';
 import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
-
-import classes from '../classes.module.css';
 import { ChevronDown, Info, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 import { FileInput, Select, Tooltip } from '@mantine/core';
+
+import classes from '../classes.module.css';
 import { cn } from '@/shared/lib/utils';
 import {
   useCreateBannerMutation,
@@ -22,6 +22,12 @@ type PreviewImage = {
   id: number | null;
   name: string | null;
   path: string | null;
+};
+
+type FormValues = {
+  [P in `banner_${number}`]: File | null | string;
+} & {
+  [P in `product_link_${number}`]: string;
 };
 
 export const HomePageSetting = () => {
@@ -46,9 +52,7 @@ export const HomePageSetting = () => {
     });
   }, [products.length]);
 
-  const form = useForm<{
-    [P in string]: File | null | string;
-  }>({
+  const form = useForm<FormValues>({
     initialValues: {
       banner_1: null,
       product_link_1: '',
@@ -63,7 +67,7 @@ export const HomePageSetting = () => {
     onValuesChange(values) {
       [bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4].forEach(
         (banner, index) => {
-          const bannerProp = `banner_${index + 1}` as string;
+          const bannerProp = `banner_${index + 1}` as const;
           const bannerValue = values[bannerProp];
 
           if (bannerValue instanceof File && banner.current) {
@@ -115,7 +119,7 @@ export const HomePageSetting = () => {
     return (
       <p>
         {
-          'Whoops, it shouldn have happened. our experts are already fixing this'
+          'Whoops, it should not have happened. our experts are already fixing this.'
         }
       </p>
     );
@@ -143,14 +147,14 @@ export const HomePageSetting = () => {
 
   const handleUploadBanner = async (id: number) => {
     // Check whether the link is fulfilled before a request
-    const linkProp = `product_link_${id}`;
+    const linkProp = `product_link_${id}` as const;
 
     const { hasError: bannerHasError } = form.validateField(`banner_${id}`);
     const { hasError: linkHasError } = form.validateField(linkProp);
 
     try {
       if (!bannerHasError && !linkHasError) {
-        const bannerProp = `banner_${id}`;
+        const bannerProp = `banner_${id}` as const;
         const image = form.values[bannerProp];
 
         let imageLink = 'https://placehold.co/1200x800.png';
@@ -159,7 +163,11 @@ export const HomePageSetting = () => {
           imageLink = await publishImage(image, bannerProp);
         }
 
-        await createBanner({ name: bannerProp, imagePath: imageLink }).unwrap();
+        await createBanner({
+          name: bannerProp,
+          imagePath: imageLink,
+          productPath: form.values[linkProp],
+        }).unwrap();
       }
     } catch (err) {
       console.error(err);
