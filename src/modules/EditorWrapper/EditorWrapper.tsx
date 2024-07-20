@@ -11,7 +11,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 
-import { FontFamily, FontSize, ImageResize } from '@/shared/lib/utils';
+import { FontFamily, FontSize, Image } from '@/shared/lib/utils';
 import { PostFormContext } from '@/shared/context/postform.context';
 
 type Props = {
@@ -27,8 +27,7 @@ export default function EditorWrapper({ children }: Props) {
       Link,
       TextStyle,
       Color,
-      // Image,
-      ImageResize,
+      Image,
       FontSize,
       FontFamily,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),

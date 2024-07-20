@@ -9,6 +9,7 @@ import DonutChart from '@/components/DonutChart';
 import Table from './components/Table';
 import { useFindManyQuery } from '@/shared/api/ordersApi';
 import { SkeletonLoader } from './components/Skeleton';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function OrdersChart() {
   const {
@@ -22,16 +23,9 @@ export default function OrdersChart() {
 
   const [selected, setSelected] = useState<string[]>(['NEW']);
 
-  if (isLoading) return <SkeletonLoader />;
+  if (error) return <SkeletonError />;
 
-  if (error)
-    return (
-      <p>
-        {
-          "Whoops, it shouldn't have happened, our experts are already fixing this"
-        }
-      </p>
-    );
+  if (isLoading) return <SkeletonLoader />;
 
   const summarizedOrders = summarizeOrderStatuses(orders?.content || []);
 
@@ -50,7 +44,7 @@ export default function OrdersChart() {
             data={summarizedOrders.map((item) => item.name)}
             classNames={{
               root: 'max-w-[105px] w-full',
-              input: 'font-lato text-xs bg-primary text-[#B4B4B4]',
+              input: 'font-lato text-xs bg-primary text-brand-grey-400',
               pillsList: 'whitespace-nowrap overflow-hidden text-ellipsis',
               pill: 'hidden',
             }}

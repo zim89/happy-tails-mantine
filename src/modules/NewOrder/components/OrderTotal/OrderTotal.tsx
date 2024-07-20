@@ -8,17 +8,21 @@ import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 import { Product } from '@/shared/types/types';
 import { useGetDiscountByCodeQuery } from '@/shared/api/discountApi';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
 
 type Props = {
+  taxRate: number;
   form: UseFormReturnType<
     NewOrderFields,
     (values: NewOrderFields) => NewOrderFields
   >;
 };
 
-const tax = 2.49;
+export default function OrderTotal({ form, taxRate }: Props) {
+  const delivery = useSelectDeliveries((state) =>
+    state.find((del) => del.name === form.values.shippingMethod)
+  );
 
-export default function OrderTotal({ form }: Props) {
   const [promoCode, setPromoCode] = useDebouncedState('', 300, {
     leading: false,
   });
@@ -39,22 +43,26 @@ export default function OrderTotal({ form }: Props) {
   const [discount, setDiscount] = useState(0);
   const [hasPromo, setHasPromo] = useState(false);
 
-  console.log(discount);
-
   const subTotal = form.values.items.reduce((acc, prev) => {
     const parsed: Product = JSON.parse(prev);
     if (parsed.productStatus !== 'IN STOCK') return acc;
     return acc + parsed.price * parsed.totalQuantity;
   }, 0);
 
-  const shipping =
-    subTotal === 0 ? 0 : form.values.shippingMethod === 'fast' ? 20 : 10;
+  const shipping = subTotal === 0 ? 0 : delivery?.price || 0;
 
+  const tax =
+    subTotal === 0 ? 0 : (subTotal + shipping - discount) * (taxRate / 100);
+
+  // If the promo code was cleared or changed and wasn't found, then reset the discount
   useEffect(() => {
-    if (isAxiosQueryError(error)) {
+    if (
+      (isAxiosQueryError(error) && error.status === 404) ||
+      promoCode.length !== 6
+    ) {
       setDiscount(0);
     }
-  }, [error]);
+  }, [error, promoCode]);
 
   return (
     <Card className='bg-brand-grey-300'>
@@ -71,7 +79,7 @@ export default function OrderTotal({ form }: Props) {
         </div>
         <div className='flex justify-between'>
           <p>Tax:</p>
-          <span>${subTotal === 0 ? 0 : tax}</span>
+          <span>${tax.toFixed(2)}</span>
         </div>
         <div className='flex justify-between'>
           <p>Shipping:</p>

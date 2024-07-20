@@ -7,14 +7,14 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { cn } from '@/shared/lib/utils';
 import { Paperclip, X } from 'lucide-react';
-import Checkbox from '@/components/Checkbox';
-import { useDisclosure } from '@mantine/hooks';
-
-import classes from './ProblemReport.module.css';
-import { hasLength, isEmail, useForm } from '@mantine/form';
 import axios, { AxiosError } from 'axios';
+import { useDisclosure } from '@mantine/hooks';
+import { hasLength, isEmail, useForm } from '@mantine/form';
+
+import { cn } from '@/shared/lib/utils';
+import Checkbox from '@/components/Checkbox';
+import classes from './ProblemReport.module.css';
 import { ThankYouModal } from '@/app/(root)/profile/components/ThankYouModal';
 
 export default function ProblemReport() {
@@ -108,7 +108,7 @@ export default function ProblemReport() {
           <X />
         </span>
         <hgroup className='p-12 pb-8 text-center'>
-          <h1 className='mb-4 text-4xl capitalize leading-[43.2px]'>
+          <h1 className='mb-4 text-4xl/[2.7rem] capitalize'>
             Warranty and returns
           </h1>
           <p>

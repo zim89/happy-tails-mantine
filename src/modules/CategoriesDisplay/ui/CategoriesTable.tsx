@@ -29,8 +29,10 @@ export default function CategoriesTable({ categories }: Props) {
   return (
     <>
       <div className={styles.table}>
-        <div className='flex items-center justify-between border-[1px] border-b-0 bg-white px-4 py-6'>
-          <h2 className='mr-6 text-base/[24px] font-bold'>Products Catalog</h2>
+        <div className='flex items-center justify-between border border-b-0 bg-white px-4 py-6'>
+          <h2 className='mr-6 text-base/[1.5rem] font-bold'>
+            Products Catalog
+          </h2>
         </div>
         <Table
           highlightOnHover

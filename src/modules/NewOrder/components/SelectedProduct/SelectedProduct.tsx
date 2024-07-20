@@ -4,10 +4,10 @@ import { Radio, RadioGroup } from '@mantine/core';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
+import { UseFormReturnType } from '@mantine/form';
 
 import { CustomBadge } from '@/components/Badge';
 import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
-import { UseFormReturnType } from '@mantine/form';
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
 
 import classes from '../classes.module.css';
@@ -155,9 +155,9 @@ export default function SelectedProduct({
           </RadioGroup>
         </div>
         <div>
-          <p className='text-sm font-bold'>
-            Size: {!!sizes().length && selectedSize}
-          </p>
+          {!!sizes().length && selectedSize && (
+            <p className='text-sm font-bold'>Size: {selectedSize}</p>
+          )}
           <RadioGroup
             value={selectedSize}
             onChange={(e) => setSelectedSize(e as ProductSizeValues)}

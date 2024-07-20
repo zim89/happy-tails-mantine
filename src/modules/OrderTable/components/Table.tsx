@@ -10,14 +10,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-
-import { Button, Table as MantineTable, UnstyledButton } from '@mantine/core';
+import { flushSync } from 'react-dom';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { Table as MantineTable, UnstyledButton } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
 import { cn } from '@/shared/lib/utils';
-import dayjs from 'dayjs';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';

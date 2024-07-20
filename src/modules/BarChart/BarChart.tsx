@@ -21,6 +21,7 @@ import {
 import { useFetchSalesQuery } from '@/shared/api/dashboardApi';
 import { CustomTooltip } from './components/CustomTooltip';
 import { SkeletonLoader } from './components/SkeletonLoader';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
@@ -37,14 +38,7 @@ export default function BarChart() {
     month: barChartType === 'Month' ? selectedMonth : undefined,
   });
 
-  if (error)
-    return (
-      <p>
-        {
-          "Whoops, it shouldn't have happened, our experts are already fixing this"
-        }
-      </p>
-    );
+  if (error) return <SkeletonError />;
   if (isLoading) return <SkeletonLoader />;
 
   return (

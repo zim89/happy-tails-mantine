@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import FooterNav from './ui/FooterNav';
 import SocialLinks from './ui/SocialLinks';
-import logoImg from '@/assets/logo/logo-footer.svg';
 import { formatYearFromDate } from '@/shared/lib/helpers';
 
 export default function Footer(): React.JSX.Element {
@@ -15,7 +14,9 @@ export default function Footer(): React.JSX.Element {
         <div className='flex flex-col gap-6 md:flex-row md:items-start md:justify-between'>
           <Link href='/'>
             <Image
-              src={logoImg}
+              src='/logo/logo-footer.svg'
+              height={34}
+              width={190}
               alt='Happy tails logo'
               style={{ width: 'auto', height: 'auto' }}
               className='h-[33.6px] w-[189.6px] lg:h-12 lg:w-[228.91px]'

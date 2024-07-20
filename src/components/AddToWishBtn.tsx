@@ -1,7 +1,9 @@
 'use client';
+
 import React from 'react';
 import { Heart, Trash2 } from 'lucide-react';
 import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 
 import {
   addToFavorites,
@@ -10,7 +12,6 @@ import {
 } from '@/shared/redux/favorites/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
-import { usePathname } from 'next/navigation';
 
 interface Props {
   product: Product;

@@ -5,6 +5,7 @@ import { useGetHeroQuery } from '@/shared/api/postApi';
 import Image from 'next/image';
 import Link from 'next/link';
 import Loader from '@/components/Loader';
+import { PostContent } from '../[id]/ui/PostContent';
 
 function HeroBlog() {
   const { data, error, isLoading } = useGetHeroQuery();
@@ -46,7 +47,10 @@ function HeroBlog() {
           {data.title}
         </h2>
         <p className='mb-6 line-clamp-4 text-base text-primary md:line-clamp-3'>
-          {data.content}
+          <PostContent
+            content={data.content}
+            className='brightness-[30] filter'
+          />
         </p>
         <Link
           href={`/blog/${data.id}`}

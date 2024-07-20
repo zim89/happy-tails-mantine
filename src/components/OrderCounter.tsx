@@ -25,6 +25,8 @@ export default function OrderCounter({
         </div>
         <Image
           src='/icons/additional/new-orders.svg'
+          height={32}
+          width={32}
           alt='Blue box with plus sign'
         />
       </li>
@@ -37,6 +39,8 @@ export default function OrderCounter({
         </div>
         <Image
           src='/icons/additional/in-progress-orders.svg'
+          height={32}
+          width={32}
           alt='Yellow open box'
         />
       </li>
@@ -47,6 +51,8 @@ export default function OrderCounter({
         </div>
         <Image
           src='/icons/additional/completed-orders.svg'
+          height={32}
+          width={32}
           alt='Gray box with check mark'
         />
       </li>
@@ -57,6 +63,8 @@ export default function OrderCounter({
         </div>
         <Image
           src='/icons/additional/cancelled-orders.svg'
+          height={32}
+          width={32}
           alt='Red box with cross sign'
         />
       </li>

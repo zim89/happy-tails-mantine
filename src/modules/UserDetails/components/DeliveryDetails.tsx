@@ -6,7 +6,7 @@ type Props = {
 };
 export const DeliveryDetails = ({ user }: Props) => {
   return (
-    <div className='grid grid-cols-[min-content_1fr] grid-rows-[56px_1fr_1fr] border-[1px] border-brand-grey-300 bg-white'>
+    <div className='grid grid-cols-[min-content_1fr] grid-rows-[56px_1fr_1fr] border border-brand-grey-300 bg-white'>
       <h2 className='col-span-2 border-b border-brand-grey-300 p-4 text-xl font-black'>
         Delivery address
       </h2>
@@ -16,13 +16,12 @@ export const DeliveryDetails = ({ user }: Props) => {
           <Banknote size={16} /> Billing address
         </p>
         <p className='p-4 py-7'>
-          {Object.values(user.billingAddress).reduceRight(
-            (address, segment) => {
+          {Object.values(user.billingAddress)
+            .filter((segment) => segment != null && segment !== 'string')
+            .reduceRight((address, segment) => {
               if (!address.trim()) return segment;
               return segment + ', ' + address;
-            },
-            ''
-          )}
+            }, '')}
         </p>
       </>
 
@@ -31,13 +30,12 @@ export const DeliveryDetails = ({ user }: Props) => {
           <Truck size={16} /> Shipping Address
         </p>
         <p className='border-t border-brand-grey-300 p-4 py-7'>
-          {Object.values(user.shippingAddress).reduceRight(
-            (address, segment) => {
+          {Object.values(user.shippingAddress)
+            .filter((segment) => segment != null && segment !== 'string')
+            .reduceRight((address, segment) => {
               if (!address.trim()) return segment;
               return segment + ', ' + address;
-            },
-            ''
-          )}
+            }, '')}
         </p>
       </>
     </div>

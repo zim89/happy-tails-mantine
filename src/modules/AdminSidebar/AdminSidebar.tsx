@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Group } from '@mantine/core';
 
 import classes from './AdminSidebar.module.css';
-import logo from '@/assets/logo/logo-footer.svg';
 import { links } from './lib/utils';
 import { Menu } from './components/Menu';
 import Logo from '@/components/Logo';
@@ -13,16 +12,19 @@ export default function AdminSidebar() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Group styles={{ root: { padding: "2em 0px 3em 0px" } }} justify="center">
+        <Group
+          styles={{ root: { padding: '2em 0px 3em 0px' } }}
+          justify='center'
+        >
           <Image
-            src={logo.src}
+            src='/logo/logo-footer.svg'
             priority
             width={147}
             height={26}
-            className="hidden md:block"
+            className='hidden md:block'
             alt='Happy Tails Logo'
           />
-          <div className="md:hidden filter grayscale contrast-[2] saturate px-2">
+          <div className='saturate px-2 contrast-[2] grayscale filter md:hidden'>
             <Logo />
           </div>
         </Group>

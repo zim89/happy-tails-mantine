@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Button, Container, Group } from '@mantine/core';
+import { Button, Container, Group, UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -34,9 +34,9 @@ export default function Page() {
           </p>
         </hgroup>
 
-        <Button className='w-full bg-secondary md:w-auto'>
+        <UnstyledButton className='w-full rounded-sm bg-secondary px-3 py-[10px] text-center text-sm font-bold text-primary md:w-auto md:text-base'>
           <Link href='/'>Back to homepage</Link>
-        </Button>
+        </UnstyledButton>
       </Group>
     </Container>
   );

@@ -148,7 +148,7 @@ export default function ProductSlider({
             padding={28}
             radius={2}
             classNames={{
-              root: 'border-brand-grey-400 bg-[#EEE] min-w-[340px] md:w-full',
+              root: 'border-brand-grey-400 bg-brand-grey-300 min-w-[340px] md:w-full',
             }}
           >
             <Link

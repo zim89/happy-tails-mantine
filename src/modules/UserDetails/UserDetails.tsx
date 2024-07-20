@@ -1,21 +1,31 @@
 'use client';
 
+import { notFound } from 'next/navigation';
+import { useLayoutEffect, useState } from 'react';
+
 import { useSelectUsers } from '@/shared/hooks/useSelectUsers';
 import { formatDateFromArray } from '@/shared/lib/helpers';
 import { Profile } from './components/Profile';
 import { DeliveryDetails } from './components/DeliveryDetails';
 import OrderHistoryTable from '../OrderHistoryTable';
-import { notFound } from 'next/navigation';
 
 type Props = {
   id: string;
 };
 export default function UserDetails({ id }: Props) {
+  const [isRefetched, setIsRefetched] = useState(false);
   const user = useSelectUsers((state) =>
     state.find((user) => user.userId === id)
   );
 
-  if (!user) return notFound();
+  // TODO: 404 page should be handled properly
+
+  useLayoutEffect(() => {
+    !isRefetched && setIsRefetched(true);
+    if (!user && isRefetched) return notFound();
+  }, [user]);
+
+  if (!user) return null;
 
   // Cut a timestamp
   const [day, year, _] = formatDateFromArray(user.registerDate).split(

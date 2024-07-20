@@ -128,7 +128,7 @@ export const ContactForm = () => {
               'form-input md:w-[458px] lg:w-[315px]',
               form?.errors?.content && 'border-brand-red-400 text-secondary'
             ),
-            error: 'form-error',
+            error: 'form-error -bottom-7 md:-bottom-4',
           }}
           {...form.getInputProps('content')}
           label='Enter your question or message here'

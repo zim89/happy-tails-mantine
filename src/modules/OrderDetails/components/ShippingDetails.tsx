@@ -8,8 +8,6 @@ type Props = {
 };
 
 export const ShippingDetails = ({ order }: Props) => {
-  console.log(Object.values(order.billingAddress));
-
   return (
     <div className='col-span-2 rounded-[4px] border-[1px] border-brand-grey-300 bg-white'>
       <div className='flex items-center justify-between px-4 py-[22px]'>
@@ -26,8 +24,6 @@ export const ShippingDetails = ({ order }: Props) => {
           {Object.values(order.billingAddress)
             .filter((val) => !!val)
             .reduce((address, segment) => {
-              console.log(segment);
-
               if (!address.trim() && !segment) return segment;
               return segment + ', ' + address;
             }, '')}

@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useCallback, useContext } from 'react';
 import { Editor } from '@tiptap/react';
-import { TextInput, rem } from '@mantine/core';
+import { TextInput } from '@mantine/core';
 
 // Rich text editor libraries
 import { RichTextEditor } from '@mantine/tiptap';

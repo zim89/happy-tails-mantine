@@ -39,7 +39,7 @@ export default function CartItem({ product }: Props) {
     <>
       <div className={'relative h-16 w-16'}>
         <Image
-          src={product.imagePath}
+          src={product.imagePath || '/images/no-image.512x512.png'}
           alt={product.name}
           fill
           sizes={'33,33%'}
@@ -106,7 +106,8 @@ export default function CartItem({ product }: Props) {
                 value={product.count}
                 readOnly
                 classNames={{
-                  input: 'text-center text-base font-bold text-secondary',
+                  input:
+                    'font-inter text-center text-base font-bold text-secondary',
                 }}
               />
             </li>

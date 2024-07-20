@@ -50,7 +50,7 @@ export default function ProductPage({ params }: Props) {
     offers: {
       '@type': 'Offer',
       availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
-      url: `https://happy-tails-mantine.vercel.app/products/${data.id}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_DOMAIN}/products/${data.id}`,
       category: data.categoryName,
       itemCondition: 'https://schema.org/NewCondition',
       priceSpecification: {
@@ -58,6 +58,7 @@ export default function ProductPage({ params }: Props) {
         price: data.price,
         priceCurrency: 'USD',
       },
+      offerCount: data.totalQuantity,
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
         applicableCountry: 'US',
@@ -67,6 +68,11 @@ export default function ProductPage({ params }: Props) {
         returnMethod: 'https://schema.org/ReturnByMail',
         returnFees: 'https://schema.org/FreeReturn',
       },
+      ineligibleRegion: 'ISO 3166-2:RU',
+      isFamilyFriendly: true,
+      identifier: data.article,
+      price: data.price,
+      priceCurrency: 'USD',
       shippingDetails: {
         '@type': 'OfferShippingDetails',
         businessDays: {

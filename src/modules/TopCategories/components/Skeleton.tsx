@@ -2,7 +2,7 @@ import { Skeleton } from '@mantine/core';
 
 export const CircleChartSkeleton = () => {
   return (
-    <div className='w-full max-w-[427px]'>
+    <div className='h-full w-full max-w-[427px]'>
       <Skeleton title='Header' height={56} mt={6} radius='md' />
       <Skeleton
         title='Chart'

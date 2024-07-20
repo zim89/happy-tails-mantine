@@ -30,16 +30,21 @@ const columns = [
           palette={{
             ACTIVE: '#389B48',
             COMPLETED: '#B4B4B4',
+            UPCOMING: '#FBBC04',
           }}
           color={
-            info.row.original.expirationDate < Date.now()
-              ? 'COMPLETED'
-              : 'ACTIVE'
+            info.row.original.beginningDate > Date.now()
+              ? 'UPCOMING'
+              : info.row.original.expirationDate < Date.now()
+                ? 'COMPLETED'
+                : 'ACTIVE'
           }
           name={
-            info.row.original.expirationDate < Date.now()
-              ? 'COMPLETED'
-              : 'ACTIVE'
+            info.row.original.beginningDate > Date.now()
+              ? 'UPCOMING'
+              : info.row.original.expirationDate < Date.now()
+                ? 'COMPLETED'
+                : 'ACTIVE'
           }
         />
       );
