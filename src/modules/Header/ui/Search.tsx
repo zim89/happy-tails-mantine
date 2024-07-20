@@ -17,6 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
+import noImage from '@/assets/images/no-img.png';
 
 export default function SearchMenu() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -127,7 +128,7 @@ export default function SearchMenu() {
                       >
                         <div className='relative h-16 w-16 flex-none'>
                           <Image
-                            src={product.imagePath}
+                            src={product.imagePath ?? noImage}
                             alt={product.name}
                             fill={true}
                             className='object-contain'
