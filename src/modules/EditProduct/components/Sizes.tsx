@@ -12,7 +12,7 @@ export const Sizes = () => {
   return (
     <>
       <div className={classes.form} style={{ marginTop: 48 }}>
-        <div className='flex items-center justify-between pt-2'>
+        <div className='mb-6 flex items-center justify-between border-b border-b-brand-grey-400 py-2'>
           <h3 className='text-xl font-bold'>Sizes</h3>
           <UnstyledButton
             classNames={{ root: 'ml-auto flex gap-2 items-center' }}
@@ -34,11 +34,6 @@ export const Sizes = () => {
               Add another size
             </span>
           </UnstyledButton>
-        </div>
-        <div className='mb-6 border-b border-b-brand-grey-400'>
-          <p className='py-2 text-sm'>
-            Picked: <b></b>
-          </p>
         </div>
 
         {sizes.map((size, index) => (

@@ -101,7 +101,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       productType: product.productType,
       quantity: product.totalQuantity,
       description: product.description,
-      image: null as File | null,
+      image: {} as File | null,
     },
 
     onValuesChange(values) {
@@ -135,19 +135,14 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
   }, [form.isDirty(), sizes]);
 
   const handleSubmit = async () => {
-    const { errors } = form.validate();
+    const { hasErrors } = form.validate();
     const sizesHasErrors = sizes.some(
       (s) => s.id === 'form' && s.validate().hasErrors
     );
 
     // It's not possible to initialize image field from string, cause it has different type (File),
     // so it checks previewImage for availability of image
-    if (
-      // TODO: validation doesn't work as expected
-      Object.keys(errors).length > 1 ||
-      sizesHasErrors ||
-      !previewImage.current.path
-    ) {
+    if (hasErrors || sizesHasErrors || !previewImage.current.path) {
       const error: AxiosQueryError = {
         data: "Fields haven't filled correctly!",
         status: 400,

@@ -1,4 +1,4 @@
-import { NumberInput, Select, Textarea, UnstyledButton } from '@mantine/core';
+import { NumberInput, Select, Textarea } from '@mantine/core';
 import { useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { isNotEmpty, useForm } from '@mantine/form';
@@ -17,7 +17,7 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
   const form = useForm<SizeForm['values']>({
     initialValues: {
       description:
-        size.id === 'form' ? size.values.description : size.description,
+        size.id === 'form' ? size.values.description : size.description || '',
       size: size.id === 'form' ? size.values.size : size.size,
       quantity: size.id === 'form' ? size.values.quantity : size.quantity,
     },
@@ -36,17 +36,8 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
     });
   }, [form.values.description, form.values.size, form.values.quantity]);
 
-  const handleDelete = () => {
-    setSizes((s) => {
-      const newSizes = [...s];
-      newSizes.splice(index, 1);
-      return newSizes;
-    });
-  };
-
   return (
     <div className={classes.variant}>
-      <UnstyledButton onClick={handleDelete}>Delete</UnstyledButton>
       <div className={classes.variantInputs}>
         <Select
           {...form.getInputProps('size')}
