@@ -156,7 +156,13 @@ declare module '@tiptap/core' {
 export const Image = Node.create({
   name: 'image',
 
-  addOptions() {},
+  addOptions() {
+    return {
+      inline: false,
+      allowBase64: false,
+      HTMLAttributes: {},
+    };
+  },
 
   inline() {
     return this.options.inline;

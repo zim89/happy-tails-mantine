@@ -1,5 +1,6 @@
-import { User } from '@/shared/types/auth.types';
 import { Banknote, Truck } from 'lucide-react';
+
+import { User } from '@/shared/types/auth.types';
 
 type Props = {
   user: User;
@@ -15,28 +16,40 @@ export const DeliveryDetails = ({ user }: Props) => {
         <p className='inline-flex items-center gap-2 whitespace-nowrap border-r border-brand-grey-300 p-4 py-7 font-black uppercase text-brand-grey-800'>
           <Banknote size={16} /> Billing address
         </p>
-        <p className='p-4 py-7'>
-          {Object.values(user.billingAddress)
-            .filter((segment) => segment != null && segment !== 'string')
-            .reduceRight((address, segment) => {
-              if (!address.trim()) return segment;
-              return segment + ', ' + address;
-            }, '')}
-        </p>
+        {user.billingAddress ? (
+          <p className='p-4 py-7'>
+            {Object.values(user.billingAddress)
+              .filter((segment) => segment != null && segment !== 'string')
+              .reduceRight((address, segment) => {
+                if (!address.trim()) return segment;
+                return segment + ', ' + address;
+              }, '')}
+          </p>
+        ) : (
+          <p className='border-t border-brand-grey-300 p-4 py-7 font-semibold text-brand-grey-800'>
+            User has not provided billing address
+          </p>
+        )}
       </>
 
       <>
         <p className='inline-flex items-center gap-2 whitespace-nowrap border-l-0 border-r border-t border-brand-grey-300 p-4 py-7 font-black uppercase text-brand-grey-800'>
           <Truck size={16} /> Shipping Address
         </p>
-        <p className='border-t border-brand-grey-300 p-4 py-7'>
-          {Object.values(user.shippingAddress)
-            .filter((segment) => segment != null && segment !== 'string')
-            .reduceRight((address, segment) => {
-              if (!address.trim()) return segment;
-              return segment + ', ' + address;
-            }, '')}
-        </p>
+        {user.shippingAddress ? (
+          <p className='border-t border-brand-grey-300 p-4 py-7'>
+            {Object.values(user.shippingAddress)
+              .filter((segment) => segment != null && segment !== 'string')
+              .reduceRight((address, segment) => {
+                if (!address.trim()) return segment;
+                return segment + ', ' + address;
+              }, '')}
+          </p>
+        ) : (
+          <p className='border-t border-brand-grey-300 p-4 py-7 font-semibold text-brand-grey-800'>
+            User has not provided shipping address
+          </p>
+        )}
       </>
     </div>
   );

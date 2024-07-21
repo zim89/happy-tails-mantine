@@ -9,10 +9,7 @@ import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 type Props = {
   productId: string;
-  setNotification: (
-    type: 'Success' | 'Failed',
-    text?: string | undefined
-  ) => void;
+  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 export const Controls = ({ setNotification }: Props) => {
@@ -31,8 +28,7 @@ export const Controls = ({ setNotification }: Props) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await handlePutRequest();
-      console.log(res);
+      await handlePutRequest();
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setNotification(

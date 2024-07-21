@@ -2,8 +2,8 @@ import Image from 'next/image';
 
 export default function WhyUs() {
   return (
-    <section className='pb-52 pt-16 md:pb-0 md:pt-[88px] lg:pt-[104px]'>
-      <div className='bg-brand-grey-200 py-8'>
+    <section className='pt-16 md:pt-[88px] lg:pt-[104px]'>
+      <div className='bg-brand-grey-200 py-8 pb-60 md:pb-96 lg:pb-4'>
         <h2 className='mb-6 text-center text-[1.75rem] font-bold md:mb-9 lg:text-4xl'>
           Why Shop With Us?
         </h2>

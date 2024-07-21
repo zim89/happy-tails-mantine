@@ -21,7 +21,6 @@ import { ProductSizeValues } from '@/shared/types/types';
 const columnHelper = createColumnHelper<{
   size: ProductSizeValues;
   quantity: number;
-  description: string | null;
 }>();
 
 const columns = [
@@ -71,13 +70,11 @@ export default function Table() {
             return {
               size: s.values.size,
               quantity: s.values.quantity,
-              description: s.values.description,
             };
           } else {
             return {
               size: s.size,
               quantity: s.quantity,
-              description: s.description,
             };
           }
         }),

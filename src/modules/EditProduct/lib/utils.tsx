@@ -136,9 +136,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
     },
   });
 
-  const [isDirty, setIsDirty] = useState(
-    !form.isDirty() && sizes.every((s) => s.id === 'form' && !s.isDirty())
-  );
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     setIsDirty(

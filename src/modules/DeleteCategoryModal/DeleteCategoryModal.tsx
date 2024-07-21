@@ -3,6 +3,7 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { useContext } from 'react';
 
 import styles from './DeleteCategoryModal.module.css';
 
@@ -10,12 +11,12 @@ import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { useContext } from 'react';
 import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   categoryLine: Category;
 };
+
 export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useRemoveCategoryMutation();
   const { setNotification } = useContext(notifyContext);
@@ -26,7 +27,6 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
-        debugger;
         await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
