@@ -1,7 +1,15 @@
 'use client';
 
 import { useForm, isNotEmpty } from '@mantine/form';
-import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
+import {
+  MutableRefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { ChevronDown, Info, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
 import { FileInput, Select, Tooltip } from '@mantine/core';
@@ -20,6 +28,8 @@ import { CustomSelectDropdown } from './CustomSelectDropdown';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { findImageSource } from '../lib/helpers';
+import { notifyContext } from '@/shared/context/notification.context';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type PreviewImage = {
   id: number | null;
@@ -37,6 +47,8 @@ export const HomePageSetting = () => {
   const { data, isLoading, error } = useFindManyQuery({});
   const [createBanner] = useCreateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
+  const { setNotification } = useContext(notifyContext);
+
   const products = useSelectProducts((state) => state);
   const categories = useSelectCategories((state) => state);
   const posts = useSelectPosts((state) => state);
@@ -79,16 +91,46 @@ export const HomePageSetting = () => {
     });
   }, [posts.length]);
 
+  const bannerMap: { [P in string]: MutableRefObject<PreviewImage> } = useMemo(
+    () => ({
+      banner_1: bannerPreview1,
+      banner_2: bannerPreview2,
+      banner_3: bannerPreview3,
+      banner_4: bannerPreview4,
+    }),
+    [bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4]
+  );
+
+  const initialValues = useCallback(
+    () =>
+      data &&
+      data.content.reduce((acc, banner) => {
+        if (banner.name in bannerMap) {
+          bannerMap[banner.name].current.id = banner.id;
+          return {
+            ...acc,
+            [banner.name]: banner.imagePath,
+            [`product_link_${banner.name[banner.name.length - 1]}`]:
+              banner.productPath,
+          };
+        }
+
+        return { ...acc, ...banner };
+      }, {}),
+
+    [data, data?.content, data?.content.length]
+  );
+
   const form = useForm<FormValues>({
     initialValues: {
-      banner_1: null,
       product_link_1: '',
-      banner_2: null,
       product_link_2: '',
-      banner_3: null,
       product_link_3: '',
-      banner_4: null,
       product_link_4: '',
+      banner_1: null,
+      banner_2: null,
+      banner_3: null,
+      banner_4: null,
     },
 
     onValuesChange(values) {
@@ -121,30 +163,13 @@ export const HomePageSetting = () => {
     },
   });
 
-  const bannerMap: { [P in string]: MutableRefObject<PreviewImage> } = useMemo(
-    () => ({
-      banner_1: bannerPreview1,
-      banner_2: bannerPreview2,
-      banner_3: bannerPreview3,
-      banner_4: bannerPreview4,
-    }),
-    [bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4]
-  );
-
   useEffect(() => {
-    if (!data?.content.length) return;
+    const initial = initialValues();
 
-    data.content.forEach((banner) => {
-      if (banner.name in bannerMap) {
-        bannerMap[banner.name].current.id = banner.id;
-        form.setFieldValue(banner.name, banner.imagePath);
-        form.setFieldValue(
-          `product_link_${banner.name[banner.name.length - 1]}`,
-          banner.productPath
-        );
-      }
-    });
-  }, [data?.content]);
+    if (data && initial) {
+      form.setValues(initial);
+    }
+  }, [data]);
 
   if (error)
     return (
@@ -155,6 +180,8 @@ export const HomePageSetting = () => {
       </p>
     );
   if (isLoading) return <Loader size={128} />;
+
+  console.log(form.values);
 
   const clearFile = async (
     ref: MutableRefObject<PreviewImage>,
@@ -171,8 +198,15 @@ export const HomePageSetting = () => {
 
       candidateId && (await deleteBanner({ id: candidateId }).unwrap());
       form.setFieldValue(refName, null);
+      setNotification('Success', `Banner ${candidateId} removed successfully`);
     } catch (err) {
-      console.error(err);
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
+      console.error('Deletion failed: ', err);
     }
   };
 
@@ -186,7 +220,10 @@ export const HomePageSetting = () => {
     try {
       if (!bannerHasError && !linkHasError) {
         const bannerProp = `banner_${id}` as const;
-        const image = form.values[bannerProp];
+        // As I'm calling form.onChange() imperatively in callback fn,
+        // I have to call getValues() instead of accessing form.values prop
+        const image = form.getValues()[bannerProp];
+        const productPath = form.getValues()[linkProp];
 
         let imageLink = 'https://placehold.co/1200x800.png';
 
@@ -194,14 +231,27 @@ export const HomePageSetting = () => {
           imageLink = await publishImage(image, bannerProp);
         }
 
-        await createBanner({
+        // await createBanner({
+        //   name: bannerProp,
+        //   imagePath: imageLink,
+        //   productPath: form.values[linkProp],
+        // }).unwrap();
+
+        console.log({
           name: bannerProp,
           imagePath: imageLink,
-          productPath: form.values[linkProp],
-        }).unwrap();
+          productPath,
+        });
+        setNotification('Success', `Banner ${id} added successfully`);
       }
     } catch (err) {
-      console.error(err);
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
+      console.error('Creation failed: ', err);
     }
   };
 
@@ -249,7 +299,6 @@ export const HomePageSetting = () => {
 
                             // Call the main change event handler
                             onChange(evt);
-
                             handleUploadBanner(index + 1);
                           }}
                           accept='.png,.jpeg,.gif,.webp'
@@ -291,6 +340,7 @@ export const HomePageSetting = () => {
                 </div>
                 <Select
                   {...form.getInputProps(`product_link_${index + 1}`)}
+                  defaultValue={form.values[`product_link_${index + 1}`]}
                   data={productsPages
                     .concat(postsPages)
                     .concat(categoriesPages)}
@@ -336,8 +386,8 @@ export const HomePageSetting = () => {
                     const { onChange } = form.getInputProps(
                       `product_link_${index + 1}`
                     );
-                    onChange(evt);
-                    handleUploadBanner(index + 1);
+                    evt && onChange(evt);
+                    evt && handleUploadBanner(index + 1);
                   }}
                 />
               </div>
