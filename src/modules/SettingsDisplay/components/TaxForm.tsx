@@ -26,7 +26,7 @@ export const TaxForm = ({ tax }: Props) => {
   const handleSubmit = async () => {
     try {
       await dispatch({ ...tax, rate: currentTaxRate }).unwrap();
-
+      setIsEditing(false);
       setNotification('Success', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {

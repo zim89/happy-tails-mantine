@@ -21,8 +21,9 @@ export default function CookiesNotification() {
         <div>
           <h3 className='text-xl font-bold'>Cookie Policy</h3>
           <p className='mb-6 mt-2 text-lg md:mb-0'>
-            Our website uses cookies to improve user experience. More
-            information can be found in our{' '}
+            By clicking "Accept All", you consent to the use of all cookies.
+            However, you can block optional cookies by clicking on "Only
+            necessary". More information can be found in our{' '}
             <Link
               className='border-b border-b-secondary'
               href='/privary&cookies'
@@ -31,12 +32,20 @@ export default function CookiesNotification() {
             </Link>
           </p>
         </div>
-        <UnstyledButton
-          className='rounded-sm bg-secondary px-[35px] py-[10px] text-center font-bold text-primary md:ml-auto'
-          onClick={handleAccept}
-        >
-          Accept All
-        </UnstyledButton>
+        <div className='flex flex-col md:ml-auto'>
+          <UnstyledButton
+            className='flex-1 whitespace-pre rounded-sm bg-secondary px-[35px] py-[10px] text-center font-bold text-primary '
+            onClick={handleAccept}
+          >
+            Accept All
+          </UnstyledButton>
+          <UnstyledButton
+            className='flex-6 ml-auto rounded-sm pl-2 text-center text-[.6rem] font-bold underline md:ml-0'
+            onClick={handleAccept}
+          >
+            Only necessary
+          </UnstyledButton>
+        </div>
       </Container>
     </div>
   );

@@ -13,9 +13,9 @@ import { ChevronDown, Info, UploadCloud, X } from 'lucide-react';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { productTypeList } from '@/shared/lib/constants';
 import { cn } from '@/shared/lib/utils';
+import { ProductColor } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
-import { ProductColor } from '@/shared/types/types';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -140,7 +140,6 @@ export const Form = () => {
               label='Category'
               data={categoryList.map((cat) => cat.name)}
             />
-
             <Select
               defaultValue={'INDOORS'}
               {...productForm.getInputProps('productType')}
