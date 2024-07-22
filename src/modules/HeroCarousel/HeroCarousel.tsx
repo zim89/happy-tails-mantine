@@ -50,7 +50,11 @@ export default function HeroCarousel() {
       >
         {banners.length ? (
           banners.map((slide, index) => (
-            <Slide key={index} banner={slide.imagePath} href='/products' />
+            <Slide
+              key={index}
+              banner={slide.imagePath}
+              href={slide.productPath}
+            />
           ))
         ) : (
           <Slide

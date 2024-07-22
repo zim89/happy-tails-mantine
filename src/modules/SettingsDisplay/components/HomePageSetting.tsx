@@ -17,6 +17,9 @@ import Loader from '@/components/Loader';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { publishImage } from '@/shared/lib/requests';
 import { CustomSelectDropdown } from './CustomSelectDropdown';
+import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
+import { findImageSource } from '../lib/helpers';
 
 type PreviewImage = {
   id: number | null;
@@ -35,6 +38,8 @@ export const HomePageSetting = () => {
   const [createBanner] = useCreateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
   const products = useSelectProducts((state) => state);
+  const categories = useSelectCategories((state) => state);
+  const posts = useSelectPosts((state) => state);
 
   const bannerPreview1 = useRef<PreviewImage>({ name: '', path: '', id: null });
   const bannerPreview2 = useRef<PreviewImage>({ name: '', path: '', id: null });
@@ -51,6 +56,28 @@ export const HomePageSetting = () => {
       return prefix + '/products/' + product.id;
     });
   }, [products.length]);
+
+  const categoriesPages = useMemo(() => {
+    return categories.map((cat) => {
+      const prefix =
+        process.env.NODE_ENV !== 'production'
+          ? 'http://localhost:3000'
+          : process.env.NEXT_PUBLIC_SITE_DOMAIN;
+
+      return prefix + '/' + cat.path;
+    });
+  }, [categories.length]);
+
+  const postsPages = useMemo(() => {
+    return posts.map((post) => {
+      const prefix =
+        process.env.NODE_ENV !== 'production'
+          ? 'http://localhost:3000'
+          : process.env.NEXT_PUBLIC_SITE_DOMAIN;
+
+      return prefix + '/blog/' + post.id;
+    });
+  }, [posts.length]);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -111,6 +138,10 @@ export const HomePageSetting = () => {
       if (banner.name in bannerMap) {
         bannerMap[banner.name].current.id = banner.id;
         form.setFieldValue(banner.name, banner.imagePath);
+        form.setFieldValue(
+          `product_link_${banner.name[banner.name.length - 1]}`,
+          banner.productPath
+        );
       }
     });
   }, [data?.content]);
@@ -260,7 +291,9 @@ export const HomePageSetting = () => {
                 </div>
                 <Select
                   {...form.getInputProps(`product_link_${index + 1}`)}
-                  data={productsPages}
+                  data={productsPages
+                    .concat(postsPages)
+                    .concat(categoriesPages)}
                   styles={{
                     wrapper: {
                       height: 40,
@@ -281,7 +314,24 @@ export const HomePageSetting = () => {
                     error: 'form-error',
                   }}
                   rightSection={<ChevronDown color='black' size={16} />}
-                  renderOption={CustomSelectDropdown}
+                  renderOption={({ option, checked }) => {
+                    const imagePath = findImageSource({
+                      targetString: option.label,
+                      categories,
+                      posts,
+                      products,
+                    });
+
+                    return (
+                      CustomSelectDropdown &&
+                      imagePath &&
+                      CustomSelectDropdown({
+                        option,
+                        checked,
+                        imagePath,
+                      })
+                    );
+                  }}
                   onChange={(evt) => {
                     const { onChange } = form.getInputProps(
                       `product_link_${index + 1}`
