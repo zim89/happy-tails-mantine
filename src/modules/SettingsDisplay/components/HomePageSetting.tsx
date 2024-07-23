@@ -6,7 +6,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
 } from 'react';
@@ -20,6 +19,7 @@ import {
   useCreateBannerMutation,
   useDeleteBannerMutation,
   useFindManyQuery,
+  useUpdateBannerMutation,
 } from '@/shared/api/bannerApi';
 import Loader from '@/components/Loader';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
@@ -46,6 +46,7 @@ type FormValues = {
 export const HomePageSetting = () => {
   const { data, isLoading, error } = useFindManyQuery({});
   const [createBanner] = useCreateBannerMutation();
+  const [updateBanner] = useUpdateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
   const { setNotification } = useContext(notifyContext);
 
@@ -101,11 +102,13 @@ export const HomePageSetting = () => {
     [bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4]
   );
 
+  // Converts an array of banners into FormValues object
   const initialValues = useCallback(
     () =>
       data &&
       data.content.reduce((acc, banner) => {
         if (banner.name in bannerMap) {
+          // This id will be used for PUT request
           bannerMap[banner.name].current.id = banner.id;
           return {
             ...acc,
@@ -163,6 +166,7 @@ export const HomePageSetting = () => {
     },
   });
 
+  // Set server response as form's values
   useEffect(() => {
     const initial = initialValues();
 
@@ -181,24 +185,31 @@ export const HomePageSetting = () => {
     );
   if (isLoading) return <Loader size={128} />;
 
-  console.log(form.values);
-
   const clearFile = async (
     ref: MutableRefObject<PreviewImage>,
-    refName: string
+    index: number
   ) => {
     try {
+      const refName = `banner_${index}`;
+      const linkProp = `product_link_${index}`;
       const candidateId = ref.current.id;
 
-      ref.current = {
-        path: null,
-        name: null,
-        id: null,
-      };
+      if (candidateId) {
+        await deleteBanner({ id: candidateId }).unwrap();
 
-      candidateId && (await deleteBanner({ id: candidateId }).unwrap());
-      form.setFieldValue(refName, null);
-      setNotification('Success', `Banner ${candidateId} removed successfully`);
+        ref.current = {
+          path: null,
+          name: null,
+          id: null,
+        };
+
+        form.setValues((prev) => ({
+          ...prev,
+          [refName]: null,
+          [linkProp]: null,
+        }));
+        setNotification('Success', `Banner ${index} removed successfully`);
+      }
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setNotification(
@@ -210,7 +221,7 @@ export const HomePageSetting = () => {
     }
   };
 
-  const handleUploadBanner = async (id: number) => {
+  const handleUploadBanner = async (id: number, op: 'POST' | 'PUT') => {
     // Check whether the link is fulfilled before a request
     const linkProp = `product_link_${id}` as const;
 
@@ -231,18 +242,30 @@ export const HomePageSetting = () => {
           imageLink = await publishImage(image, bannerProp);
         }
 
-        // await createBanner({
-        //   name: bannerProp,
-        //   imagePath: imageLink,
-        //   productPath: form.values[linkProp],
-        // }).unwrap();
+        const bannerId = bannerMap[bannerProp].current.id;
 
-        console.log({
-          name: bannerProp,
-          imagePath: imageLink,
-          productPath,
-        });
-        setNotification('Success', `Banner ${id} added successfully`);
+        if (op === 'POST') {
+          await createBanner({
+            name: bannerProp,
+            imagePath: imageLink,
+            productPath,
+          }).unwrap();
+        } else if (bannerId) {
+          await updateBanner({
+            id: bannerId,
+            name: bannerProp,
+            imagePath: imageLink,
+            productPath,
+          }).unwrap();
+        } else throw new Error('Id is missing!');
+
+        form.resetTouched();
+        setNotification(
+          'Success',
+          op === 'POST'
+            ? `Banner ${id} added successfully`
+            : `Banner ${id} updated successfully`
+        );
       }
     } catch (err) {
       if (isAxiosQueryError(err)) {
@@ -251,7 +274,7 @@ export const HomePageSetting = () => {
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }
-      console.error('Creation failed: ', err);
+      console.error('Failed: ', err);
     }
   };
 
@@ -264,7 +287,7 @@ export const HomePageSetting = () => {
             (banner, index) => (
               <div
                 key={index}
-                className='mt-4 flex flex-col items-end md:flex-row md:gap-6 md:first:mt-0'
+                className='mt-4 flex flex-col items-end gap-3 md:flex-row md:gap-6 md:first:mt-0'
               >
                 <div className='w-full md:max-w-[480px]'>
                   {!banner.current?.path ? (
@@ -299,7 +322,7 @@ export const HomePageSetting = () => {
 
                             // Call the main change event handler
                             onChange(evt);
-                            handleUploadBanner(index + 1);
+                            handleUploadBanner(index + 1, 'POST');
                           }}
                           accept='.png,.jpeg,.gif,.webp'
                           styles={{
@@ -320,27 +343,43 @@ export const HomePageSetting = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className={classes.previewWrapper}>
-                      <Image
-                        className={classes.previewImage}
-                        width={32}
-                        height={32}
-                        src={banner.current.path}
-                        alt=''
-                      />
-                      <p>{banner.current.name}</p>
-                      <button
-                        className={classes.clearImage}
-                        onClick={() => clearFile(banner, `banner_${index + 1}`)}
-                      >
-                        <X size={14} alignmentBaseline='central' />
-                      </button>
+                    <div>
+                      <p className='mb-1 flex items-center gap-1 text-sm'>
+                        <span>Image</span>
+                        <Tooltip
+                          label='.jpeg,.jpg,.png,.gif,.apng,.tiff'
+                          withArrow
+                        >
+                          <Info
+                            size={16}
+                            className='-mb-[3px] cursor-pointer'
+                            color='#5A5A5A'
+                          />
+                        </Tooltip>
+                      </p>
+                      <div className={classes.previewWrapper}>
+                        <Image
+                          className={classes.previewImage}
+                          width={32}
+                          height={32}
+                          src={banner.current.path}
+                          alt=''
+                        />
+                        <p>{banner.current.name}</p>
+                        <button
+                          type='reset'
+                          className={classes.clearImage}
+                          onClick={() => clearFile(banner, index + 1)}
+                        >
+                          <X size={14} alignmentBaseline='central' />
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
                 <Select
                   {...form.getInputProps(`product_link_${index + 1}`)}
-                  defaultValue={form.values[`product_link_${index + 1}`]}
+                  label='Link to the product page'
                   data={productsPages
                     .concat(postsPages)
                     .concat(categoriesPages)}
@@ -353,7 +392,7 @@ export const HomePageSetting = () => {
                     root: 'form-root w-full',
                     label: 'form-label',
                     wrapper:
-                      'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+                      'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary m-0',
                     section: 'static w-auto text-secondary whitespace-nowrap',
                     option: 'text-xs',
                     input: cn(
@@ -386,8 +425,11 @@ export const HomePageSetting = () => {
                     const { onChange } = form.getInputProps(
                       `product_link_${index + 1}`
                     );
-                    evt && onChange(evt);
-                    evt && handleUploadBanner(index + 1);
+                    onChange(evt);
+                    handleUploadBanner(
+                      index + 1,
+                      form.isTouched(`banner_${index + 1}`) ? 'POST' : 'PUT'
+                    );
                   }}
                 />
               </div>

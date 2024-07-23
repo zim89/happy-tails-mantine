@@ -21,9 +21,9 @@ export default function CookiesNotification() {
         <div>
           <h3 className='text-xl font-bold'>Cookie Policy</h3>
           <p className='mb-6 mt-2 text-lg md:mb-0'>
-            By clicking "Accept All", you consent to the use of all cookies.
+            {`By clicking "Accept All", you consent to the use of all cookies.
             However, you can block optional cookies by clicking on "Only
-            necessary". More information can be found in our{' '}
+            necessary". More information can be found in our `}
             <Link
               className='border-b border-b-secondary'
               href='/privary&cookies'
