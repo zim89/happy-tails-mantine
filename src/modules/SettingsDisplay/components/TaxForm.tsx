@@ -68,9 +68,9 @@ export const TaxForm = ({ tax }: Props) => {
           root: 'form-root w-2/4',
           label: 'form-label',
           wrapper:
-            'flex border border-brand-grey-400 rounded-sm px-2 gap-2 focus:outline outline-2 bg-primary',
+            'flex border border-brand-grey-400 rounded-sm  gap-2 focus:outline outline-2 bg-primary',
           input: cn(
-            'form-input h-full border-0 p-0 outline-none',
+            'form-input h-full border-0 px-2 outline-none',
             error && 'form-error--input'
           ),
           error: 'form-error',
