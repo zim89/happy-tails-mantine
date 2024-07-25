@@ -153,7 +153,7 @@ declare module '@tiptap/core' {
   }
 }
 
-export const ImageResize = Node.create({
+export const Image = Node.create({
   name: 'image',
 
   addOptions() {

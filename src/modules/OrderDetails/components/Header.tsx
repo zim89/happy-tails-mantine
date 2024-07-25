@@ -60,7 +60,7 @@ export const Header = ({ order }: Props) => {
           </h1>
           <div className='flex items-center gap-1'>
             <span className='whitespace-pre'>
-              {dayjs(order.createdDate).format('MMM DD, YYYY HH:mm:ss A')}
+              {dayjs.unix(order.createdDate).format('MMM DD, YYYY HH:mm:ss A')}
             </span>
             <CustomBadge
               color={order.orderStatus.toLowerCase()}

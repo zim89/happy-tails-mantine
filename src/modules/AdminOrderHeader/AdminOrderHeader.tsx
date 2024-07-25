@@ -1,12 +1,12 @@
 'use client';
 
-import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import { Button, Menu } from '@mantine/core';
 import { Download, File, Files, PlusCircle, Printer } from 'lucide-react';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { json2csv } from 'json-2-csv';
 
+import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import classes from './classes.module.css';
 import { notifyContext } from '@/shared/context/notification.context';
 import PageHeader from '@/components/PageHeader';
@@ -39,7 +39,7 @@ export default function AdminOrderHeader() {
       <PageHeader>
         {(Group) => (
           <>
-            <div className='mr-auto'>
+            <div className='mr-auto print:hidden'>
               <Group
                 title='Order List'
                 additional='View and check all orders registered on your store'
@@ -64,6 +64,7 @@ export default function AdminOrderHeader() {
                   size='md'
                   variant='default'
                   radius={2}
+                  className='print:hidden'
                 >
                   Export
                 </Button>
@@ -94,7 +95,7 @@ export default function AdminOrderHeader() {
             <div>
               <Link
                 href='/admin/orders/new'
-                className='ml-6 flex items-center gap-2 whitespace-pre rounded-[2px] bg-secondary px-4 py-2 font-bold text-primary'
+                className='ml-6 flex items-center gap-2 whitespace-pre rounded-[2px] bg-secondary px-4 py-2 font-bold text-primary print:hidden'
               >
                 <PlusCircle size={20} />
                 Add a new order

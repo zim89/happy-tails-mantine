@@ -10,6 +10,9 @@ import '@mantine/charts/styles.css';
 // Styles for rich text editor
 import '@mantine/tiptap/styles.css';
 
+// Styles for dates
+import '@mantine/dates/styles.css';
+
 import { AppProviders } from '@/shared/config/AppProviders';
 import Sitelinks from './(root)/sitelinks';
 

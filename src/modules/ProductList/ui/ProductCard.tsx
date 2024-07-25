@@ -1,4 +1,5 @@
 'use client';
+
 import { NumberFormatter } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';

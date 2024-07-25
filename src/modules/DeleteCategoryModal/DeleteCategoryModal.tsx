@@ -3,22 +3,20 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
+import { useContext } from 'react';
 
 import styles from './DeleteCategoryModal.module.css';
-
-import file_attention from '@/assets/icons/categories/file_attention.svg';
-import file_error from '@/assets/icons/categories/file_error.svg';
 
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { useContext } from 'react';
 import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   categoryLine: Category;
 };
+
 export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useRemoveCategoryMutation();
   const { setNotification } = useContext(notifyContext);
@@ -29,7 +27,6 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
-        debugger;
         await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
@@ -75,7 +72,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_attention.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/file_attention.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" category?`}</h2>
                   <p>
@@ -97,7 +99,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_error.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/categories/file_error.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
                   <p>

@@ -9,8 +9,6 @@ import { Form, useForm } from '@mantine/form';
 import { Order } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
-import Notify from '@/components/Notify';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
 import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
@@ -22,40 +20,28 @@ export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
   const [dispatch] = useUpdateOrderMutation();
   const { setNotification } = useContext(notifyContext);
-  // const [setNotification, { props, clear }] = useNotification({
-  //   failed: {
-  //     color: 'transparent',
-  //     icon: <AlertTriangle size={24} fill='#DC362E' />,
-  //     text: 'Delivery options update failed. Please try again later.',
-  //   },
-  //   success: {
-  //     color: '#389B48',
-  //     icon: <Check size={24} />,
-  //     text: 'Changes saved!',
-  //   },
-  // });
 
   const form = useForm({
     initialValues: {
       billingAddress: {
         country: order.billingAddress.country,
         city: order.billingAddress.city,
-        addressLine1: order.billingAddress.addressLine1,
-        addressLine2: order.billingAddress.addressLine2,
+        addressLine1: order.billingAddress.addressLine1 || '',
+        addressLine2: order.billingAddress.addressLine2 || '',
         state: order.billingAddress.state,
         zip: order.billingAddress.zip,
-        phone: order.billingAddress.phoneNumber,
+        phoneNumber: order.billingAddress.phoneNumber,
         company: order.billingAddress.company,
         sameAsDelivery: false,
       },
       shippingAddress: {
         country: order.shippingAddress.country,
         city: order.shippingAddress.city,
-        addressLine1: order.shippingAddress.addressLine1,
-        addressLine2: order.shippingAddress.addressLine2,
+        addressLine1: order.shippingAddress.addressLine1 || '',
+        addressLine2: order.shippingAddress.addressLine2 || '',
         state: order.shippingAddress.state,
         zip: order.shippingAddress.zip,
-        phone: order.shippingAddress.phoneNumber,
+        phoneNumber: order.shippingAddress.phoneNumber,
         company: order.shippingAddress.company,
       },
       shippingMethod: order.shippingMethodDTO.name,
@@ -64,11 +50,29 @@ export const ShippingModal = ({ order }: Props) => {
 
   const handleUpdate = async (values: typeof form.values) => {
     try {
+      const { sameAsDelivery, ...billingAddressRest } = values.billingAddress;
+
+      const shippingAddress: Order['shippingAddress'] = {
+        ...values.shippingAddress,
+        firstName: order.shippingAddress.firstName,
+        lastName: order.shippingAddress.lastName,
+      };
+
+      const billingAddress: Order['billingAddress'] = sameAsDelivery
+        ? shippingAddress
+        : {
+            ...billingAddressRest,
+            firstName: order.billingAddress.firstName,
+            lastName: order.billingAddress.lastName,
+          };
+
       let request = {
         orderNumber: order.number,
-        billingAddress: JSON.stringify(values.billingAddress),
-        shippingAddress: JSON.stringify(values.shippingAddress),
-        shippingMethod: values.shippingMethod,
+        paymentMethod: order.paymentMethod,
+        commentOfManager: order.commentOfManager || '',
+        shippingAddress,
+        billingAddress,
+        shippingMethodId: 1,
       };
       await dispatch(request);
       close();
@@ -121,7 +125,7 @@ export const ShippingModal = ({ order }: Props) => {
         <ModalHeader heading='Edit Order Details' handleClose={close} />
         {/* Modal Content */}
 
-        <Form form={form}>
+        <form>
           <div className='flex gap-6'>
             {/* Delivery Options */}
             <div className='flex flex-1 flex-col gap-8'>
@@ -170,14 +174,14 @@ export const ShippingModal = ({ order }: Props) => {
                   classNames={{
                     input: cn(
                       'form-input h-full',
-                      form.getInputProps('shippingAddress.street').error &&
-                        'form-error--input'
+                      form.getInputProps('shippingAddress.addressLine1')
+                        .error && 'form-error--input'
                     ),
                     root: 'form-root',
                     label: 'form-label',
                     error: 'form-error',
                   }}
-                  {...form.getInputProps('shippingAddress.street')}
+                  {...form.getInputProps('shippingAddress.addressLine1')}
                 />
               </div>
 
@@ -250,14 +254,14 @@ export const ShippingModal = ({ order }: Props) => {
                   classNames={{
                     input: cn(
                       'form-input h-full',
-                      form.getInputProps('billingAddress.street').error &&
+                      form.getInputProps('billingAddress.addressLine1').error &&
                         'form-error--input'
                     ),
                     root: 'form-root',
                     label: 'form-label',
                     error: 'form-error',
                   }}
-                  {...form.getInputProps('billingAddress.street')}
+                  {...form.getInputProps('billingAddress.addressLine1')}
                 />
               </div>
 
@@ -327,7 +331,7 @@ export const ShippingModal = ({ order }: Props) => {
               label='Fast Shipping'
             />
           </Radio.Group>
-        </Form>
+        </form>
 
         {/* Modal Content */}
         <ModalFooter
@@ -335,11 +339,9 @@ export const ShippingModal = ({ order }: Props) => {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={close}
           primaryBtnText='Save'
-          primaryBtnOnClick={() =>
-            form.onSubmit((values) => {
-              if (form.isDirty()) handleUpdate(values);
-            })
-          }
+          primaryBtnOnClick={() => {
+            if (form.isDirty()) handleUpdate(form.values);
+          }}
         />
       </Modal>
     </>

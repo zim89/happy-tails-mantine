@@ -1,5 +1,7 @@
 'use client';
+
 import React, { MouseEventHandler } from 'react';
+
 import { useAppDispatch } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
 import { addToCart, openCartDrawer } from '@/shared/redux/cart/cartSlice';

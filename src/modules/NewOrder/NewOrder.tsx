@@ -19,13 +19,32 @@ import { SelectedItem } from './lib/types';
 import BlockButton from '@/components/BlockButton';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { notifyContext } from '@/shared/context/notification.context';
+import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
+import Loader from '@/components/Loader';
+import { useGetTaxQuery } from '@/shared/api/taxApi';
+import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
 
 export default function NewOrder() {
+  const {
+    error: deliveriesError,
+    data: deliveries,
+    isLoading: isLoadingDeliveries,
+  } = useGetShippingMethodsQuery();
+  const {
+    error: taxError,
+    data: tax,
+    isLoading: isLoadingTax,
+  } = useGetTaxQuery();
+
   const [dispatch] = useCreateOrderMutation();
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
   const form = useModel();
   const { currentUser } = useAuth();
   const { setNotification } = useContext(notifyContext);
+
+  const deliveryOpt = useSelectDeliveries((state) =>
+    state.find((del) => del.name === form.values.shippingMethod)
+  );
 
   useEffect(() => {
     const res = form.isDirty();
@@ -34,8 +53,19 @@ export default function NewOrder() {
 
   const router = useRouter();
 
+  if (deliveriesError || taxError)
+    return (
+      <p>{`Whoops, it shouldn't have happened, our experts are fixing this.`}</p>
+    );
+
+  if (isLoadingDeliveries || isLoadingTax || !deliveries || !tax)
+    return <Loader size={128} />;
+
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      const { hasErrors } = form.validate();
+      if (hasErrors) return;
+
       if (!currentUser)
         throw new ErrorResponse({
           status: 401,
@@ -44,7 +74,7 @@ export default function NewOrder() {
           timestamp: Date.now(),
           path: '/admin/orders/new',
         });
-      const { sameAsDelivery, ...billing } = values.billingAddress;
+
       const parsed: CreateOrderBody['cartProducts'] = values.items.reduce<
         CreateOrderBody['cartProducts']
       >((acc, curr) => {
@@ -59,15 +89,41 @@ export default function NewOrder() {
         return acc.concat(cartItem);
       }, []);
 
+      const {
+        sameAsDelivery,
+        street: billingAddr1,
+        apartment: billingAddr2,
+        ...billing
+      } = values.billingAddress;
+      const {
+        street: shippingAddr1,
+        apartment: shippingAddr2,
+        ...address
+      } = values.address;
+
+      const mappedShippingAddress = {
+        ...address,
+        addressLine1: shippingAddr1,
+        addressLine2: shippingAddr2,
+      };
+
+      const mappedBillingAddress = {
+        ...billing,
+        addressLine1: billingAddr1,
+        addressLine2: billingAddr2,
+      };
+
       const orderRequest: CreateOrderBody = {
         cartProducts: parsed,
-        billingAddress: sameAsDelivery ? values.address : billing,
-        shippingAddress: values.address,
+        billingAddress: sameAsDelivery
+          ? mappedShippingAddress
+          : mappedBillingAddress,
+        shippingAddress: mappedShippingAddress,
         agreementToTerms: true,
         email: values.email,
         emailMeWithOffersAndNews: true,
         commentOfManager: values.comment,
-        shippingMethodId: values.shippingMethod === 'standard' ? 1 : 2,
+        shippingMethodId: deliveryOpt?.id ?? 0,
         paymentMethod: values.paymentMethod,
       };
 
@@ -92,11 +148,11 @@ export default function NewOrder() {
 
   return (
     <>
-      <form className='space-y-12' onSubmit={form.onSubmit(handleSubmit)}>
+      <form className='space-y-12'>
         <ProductSelection form={form} />
         <DeliveryForm form={form} />
-        <ShippingAndPayment form={form} />
-        <OrderTotal form={form} />
+        <ShippingAndPayment form={form} deliveries={deliveries.content} />
+        <OrderTotal form={form} taxRate={tax.rate} />
         <AddComments form={form} />
 
         <div>
@@ -113,7 +169,7 @@ export default function NewOrder() {
           </BlockButton>
           <UnstyledButton
             className='ml-[42px] rounded-sm bg-black px-12 py-[10px] text-primary'
-            type='submit'
+            onClick={() => handleSubmit(form.values)}
           >
             Save
           </UnstyledButton>

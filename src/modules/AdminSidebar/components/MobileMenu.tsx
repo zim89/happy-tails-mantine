@@ -5,7 +5,6 @@ import { Minus } from 'lucide-react';
 import { useContext, useState } from 'react';
 
 import { LinksGroup } from '../lib/utils';
-
 import { cn } from '@/shared/lib/utils';
 import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';

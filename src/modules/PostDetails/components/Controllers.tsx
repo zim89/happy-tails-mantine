@@ -9,7 +9,6 @@ import {
   useChangePostStatusMutation,
   useUpdatePostMutation,
 } from '@/shared/api/postApi';
-
 import { publishImage } from '@/shared/lib/requests';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { KEYS } from '@/shared/constants/localStorageKeys';

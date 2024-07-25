@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+
 import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import RegisterForm from '@/components/auth/RegisterForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';

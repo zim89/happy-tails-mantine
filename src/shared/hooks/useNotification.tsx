@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 
 import { NotifyProps } from '@/components/Notify';
 
-const extraDelay = 50;
+const extraDelay = 150;
 
 type ClosedNotification = Pick<
   NotifyProps,

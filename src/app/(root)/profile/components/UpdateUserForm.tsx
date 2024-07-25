@@ -1,8 +1,9 @@
 'use client';
-import { cn } from '@/shared/lib/utils';
+
 import { Button, TextInput } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 
+import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { dirtyFields } from '@/shared/lib/helpers';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
@@ -125,7 +126,7 @@ export const UpdateUserForm = () => {
       />
       <Button
         type='submit'
-        className={cn('btn mt-9 bg-black uppercase', classes.inputSizing)}
+        className={cn('btn mt-9 bg-secondary uppercase', classes.inputSizing)}
       >
         Update
       </Button>

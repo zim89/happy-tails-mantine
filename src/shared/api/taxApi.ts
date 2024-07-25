@@ -17,8 +17,17 @@ export const taxApi = createApi({
         url: `/tax`,
         method: 'get',
       }),
+      providesTags: ['Tax'],
+    }),
+    updateTax: builder.mutation<Tax, Tax>({
+      query: (tax) => ({
+        url: '/tax',
+        method: 'put',
+        data: tax,
+      }),
+      invalidatesTags: ['Tax'],
     }),
   }),
 });
 
-export const { useGetTaxQuery } = taxApi;
+export const { useGetTaxQuery, useUpdateTaxMutation } = taxApi;

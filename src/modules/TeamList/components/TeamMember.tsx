@@ -17,7 +17,7 @@ export const TeamMember = ({
   return (
     <div
       className={cn(
-        'flex flex-col items-center bg-[#fafafa] px-4 py-6 text-center',
+        'flex flex-col items-center bg-brand-grey-100 px-4 py-6 text-center',
         classes.boxShadow
       )}
     >
@@ -27,13 +27,13 @@ export const TeamMember = ({
           style={avatarStyles || {}}
           src={avatar}
           alt={`${name}: ${occupation}`}
-          layout='fill'
+          fill
           sizes='100%'
         />
       </div>
       <hgroup className='mb-4 mt-6'>
         <h4 className='text-2xl font-bold'>{name}</h4>
-        <p className='text-xl font-bold text-[#F39324]'>{occupation}</p>
+        <p className='text-xl font-bold text-brand-orange-400'>{occupation}</p>
       </hgroup>
       <p className='text-sm'>{desc}</p>
       {links.length > 0 && (
@@ -41,12 +41,7 @@ export const TeamMember = ({
           {links.map((link, index) => (
             <li key={index}>
               <a href={link.href} target='_blank'>
-                <Image
-                  src={link.icon.src}
-                  width={link.icon.width}
-                  height={link.icon.height}
-                  alt=''
-                />
+                <Image src={link.icon} width={24} height={24} alt='' />
               </a>
             </li>
           ))}

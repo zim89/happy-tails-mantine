@@ -12,10 +12,7 @@ import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
 type Props = {
-  setNotification: (
-    type: 'Success' | 'Failed',
-    text?: string | undefined
-  ) => void;
+  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 export const Controls = ({ setNotification }: Props) => {

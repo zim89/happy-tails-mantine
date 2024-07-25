@@ -1,4 +1,9 @@
 'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import { NumberFormatter } from '@mantine/core';
+
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import ContactForm from './ContactForm';
 import { selectCheckout } from '@/shared/redux/checkout/checkoutSlice';
@@ -10,13 +15,10 @@ import {
   selectCart,
   selectCartTotalPrice,
 } from '@/shared/redux/cart/cartSlice';
-import Image from 'next/image';
-import { NumberFormatter } from '@mantine/core';
 import { cn } from '@/shared/lib/utils';
 import Loader from '@/components/Loader';
 import PromoCode from './PromoCode';
 import Checkbox from '@/components/Checkbox';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
@@ -69,7 +71,7 @@ export default function CheckoutForm() {
 
       try {
         const response = await createOrder(formData).unwrap();
-        console.log(response);
+
         dispatch(clearCart());
         router.push(
           APP_PAGES.CONFIRMATION +
@@ -84,7 +86,7 @@ export default function CheckoutForm() {
   return (
     <div className='flex flex-col gap-14 lg:flex-row lg:justify-center lg:gap-6'>
       <div className='space-y-6 lg:w-[572px]'>
-        <h1 className='border-b border-b-brand-grey-400 pb-3 text-xl/6 font-bold uppercase md:text-[28px]/[33.6px]'>
+        <h1 className='border-b border-b-brand-grey-400 pb-3 text-xl/6 font-bold uppercase md:text-[1.75rem]/[2.1rem]'>
           Checkout
         </h1>
         <div className='space-y-4'>
@@ -106,7 +108,7 @@ export default function CheckoutForm() {
               <li key={product.id} className='flex items-center gap-6'>
                 <div className='h-[72px] w-[72px] flex-none self-start rounded-0.5 border border-brand-grey-400 bg-primary p-1'>
                   <Image
-                    src={product.imagePath}
+                    src={product.imagePath || '/images/no-image.512x512.png'}
                     alt={product.name}
                     height={64}
                     width={64}

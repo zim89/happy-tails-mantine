@@ -11,7 +11,7 @@
 }
 
 .heading > h1 {
-  @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
+  @apply m-0 mb-[16px] text-4xl/[2.625rem] uppercase;
 }
 
 .heading > p {
@@ -19,11 +19,11 @@
 }
 
 .form {
-  @apply bg-[#F7F7F7] px-12 py-9;
+  @apply bg-brand-grey-200 px-12 py-9;
 }
 
 .form label {
-  @apply mb-1 max-w-52 text-sm leading-[21px];
+  @apply mb-1 max-w-52 text-sm/[1.3125rem];
 }
 
 .form input,
@@ -48,17 +48,17 @@
 }
 
 .terms span {
-  @apply text-[14px] leading-[21px] text-[#5A5A5A];
+  @apply text-[0.875rem]/[1.3125rem] text-brand-grey-900;
 }
 
 .terms span a {
-  @apply border-b border-[#5A5A5A];
+  @apply border-b border-brand-grey-900;
 }
 
 .form button[type='submit'] {
-  @apply mt-8 bg-[#161616] px-[54px] py-[10px] text-base font-bold text-white md:mt-12;
+  @apply mt-8 bg-secondary px-[54px] py-[10px] text-base font-bold text-white md:mt-12;
 }
 
 .partner_message {
-  @apply mb-12 mt-8 text-lg leading-[27px];
+  @apply mb-12 mt-8 text-lg/[1.6875rem];
 }

@@ -4,7 +4,6 @@ import type {
   BackendResponse,
   CreateOrderBody,
   Order,
-  Product,
   Sort,
 } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
@@ -15,12 +14,7 @@ type DeleteOrderProps = {
   number: string;
 };
 
-type UpdateOrderProps = {
-  orderNumber: string;
-  shippingAddress: string;
-  billingAddress: string;
-  shippingMethod: string;
-};
+type UpdateOrderProps = Partial<Order>;
 
 type CommentOrder = {
   orderNumber: string;
@@ -171,9 +165,8 @@ export const {
 
 export const getDiscount = async (code: string) => {
   try {
-    // TODO: replace this with env var
     const res = await axios.get(
-      'https://happytails-backend.lav.net.ua/happytails/api/discount/' + code
+      process.env.NEXT_PUBLIC_SITE_DOMAIN + '/api/discount/' + code
     );
     return res.data;
   } catch (err) {

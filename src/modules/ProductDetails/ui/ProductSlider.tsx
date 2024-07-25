@@ -101,6 +101,7 @@ export default function ProductSlider({
         dragFree={!alt}
         controlsOffset={0}
         classNames={{
+          slide: 'max-w-max',
           controls:
             '!hidden lg:!flex [--_controls-left:-22px_!important] [--_controls-right:-22px_!important]',
           control:
@@ -147,7 +148,7 @@ export default function ProductSlider({
             padding={28}
             radius={2}
             classNames={{
-              root: 'border-brand-grey-400 bg-[#EEE] min-w-[340px] md:w-full',
+              root: 'border-brand-grey-400 bg-brand-grey-300 min-w-[340px] md:w-full',
             }}
           >
             <Link

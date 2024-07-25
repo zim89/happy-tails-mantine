@@ -1,11 +1,6 @@
 import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
 
-import newOrdersImg from '@/assets/icons/additional/new-orders.svg';
-import inProgressImg from '@/assets/icons/additional/in-progress-orders.svg';
-import completedImg from '@/assets/icons/additional/completed-orders.svg';
-import canceledImg from '@/assets/icons/additional/cancelled-orders.svg';
-
 export type OrderCounterProps = {
   className?: string;
   newOrders: number;
@@ -28,7 +23,12 @@ export default function OrderCounter({
           <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{newOrders}</p>
           <h3 className='text-sm text-brand-grey-800'>New Orders</h3>
         </div>
-        <Image src={newOrdersImg} alt='Blue box with plus sign' />
+        <Image
+          src='/icons/additional/new-orders.svg'
+          height={32}
+          width={32}
+          alt='Blue box with plus sign'
+        />
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
@@ -37,21 +37,36 @@ export default function OrderCounter({
           </p>
           <h3 className='text-sm text-brand-grey-800'>In Progress</h3>
         </div>
-        <Image src={inProgressImg} alt='Yellow open box' />
+        <Image
+          src='/icons/additional/in-progress-orders.svg'
+          height={32}
+          width={32}
+          alt='Yellow open box'
+        />
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
           <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{completed}</p>
           <h3 className='text-sm text-brand-grey-800'>Completed</h3>
         </div>
-        <Image src={completedImg} alt='Gray box with check mark' />
+        <Image
+          src='/icons/additional/completed-orders.svg'
+          height={32}
+          width={32}
+          alt='Gray box with check mark'
+        />
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
           <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{canceled}</p>
           <h3 className='text-sm text-brand-grey-800'>Canceled</h3>
         </div>
-        <Image src={canceledImg} alt='Red box with cross sign' />
+        <Image
+          src='/icons/additional/cancelled-orders.svg'
+          height={32}
+          width={32}
+          alt='Red box with cross sign'
+        />
       </li>
     </ul>
   );

@@ -2,20 +2,13 @@
 
 import { useFindBestSellersQuery } from '@/shared/api/productApi';
 import ProductsTable from './components/Table';
-import Loader from '@/components/Loader';
 import { SkeletonLoader } from './components/SkeletonLoader';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function BestProducts() {
   const { data: products, error, isLoading } = useFindBestSellersQuery();
 
-  if (error)
-    return (
-      <p>
-        {
-          "Whoops, it shouldn't have happened, our experts are already fixing this"
-        }
-      </p>
-    );
+  if (error) return <SkeletonError />;
   if (!products || isLoading) return <SkeletonLoader />;
 
   return (

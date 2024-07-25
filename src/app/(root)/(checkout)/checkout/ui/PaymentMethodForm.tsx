@@ -1,18 +1,16 @@
 'use client';
 
+import { Radio } from '@mantine/core';
+import Image from 'next/image';
+import { useState } from 'react';
+
 import {
   selectCheckout,
   setPaymentMethod,
 } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { useState } from 'react';
 import Wrapper from './Wrapper';
 import Title from './SubHeading';
-import { Radio } from '@mantine/core';
-import Image from 'next/image';
-
-import visaImg from '@/assets/icons/additional/visa.svg';
-import mastercardImg from '@/assets/icons/additional/mastercard.svg';
 
 export default function PaymentMethodForm() {
   const { shippingMethod, paymentMethod } = useAppSelector(selectCheckout);
@@ -26,7 +24,7 @@ export default function PaymentMethodForm() {
 
   if (!shippingMethod) {
     return (
-      <h2 className='bg-brand-grey-200 px-6 py-4 text-lg/[21.6px] font-bold text-brand-grey-900'>
+      <h2 className='bg-brand-grey-200 px-6 py-4 text-lg/[1.35rem] font-bold text-brand-grey-900'>
         Payment Method
       </h2>
     );
@@ -56,7 +54,7 @@ export default function PaymentMethodForm() {
             <div className='flex gap-2'>
               <div className='flex h-7 w-10 items-center justify-center rounded-0.5 border border-brand-grey-400 bg-brand-grey-200'>
                 <Image
-                  src={mastercardImg}
+                  src='/icons/additional/mastercard.svg'
                   alt={'Mastercard'}
                   width={24}
                   height={19}
@@ -64,7 +62,7 @@ export default function PaymentMethodForm() {
               </div>
               <div className='flex h-7 w-10 items-center justify-center rounded-0.5 border border-brand-grey-400 bg-brand-grey-200'>
                 <Image
-                  src={visaImg}
+                  src='/icons/additional/visa.svg'
                   alt={'Visa card'}
                   width={24}
                   height={19}

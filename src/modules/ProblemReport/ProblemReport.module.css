@@ -1,85 +1,85 @@
 /* Form */
 .content {
-    @apply flex flex-col items-center;
+  @apply flex flex-col items-center;
 }
 
-.content>* {
-    @apply max-w-[572px];
+.content > * {
+  @apply max-w-[572px];
 }
 
 .heading {
-    @apply mt-8 mb-12 text-center md:my-12;
+  @apply mb-12 mt-8 text-center md:my-12;
 }
 
-.heading>h1 {
-    @apply m-0 mb-[16px] text-4xl uppercase leading-[42px];
+.heading > h1 {
+  @apply m-0 mb-[16px] text-4xl/[2.625rem] uppercase;
 }
 
-.heading>p {
-    @apply leading-6;
+.heading > p {
+  @apply leading-6;
 }
 
 .modalForm {
-    @apply py-9 px-12 bg-[#F7F7F7];
+  @apply bg-primary px-12 py-9;
 }
 
 .modalForm label {
-    @apply text-sm mb-1 leading-[21px] max-w-52;
+  @apply mb-1 max-w-52 text-sm/[1.313rem];
 }
 
 .modalForm input,
 .modalForm textarea {
-    @apply w-full;
+  @apply w-full;
 }
 
 .message {
-    @apply relative mb-[30px] mt-8;
+  @apply relative mb-[30px] mt-8;
 }
 
 .message svg {
-    @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
+  @apply absolute bottom-2 left-2 h-4 w-4 cursor-pointer;
 }
 
 .message p {
-    @apply absolute;
+  @apply absolute;
 }
 
 .terms {
-    @apply flex relative;
+  @apply relative flex;
 }
 
 .terms span {
-    @apply text-[14px] text-[#5A5A5A] leading-[21px];
+  @apply text-[0.875rem]/[1.313rem] text-brand-grey-900;
 }
 
 .terms span a {
-    @apply border-b border-[#5A5A5A];
+  @apply border-b border-brand-grey-900;
 }
 
-.modalForm button[type=submit] {
-    @apply mt-8 md:mt-12 bg-[#161616] px-[54px] py-[10px] text-base font-bold text-white;
+.modalForm button[type='submit'] {
+  @apply mt-8 bg-secondary px-[54px] py-[10px] text-base font-bold text-white md:mt-12;
 }
 
 .reportButton {
-    @apply bg-black font-bold;
+  @apply bg-black font-bold;
 }
 
 .customScroll::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 }
 
 /* Track */
 .customScroll::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 /* Handle */
 .customScroll::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: .5em;
+  background: #888;
+  border-radius: 0.5em;
 }
 
 /* Handle on hover */
 .customScroll::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }

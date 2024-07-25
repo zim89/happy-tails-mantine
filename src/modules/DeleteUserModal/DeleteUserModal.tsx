@@ -64,7 +64,7 @@ export default function DeleteUserModal({ user, setNotification }: Props) {
           >
             <div className='flex items-center gap-3'>
               <Image
-                src={file_attention.src}
+                src='/icons/file_attention.svg'
                 alt={user.userId}
                 width={64}
                 height={64}

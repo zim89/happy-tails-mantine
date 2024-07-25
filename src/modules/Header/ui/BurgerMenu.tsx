@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
 import { useDeviceSize } from '@/shared/lib/hooks';
-import logoImg from '@/assets/logo/logo-tablet.svg';
 import MenuNavbar from './MenuNavbar';
 import { Category } from '@/shared/types/types';
 
@@ -52,7 +51,12 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
       >
         {/*  Header */}
         <div className='mb-4 flex items-center justify-between border-b border-b-brand-grey-300 bg-brand-grey-100 px-4 py-4 pb-[15px] md:px-9 lg:hidden'>
-          <Image src={logoImg} alt='Logo image' height={42} width={237} />
+          <Image
+            src='/logo/logo-tablet.svg'
+            alt='Logo image'
+            height={42}
+            width={237}
+          />
           <UnstyledButton
             className='flex items-center justify-center'
             onClick={close}

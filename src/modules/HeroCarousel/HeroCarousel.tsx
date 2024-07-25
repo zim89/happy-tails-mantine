@@ -4,9 +4,28 @@ import { Carousel } from '@mantine/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 
 import Slide from './components/Slide';
+import { Banner, useFindManyQuery } from '@/shared/api/bannerApi';
+import { SkeletonLoader } from './components/SkeletonLoader';
+import { bannerNames } from '../SettingsDisplay/lib/data';
+import { cn } from '@/shared/lib/utils';
 
 export default function HeroCarousel() {
   const autoplay = useRef(Autoplay({ delay: 10000 }));
+  const { data, error, isLoading } = useFindManyQuery({});
+
+  if (error)
+    return (
+      <p>
+        {
+          "Whoops, it shouldn't have happened, our experts are already fixing this"
+        }
+      </p>
+    );
+
+  if (isLoading) return <SkeletonLoader />;
+
+  const slides: Banner[] = data?.content || [];
+  const banners = slides.filter((banner) => bannerNames.includes(banner.name));
 
   return (
     <div className='flex h-full max-h-[200px] w-full md:max-h-[360px] lg:min-h-[560px]'>
@@ -20,19 +39,30 @@ export default function HeroCarousel() {
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={autoplay.current.reset}
         classNames={{
+          viewport: 'w-[calc(100vw-16px)]',
           indicators: '!bottom-3 md:!bottom-6 lg:!bottom-8',
-          indicator:
-            '!opacity-100 !size-3 !bg-brand-grey-400 cursor-pointer data-[active]:!bg-black md:!size-4',
+          indicator: cn(
+            banners.length > 1
+              ? '!size-3 cursor-pointer !bg-brand-grey-400 !opacity-100 data-[active]:!bg-secondary md:!size-4'
+              : 'hidden'
+          ),
         }}
       >
-        {[0, 1, 2, 3, 4].map((item) => (
+        {banners.length ? (
+          banners.map((slide, index) => (
+            <Slide
+              key={index}
+              banner={slide.imagePath}
+              href={slide.productPath}
+            />
+          ))
+        ) : (
           <Slide
-            key={item}
-            title='DOG TOYS'
-            subtitle='New Collection'
-            description='Order today and let your dog enjoy hours of chewing fun!'
+            classNames={{ image: 'object-[2em_-2em]' }}
+            banner={'/images/hero-dog-bg-cleared.png'}
+            href='/products'
           />
-        ))}
+        )}
       </Carousel>
     </div>
   );

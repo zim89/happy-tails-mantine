@@ -3,18 +3,12 @@ import { TrendingUp } from 'lucide-react';
 import { data } from './lib/data';
 import { useStatsQuery } from '@/shared/api/dashboardApi';
 import { SkeletonLoader } from './components/SkeletonLoader';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function Stats() {
   const { data: values, isLoading, error } = useStatsQuery();
 
-  if (error)
-    return (
-      <p>
-        {
-          "Whoops, it shouldn't have happened, our experts are already fixing this"
-        }
-      </p>
-    );
+  if (error) return <SkeletonError />;
   if (!values || isLoading) return <SkeletonLoader />;
 
   return (

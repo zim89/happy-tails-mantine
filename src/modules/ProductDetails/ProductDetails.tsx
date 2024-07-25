@@ -69,7 +69,9 @@ export default function ProductDetails({ product }: Props) {
               <Image
                 src={product.imagePath ?? noImage}
                 alt={product.name}
-                blurDataURL={product.imagePath}
+                blurDataURL={
+                  product.imagePath || '/images/no-image.512x512.png'
+                }
                 priority={true}
                 fill
                 sizes='(min-width: 1280px) 100vw, 50vw'
@@ -81,7 +83,7 @@ export default function ProductDetails({ product }: Props) {
             <div>
               {/*ProductDetails Header*/}
               <div className='mb-6'>
-                <h1 className='text-[32px] font-bold leading-[1.2]'>
+                <h1 className='text-[2rem] font-bold leading-[1.2]'>
                   {product.name}
                 </h1>
                 <p className='text-sm leading-[1.5] text-brand-grey-800'>
@@ -91,7 +93,7 @@ export default function ProductDetails({ product }: Props) {
 
               {/*  ProductDetails Price*/}
               <div className='mb-8 flex items-center justify-between border-b border-b-brand-grey-600 md:mb-12 lg:mb-14'>
-                <span className='text-[28px] leading-normal'>
+                <span className='text-[1.75rem] leading-normal'>
                   ${product.price}
                 </span>
                 <span
@@ -157,7 +159,7 @@ export default function ProductDetails({ product }: Props) {
               {/*ProductDetails footer*/}
               <div className='mb-6 flex items-center justify-between md:mb-12'>
                 {/*Number Input*/}
-                <div className='flex w-[158px] min-w-[158px] items-center rounded-[2px] border border-brand-grey-400'>
+                <div className='flex w-[158px] min-w-[158px] items-center rounded-sm border border-brand-grey-400'>
                   <button
                     onClick={() => handlersRef.current?.decrement()}
                     disabled={quantity === 1 || !isAvailable}

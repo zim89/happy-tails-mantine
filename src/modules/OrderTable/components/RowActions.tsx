@@ -1,35 +1,26 @@
 'use client';
+
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
-import { AlertTriangle, Check, Eye, MoreHorizontal, Trash } from 'lucide-react';
+import { Eye, MoreHorizontal, Trash } from 'lucide-react';
 import Link from 'next/link';
+import { useContext } from 'react';
 
-import Notify from '@/components/Notify';
 import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
 import { Order } from '@/shared/types/types';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { useNotification } from '@/shared/hooks/useNotification';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Deleting is failed!',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-    },
-    success: {
-      text: 'Successfully deleted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
+
   const [dispatch] = useDeleteOrderMutation();
   const order = ctx.row.original;
 
   const handleDelete = async () => {
     try {
       await dispatch({ number: order.number }).unwrap();
-      setNotification('Success');
+      setNotification('Success', 'Successfully deleted!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setNotification(
@@ -70,8 +61,6 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 };

@@ -5,7 +5,6 @@ import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
 import { Product } from '@/shared/types/types';
-import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { useRemoveMutation } from '@/shared/api/productApi';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
@@ -67,7 +66,7 @@ export default function DeleteProductModal({
           >
             <div className='flex items-center gap-3'>
               <Image
-                src={file_attention.src}
+                src='/icons/file_attention.svg'
                 alt={productLine.name}
                 width={64}
                 height={64}

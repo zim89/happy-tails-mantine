@@ -1,11 +1,11 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
-import SearchField from '@/components/SearchField';
 import { Group, Menu, UnstyledButton } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
+
+import SearchField from '@/components/SearchField';
 
 const menu = [
   { label: 'For all time', value: 'all' },
@@ -64,7 +64,7 @@ export default function OrderToolbar() {
           <Menu.Target>
             <UnstyledButton
               classNames={{
-                root: 'flex gap-6 border-[1px] border-[#ced4da] border-solid p-[6px] rounded-sm',
+                root: 'flex gap-6 border border-[#ced4da] border-solid p-[6px] rounded-sm',
               }}
               data-expanded={opened || undefined}
             >

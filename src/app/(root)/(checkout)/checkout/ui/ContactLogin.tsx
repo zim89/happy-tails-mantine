@@ -1,3 +1,8 @@
+import { PasswordInput, TextInput } from '@mantine/core';
+import { hasLength, isEmail, useForm } from '@mantine/form';
+import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'react-toastify';
+
 import Checkbox from '@/components/Checkbox';
 import Loader from '@/components/Loader';
 import { useLoginMutation } from '@/shared/api/authApi';
@@ -5,10 +10,6 @@ import { cn } from '@/shared/lib/utils';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { setContactData } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch } from '@/shared/redux/store';
-import { PasswordInput, TextInput } from '@mantine/core';
-import { hasLength, isEmail, useForm } from '@mantine/form';
-import { Eye, EyeOff } from 'lucide-react';
-import { toast } from 'react-toastify';
 
 export default function ContactLogin({
   setIsCompleted,

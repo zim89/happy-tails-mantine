@@ -1,24 +1,18 @@
-import { Product } from "@/shared/types/types";
-
-import deliveryIcon from '@/assets/icons/additional/delivery.svg';
-import basketIcon from '@/assets/icons/additional/basket.svg';
-import priceIcon from '@/assets/icons/additional/price.svg';
-
 export const additionalList = [
   {
     title: 'Free Standard Delivery',
     desc: 'Orders over £75 qualify for free UK delivery. Orders under £75 will be calculated at the checkout.',
-    icon: deliveryIcon,
+    icon: '/icons/additional/delivery.svg',
   },
   {
     title: 'Wide Range of Products',
     desc: "Find exactly what you're looking for with ease from a wide range of products spanning various categories.",
-    icon: basketIcon,
+    icon: '/icons/additional/basket.svg',
   },
   {
     title: 'Special Offers',
     desc: 'Uncover the magic of unbeatable discounts and special promotions awaiting you at our online store.',
-    icon: priceIcon,
+    icon: '/icons/additional/price.svg',
   },
 ] as const;
 

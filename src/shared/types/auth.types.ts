@@ -18,6 +18,7 @@ export interface User {
   lastName: string;
   registerDate: number[];
   roles: string[];
+  phoneNumber: string;
   billingAddress: Address;
   shippingAddress: Address;
 }

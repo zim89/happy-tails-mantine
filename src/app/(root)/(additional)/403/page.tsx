@@ -1,14 +1,14 @@
 import { Button, Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Metadata } from "next";
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Unauthorized Access",
-    robots: {
-        index: false
-    }
-}
+  title: 'Unauthorized Access',
+  robots: {
+    index: false,
+  },
+};
 
 export default function Page() {
   return (
@@ -17,7 +17,7 @@ export default function Page() {
         <h1 className='mb-4 text-4xl'>Sorry! Access Denied</h1>
         <p className='mb-4'>{`You don’t have access to view this recource`}</p>
       </hgroup>
-      <Button className='mb-8 border-[1px] border-[#C8C8C8] px-14 py-[10.5px] text-sm text-black'>
+      <Button className='mb-8 border-[1px] border-brand-grey-400 px-14 py-[10.5px] text-sm text-secondary'>
         <Link href='/'>Go Back</Link>
       </Button>
       <Image
