@@ -2,7 +2,7 @@
 
 import { ActionIcon, Menu } from '@mantine/core';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
-import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 
 import { notifyContext } from '@/shared/context/notification.context';
 import DeleteModal from '@/components/DeleteModal';
@@ -13,19 +13,9 @@ type Props = {
 };
 
 export const Actions = ({ index }: Props) => {
-  const { setNotification, setParams } = useContext(notifyContext);
-  const { sizes, setSizes } = useContext(context);
+  const { setNotification } = useContext(notifyContext);
+  const { setSizes } = useContext(context);
   const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-    setParams((prev) => ({
-      success: {
-        ...prev.success,
-        text: 'Variant deleted successfully!',
-      },
-      failed: prev.failed,
-    }));
-  }, []);
 
   const handleDelete = () => {
     setSizes((prev) => {
@@ -34,7 +24,7 @@ export const Actions = ({ index }: Props) => {
       return newSizes;
     });
     setOpened(() => false);
-    setNotification('Success', 'Variant deleted successfully!');
+    setNotification('Success', 'Size deleted successfully!');
   };
 
   const openModal = () => {
@@ -91,8 +81,8 @@ export const Actions = ({ index }: Props) => {
                   }}
                 >
                   <hgroup>
-                    <h2 className='mb-3 font-bold'>{`Delete this variant?`}</h2>
-                    <p>Are you sure you want to delete the selected variant?</p>
+                    <h2 className='mb-3 font-bold'>Delete this size?</h2>
+                    <p>Are you sure you want to delete the selected size?</p>
                   </hgroup>
                 </Modal>
               )}

@@ -6,6 +6,7 @@ export type Banner = {
   id: number;
   name: string;
   imagePath: string;
+  productPath: string;
 };
 
 type CreateBanner = Omit<Banner, 'id'>;

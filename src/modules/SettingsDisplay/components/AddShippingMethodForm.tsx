@@ -38,7 +38,7 @@ export const AddShippingMethodForm = ({ onClose }: Props) => {
     try {
       await dispatch({
         daysOfDelivery: form.values.delivery,
-        description: '',
+        description: form.values.name,
         name: form.values.name,
         price: form.values.price,
       }).unwrap();

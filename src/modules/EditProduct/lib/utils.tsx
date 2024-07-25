@@ -9,12 +9,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  AxiosQueryError,
-  Product,
-  ProductColor,
-  ProductSize,
-} from '@/shared/types/types';
+import { AxiosQueryError, Product, ProductSize } from '@/shared/types/types';
 
 import { ProductPutRequest, useUpdateMutation } from '@/shared/api/productApi';
 import { publishImage } from '@/shared/lib/requests';
@@ -139,6 +134,10 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
+    // If product form is not touched
+    // and sizes' forms aren't touched
+    // and sizes number equals initial product sizes' length,
+    // then it's not touched
     setIsDirty(
       !form.isDirty() &&
         sizes.every((s) => s.id === 'form' && !s.isDirty()) &&

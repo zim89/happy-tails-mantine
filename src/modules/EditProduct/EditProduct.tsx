@@ -17,7 +17,6 @@ type Props = {
 
 export default function EditProduct({ id }: Props) {
   const { setNotification } = useContext(notifyContext);
-
   const { data, error, isLoading } = useFindOneQuery(id);
 
   if (error) return null;
