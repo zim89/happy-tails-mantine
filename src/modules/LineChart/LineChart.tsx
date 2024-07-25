@@ -1,15 +1,6 @@
 'use client';
 
-import Loader from '@/components/Loader';
 import { useEffect, useState } from 'react';
-
-import { AggregatedAnalyticsResponse, getAnalytics } from '@/shared/api/seoApi';
-import {
-  formatDateToDashedOne,
-  formatDateWithoutTime,
-} from '@/shared/lib/helpers';
-import { Filter } from './components/Filter';
-import { COLORS, FilterTypes, filtersData } from './lib/data';
 import {
   CartesianGrid,
   Line,
@@ -19,6 +10,20 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { AggregatedAnalyticsResponse, getAnalytics } from '@/shared/api/seoApi';
+import {
+  formatDateToDashedOne,
+  formatDateWithoutTime,
+} from '@/shared/lib/helpers';
+import { Filter } from './components/Filter';
+import {
+  COLORS,
+  FilterTypes,
+  analyticsBeginningDate,
+  filtersData,
+} from './lib/data';
+import { ChartSkeleton } from './components/ChartSkeleton';
 
 export default function Analitycs() {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,23 +38,24 @@ export default function Analitycs() {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const res = await getAnalytics({
-        startDate: '2024-03-01',
-        endDate: formatDateToDashedOne(Date.now()),
-        dimensions: ['DATE'],
-      });
+      try {
+        const res = await getAnalytics({
+          startDate: analyticsBeginningDate,
+          endDate: formatDateToDashedOne(Date.now()),
+          dimensions: ['DATE'],
+        });
 
-      setRows(res!.message.rows);
-      setIsLoading(false);
+        setRows(res!.message.rows);
+        setIsLoading(false);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(err);
+        }
+      }
     })();
   }, []);
 
-  if (isLoading)
-    return (
-      <div className='flex justify-center py-10'>
-        <Loader size={100} />
-      </div>
-    );
+  if (isLoading) return <ChartSkeleton />;
 
   const handleFilters = (filter: FilterTypes) => {
     setFilters((prev) =>
@@ -78,9 +84,9 @@ export default function Analitycs() {
 
   return (
     <div>
-      <div className='rounded-sm border border-[#EEE] bg-white'>
+      <div className='rounded-sm border border-brand-grey-300 bg-white'>
         <h2 className='p-4 text-xl font-bold uppercase'>Seo</h2>
-        <div className='flex justify-start border-t-2 border-[#EEE] bg-[#FDFDFD]'>
+        <div className='flex justify-start border-t-2 border-brand-grey-300 bg-primary'>
           {filtersData.map((entry) => (
             <Filter
               key={entry.id}
@@ -97,7 +103,7 @@ export default function Analitycs() {
           ))}
         </div>
       </div>
-      <div className='flex justify-between border border-b-0 border-[#EEE] bg-[#FDFDFD] px-4 pb-2 pt-4 text-sm capitalize text-[#B4B4B4]'>
+      <div className='flex justify-between border border-b-0 border-brand-grey-300 bg-primary px-4 pb-2 pt-4 text-sm capitalize text-brand-grey-500'>
         {filters.length <= 2 &&
           filters.map((entry, index) => <div key={index}>{entry}</div>)}
       </div>
@@ -106,7 +112,7 @@ export default function Analitycs() {
           width={500}
           height={300}
           data={rows}
-          className='rounded-bl rounded-br border border-t-0 border-[#EEE] bg-[#FDFDFD]'
+          className='rounded-bl rounded-br border border-t-0 border-brand-grey-300 bg-primary'
         >
           <XAxis
             axisLine={false}

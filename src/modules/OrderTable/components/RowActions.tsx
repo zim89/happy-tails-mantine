@@ -1,38 +1,32 @@
 'use client';
+
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
-import { AlertTriangle, Check, Eye, MoreHorizontal, Trash } from 'lucide-react';
+import { Eye, MoreHorizontal, Trash } from 'lucide-react';
 import Link from 'next/link';
+import { useContext } from 'react';
 
-import Notify from '@/components/Notify';
 import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
 import { Order } from '@/shared/types/types';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { useNotification } from '@/shared/hooks/useNotification';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Deleting is failed!',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-    },
-    success: {
-      text: 'Successfully deleted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    }
-  })
+  const { setNotification } = useContext(notifyContext);
+
   const [dispatch] = useDeleteOrderMutation();
   const order = ctx.row.original;
 
   const handleDelete = async () => {
     try {
       await dispatch({ number: order.number }).unwrap();
-      setNotification('Success');
+      setNotification('Success', 'Successfully deleted!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
       console.error(err);
     }
@@ -43,7 +37,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
       <Menu width={148} position='bottom-end'>
         <Menu.Target>
           <ActionIcon className='size-9 border border-brand-grey-400 bg-primary text-secondary hover:bg-brand-grey-300 data-[expanded=true]:bg-brand-grey-300'>
-            <MoreHorizontal size={16} />
+            <MoreHorizontal size={16} color='black' />
           </ActionIcon>
         </Menu.Target>
 
@@ -67,8 +61,6 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-
-      <Notify {...props} onClose={clear} />      
     </>
   );
 };

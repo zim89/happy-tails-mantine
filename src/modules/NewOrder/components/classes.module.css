@@ -1,0 +1,3 @@
+.radiogroup > div {
+  @apply flex gap-3 py-2;
+}

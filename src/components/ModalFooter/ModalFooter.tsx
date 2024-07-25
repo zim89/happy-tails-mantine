@@ -1,10 +1,10 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, MouseEvent, MouseEventHandler } from 'react';
 
 import styles from './ModalFooter.module.css';
 
 type CommonProps = {
   primaryBtnText: string;
-  primaryBtnOnClick: () => void;
+  primaryBtnOnClick: MouseEventHandler<HTMLSpanElement>;
   primaryBtnClassName?: string;
   containerStyles?: CSSProperties;
 };
@@ -16,7 +16,7 @@ type SingleButtonProps = {
 type DoubleButtonProps = {
   singleBtn: false;
   secondaryBtnText: string;
-  secondaryBtnOnClick: () => void;
+  secondaryBtnOnClick: MouseEventHandler<HTMLSpanElement>;
   secondaryBtnClassName?: string;
 };
 
@@ -28,8 +28,11 @@ export default function ModalFooter(props: Props) {
       <div className={styles.controls} style={props.containerStyles}>
         <span
           is='button'
-          className={props.primaryBtnClassName || 'rounded-sm bg-black px-12 text-white py-2 cursor-pointer'}
-          onClick={props.primaryBtnOnClick}
+          className={
+            props.primaryBtnClassName ||
+            'cursor-pointer rounded-sm bg-secondary px-12 py-2 text-primary'
+          }
+          onClick={(e) => props.primaryBtnOnClick(e)}
         >
           {props.primaryBtnText}
         </span>
@@ -43,7 +46,7 @@ export default function ModalFooter(props: Props) {
           onClick={props.secondaryBtnOnClick}
           className={
             props.secondaryBtnClassName ||
-            'mr-[42px] rounded-sm border-2 border-[#EEE] px-12 py-2 text-black cursor-pointer'
+            'mr-[42px] cursor-pointer rounded-sm border-2 border-brand-grey-300 px-12 py-2 text-secondary'
           }
         >
           {props.secondaryBtnText}
@@ -51,8 +54,11 @@ export default function ModalFooter(props: Props) {
 
         <span
           is='button'
-          className={props.primaryBtnClassName || 'rounded-sm bg-black px-12 text-white py-2 cursor-pointer'}
-          onClick={props.primaryBtnOnClick}
+          className={
+            props.primaryBtnClassName ||
+            'cursor-pointer rounded-sm bg-secondary px-12 py-2 text-primary'
+          }
+          onClick={(e) => props.primaryBtnOnClick(e)}
         >
           {props.primaryBtnText}
         </span>

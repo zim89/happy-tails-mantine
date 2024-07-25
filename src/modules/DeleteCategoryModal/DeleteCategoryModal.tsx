@@ -1,37 +1,25 @@
 'use client';
+
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
-import { Check, AlertTriangle } from 'lucide-react';
+import { useContext } from 'react';
 
 import styles from './DeleteCategoryModal.module.css';
 
-import file_attention from '@/assets/icons/categories/file_attention.svg';
-import file_error from '@/assets/icons/categories/file_error.svg';
-
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   categoryLine: Category;
 };
+
 export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useRemoveCategoryMutation();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Category deletion failed!',
-      color: 'transparent',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-    },
-    success: {
-      text: 'Category successfully deleted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    }
-  })
+  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
@@ -39,23 +27,21 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
-        debugger;
         await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
-        setNotification('Success');
+        setNotification('Success', 'Category successfully deleted!');
       }
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification('Failed', isErrorDataString(err.data) ? err.data : err.data.message);
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
       }
-      console.error("Deleting failed: ",err);
+      console.error('Deleting failed: ', err);
     }
-  };
-
-  const closeNotification = () => {
-    clear();
   };
 
   const [openedMain, { open: openMain, close: closeMain }] =
@@ -65,7 +51,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
 
   return (
     <DeleteModal>
-      {(Modal, Notification) => {
+      {(Modal) => {
         return (
           <>
             {/* Button to open main modal */}
@@ -86,7 +72,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_attention.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/file_attention.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" category?`}</h2>
                   <p>
@@ -108,7 +99,12 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
               }}
             >
               <div className={styles.message}>
-                <Image src={file_error.src} alt='' width={64} height={64} />
+                <Image
+                  src='/icons/categories/file_error.svg'
+                  alt=''
+                  width={64}
+                  height={64}
+                />
                 <hgroup>
                   <h2>{`Delete "${categoryLine.name}" Unavailable`}</h2>
                   <p>
@@ -119,8 +115,6 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
                 </hgroup>
               </div>
             </Modal>
-
-            <Notification {...props} onClose={closeNotification} />
           </>
         );
       }}

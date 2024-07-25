@@ -1,13 +1,15 @@
 type Address = {
+  firstName: string;
+  lastName: string;
   addressLine1: string;
-  addressLine2: string;
+  addressLine2?: string;
   city: string;
-  company: string;
+  company?: string;
   country: string;
   phoneNumber: string;
-  state: string;
+  state?: string;
   zip: string;
-}
+};
 
 export interface User {
   userId: string;
@@ -16,6 +18,7 @@ export interface User {
   lastName: string;
   registerDate: number[];
   roles: string[];
+  phoneNumber: string;
   billingAddress: Address;
   shippingAddress: Address;
 }
@@ -35,8 +38,7 @@ export interface LoginData {
   password: string;
 }
 
-export interface LoginResponse extends User {};
-
+export interface LoginResponse extends User {}
 
 export interface VerifyEmailData extends LoginData {
   code: number | string;

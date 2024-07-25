@@ -1,38 +1,20 @@
 import axios from '@/shared/lib/interceptor';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import type { BackendResponse, Order, Product, Sort } from '../types/types';
+import type {
+  BackendResponse,
+  CreateOrderBody,
+  Order,
+  Sort,
+} from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
-type Address = {
-  firstName: string;
-  secondName: string;
-  country: string;
-  city: string;
-  street: string;
-  apartment: string;
-};
-
-type OrderPayload = {
-  shippingAddress: Address;
-  billingAddress: Address;
-  shippingMethod: string;
-  items: string[];
-  paymentMethod: string;
-  email: string;
-  count: number;
-  discountCode?: string;
-};
+type OrderPayload = CreateOrderBody;
 
 type DeleteOrderProps = {
   number: string;
 };
 
-type UpdateOrderProps = {
-  orderNumber: string;
-  shippingAddress: string;
-  billingAddress: string;
-  shippingMethod: string;
-};
+type UpdateOrderProps = Partial<Order>;
 
 type CommentOrder = {
   orderNumber: string;
@@ -89,19 +71,20 @@ export const ordersApi = createApi({
             ]
           : [{ type: 'Orders', id: 'LIST' }],
     }),
+    findOneByEmailAndCode: builder.query<
+      Order,
+      { email: string; orderNumber: string }
+    >({
+      query: ({ email, orderNumber }) => ({
+        url: `/orders/${email}/${orderNumber}`,
+      }),
+    }),
     createOrder: builder.mutation<Order, OrderPayload>({
-      query: ({ count, items, ...params }) => ({
+      query: (params) => ({
         url: '/orders',
         method: 'post',
 
-        data: items.map((str) => {
-          const orderItem: Product = JSON.parse(str);
-          return {
-            productId: orderItem.id,
-            count,
-            ...params,
-          };
-        }),
+        data: params,
         headers: {
           'Content-type': 'application/json',
         },
@@ -177,13 +160,13 @@ export const {
   useUpdateOrderMutation,
   useAddCommentMutation,
   useFindOneQuery,
+  useFindOneByEmailAndCodeQuery,
 } = ordersApi;
 
 export const getDiscount = async (code: string) => {
   try {
-    // TODO: replace this with env var
     const res = await axios.get(
-      'https://happytails-backend.lav.net.ua/happytails/api/discount/' + code
+      process.env.NEXT_PUBLIC_SITE_DOMAIN + '/api/discount/' + code
     );
     return res.data;
   } catch (err) {

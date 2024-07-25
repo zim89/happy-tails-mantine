@@ -1,15 +1,16 @@
 'use client';
 
+import { redirect, useSearchParams } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
+
 import BarChart from '@/modules/BarChart';
 import LineChart from '@/modules/LineChart';
 import OrdersChart from '@/modules/OrdersChart';
 import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
-import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { KEYS } from '@/shared/constants/localStorageKeys';
-import { redirect, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { AdminPanelContext } from '@/shared/context/panel.context';
 
 export default function Page() {
   const tokenFromStore = retrieveToken();
@@ -17,6 +18,12 @@ export default function Page() {
 
   const params = useSearchParams();
   const code = params.get('code');
+
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update((prev) => ({ ...prev, openedLink: 'Dashboard' }));
+  }, []);
 
   useEffect(() => {
     if (!code) return;
@@ -41,7 +48,10 @@ export default function Page() {
     })();
   }, [code]);
 
-  if (!token) redirect(APP_PAGES['ADMIN_AUTH']);
+  if (!code && !token)
+    return redirect(
+      `${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_PROD : process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_DEV}`
+    );
 
   return (
     <div className='flex flex-col gap-6'>
@@ -49,7 +59,7 @@ export default function Page() {
       <BarChart />
       <OrdersChart />
       <TopCategories />
-      <LineChart />
+      {token && <LineChart />}
     </div>
   );
 }

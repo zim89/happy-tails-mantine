@@ -50,7 +50,7 @@ export default async function AllProducts() {
         <div className='container text-center'>
           <Breadcrumbs
             crumbs={[{ href: '/', text: 'Home' }, { text: 'All Products' }]}
-            classNames={{ root: "p-0 pt-2" }}
+            classNames={{ root: 'p-0 pt-2' }}
           />
           <h2 className='mb-2 text-[1.75rem]/[normal] lg:text-4xl/[normal]'>
             Premium Dog Products

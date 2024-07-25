@@ -1,24 +1,18 @@
-import { Metadata } from "next";
+'use client';
 
-export const generateMetadata = (): Metadata => {
-    // TODO: Track incoming messages
-    const newMessages = 4; 
-
-    return {
-        title: `Inbox (${newMessages})`,
-        robots: {
-            index: false
-        }    
-    };
-}
+import { AdminPanelContext } from '@/shared/context/panel.context';
+import { useContext, useEffect } from 'react';
 
 type Props = {
-    children: React.ReactNode;
-}
+  children: React.ReactNode;
+};
+
 export default function Layout({ children }: Props) {
-    return (
-        <>
-            {children}
-        </>
-    );
+  const { update } = useContext(AdminPanelContext);
+
+  useEffect(() => {
+    update((prev) => ({ ...prev, openedLink: 'Messages' }));
+  }, []);
+
+  return <>{children}</>;
 }

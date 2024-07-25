@@ -15,7 +15,7 @@
 }
 
 .section p {
-  @apply text-xl/[24px];
+  @apply text-xl/[1.5rem];
 }
 
 .tabsList {
@@ -23,7 +23,7 @@
 }
 
 .tabItem {
-  @apply relative w-full justify-start whitespace-normal border-0 p-0 py-3 pl-4 pr-12 text-lg/[21.6px] text-brand-grey-900 data-[active=true]:bg-brand-grey-300 data-[active=true]:text-secondary;
+  @apply relative w-full justify-start whitespace-normal border-0 p-0 py-3 pl-4 pr-12 text-lg/[1.35rem] text-brand-grey-900 data-[active=true]:bg-brand-grey-300 data-[active=true]:text-secondary;
 }
 
 .wrap {

@@ -14,8 +14,7 @@ type ModalContentProps = {
 
 type Props = {
   children(
-    Modal: (props: ModalContentProps) => React.ReactNode,
-    Notify: (props: NotifyProps) => React.ReactNode
+    Modal: (props: ModalContentProps) => React.ReactNode
   ): React.ReactNode;
 };
 export default function DeleteModal({ children }: Props) {
@@ -42,28 +41,5 @@ export default function DeleteModal({ children }: Props) {
     </>
   );
 
-  const notification = (props: NotifyProps) => (
-    <Notify
-      icon={
-        <Image
-          src={check_circle.src}
-          alt='Notification'
-          width={24}
-          height={24}
-          className='h-6 w-6'
-        />
-      }
-      color='transparent'
-      {...props}
-    />
-  );
-
-  return (
-    <>
-      {children(
-        useMemo(() => modalContent, []),
-        useMemo(() => notification, [])
-      )}
-    </>
-  );
+  return <>{children(useMemo(() => modalContent, []))}</>;
 }

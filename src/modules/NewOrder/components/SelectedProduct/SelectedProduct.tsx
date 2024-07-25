@@ -1,21 +1,79 @@
-import { CustomBadge } from '@/components/Badge';
-import { Product } from '@/shared/types/types';
+'use client';
+
+import { Radio, RadioGroup } from '@mantine/core';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
+import { UseFormReturnType } from '@mantine/form';
+
+import { CustomBadge } from '@/components/Badge';
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
+import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
+
+import classes from '../classes.module.css';
+import { colorMap } from '../../lib/util';
+import { Item } from '../../lib/types';
 
 type Props = {
-  product: Product;
+  product: Product & {
+    colors: { value: ProductColor; sizes: ProductSizeValues[] }[];
+  };
   changeItemQuantity: (op: 'DECREASE' | 'INCREASE', id: number) => void;
   handleRemove: () => void;
+  form: UseFormReturnType<
+    NewOrderFields,
+    (values: NewOrderFields) => NewOrderFields
+  >;
+};
+
+const SizeIconFactory = (value: ProductSizeValues) => {
+  const SizeIcon = () => <span className='block'>{value}</span>;
+
+  return SizeIcon;
 };
 
 export default function SelectedProduct({
   product,
+  form,
   changeItemQuantity,
   handleRemove,
 }: Props) {
+  const [selectedColor, setSelectedColor] = useState(product.colors[0].value);
+  const [selectedSize, setSelectedSize] = useState(product.colors[0].sizes[0]);
+
+  const sizes = useCallback(() => {
+    const candidate = product.colors.find(
+      (color) => color.value === selectedColor
+    );
+
+    if (!candidate) return [];
+
+    return candidate.sizes.filter((size) => size !== 'ONE SIZE');
+  }, [selectedColor]);
+
+  useEffect(() => {
+    form.setFieldValue('items', (prev) =>
+      prev.map((item) => {
+        const parsed: Item = JSON.parse(item);
+
+        if (parsed.id === product.id) {
+          return JSON.stringify({
+            ...parsed,
+            pickedAttributes: {
+              productId: parsed.colors.find(
+                (color) => color.value === selectedColor
+              )?.productId,
+              size: selectedSize,
+            },
+          });
+        }
+        return item;
+      })
+    );
+  }, [selectedColor, selectedSize]);
+
   return (
-    <div className='flex items-center gap-6 bg-[#F7F7F7] p-4'>
+    <div className='flex items-center gap-6 bg-primary p-4'>
       <Image
         src={product.imagePath}
         height={115}
@@ -35,17 +93,6 @@ export default function SelectedProduct({
           />
         </div>
         <p className='py-1 font-bold'>{product.name}</p>
-        {product.color && (
-          <p className='flex items-center gap-2'>
-            <span
-              className='inline-block h-4 w-4 rounded-full border border-[#C8C8C8]'
-              style={{
-                backgroundColor: product.color?.toLowerCase(),
-              }}
-            />
-            <span>{product.color}</span>
-          </p>
-        )}
         {product.productStatus === 'IN STOCK' && (
           <p className='text-sm'>Price: ${product.price}</p>
         )}
@@ -53,21 +100,93 @@ export default function SelectedProduct({
         <div className='mt-3 flex font-bold'>
           <button
             disabled={!(product.productStatus === 'IN STOCK')}
-            className='border-gray flex w-8 items-center justify-center border-[1px]'
-            onClick={() => changeItemQuantity('INCREASE', product.id)}
+            className='border-gray flex w-8 items-center justify-center border'
+            onClick={(e) => {
+              e.preventDefault();
+              changeItemQuantity('INCREASE', product.id);
+            }}
           >
             <Plus size={16} />
           </button>
-          <span className='border-gray flex w-8 items-center justify-center border-[1px]'>
+          <span className='border-gray flex w-8 items-center justify-center border'>
             {product.productStatus === 'IN STOCK' ? product.totalQuantity : 0}
           </span>
           <button
             disabled={!(product.productStatus === 'IN STOCK')}
-            className='border-gray flex w-8 items-center justify-center border-[1px]'
-            onClick={() => changeItemQuantity('DECREASE', product.id)}
+            className='border-gray flex w-8 items-center justify-center border'
+            onClick={(e) => {
+              e.preventDefault();
+              changeItemQuantity('DECREASE', product.id);
+            }}
           >
             <Minus size={16} />
           </button>
+        </div>
+        <div className='mb-0 mt-3'>
+          <p className='text-sm font-bold'>Color: {selectedColor}</p>
+          <RadioGroup
+            value={selectedColor}
+            onChange={(e) => setSelectedColor(e as ProductColor)}
+            classNames={{ root: classes.radiogroup }}
+          >
+            {product.colors.map((color, index) => (
+              <Radio
+                key={index}
+                value={color.value}
+                color={color.value}
+                styles={{
+                  radio: {
+                    backgroundColor:
+                      color.value === 'ONE COLOR'
+                        ? 'transparent'
+                        : colorMap[color.value],
+                    border:
+                      selectedColor === color.value
+                        ? 'solid 2px #161616'
+                        : undefined,
+                  },
+                }}
+                classNames={{
+                  icon: 'hidden',
+                  radio: 'cursor-pointer border-2 border-brand-grey-400',
+                }}
+              />
+            ))}
+          </RadioGroup>
+        </div>
+        <div>
+          {!!sizes().length && selectedSize && (
+            <p className='text-sm font-bold'>Size: {selectedSize}</p>
+          )}
+          <RadioGroup
+            value={selectedSize}
+            onChange={(e) => setSelectedSize(e as ProductSizeValues)}
+            classNames={{ root: classes.radiogroup }}
+          >
+            {sizes().map((size, index) => (
+              <Radio
+                key={index}
+                value={size}
+                color='transparent'
+                icon={SizeIconFactory(size)}
+                styles={{
+                  inner: {
+                    // Used shadows instead of borders to prevent layout shifts
+                    boxShadow:
+                      selectedSize === size
+                        ? '0px 0px 0px 2px #161616'
+                        : '0px 0px 0px 1px #EEEEEE',
+                    border: 0,
+                  },
+                }}
+                classNames={{
+                  radio: 'cursor-pointer border-0 bg-transparent absolute',
+                  inner:
+                    'flex border justify-center items-center py-3 px-[22px] rounded-[22px]',
+                }}
+              />
+            ))}
+          </RadioGroup>
         </div>
       </div>
       <div className='ml-auto flex flex-col items-end justify-between self-stretch'>

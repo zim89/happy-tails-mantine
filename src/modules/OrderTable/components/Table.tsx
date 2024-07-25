@@ -10,17 +10,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-
-import {
-  Button,
-  Table as MantineTable,
-} from '@mantine/core';
+import { flushSync } from 'react-dom';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { Table as MantineTable, UnstyledButton } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
-import { useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
 import { cn } from '@/shared/lib/utils';
-import dayjs from 'dayjs';
 import { RowActions } from './RowActions';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';
@@ -58,7 +54,7 @@ const columns = [
   }),
   columnHelper.accessor('createdDate', {
     cell: (info) => (
-      <span>{dayjs(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
+      <span>{dayjs.unix(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
     ),
     header: () => 'Date',
   }),
@@ -66,12 +62,12 @@ const columns = [
     cell: (info) => (
       <UpdateStatus orderRow={info.cell.row.original}>
         {(toggle) => (
-          <Button onClick={toggle} classNames={{ root: 'p-0' }}>
+          <UnstyledButton onClick={toggle} classNames={{ root: 'p-0' }}>
             <CustomBadge
               color={info.getValue().toLowerCase()}
               name={info.getValue()}
             />
-          </Button>
+          </UnstyledButton>
         )}
       </UpdateStatus>
     ),
@@ -144,9 +140,9 @@ export default function Table({ data }: { data: Order[] }) {
         <h3 className='mr-3 flex-1 text-xl font-bold'>Orders</h3>
         <ul className='flex space-x-3'>
           <li>
-            <Button
+            <UnstyledButton
               className={cn(
-                'h-[1.8125rem] px-2 text-secondary',
+                'h-[1.8125rem] rounded-sm px-2 text-secondary hover:bg-brand-grey-200',
                 !table.getColumn('orderStatus')?.getFilterValue() &&
                   'bg-brand-grey-300'
               )}
@@ -155,7 +151,7 @@ export default function Table({ data }: { data: Order[] }) {
               }
             >
               All Orders
-            </Button>
+            </UnstyledButton>
           </li>
           {Array.from(
             data.reduce(
@@ -164,9 +160,9 @@ export default function Table({ data }: { data: Order[] }) {
             )
           ).map((status) => (
             <li key={status}>
-              <Button
+              <UnstyledButton
                 className={cn(
-                  'h-[1.8125rem] px-2 text-secondary',
+                  'h-[1.8125rem] rounded-sm px-2 capitalize text-secondary hover:bg-brand-grey-200',
                   table.getColumn('orderStatus')?.getFilterValue() === status &&
                     'bg-brand-grey-300'
                 )}
@@ -174,8 +170,8 @@ export default function Table({ data }: { data: Order[] }) {
                   table.getColumn('orderStatus')?.setFilterValue(status)
                 }
               >
-                {status}
-              </Button>
+                {status.toLocaleLowerCase()}
+              </UnstyledButton>
             </li>
           ))}
         </ul>
@@ -226,9 +222,12 @@ export default function Table({ data }: { data: Order[] }) {
         </MantineTable.Tbody>
       </MantineTable>
 
-      <EmptyRow visible={table.getRowModel().rows.length === 0} message='You have no any orders yet'/>
-      
-      <TablePagination visible={table.getPageCount() > 1} table={table}/>
+      <EmptyRow
+        visible={table.getRowModel().rows.length === 0}
+        message='You have no any orders yet'
+      />
+
+      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </div>
   );
 }

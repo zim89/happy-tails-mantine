@@ -1,32 +1,29 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import {
-  Button,
   UnstyledButton,
   FileInput,
   InputLabel,
   TextInput,
   Tooltip,
 } from '@mantine/core';
-import { Info, UploadCloud, X, Check, AlertTriangle } from 'lucide-react';
+import { Info, UploadCloud, X } from 'lucide-react';
+import { isNotEmpty, useForm } from '@mantine/form';
+import Image from 'next/image';
+import axios from 'axios';
+import { useDisclosure } from '@mantine/hooks';
 
 import styles from './UpdateCategoryModal.module.css';
-import { useDisclosure } from '@mantine/hooks';
-import { isNotEmpty, useForm } from '@mantine/form';
-
-import Notify from '@/components/Notify';
 
 import Modal from '@/components/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
-import Image from 'next/image';
-import axios from 'axios';
 import { cn } from '@/shared/lib/utils';
-import { useNotification } from '@/shared/hooks/useNotification';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   categoryLine: Category;
@@ -34,18 +31,7 @@ type Props = {
 export default function UpdateCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useUpdateCategoryMutation();
   const previewImage = useRef<{ path: string; name: string }>();
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      icon: <AlertTriangle size={24} fill="#DC362E" />,
-      color: 'transparent',
-      text: 'Failed to update!',
-    },
-    success: {
-      icon: <Check size={24} />,
-      color: '#389B48',
-      text: 'Changes saved!',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -98,8 +84,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image,
   }: (typeof form)['values']) => {
     try {
+      const { updatedAt, productCount, ...category } = categoryLine;
+
       let requestBody = {
-        ...categoryLine,
+        ...category,
         name: categoryName,
       };
 
@@ -127,7 +115,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       await dispatch({ req: requestBody }).unwrap();
 
       clearAndClose();
-      setNotification('Success');
+      setNotification('Success', 'Changes saved!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
@@ -163,7 +151,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               root: 'form-root',
               label: 'form-label',
               wrapper: 'flex border-2 p-2 gap-2 focus:outline outline-2',
-              section: 'static w-auto text-[#161616] whitespace-nowrap',
+              section: 'static w-auto text-secondary whitespace-nowrap',
               input: cn(
                 'form-input rounded-sm border-0 p-0 outline-none',
                 form?.errors?.categoryName && 'form-error--input'
@@ -174,7 +162,17 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             type='text'
             label='Category Name'
             {...form.getInputProps('categoryName')}
-            rightSection={<button type="button" className="hover:underline" onClick={() => form.setFieldValue("categoryName", categoryLine.name)}>{categoryLine.name}</button>}
+            rightSection={
+              <button
+                type='button'
+                className='hover:underline'
+                onClick={() =>
+                  form.setFieldValue('categoryName', categoryLine.name)
+                }
+              >
+                {categoryLine.name}
+              </button>
+            }
           />
 
           <InputLabel
@@ -228,11 +226,9 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           secondaryBtnText='Cancel'
           secondaryBtnOnClick={clearAndClose}
           primaryBtnText='Save'
-          primaryBtnOnClick={form.onSubmit(handleSubmit)}
+          primaryBtnOnClick={() => handleSubmit(form.values)}
         />
       </Modal>
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 }

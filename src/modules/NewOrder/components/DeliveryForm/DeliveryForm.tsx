@@ -48,8 +48,9 @@ export default function DeliveryForm({ form }: Props) {
             label='First name'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
-                form.getInputProps('address.firstName').error && 'form-error--input'
+                'form-input h-full md:max-w-[26rem]',
+                form.getInputProps('address.firstName').error &&
+                  'form-error--input'
               ),
               root: 'form-root',
               label: 'form-label',
@@ -66,8 +67,9 @@ export default function DeliveryForm({ form }: Props) {
             label='Second name'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
-                form.getInputProps('address.secondName').error && 'form-error--input'
+                'form-input h-full md:max-w-[26rem]',
+                form.getInputProps('address.secondName').error &&
+                  'form-error--input'
               ),
               root: 'form-root',
               label: 'form-label',
@@ -83,8 +85,9 @@ export default function DeliveryForm({ form }: Props) {
             label='Country'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
-                form.getInputProps("address.country").error && 'form-error--input'
+                'form-input h-full md:max-w-[26rem]',
+                form.getInputProps('address.country').error &&
+                  'form-error--input'
               ),
               root: 'form-root',
               label: 'form-label',
@@ -100,7 +103,7 @@ export default function DeliveryForm({ form }: Props) {
             label='City'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
+                'form-input h-full md:max-w-[26rem]',
                 form.getInputProps('address.city').error && 'form-error--input'
               ),
               root: 'form-root',
@@ -117,8 +120,9 @@ export default function DeliveryForm({ form }: Props) {
             label='Street'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
-                form.getInputProps('address.street').error && 'form-error--input'
+                'form-input h-full md:max-w-[26rem]',
+                form.getInputProps('address.street').error &&
+                  'form-error--input'
               ),
               root: 'form-root',
               label: 'form-label',
@@ -134,8 +138,9 @@ export default function DeliveryForm({ form }: Props) {
             label='Apartment'
             classNames={{
               input: cn(
-                'form-input h-full max-w-[26rem]',
-                form.getInputProps('address.apartment').error && 'form-error--input'
+                'form-input h-full md:max-w-[26rem]',
+                form.getInputProps('address.apartment').error &&
+                  'form-error--input'
               ),
               root: 'form-root',
               label: 'form-label',
@@ -176,7 +181,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.firstName').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',
@@ -194,7 +200,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.secondName').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',
@@ -211,7 +218,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.country').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',
@@ -228,7 +236,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.city').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',
@@ -245,7 +254,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.street').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',
@@ -262,7 +272,8 @@ export default function DeliveryForm({ form }: Props) {
                 classNames={{
                   input: cn(
                     'form-input h-full max-w-[26rem]',
-                    form.getInputProps('address.apartment').error && 'form-error--input'
+                    form.getInputProps('billingAddress.apartment').error &&
+                      'form-error--input'
                   ),
                   root: 'form-root',
                   label: 'form-label',

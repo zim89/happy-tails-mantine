@@ -10,21 +10,83 @@ import {
   Bar,
 } from 'recharts';
 import { Select } from '@mantine/core';
-
-import { monthlyData, reversedMonthMap } from './lib/mock';
-import { convertMeasurement, getCurrentMonth } from '@/shared/lib/helpers';
 import { useMediaQuery } from '@mantine/hooks';
+
+import { monthMap, reversedMonthMap } from './lib/mock';
+import {
+  convertMeasurement,
+  formatYearFromDate,
+  getCurrentMonth,
+} from '@/shared/lib/helpers';
+import { useFetchSalesQuery } from '@/shared/api/dashboardApi';
+import { CustomTooltip } from './components/CustomTooltip';
+import { SkeletonLoader } from './components/SkeletonLoader';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function BarChart() {
   const [barChartType, setBarChartType] = useState('Year');
-  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    reversedMonthMap[getCurrentMonth().slice(0, 3)]
+  );
+  const [selectedYear, setSelectedYear] = useState(
+    formatYearFromDate(Date.now())
+  );
   const matches = useMediaQuery('(min-width: 768px)');
 
+  const { data, isLoading, error } = useFetchSalesQuery({
+    year: selectedYear,
+    month: barChartType === 'Month' ? selectedMonth : undefined,
+  });
+
+  if (error) return <SkeletonError />;
+  if (isLoading) return <SkeletonLoader />;
+
   return (
-    <div className='overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
+    <div className='overflow-hidden rounded border border-brand-grey-300 bg-primary'>
       <div className='mb-[18px] flex justify-between bg-white p-4'>
         <h2 className=' text-xl font-bold'>Sales Details</h2>
         <div className='flex gap-3'>
+          {barChartType === 'Month' && (
+            <Select
+              value={monthMap[selectedMonth]}
+              onChange={(value) => {
+                return value && setSelectedMonth(reversedMonthMap[value]);
+              }}
+              data={[
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+              ]}
+              classNames={{
+                root: 'max-w-[100px] w-full',
+                input: 'font-lato text-xs bg-primary text-brand-grey-500',
+              }}
+              rightSection={<ChevronDown size={20} />}
+            />
+          )}
+
+          <Select
+            value={selectedYear}
+            onChange={(value) => value && setSelectedYear(value)}
+            data={[0, 1, 2, 3].map((num) => {
+              return String(Number(formatYearFromDate(Date.now())) - num);
+            })}
+            classNames={{
+              root: 'max-w-[100px] w-full',
+              input: 'font-lato text-xs bg-primary text-brand-grey-500',
+            }}
+            rightSection={<ChevronDown size={20} />}
+          />
+
           <Select
             defaultValue='Year'
             value={barChartType}
@@ -32,62 +94,33 @@ export default function BarChart() {
             data={['Year', 'Month']}
             classNames={{
               root: 'max-w-[100px] w-full',
-              input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
+              input: 'font-lato text-xs bg-primary text-brand-grey-500',
             }}
             rightSection={<ChevronDown size={20} />}
           />
-          {barChartType === 'Month' && (
-            <Select
-              defaultValue='January'
-              value={selectedMonth}
-              onChange={(value) => value && setSelectedMonth(value)}
-              data={[
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'August',
-                'September',
-                'October',
-                'November',
-                'December',
-              ]}
-              classNames={{
-                root: 'max-w-[100px] w-full',
-                input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
-              }}
-              rightSection={<ChevronDown size={20} />}
-            />
-          )}
         </div>
       </div>
       <ResponsiveContainer width='100%' height={367} className='py-2'>
         <NativeBarChart
           width={500}
           height={367}
-          data={
-            barChartType === 'Year'
-              ? monthlyData
-              : monthlyData[reversedMonthMap[selectedMonth]].days
-          }
+          data={data}
           barSize={62}
           barGap={20}
         >
           <XAxis
-            dataKey={barChartType === 'Year' ? 'name' : 'label'}
+            dataKey={barChartType === 'Year' ? 'month' : 'date'}
             scale='point'
             tickMargin={8}
-            padding={
-              matches ? { left: 40, right: 40 } : { left: 20, right: 20 }
-            }
+            tickFormatter={(value: number) => {
+              return barChartType === 'Year' ? monthMap[value] : `${value}`;
+            }}
+            padding={{ left: 40, right: 40 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            dataKey={barChartType === 'Year' ? 'total' : 'revenue'}
+            dataKey='totalSales'
             axisLine={false}
             tickLine={false}
             tickMargin={matches ? 15 : 10}
@@ -96,18 +129,17 @@ export default function BarChart() {
             }}
           />
           <Tooltip
+            labelStyle={{ fontWeight: 'bold' }}
             formatter={(value) => {
               return `${value}$`;
             }}
             labelFormatter={(label) => {
-              return barChartType === 'Year' ? label : `Day ${label}`;
+              return barChartType === 'Year' ? monthMap[label] : label;
             }}
+            content={<CustomTooltip kind={barChartType} />}
           />
-          <CartesianGrid vertical stroke='#EEE' />
-          <Bar
-            dataKey={barChartType === 'Year' ? 'total' : 'revenue'}
-            fill='#4285F4'
-          />
+          {!!data?.length && <CartesianGrid vertical stroke='#EEE' />}
+          <Bar dataKey='totalSales' fill='#4285F4' />
         </NativeBarChart>
       </ResponsiveContainer>
     </div>

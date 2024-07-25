@@ -3,39 +3,63 @@ type ProductType = 'INDOORS' | 'OUTDOORS';
 
 type OrderStatus =
   | 'NEW'
-  | 'IN_PROGRESS'
+  | 'IN PROGRESS'
   | 'PROCESSING'
   | 'CANCELLED'
   | 'SHIPPED'
-  | 'RETURN_PROCESSING'
+  | 'RETURN PROCESSING'
   | 'COMPLETED';
 
-export enum ProductColor {
-  Black = 'Black',
-  White = 'White',
-  Blue = 'Blue',
-  Pink = 'Pink',
-  Yellow = 'Yellow',
-  Green = 'Green',
-  Red = 'Red',
-  Purple = 'Purple',
-  Orange = 'Orange',
-  Gray = 'Gray',
-  Brown = 'Brown',
-  'ONE COLOR' = 'ONE COLOR',
-}
+export type ProductColor =
+  | 'Black'
+  | 'White'
+  | 'Blue'
+  | 'Pink'
+  | 'Yellow'
+  | 'Green'
+  | 'Red'
+  | 'Purple'
+  | 'Orange'
+  | 'Gray'
+  | 'Brown'
+  | 'ONE COLOR';
 
-export enum ProductSizeEnum {
-  XS = 'XS',
-  S = 'S',
-  M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
-  'ONE SIZE' = 'ONE SIZE',
-}
+type ProductColorSizes = {
+  color: Product['color'];
+  productSizes: {
+    size: ProductSizeValues;
+    quantity: number;
+    productStatus: ProductStatus;
+    description: Product['description'];
+  }[];
+  imagePath: Product['imagePath'];
+}[];
+
+export type CreateProductBody = {
+  name: Product['name'];
+  price: Product['price'];
+  onSale: Product['onSale'];
+  salePrice: Product['salePrice'];
+  categoryId: Product['categoryId'];
+  description: Product['description'];
+  totalQuantity: Product['totalQuantity'];
+  productColorSizes: ProductColorSizes;
+  productType: Product['productType'];
+  imagePath: Product['imagePath'];
+};
+
+export type ProductSizeValues =
+  | 'XS'
+  | 'S'
+  | 'M'
+  | 'L'
+  | 'XL'
+  | 'XXL'
+  | 'ONE SIZE';
 
 type ShippingAddress = {
+  firstName: string;
+  lastName: string;
   company: string;
   country: string;
   zip: string;
@@ -65,8 +89,8 @@ type Discount = {
   expirationDate: string;
 };
 
-type ProductSize = {
-  size: ProductSizeEnum;
+export type ProductSize = {
+  size: ProductSizeValues;
   quantity: number;
   productStatus: ProductStatus;
   description: string | null;
@@ -100,11 +124,28 @@ export interface Product {
   imagePath: string;
 }
 
+export type CreateOrderBody = {
+  cartProducts: {
+    productId: number;
+    sizeEnum: ProductSizeValues;
+    count: number;
+  }[];
+  shippingAddress: Partial<ShippingAddress>;
+  billingAddress: Partial<BillingAddress>;
+  shippingMethodId: number;
+  paymentMethod: string;
+  email: string;
+  agreementToTerms: boolean;
+  emailMeWithOffersAndNews: boolean;
+  discountCode?: string;
+  commentOfManager?: string;
+};
+
 export interface Order {
   id: string;
   number: string;
   orderStatus: OrderStatus;
-  createdDate: string;
+  createdDate: number;
   statusLastUpdatedAt: number | null;
   email: string;
   userId: string;
@@ -114,7 +155,7 @@ export interface Order {
     productName: string;
     productImagePath: string;
     productPrice: number;
-    productSize: ProductSizeEnum;
+    productSize: ProductSizeValues;
     productColor: ProductColor;
     productArticle: string;
     onSale: boolean;
@@ -205,3 +246,7 @@ export type Category = {
 };
 
 export type Sort = [string, 'asc' | 'desc'];
+
+export type CustomComponentProps = {
+  className?: string;
+};

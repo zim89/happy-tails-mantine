@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { MultiSelect } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 
-import { COLORS, data } from './lib/data';
+import { COLORS, summarizeOrderStatuses } from './lib/data';
 import DonutChart from '@/components/DonutChart';
 import Table from './components/Table';
 import { useFindManyQuery } from '@/shared/api/ordersApi';
-import Loader from '@/components/Loader';
+import { SkeletonLoader } from './components/Skeleton';
+import { SkeletonError } from './components/SkeletonError';
 
 export default function OrdersChart() {
   const {
@@ -17,39 +18,33 @@ export default function OrdersChart() {
     isLoading,
   } = useFindManyQuery({
     page: 0,
-    limit: 1000000,
+    limit: 10000000,
   });
 
-  const [selected, setSelected] = useState<string[]>([
-    'New',
-    'Completed',
-    'In progress',
-  ]);
+  const [selected, setSelected] = useState<string[]>(['NEW']);
 
-  if (isLoading) return <Loader size={64} />;
-  if (error)
-    return (
-      <p>
-        {
-          "Whoops, it shouldn't have happened, our experts are already fixing this"
-        }
-      </p>
-    );
+  if (error) return <SkeletonError />;
+
+  if (isLoading) return <SkeletonLoader />;
+
+  const summarizedOrders = summarizeOrderStatuses(orders?.content || []);
 
   return (
     <div className='flex gap-6'>
-      <div className='max-w-min overflow-hidden rounded border border-[#EEE] bg-[#FDFDFD]'>
-        <div className='flex items-center justify-between border-b border-b-[#EEE] bg-white p-4'>
+      <div className='max-w-min overflow-hidden rounded border border-brand-grey-300 bg-primary'>
+        <div className='flex items-center justify-between border-b border-b-brand-grey-300 bg-white p-4'>
           <h2 className='text-xl font-bold'>Orders Reports</h2>
           <MultiSelect
             value={selected}
             placeholder={
-              selected.length === 3 ? 'View All' : selected.join(',')
+              selected.length === summarizedOrders.length
+                ? 'View All'
+                : selected.join(',')
             }
-            data={data.map((item) => item.name)}
+            data={summarizedOrders.map((item) => item.name)}
             classNames={{
               root: 'max-w-[105px] w-full',
-              input: 'font-lato text-xs bg-[#FDFDFD] text-[#B4B4B4]',
+              input: 'font-lato text-xs bg-primary text-brand-grey-400',
               pillsList: 'whitespace-nowrap overflow-hidden text-ellipsis',
               pill: 'hidden',
             }}
@@ -61,12 +56,8 @@ export default function OrdersChart() {
           />
         </div>
         <DonutChart
-          data={data.filter((item) => selected.includes(item.name))}
-          colors={{
-            New: COLORS.New,
-            Completed: COLORS.Completed,
-            'In progress': COLORS['In progress'],
-          }}
+          data={summarizedOrders.filter((item) => selected.includes(item.name))}
+          colors={COLORS}
           width={314}
           height={325}
         />

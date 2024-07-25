@@ -16,14 +16,8 @@ import {
   Menu,
   UnstyledButton,
 } from '@mantine/core';
-import { useState, useMemo } from 'react';
-import {
-  AlertTriangle,
-  Check,
-  ChevronDown,
-  Mail,
-  Star as StarIcon,
-} from 'lucide-react';
+import { useState, useMemo, useContext } from 'react';
+import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
@@ -36,42 +30,8 @@ import { Actions } from './Actions';
 import { CustomBadge } from '@/components/Badge';
 import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import { useNotification } from '@/shared/hooks/useNotification';
-import Notify from '@/components/Notify';
-
-const filterOptions = [
-  {
-    id: 0,
-    title: 'All',
-    value: 'ALL',
-  },
-  {
-    id: 1,
-    title: 'None',
-    value: 'NONE',
-  },
-  {
-    id: 2,
-    title: 'Read',
-    value: 'READ',
-  },
-  {
-    id: 3,
-    title: 'Unread',
-    value: 'UNREAD',
-    columnFilter: 'status',
-  },
-  {
-    id: 4,
-    title: 'Starred',
-    value: 'STARRED',
-  },
-  {
-    id: 5,
-    title: 'Unstarred',
-    value: 'UNSTARRED',
-  },
-];
+import { filterOptions } from '../lib/data';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   data: Message[];
@@ -125,18 +85,7 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
-  const [setNotification, { props, clear }] = useNotification({
-    failed: {
-      text: 'Messages deletion failed!',
-      icon: <AlertTriangle size={24} fill='#DC362E' />,
-      color: 'transparent',
-    },
-    success: {
-      text: 'Messages successfully deleted!',
-      icon: <Check size={24} />,
-      color: '#389B48',
-    },
-  });
+  const { setNotification } = useContext(notifyContext);
 
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);
@@ -264,11 +213,11 @@ export const Table = ({ data }: Props) => {
 
   return (
     <>
-      <div className='mt-10 flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
-        <h2 className='mr-6 text-xl/[24px] font-bold'>Messages</h2>
+      <div className='mt-10 flex items-center justify-between border border-b-0 bg-white p-4'>
+        <h2 className='mr-6 text-xl/[1.5rem] font-bold'>Messages</h2>
       </div>
 
-      <div className='flex items-center justify-between border-[1px] border-b-0 bg-white p-4'>
+      <div className='flex items-center justify-between border border-b-0 bg-white p-4'>
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *
@@ -287,13 +236,13 @@ export const Table = ({ data }: Props) => {
       </div>
 
       <MantineTable
-        bgcolor='white'
         withTableBorder
         borderColor='#EEE'
+        className='bg-primary'
         styles={{ td: { padding: '16px 0px' }, tr: { verticalAlign: 'sub' } }}
       >
         {/* Table header */}
-        <MantineTable.Thead classNames={{ thead: 'bg-[#EEE]' }}>
+        <MantineTable.Thead classNames={{ thead: 'bg-brand-grey-300' }}>
           <MantineTable.Tr>
             <MantineTable.Th colSpan={7} classNames={{ th: 'py-5 px-4' }}>
               <Menu
@@ -428,8 +377,6 @@ export const Table = ({ data }: Props) => {
         message='No new messages. Please check back later.'
       />
       <TablePagination visible={table.getPageCount() > 1} table={table} />
-
-      <Notify {...props} onClose={clear} />
     </>
   );
 };

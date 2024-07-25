@@ -1,20 +1,18 @@
 import Image from 'next/image';
 
-import nounDelivery1 from '@/assets/icons/additional/noun-delivery.svg';
-import nounDelivery2 from '@/assets/icons/additional/noun-delivery-2.svg';
-import nounDelivery3 from '@/assets/icons/additional/noun-delivery-3.svg';
-
 export default function WhyUs() {
   return (
     <section className='pt-16 md:pt-[88px] lg:pt-[104px]'>
-      <div className='bg-brand-grey-200 py-8'>
+      <div className='bg-brand-grey-200 py-8 pb-60 md:pb-96 lg:pb-4'>
         <h2 className='mb-6 text-center text-[1.75rem] font-bold md:mb-9 lg:text-4xl'>
           Why Shop With Us?
         </h2>
-        <ul className='mx-auto justify-between gap-10 space-y-5 lg:flex lg:max-w-screen-lg lg:space-y-0 lg:px-10'>
+        <ul className='mx-auto flex h-full flex-col justify-between gap-10 space-y-5 lg:max-w-screen-lg lg:flex-row lg:space-y-0 lg:px-10'>
           <li className='mx-auto max-w-[454px] px-3 py-4'>
             <Image
-              src={nounDelivery1}
+              src='/icons/additional/noun-delivery.svg'
+              width={64}
+              height={65}
               alt='orange truck flat icon'
               className='mx-auto mb-3'
             />
@@ -28,7 +26,9 @@ export default function WhyUs() {
           </li>
           <li className='mx-auto max-w-[454px] px-3 py-4'>
             <Image
-              src={nounDelivery2}
+              src='/icons/additional/noun-delivery-2.svg'
+              width={64}
+              height={65}
               alt='orange cart flat icon'
               className='mx-auto mb-3'
             />
@@ -42,7 +42,9 @@ export default function WhyUs() {
           </li>
           <li className='mx-auto max-w-[454px] px-3 py-4'>
             <Image
-              src={nounDelivery3}
+              src='/icons/additional/noun-delivery-3.svg'
+              width={64}
+              height={65}
               alt='orange label flat icon'
               className='mx-auto mb-3'
             />

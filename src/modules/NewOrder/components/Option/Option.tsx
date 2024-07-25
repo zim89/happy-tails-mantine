@@ -1,14 +1,15 @@
-import { Product, ProductColor } from '@/shared/types/types';
 import { Combobox } from '@mantine/core';
 import Image from 'next/image';
 
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
+
 type Props = {
   product: Product & {
-    size: string | null;
+    colors: { value: ProductColor; sizes: ProductSizeValues[] }[];
   };
 };
 
-const Option = ({ product }: Props) => {
+export const Option = ({ product }: Props) => {
   return (
     <Combobox.Option
       value={JSON.stringify(product)}
@@ -17,32 +18,13 @@ const Option = ({ product }: Props) => {
       <Image
         width={64}
         height={64}
-        src={product.imagePath}
+        src={product.imagePath || 'https://placehold.co/64x64.png'}
         alt={product.name}
       />
       <div>
         <p className='mb-1 font-bold'>{product.name}</p>
-        <p className='flex items-center gap-2'>
-          {product.color && product.color !== ProductColor['ONE COLOR'] && (
-            <span
-              className='inline-block h-4 w-4 rounded-full'
-              style={{ backgroundColor: product.color.toLowerCase() }}
-            />
-          )}
-          {product.size ? (
-            <span>
-              {product.color
-                ? `${product.color} / ${product.size}`
-                : product.size}
-            </span>
-          ) : (
-            <span>{product.color}</span>
-          )}
-        </p>
         <span>$ {product.price.toFixed(2)}</span>
       </div>
     </Combobox.Option>
   );
 };
-
-export default Option;

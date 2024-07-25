@@ -29,7 +29,7 @@ export const SingleMessage = ({
   return (
     <Box
       key={id}
-      className='rounded border border-[#EEEEEE] bg-[#FDFDFD] px-4 py-4 md:px-6'
+      className='rounded border border-brand-grey-300 bg-primary px-4 py-4 md:px-6'
     >
       <div className='flex justify-between'>
         <div onClick={toggle} className='cursor-pointer'>
@@ -45,20 +45,20 @@ export const SingleMessage = ({
             />
           )}
           {!opened && (
-            <p className='mt-3 max-w-[630px] overflow-hidden text-ellipsis whitespace-nowrap text-sm text-[#5A5A5A]'>
+            <p className='mt-3 max-w-[630px] overflow-hidden text-ellipsis whitespace-nowrap text-sm text-brand-grey-900'>
               {message}
             </p>
           )}
         </div>
         <div className='flex items-center gap-6 self-start'>
-          <span className='whitespace-pre text-sm text-[#5A5A5A]'>
+          <span className='whitespace-pre text-sm text-brand-grey-900'>
             {sentAt}
           </span>
           <Actions messageId={id} />
         </div>
       </div>
       {opened && (
-        <span className='text-sm text-[#5A5A5A]'>to {recipientEmail}</span>
+        <span className='text-sm text-brand-grey-900'>to {recipientEmail}</span>
       )}
 
       <Collapse in={opened}>
@@ -70,13 +70,13 @@ export const SingleMessage = ({
 
         {/* Attachments */}
         {attachments.length > 0 && (
-          <div className='border-t border-t-[#C8C8C8]'>
+          <div className='border-t border-t-brand-grey-400'>
             <h4 className='my-4 font-bold'>Attachment</h4>
             <ul className='flex gap-4'>
               {attachments.map((attachment, index) => (
                 <li
                   key={index}
-                  className='flex items-center gap-3 border border-[#C8C8C8] p-4'
+                  className='flex items-center gap-3 border border-brand-grey-400 p-4'
                 >
                   <Image
                     src={iconMap[attachment.type]}
@@ -85,10 +85,10 @@ export const SingleMessage = ({
                     height={24}
                   />
                   <div>
-                    <h5 className='text-sm/[16px] font-bold'>
+                    <h5 className='text-sm/[1rem] font-bold'>
                       {attachment.name}
                     </h5>
-                    <p className='inline-flex items-center whitespace-pre text-sm text-[#787878] md:min-w-[220px]'>
+                    <p className='inline-flex items-center whitespace-pre text-sm text-brand-grey-800 md:min-w-[220px]'>
                       <span>{convertBytes(attachment.size)}</span>
                       <Dot />
                       <span>

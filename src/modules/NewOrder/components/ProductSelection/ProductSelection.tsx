@@ -3,11 +3,12 @@ import { UseFormReturnType } from '@mantine/form';
 import { Fragment, useMemo, useState } from 'react';
 
 import { NewOrderFields } from '@/shared/hooks/useNewOrderFormModel';
-import { Product } from '@/shared/types/types';
+import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
-import { data } from '../../lib/mock';
-import Option from '../Option';
+import { Option } from '../Option';
 import SelectedProduct from '../SelectedProduct';
+import { Item } from '../../lib/types';
+import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 
 type Props = {
   form: UseFormReturnType<
@@ -15,7 +16,9 @@ type Props = {
     (values: NewOrderFields) => NewOrderFields
   >;
 };
+
 export default function ProductSelection({ form }: Props) {
+  const data = useSelectProducts((state) => state);
   const combobox = useCombobox();
 
   const [value] = useState<string | null>(null);
@@ -32,8 +35,8 @@ export default function ProductSelection({ form }: Props) {
     form.setFieldValue('items', (prev) => prev.filter((v) => v !== value));
   };
 
-  const products = data.map((product) => {
-    return { ...product, totalQuantity: 1 };
+  const products = data.map(({ ...rest }) => {
+    return { ...rest, totalQuantity: 1 };
   });
 
   const shouldFilterOptions = useMemo<boolean>(() => {
@@ -50,32 +53,53 @@ export default function ProductSelection({ form }: Props) {
       )
     : products;
 
-  const options = filteredOptions.map((item, option_index) => {
-    return (
-      <Fragment key={option_index}>
-        {/* Renders each size of the product as a distinct product */}
-        {item.productSizes?.length ? (
-          item.productSizes?.map((productSize, size_index) => (
-            <Option
-              key={size_index}
-              product={{
-                ...item,
-                size: productSize.size,
-              }}
-            />
-          ))
-        ) : (
-          // If there is no sizes, render the option without size
-          <Option
-            product={{
-              ...item,
-              size: null,
-            }}
-          />
-        )}
-      </Fragment>
-    );
-  });
+  const options = filteredOptions
+    // Filter the same products with different colors and sizes
+    .reduce(
+      (acc, curr) => {
+        const foundDuplicate = acc.findIndex(
+          (el) => el.article === curr.article
+        );
+
+        if (acc.length === 0 || foundDuplicate) {
+          acc.push({
+            ...curr,
+            colors: [
+              {
+                productId: curr.id,
+                value: curr.color || 'ONE COLOR',
+                sizes: curr.productSizes?.map((size) => size.size) || [],
+              },
+            ],
+          });
+        } else {
+          curr.color &&
+            acc[foundDuplicate].colors.push({
+              productId: curr.id,
+              value: curr.color,
+              sizes: curr.productSizes?.map((size) => size.size) || [],
+            });
+        }
+
+        return acc;
+      },
+      [] as Array<
+        (typeof filteredOptions)[number] & {
+          colors: {
+            value: ProductColor;
+            sizes: ProductSizeValues[];
+            productId: number;
+          }[];
+        }
+      >
+    )
+    .map((item, option_index) => {
+      return (
+        <Fragment key={option_index}>
+          <Option product={item} />
+        </Fragment>
+      );
+    });
 
   const changeItemQuantity = (op: 'DECREASE' | 'INCREASE', id: number) => {
     const [candidate] = form.values.items.reduce<Product[]>((acc, prev) => {
@@ -105,7 +129,7 @@ export default function ProductSelection({ form }: Props) {
   };
 
   return (
-    <Card classNames={{ root: 'mt-8' }}>
+    <Card classNames={{ root: 'mt-8 bg-white rounded-sm' }}>
       <h3 className='mb-2 text-xl/6 font-bold'>Product Options</h3>
       <Divider className='mb-6' />
       <Combobox onOptionSubmit={addItem} store={combobox}>
@@ -156,13 +180,14 @@ export default function ProductSelection({ form }: Props) {
         </Combobox.Dropdown>
 
         {form.values.items.length > 0 && (
-          <div className='mt-6'>
+          <div className='mt-6 flex flex-col gap-6'>
             {form.values.items.map((item, index) => {
-              const parsed: Product = JSON.parse(item);
+              const parsed: Item = JSON.parse(item);
 
               return (
                 <SelectedProduct
                   key={index}
+                  form={form}
                   product={parsed}
                   changeItemQuantity={changeItemQuantity}
                   handleRemove={() => removeItem(item)}

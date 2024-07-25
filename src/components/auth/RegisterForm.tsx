@@ -22,6 +22,7 @@ export default function RegisterForm() {
       email: '',
       password: '',
       confirmPassword: '',
+      rememberMe: true,
     },
     validate: {
       firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),

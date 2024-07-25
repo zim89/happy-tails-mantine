@@ -1,12 +1,3 @@
-import figma from '@/assets/icons/additional/Figma.svg';
-import docker from '@/assets/icons/additional/Docker.svg';
-import nextjs from '@/assets/icons/additional/Nextjs.svg';
-import ts from '@/assets/icons/additional/Typescript.svg';
-import redux from '@/assets/icons/additional/Redux.svg';
-import postgres from '@/assets/icons/additional/PostgreSQL.svg';
-import java from '@/assets/icons/additional/Java.svg';
-import jira from '@/assets/icons/additional/Jira.svg';
-
 type Technology = {
   id: number;
   image: string;
@@ -16,42 +7,42 @@ type Technology = {
 export const technologies: Technology[] = [
   {
     id: 1,
-    image: figma.src,
+    image: '/icons/additional/Figma.svg',
     alt: 'Figma',
   },
   {
     id: 2,
-    image: docker.src,
+    image: '/icons/additional/Docker.svg',
     alt: 'Docker',
   },
   {
     id: 3,
-    image: nextjs.src,
+    image: '/icons/additional/Nextjs.svg',
     alt: 'Next.js',
   },
   {
     id: 4,
-    image: ts.src,
+    image: '/icons/additional/Typescript.svg',
     alt: 'Typescript',
   },
   {
     id: 5,
-    image: redux.src,
+    image: '/icons/additional/Redux.svg',
     alt: 'Redux',
   },
   {
     id: 6,
-    image: postgres.src,
+    image: '/icons/additional/PostgreSQL.svg',
     alt: 'PostgreSQL',
   },
   {
     id: 7,
-    image: java.src,
+    image: '/icons/additional/Java.svg',
     alt: 'Java',
   },
   {
     id: 8,
-    image: jira.src,
+    image: '/icons/additional/Jira.svg',
     alt: 'Jira',
   },
 ];

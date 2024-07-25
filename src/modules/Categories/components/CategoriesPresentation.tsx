@@ -1,9 +1,8 @@
 import { useCategoriesQuery } from '@/shared/api/categoryApi';
 import Image from 'next/image';
-import bgImage from '@/assets/images/categories-dog.png';
 import CategoryBadge from './CategoryBadge';
 
-import classes from "../classes.module.css";
+import classes from '../classes.module.css';
 
 export default function CategoriesPresentation() {
   const { data } = useCategoriesQuery({});
@@ -13,7 +12,7 @@ export default function CategoriesPresentation() {
   return (
     <div className='relative mx-auto h-[721px] w-full max-w-screen-lg'>
       <Image
-        src={bgImage}
+        src='/images/categories-dog.png'
         alt='big photo of a dog with variety of things around. Including leads, toys, cosmetics, collars, clothing and furniture.'
         fill
         className={classes.dragContainer}

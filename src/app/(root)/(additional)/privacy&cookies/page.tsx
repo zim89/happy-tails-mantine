@@ -13,22 +13,24 @@ export default function PrivacyAndCookiesPage() {
           { href: '/', text: 'Home' },
           { text: 'Privacy & Cookies Policy', href: '/privacy&cookies' },
         ]}
-        classNames={{ root: "p-0 pt-4" }}
+        classNames={{ root: 'p-0 pt-4' }}
       />
       <hgroup className='mb-8 mt-5 flex items-center justify-center gap-6'>
-        <span className='w-full flex-1 border-b-2 border-[#C8C8C8]'></span>
+        <span className='w-full flex-1 border-b-2 border-brand-grey-400'></span>
         <h1 className='flex-2 heading text-center uppercase'>
           Privacy <br className='md:hidden' /> & Cookies Policy
         </h1>
-        <span className='w-full flex-1 border-b-2 border-[#C8C8C8]'></span>
+        <span className='w-full flex-1 border-b-2 border-brand-grey-400'></span>
       </hgroup>
       <div className={classes.section}>
         <h2 className={classes.headSection}>General Information</h2>
         <p>
-          This Privacy Policy describes what personal data HappyTails, which
-          owns and operates the website [insert your website name] selling pet
-          supplies, collects, uses, and protects, and how this data is
-          protected. This policy also explains your rights regarding your
+          This Privacy Policy describes what personal data{' '}
+          <span className='font-bold text-brand-orange-400'>HappyTails</span>,
+          which owns and operates the website{' '}
+          <span className='font-bold text-brand-orange-400'>Happy Tails</span>{' '}
+          selling pet supplies, collects, uses, and protects, and how this data
+          is protected. This policy also explains your rights regarding your
           personal information and how you can contact us with any questions
           related to the protection of personal data.
         </p>
@@ -41,7 +43,7 @@ export default function PrivacyAndCookiesPage() {
           We may collect the following categories of information when you visit
           our website, register, place an order, or interact with our site:
         </p>
-        <ol className={cn(classes.list, "list-decimal")}>
+        <ol className={cn(classes.list, 'list-decimal')}>
           <li className='font-bold'>
             Personal Information:{' '}
             <span className='font-normal'>
@@ -70,8 +72,10 @@ export default function PrivacyAndCookiesPage() {
             </span>
           </li>
         </ol>
-        <p className='mt-4'>We use this information for the following purposes:</p>
-        <ul className={cn(classes.list, "list-disc")}>
+        <p className='mt-4'>
+          We use this information for the following purposes:
+        </p>
+        <ul className={cn(classes.list, 'list-disc')}>
           <li>Processing and fulfilling your order.</li>
           <li>Providing customer service.</li>
           <li>
@@ -99,7 +103,7 @@ export default function PrivacyAndCookiesPage() {
       <div className={classes.section}>
         <h2 className={classes.headSection}>Your Rights</h2>
         <p>You have the right to:</p>
-        <ul className={cn(classes.list, "list-disc")}>
+        <ul className={cn(classes.list, 'list-disc')}>
           <li>
             Request access to the personal information we hold about you and
             obtain a copy of this information.
@@ -124,18 +128,31 @@ export default function PrivacyAndCookiesPage() {
           this policy.
         </p>
         <p>Types of Cookies We Use:</p>
-        <ul className={cn(classes.list, "list-disc")}>
-          <li className="font-bold">
-            Essential Cookies: <span className="font-normal">Necessary for the functioning of the website.</span>
+        <ul className={cn(classes.list, 'list-disc')}>
+          <li className='font-bold'>
+            Essential Cookies:{' '}
+            <span className='font-normal'>
+              Necessary for the functioning of the website.
+            </span>
           </li>
-          <li className="font-bold">
-            Marketing Cookies: <span className="font-normal">Used to deliver personalized advertisements.</span>
+          <li className='font-bold'>
+            Marketing Cookies:{' '}
+            <span className='font-normal'>
+              Used to deliver personalized advertisements.
+            </span>
           </li>
-          <li className="font-bold">
-            Analytical Cookies: <span className="font-normal">Used to analyze website traffic and usage
-            patterns.</span>
+          <li className='font-bold'>
+            Analytical Cookies:{' '}
+            <span className='font-normal'>
+              Used to analyze website traffic and usage patterns.
+            </span>
           </li>
-          <li className="font-bold">Preference Cookies: <span className="font-normal">Remember your preferences and settings.</span></li>
+          <li className='font-bold'>
+            Preference Cookies:{' '}
+            <span className='font-normal'>
+              Remember your preferences and settings.
+            </span>
+          </li>
         </ul>
         <p className='mt-4'>
           The length of time that a cookie remains on your computer or mobile
@@ -151,12 +168,19 @@ export default function PrivacyAndCookiesPage() {
           experience and parts of our website may no longer be fully accessible.
         </p>
         <p>
-          {`Most browsers automatically accept cookies, but you can choose whether
+          Most browsers automatically accept cookies, but you can choose whether
           or not to accept cookies through your browser controls, often found in
-          your browser’s “Tools” or “Preferences” menu. For more information on
-          how to modify your browser settings or how to block, manage or filter
-          cookies can be found in your browser’s help file or through such sites
-          as: www.allaboutcookies.org.`}
+          your browser&apos;s “Tools” or “Preferences” menu. For more
+          information on how to modify your browser settings or how to block,
+          manage or filter cookies can be found in your browser&apos;s help file
+          or through such sites as:{' '}
+          <a
+            className='text-brand-blue underline'
+            href='www.allaboutcookies.org.'
+            target='_blank'
+          >
+            www.allaboutcookies.org.
+          </a>
         </p>
         <p>
           Additionally, please note that blocking cookies may not completely
@@ -181,7 +205,12 @@ export default function PrivacyAndCookiesPage() {
           {`If you have any questions or concerns about our Privacy & Cookies
           Policy, please contact us using the information provided below:`}
         </p>
-        <b className='block pt-4'>onlinestore.teamch2023@gmail.com</b>
+        <a
+          href='mailto:onlinestore.teamch2023@gmail.com'
+          className='block pt-4 text-brand-blue underline'
+        >
+          onlinestore.teamch2023@gmail.com
+        </a>
       </div>
       <p className='my-8'>Last Updated: 24/03/2024</p>
     </Container>

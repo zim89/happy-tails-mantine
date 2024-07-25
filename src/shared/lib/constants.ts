@@ -32,17 +32,17 @@ Ensure your dog's safety and style during walks with our exquisite collection of
 
 export const orderStatusList: Order['orderStatus'][] = [
   'NEW',
-  'IN_PROGRESS',
+  'IN PROGRESS',
   'PROCESSING',
   'CANCELLED',
   'SHIPPED',
-  'RETURN_PROCESSING',
+  'RETURN PROCESSING',
   'COMPLETED',
 ];
 
-export const productTypeList: ("INDOORS" | "OUTDOORS")[] = [
-  "INDOORS",
-  "OUTDOORS"
+export const productTypeList: ('INDOORS' | 'OUTDOORS')[] = [
+  'INDOORS',
+  'OUTDOORS',
 ];
 
 export const isOrderStatus = (param: any): param is Order['orderStatus'] => {

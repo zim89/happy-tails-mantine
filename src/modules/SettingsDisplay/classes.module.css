@@ -1,0 +1,35 @@
+.fileWrapper {
+  @apply pointer-events-none m-0 h-10;
+}
+
+.fileInput {
+  @apply rounded-sm;
+}
+
+.clearImage {
+  @apply ml-auto;
+}
+
+.previewWrapper {
+  @apply flex max-h-10 w-full items-center gap-2 border border-brand-grey-400 bg-primary px-4 py-1;
+}
+
+.previewImage {
+  @apply h-8 w-8 object-contain;
+}
+
+.upload {
+  @apply w-full;
+}
+
+.upload > div {
+  @apply flex;
+}
+
+.upload label {
+  @apply flex cursor-pointer items-center justify-evenly gap-2 bg-brand-grey-900 px-4;
+}
+
+.upload label span {
+  @apply whitespace-nowrap text-sm font-bold leading-4 text-primary;
+}

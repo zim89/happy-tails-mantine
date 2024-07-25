@@ -1,8 +1,7 @@
-import jpegIcon from '@/assets/icons/additional/jpegIcon.svg';
 import { Message } from '@/modules/AdminInboxDisplay/lib/mock';
 
 export const iconMap: { [P in string]: any } = {
-  'image/jpeg': jpegIcon,
+  'image/jpeg': '/icons/additional/jpegIcon.svg',
 };
 
 const mockFile = new File(['Content'], 'Diagram.jpg', {

@@ -1,4 +1,5 @@
 import { Container } from '@mantine/core';
+
 import classes from './classes.module.css';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Introduction from '@/modules/Introduction';

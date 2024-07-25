@@ -48,7 +48,7 @@ export default function UpdatePassword() {
     >
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className='text-[32px]/[38.4px]'>Update your password</h1>
+          <h1 className='text-[2rem]/[2.4rem]'>Update your password</h1>
           <p className={cn(classes.profileParagraph)}>
             <span className='inline-block max-w-[360px]'>
               To change your password, we will send you verification code to{' '}
@@ -58,7 +58,7 @@ export default function UpdatePassword() {
         </hgroup>
         <Button
           classNames={{
-            root: cn('btn mt-4 w-full bg-black', classes.inputSizing),
+            root: cn('btn mt-4 w-full bg-secondary', classes.inputSizing),
           }}
           onClick={proceedCode}
         >
@@ -67,7 +67,7 @@ export default function UpdatePassword() {
       </Stepper.Step>
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className='text-[32px]/[38.4px]'>Update your password</h1>
+          <h1 className='text-[2rem]/[2.4rem]'>Update your password</h1>
           <p className={classes.profileParagraph}>
             <span className='inline-block max-w-[360px]'>
               Enter the verification code we just sent to email and create a new
@@ -80,7 +80,7 @@ export default function UpdatePassword() {
       <Stepper.Completed>
         <div className='flex flex-col'>
           <hgroup className='text-center'>
-            <h1 className='whitespace-pre text-[32px]/[38.4px] font-black'>
+            <h1 className='whitespace-pre text-[2rem]/[2.4rem] font-black'>
               <span>Password Updated</span>
               <Check className='ml-4 inline-block' size={36} />
             </h1>

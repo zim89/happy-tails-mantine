@@ -1,10 +1,11 @@
 'use client';
+
 import { useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UserRound } from 'lucide-react';
 import Link from 'next/link';
-import { useAuth } from '@/shared/hooks/useAuth';
 
+import { useAuth } from '@/shared/hooks/useAuth';
 import { cn } from '@/shared/lib/utils';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
@@ -13,7 +14,7 @@ import Logout from '@/components/Logout';
 export default function UserMenu() {
   const [opened, setOpened] = useState(false);
   const { isAuth, isAdmin } = useAuth();
-  
+
   return (
     <>
       {!isAuth ? (
@@ -66,7 +67,11 @@ export default function UserMenu() {
 
             <Menu.Item>
               <Logout>
-                {(logOut) => <span is='button' onClick={logOut}>Log out</span>}
+                {(logOut) => (
+                  <span is='button' onClick={logOut}>
+                    Log out
+                  </span>
+                )}
               </Logout>
             </Menu.Item>
           </Menu.Dropdown>

@@ -1,25 +1,25 @@
 .controls {
-    @apply flex items-center gap-8 lg:gap-[107px];
+  @apply flex items-center gap-8 lg:gap-[107px];
 }
 
 .returnLink {
-    @apply flex gap-[2px];
+  @apply flex gap-[2px];
 }
 
 .avatar {
-    @apply hidden gap-2 md:flex;
+  @apply hidden gap-2 md:flex;
 }
 
 .avatarLogo {
-    @apply flex h-6 w-6 items-center justify-center rounded-full bg-[black] text-sm text-white font-black select-none;
+  @apply flex h-6 w-6 select-none items-center justify-center rounded-full bg-brand-grey-900 text-sm font-black text-primary;
 }
 
 .wrapper {
-    @apply bg-[#FDFDFD];
+  @apply bg-primary;
 }
 
 @media print {
-    .wrapper {
-        display: none !important;
-    }
+  .wrapper {
+    display: none !important;
+  }
 }

@@ -2,7 +2,7 @@
 
 import Loader from '@/components/Loader';
 import { useFindOneQuery } from '@/shared/api/postApi';
-import { PostFormProvider } from '@/shared/lib/context';
+import { PostFormProvider } from '@/shared/context/postform.context';
 import { isAxiosQueryError } from '@/shared/lib/helpers';
 import { notFound } from 'next/navigation';
 

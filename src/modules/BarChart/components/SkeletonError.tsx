@@ -1,0 +1,14 @@
+import { SkeletonLoader } from './SkeletonLoader';
+
+export const SkeletonError = () => {
+  return (
+    <div className='rounded-sm border-4 border-dashed border-yellow-300 bg-white'>
+      <p className='p-4 text-center font-mono'>
+        {
+          "Whoops, it shouldn't have happened, our experts are already fixing this"
+        }
+      </p>
+      <SkeletonLoader />
+    </div>
+  );
+};

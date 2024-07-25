@@ -1,77 +1,77 @@
 /* OrderTabs */
 .tabs {
-    @apply mt-8 md:mt-10 lg:mt-6;
+  @apply mt-8 md:mt-10 lg:mt-6;
 }
 
 .tab[data-active] {
-    color: orange;
+  @apply text-brand-orange-400;
 }
 
 .ordersPanel {
-    @apply pt-6 flex flex-col min-h-[700px];
+  @apply flex min-h-[700px] flex-col pt-6;
 }
 
 .box {
-    @apply mx-auto mt-10 flex flex-col md:max-w-[572px] md:items-center text-center min-h-[70vh] md:min-h-[50vh] pb-10;
+  @apply mx-auto mt-10 flex min-h-[70vh] flex-col pb-10 text-center md:min-h-[50vh] md:max-w-[572px] md:items-center;
 }
 
 .boxHeading {
-    @apply leading-9 text-[36px];
+  @apply text-[2.25rem] leading-9;
 }
 
 .boxParagraph {
-    @apply py-4 font-light;
+  @apply py-4 font-light;
 }
 
 /* Delivery form */
 .fieldsGroup {
-    @apply flex-col justify-center md:w-full md:flex-row;
+  @apply flex-col justify-center md:w-full md:flex-row;
 }
 
 .fieldSizing {
-    @apply  w-full md:flex-1 lg:flex-initial lg:w-[275px];
+  @apply w-full md:flex-1 lg:w-[275px] lg:flex-initial;
 }
 
 .submitAddress {
-    @apply mt-6 bg-black uppercase md:w-[380px] lg:w-[315px] mb-16 md:mb-28;
+  @apply mb-16 mt-6 bg-secondary uppercase md:mb-28 md:w-[380px] lg:w-[315px];
 }
 
 /* Layout */
 .page {
-    @media screen and (min-width: 1280px) {
-        display: grid;
-        grid-template-columns: min-content 1fr;
-    }
+  @media screen and (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+  }
 
-    @apply p-0;
+  @apply p-0;
 }
 
 .content {
-    @apply py-0 lg:px-8 px-3 md:py-10 lg:mt-0;
+  @apply px-3 py-0 md:py-10 lg:mt-0 lg:px-8;
 }
 
 /* Profile page */
 .profileParagraph {
-    @apply py-4 font-light;
+  @apply py-4 font-light;
 }
 
 .profileContent {
-    @apply mx-auto mt-[56px] md:mt-[72px] lg:mt-[56px] flex flex-col md:max-w-[572px] text-center min-h-[70vh] md:min-h-[50vh];
+  @apply mx-auto mt-[56px] flex min-h-[70vh] flex-col text-center md:mt-[72px] md:min-h-[50vh] md:max-w-[572px] lg:mt-[56px];
 }
 
 /* Shared */
 .form {
-    @apply flex flex-col gap-4 md:items-center;
+  @apply flex flex-col gap-4 md:items-center;
 }
 
 .inputSizing {
-    @apply md:w-[458px] lg:w-[315px];
+  @apply md:w-[458px] lg:w-[315px];
 }
 
 .profileHeading {
-    @apply text-center;
+  @apply text-center;
 }
 
 .clearField {
-    @apply h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary;
+  @apply h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary;
 }

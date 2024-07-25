@@ -5,8 +5,7 @@ import Link from 'next/link';
 
 import FooterNav from './ui/FooterNav';
 import SocialLinks from './ui/SocialLinks';
-import logoImg from '@/assets/logo/logo-footer.svg';
-import { formatYearFromDate } from "@/shared/lib/helpers";
+import { formatYearFromDate } from '@/shared/lib/helpers';
 
 export default function Footer(): React.JSX.Element {
   return (
@@ -15,7 +14,9 @@ export default function Footer(): React.JSX.Element {
         <div className='flex flex-col gap-6 md:flex-row md:items-start md:justify-between'>
           <Link href='/'>
             <Image
-              src={logoImg}
+              src='/logo/logo-footer.svg'
+              height={34}
+              width={190}
               alt='Happy tails logo'
               style={{ width: 'auto', height: 'auto' }}
               className='h-[33.6px] w-[189.6px] lg:h-12 lg:w-[228.91px]'
@@ -45,7 +46,7 @@ export default function Footer(): React.JSX.Element {
         <FooterNav />
 
         <div className='md:flex md:justify-between'>
-          <div className="flex justify-between md:w-3/5">
+          <div className='flex justify-between md:w-3/5'>
             <p className='flex gap-3 text-xs leading-normal md:text-base'>
               <span>© {formatYearFromDate(Date.now())}</span>
               <span>Happy Tails</span>
@@ -57,15 +58,13 @@ export default function Footer(): React.JSX.Element {
               Privacy & Cookies Policy
             </Link>
           </div>
-          <div
-            className='mt-6 block text-center md:mt-0'
-          >
-            <a
-              href={'#Team'}
+          <div className='mt-6 block text-center md:mt-0'>
+            <Link
+              href={'/about-us'}
               className='relative text-xs font-bold leading-normal after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full after:group-hover:w-full md:text-xl md:leading-normal'
             >
               Website by Team
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

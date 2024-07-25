@@ -17,7 +17,7 @@ export default function Page() {
 
       <section>
         <hgroup className='mr-auto'>
-          <h2 className='mb-1 text-[32px]/[38.4px] font-bold'>Add an order</h2>
+          <h2 className='mb-1 text-[2rem]/[2.4rem] font-bold'>Add an order</h2>
           <p>
             Order placement by manager. Fields marked with (*) are mandatory.
           </p>
