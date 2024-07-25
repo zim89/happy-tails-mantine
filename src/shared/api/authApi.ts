@@ -81,6 +81,16 @@ export const authApi = createApi({
         },
       }),
     }),
+    resetPassword: builder.mutation<void, { email: string }>({
+      query: (payload) => ({
+        url: '/users/reset-password',
+        method: 'post',
+        params: payload,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }),
+    }),
     login: builder.mutation<LoginResponse, LoginData>({
       query: (payload) => ({
         url: '/users/token',
@@ -118,6 +128,7 @@ export const authApi = createApi({
 export const {
   useRegisterMutation,
   useVerifyEmailMutation,
+  useResetPasswordMutation,
   useLoginMutation,
   useLogoutMutation,
   useGetUserInfoQuery,

@@ -31,7 +31,7 @@ export default function LoginForm() {
   const onSubmit = async (values: FormValues) => {
     try {
       const data = await login(values).unwrap();
-      console.log("Login: ",data)
+      console.log('Login: ', data);
       dispatch(setAuthData(data));
       router.push('/');
     } catch (error) {
@@ -85,8 +85,7 @@ export default function LoginForm() {
             <span>Remember me</span>
           </div>
 
-          {/*TODO: correct link*/}
-          <Link href={'/auth'}>Forgot Password?</Link>
+          <Link href={'/auth/forgot-password'}>Forgot Password?</Link>
         </div>
         <button className='btn btn-primary w-full' disabled={isLoading}>
           Sign In
