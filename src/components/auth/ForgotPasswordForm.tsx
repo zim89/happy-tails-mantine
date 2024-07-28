@@ -1,13 +1,15 @@
 'use client';
 
 import { useResetPasswordMutation } from '@/shared/api/authApi';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { cn } from '@/shared/lib/utils';
 import { Button, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 export default function ForgotPasswordForm() {
+  const router = useRouter();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
   const form = useForm({
@@ -25,6 +27,7 @@ export default function ForgotPasswordForm() {
     try {
       const data = await resetPassword(values).unwrap();
       console.log('Reset Password:', data);
+      router.push(`${APP_PAGES.UPDATE_PASSWORD}?email=${values.email}`);
     } catch (error) {
       console.log(error);
       toast.error('Oops! Something went wrong! Try again later.');
@@ -46,7 +49,11 @@ export default function ForgotPasswordForm() {
         }}
       />
 
-      <Button type='submit' className='btn btn-primary w-full'>
+      <Button
+        type='submit'
+        loading={isLoading}
+        className='btn btn-primary w-full'
+      >
         Send
       </Button>
     </form>

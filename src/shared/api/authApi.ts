@@ -85,7 +85,25 @@ export const authApi = createApi({
       query: (payload) => ({
         url: '/users/reset-password',
         method: 'post',
-        params: payload,
+        data: payload,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }),
+    }),
+    resetPasswordVerify: builder.mutation<
+      void,
+      {
+        email: string;
+        code: string;
+        newPassword: string;
+        confirmPassword: string;
+      }
+    >({
+      query: (payload) => ({
+        url: '/users/reset-password/verify',
+        method: 'post',
+        data: payload,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -129,6 +147,7 @@ export const {
   useRegisterMutation,
   useVerifyEmailMutation,
   useResetPasswordMutation,
+  useResetPasswordVerifyMutation,
   useLoginMutation,
   useLogoutMutation,
   useGetUserInfoQuery,
