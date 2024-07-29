@@ -14,6 +14,7 @@ import { cn } from '@/shared/lib/utils';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
 import { useState } from 'react';
 import { generateSizes } from '@/shared/helpers/size.helpers';
+import { BG_COLORS } from '@/shared/constants/colors.const';
 
 interface Props {
   product: Product;
@@ -23,6 +24,7 @@ export default function ProductCard({ product, router }: Props) {
   const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
   const colorList = generateColorList(product);
+
   const sizes = generateSizes(product.productSizes);
   const [selectedSize, setSelectedSize] = useState(
     sizes.length > 0 ? sizes.find((item) => item.isAvailable) : null
@@ -70,14 +72,13 @@ export default function ProductCard({ product, router }: Props) {
               colorList
                 .filter((item) => item.colorName !== product.color)
                 .map((item) => {
-                  const bgColor = `bg-[${item.colorHex}]`;
                   return (
                     <li key={item.productId}>
                       <Link
                         href={item.href}
                         className={cn(
-                          `inline-block size-[18px] rounded-full`,
-                          bgColor
+                          `inline-block size-[18px] rounded-full border border-brand-grey-400`,
+                          BG_COLORS[item.colorName]
                         )}
                       />
                     </li>

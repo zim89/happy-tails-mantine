@@ -69,20 +69,21 @@ export default function PromoCode() {
     <Accordion
       chevronPosition='right'
       classNames={{
-        control: 'promo-acc-control',
-        item: 'promo-acc-item',
-        label: 'promo-acc-label',
-        chevron: 'promo-acc-chevron',
-        content: 'promo-acc-content',
-        panel: 'h-[135px]',
+        root: '',
+        control: 'p-0 ',
+        item: 'border-0',
+        label: 'flex items-center justify-between pr-1',
+        chevron: 'text-brand-orange-400 stroke-2',
+        content: 'px-0',
+        panel: '',
       }}
     >
       <Accordion.Item value='promo'>
         <Accordion.Control>
-          <p className='absolute -top-0.5 left-0 text-base font-bold text-secondary'>
+          <p className='text-base font-bold text-secondary'>
             Have a promo code?
           </p>
-          Enter Code Here
+          <p className='text-base  text-brand-orange-400'>Enter Code Here</p>
         </Accordion.Control>
         <Accordion.Panel>
           <form onSubmit={form.onSubmit(onSubmit)} className='space-y-8'>

@@ -1,3 +1,5 @@
+import type { ProductSize } from './types';
+
 export interface Order {
   id: number;
   number: string;
@@ -13,7 +15,7 @@ export interface Order {
       productName: string;
       productPrice: number;
       productImagePath: string;
-      productSize: string;
+      productSize: ProductSize;
       productArticle: string;
       onSale: boolean;
       salePrice: number;

@@ -1,5 +1,4 @@
 import { Drawer, ScrollArea } from '@mantine/core';
-
 import { useDeviceSize } from '@/shared/lib/hooks';
 import CartHeader from '../ui/CartHeader';
 import CartItem from '../ui/CartItem';
@@ -38,19 +37,17 @@ export const CartDrawer = ({ onClose, cart }: Props) => {
       <CartHeader length={cart.length} close={onClose} />
 
       <ScrollArea h={'100%'} w={'100%'} type='auto'>
-        <div className={'px-9'}>
+        <div className='px-9'>
           {cart.length === 0 ? (
-            <p className={'mt-4 text-2xl font-light leading-normal'}>
+            <p className='mt-4 text-2xl font-light leading-normal'>
               Your cart is currently empty.
             </p>
           ) : (
             <ul>
-              {cart.map((product) => (
+              {cart.map((product, index) => (
                 <li
-                  key={product.id}
-                  className={
-                    'flex items-center gap-6 border-b border-b-brand-grey-300 px-2 py-4 last:border-none'
-                  }
+                  key={index}
+                  className='flex items-center gap-6 border-b border-b-brand-grey-300 px-2 py-4 last:border-none'
                 >
                   <CartItem product={product} />
                 </li>

@@ -16,14 +16,12 @@ import {
   removeFromCart,
 } from '@/shared/redux/cart/cartSlice';
 import noImage from '@/assets/images/no-img.png';
-import { COLORS } from '@/shared/constants/colors.const';
+import { BG_COLORS, COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 
 export default function CartItem({ product }: { product: CartItem }) {
   const handlersRef = useRef<NumberInputHandlers>(null);
   const dispatch = useAppDispatch();
-
-  const bgColor = `bg-[${COLORS.find((color) => color.name === product.color)?.hex}]`;
 
   const handleRemove = (product: CartItem) => {
     dispatch(removeFromCart(product));
@@ -64,12 +62,12 @@ export default function CartItem({ product }: { product: CartItem }) {
           {product.name}
         </p>
 
-        {product.color && (
+        {product.color && product.color !== 'ONE COLOR' && (
           <div className='flex items-center gap-2 py-1.5'>
             <span
               className={cn(
                 'inline-block size-4 rounded-full border border-brand-grey-400',
-                product.color && bgColor
+                product.color && BG_COLORS[product.color]
               )}
             />
             <p className='text-sm/[21px] text-black'>
