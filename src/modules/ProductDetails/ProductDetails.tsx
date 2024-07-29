@@ -10,7 +10,6 @@ import {
 } from '@mantine/core';
 import Image from 'next/image';
 import { Info, Minus, Plus } from 'lucide-react';
-
 import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
@@ -22,6 +21,8 @@ import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import noImage from '@/assets/images/no-img.png';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
 import Link from 'next/link';
+import { generateSizes } from '@/shared/helpers/size.helpers';
+import { BG_COLORS } from '@/shared/constants/colors.const';
 
 const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
 
@@ -43,6 +44,11 @@ export default function ProductDetails({ product }: Props) {
   const handlersRef = useRef<NumberInputHandlers>(null);
   const [quantity, setQuantity] = useState<string | number>(
     product.totalQuantity === 0 ? 0 : 1
+  );
+
+  const sizes = generateSizes(product.productSizes);
+  const [selectedSize, setSelectedSize] = useState(
+    sizes.length > 0 ? sizes.find((item) => item.isAvailable) : null
   );
 
   const isAvailable = product.productStatus === 'IN STOCK';
@@ -120,7 +126,6 @@ export default function ProductDetails({ product }: Props) {
 
                   <ul className='flex gap-4'>
                     {colorList.map((item) => {
-                      const bgColor = `bg-[${item.colorHex}]`;
                       const isActive = item.productId === product.id;
                       return (
                         <li key={item.productId}>
@@ -128,7 +133,7 @@ export default function ProductDetails({ product }: Props) {
                             href={item.href}
                             className={cn(
                               `inline-block size-[30px] rounded-full border-[2px] border-brand-grey-400`,
-                              bgColor,
+                              BG_COLORS[item.colorName],
                               isActive && ' border-black'
                             )}
                           />
@@ -137,6 +142,26 @@ export default function ProductDetails({ product }: Props) {
                     })}
                   </ul>
                 </div>
+              )}
+
+              {sizes.length > 0 && (
+                <ul className='mb-8 flex gap-4'>
+                  {sizes.map((item) => (
+                    <li key={item.size}>
+                      <button
+                        disabled={!item.isAvailable}
+                        onClick={() => setSelectedSize(item)}
+                        className={cn(
+                          'flex h-10 w-[75px] items-center justify-center rounded-3xl border border-brand-grey-400 text-base text-black disabled:text-brand-grey-400',
+                          item.size === selectedSize?.size &&
+                            'border-2 border-black'
+                        )}
+                      >
+                        {item.size}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               )}
 
               {/*  Additional text*/}
@@ -205,7 +230,7 @@ export default function ProductDetails({ product }: Props) {
 
                 <div className='flex w-[458px] gap-3'>
                   <div className='hidden w-full md:block md:max-w-[274px]'>
-                    <AddToCartBtn product={product} />
+                    <AddToCartBtn product={product} size={selectedSize?.size} />
                   </div>
 
                   <AddToWishBtn withText product={product} />
@@ -213,7 +238,7 @@ export default function ProductDetails({ product }: Props) {
               </div>
 
               <div className='md:hidden'>
-                <AddToCartBtn product={product} />
+                <AddToCartBtn product={product} size={selectedSize?.size} />
               </div>
 
               <div className='mt-8 flex items-center gap-3 bg-brand-green-200 px-4 py-6'>

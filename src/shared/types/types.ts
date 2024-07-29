@@ -55,7 +55,8 @@ export type ProductSizeValues =
   | 'L'
   | 'XL'
   | 'XXL'
-  | 'ONE SIZE';
+  | 'ONE SIZE'
+  | 'ONE_SIZE';
 
 type ShippingAddress = {
   firstName: string;

@@ -3,6 +3,14 @@ import { axiosBaseQuery } from '@/shared/api/authApi';
 import type { Order } from '../types/types';
 import type { Address } from '../redux/checkout/checkoutSlice';
 
+export interface ResponseError {
+  timestamp: number;
+  status: number;
+  error: string;
+  message: string;
+  path: string;
+}
+
 interface CreateOrderPayload {
   cartProducts: {
     productId: number;
@@ -25,7 +33,10 @@ export const cartApi = createApi({
   tagTypes: ['Cart'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    createOrderAuth: builder.mutation<Order, CreateOrderPayload>({
+    createOrderAuth: builder.mutation<
+      Order | ResponseError,
+      CreateOrderPayload
+    >({
       query: (data) => ({
         url: '/orders',
         method: 'post',

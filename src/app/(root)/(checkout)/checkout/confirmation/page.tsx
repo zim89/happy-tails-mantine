@@ -5,26 +5,27 @@ import { NumberFormatter } from '@mantine/core';
 import { useSearchParams } from 'next/navigation';
 import { useFindOneByEmailAndCodeQuery } from '@/shared/api/ordersApi';
 import { getDeliveryDate } from '@/shared/helpers/date.helpers';
+import { cn } from '@/shared/lib/utils';
+import { BG_COLORS } from '@/shared/constants/colors.const';
+import ConfirmationSkeleton from './ui/ConfirmationSkeleton';
 
 export default function ConfirmationPage() {
   const searchParams = useSearchParams();
-  const {
-    data: order,
-    isLoading,
-    error,
-  } = useFindOneByEmailAndCodeQuery({
+  const { data: order, isLoading } = useFindOneByEmailAndCodeQuery({
     email: searchParams.get('email')!,
     orderNumber: searchParams.get('orderNumber')!,
   });
 
   return (
     <div className='space-y-9'>
+      {isLoading && <ConfirmationSkeleton />}
+
       {!isLoading && order && (
         <>
           <h1 className='text-center text-[28px]/[33.6px]'>
             You order was placed successfully!
           </h1>
-          <div className='flex flex-col gap-9 text-lg/[21.6px]'>
+          <div className='grid grid-cols-1 gap-9 text-lg/[21.6px] lg:grid-cols-2 lg:gap-6'>
             <div className='space-y-4'>
               <div className='space-y-3'>
                 <h3 className='flex flex-col text-xl/6 md:flex-row md:gap-2'>
@@ -116,42 +117,69 @@ export default function ConfirmationPage() {
                 Order details
               </h2>
               <ul className='flex flex-col gap-6'>
-                {order.orderProductDTOList.map((product) => (
-                  <li
-                    key={product.productId}
-                    className='flex items-center gap-6 border-b border-brand-grey-400 pb-3'
-                  >
-                    <div className='relative h-[72px] w-[72px] flex-none self-start rounded-0.5 border border-brand-grey-400 bg-primary p-1'>
-                      <Image
-                        src={product.productImagePath}
-                        alt={product.productName}
-                        height={64}
-                        width={64}
-                        style={{ objectFit: 'contain' }}
-                      />
-                      <span className='absolute -right-3 -top-3 flex size-6 items-center justify-center rounded-full bg-brand-grey-900 text-sm/[1.05rem] font-bold text-primary'>
-                        {product.count}
-                      </span>
-                    </div>
-
-                    <div className='flex grow items-center justify-between'>
-                      <div className='space-y-1'>
-                        <p className='text-xs/normal'>
-                          {product.productArticle}
-                        </p>
-                        <p className='line-clamp-1 text-base font-bold'>
-                          {product.productName}
-                        </p>
+                {order.orderProductDTOList.map((product, index) => {
+                  const isOneSize = product.productSize === 'ONE_SIZE';
+                  const isOneColor = product.productColor === 'ONE COLOR';
+                  return (
+                    <li
+                      key={index}
+                      className='flex items-center gap-6 border-b border-brand-grey-400 pb-3'
+                    >
+                      <div className='relative h-[72px] w-[72px] flex-none self-start rounded-0.5 border border-brand-grey-400 bg-primary p-1'>
+                        <Image
+                          src={product.productImagePath}
+                          alt={product.productName}
+                          height={64}
+                          width={64}
+                          style={{ objectFit: 'contain' }}
+                        />
+                        <span className='absolute -right-3 -top-3 flex size-6 items-center justify-center rounded-full bg-brand-grey-900 text-sm/[1.05rem] font-bold text-primary'>
+                          {product.count}
+                        </span>
                       </div>
-                      <NumberFormatter
-                        prefix='$'
-                        value={product.count * product.productPrice}
-                        decimalScale={2}
-                        className='whitespace-nowrap pl-2 text-xl/6'
-                      />
-                    </div>
-                  </li>
-                ))}
+
+                      <div className='flex grow items-center justify-between'>
+                        <div className='space-y-1'>
+                          <p className='text-xs/normal'>
+                            {product.productArticle}
+                          </p>
+                          <p className='line-clamp-1 text-base font-bold'>
+                            {product.productName}
+                          </p>
+                          {(product.productColor || product.productSize) && (
+                            <div className='flex items-center gap-2'>
+                              {!isOneColor && (
+                                <span
+                                  className={cn(
+                                    'size-[14px] rounded-full border border-brand-grey-400',
+                                    BG_COLORS[product.productColor]
+                                  )}
+                                />
+                              )}
+                              {!isOneSize && (
+                                <p className='text-xs/[18px]'>
+                                  {!isOneColor ? product.productColor : ''}
+                                  {product.productColor &&
+                                  !isOneColor &&
+                                  product.productSize &&
+                                  !isOneSize
+                                    ? ` / ${product.productSize}`
+                                    : product.productSize}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <NumberFormatter
+                          prefix='$'
+                          value={product.count * product.productPrice}
+                          decimalScale={2}
+                          className='whitespace-nowrap pl-2 text-xl/6'
+                        />
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
               <div className='space-y-2 border-b border-b-gray-400 pb-3'>
                 <p className='flex items-baseline justify-between text-base'>
