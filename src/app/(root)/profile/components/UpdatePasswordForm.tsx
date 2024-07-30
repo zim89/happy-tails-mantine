@@ -1,20 +1,22 @@
 'use client';
 
-import { Button, PasswordInput } from '@mantine/core';
+import { Button, PasswordInput, UnstyledButton } from '@mantine/core';
 import { useForm, hasLength, matchesField, isNotEmpty } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
-import axios from '@/shared/lib/interceptor';
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { useResetPasswordVerifyMutation } from '@/shared/api/authApi';
 
 type Props = {
   nextStep: () => void;
 };
 export const UpdatePasswordForm = ({ nextStep }: Props) => {
+  const [dispatch] = useResetPasswordVerifyMutation();
+
   const form = useForm({
     initialValues: {
       code: '',
@@ -69,14 +71,14 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
     newPassword: string;
   }) => {
     try {
-      const request = new URLSearchParams({
+      const request = {
         email: currentUser.email,
         newPassword,
         confirmPassword: newPassword,
         code,
-      });
+      };
 
-      await axios.post('/users/reset-password/verify', request);
+      await dispatch(request).unwrap();
     } catch (err) {
       console.error(err);
     }
@@ -86,7 +88,7 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
     <form
       className={cn('mt-8', classes.form)}
       onSubmit={form.onSubmit(async (values) => {
-        const res = await updatePassword({
+        await updatePassword({
           code: values.code,
           newPassword: values.password,
         });
@@ -159,12 +161,15 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
         {...form.getInputProps('confirmPassword')}
         placeholder='Confirm your new password'
       />
-      <Button
+      <UnstyledButton
         type='submit'
-        className={cn('btn mt-9 bg-secondary', classes.inputSizing)}
+        className={cn(
+          'btn mb-20 mt-6 bg-secondary text-primary',
+          classes.inputSizing
+        )}
       >
         Update Password
-      </Button>
+      </UnstyledButton>
     </form>
   );
 };

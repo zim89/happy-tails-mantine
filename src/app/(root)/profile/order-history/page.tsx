@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Button } from '@mantine/core';
+import { Button, UnstyledButton } from '@mantine/core';
 
 import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';
@@ -50,9 +50,9 @@ function OrderPage() {
               products and find something that catches your eye!
             </p>
           </hgroup>
-          <Button classNames={{ root: 'bg-black font-bold mb-8' }}>
+          <UnstyledButton className='btn mb-8 bg-secondary font-bold text-primary'>
             <Link href='/products'>Continue shopping</Link>
-          </Button>
+          </UnstyledButton>
         </div>
       )}
     </>

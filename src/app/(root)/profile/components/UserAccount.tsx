@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@mantine/core';
+import { Button, UnstyledButton } from '@mantine/core';
 
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
@@ -26,12 +26,12 @@ export default function UserAccount() {
       </hgroup>
       <Logout>
         {(handleLogout) => (
-          <Button
-            className='rounded-sm bg-secondary uppercase md:self-center'
+          <UnstyledButton
+            className='mt-10 w-full rounded-sm bg-secondary py-[10px] text-center font-bold uppercase text-primary md:max-w-[315px] md:self-center'
             onClick={handleLogout}
           >
             Logout
-          </Button>
+          </UnstyledButton>
         )}
       </Logout>
     </div>
