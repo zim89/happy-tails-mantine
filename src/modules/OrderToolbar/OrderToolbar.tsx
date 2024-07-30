@@ -64,14 +64,14 @@ export default function OrderToolbar() {
           <Menu.Target>
             <UnstyledButton
               classNames={{
-                root: 'flex gap-6 border border-[#ced4da] border-solid p-[6px] rounded-sm',
+                root: 'flex  items-center gap-6 border border-brand-grey-400 border-solid text-sm py-2 px-4 rounded-sm',
               }}
               data-expanded={opened || undefined}
             >
               <Group gap='xs'>
-                <span>{selected.label}</span>
+                <span className='text-brand-grey-600'>{selected.label}</span>
               </Group>
-              <ChevronDown />
+              <ChevronDown size={16} strokeWidth={3} />
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>{items}</Menu.Dropdown>

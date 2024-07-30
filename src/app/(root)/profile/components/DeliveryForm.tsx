@@ -5,11 +5,7 @@ import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import {
-  cleanPostcode,
-  dirtyFields,
-  formatUserAttributes,
-} from '@/shared/lib/helpers';
+import { cleanPostcode, dirtyFields } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';

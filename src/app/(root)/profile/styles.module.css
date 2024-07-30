@@ -1,6 +1,6 @@
 /* OrderTabs */
 .tabs {
-  @apply mt-8 md:mt-10 lg:mt-6;
+  @apply mx-4 mt-8 md:mx-6 md:mt-10 lg:mt-6;
 }
 
 .tab[data-active] {

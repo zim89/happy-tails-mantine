@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Button, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 
 import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';

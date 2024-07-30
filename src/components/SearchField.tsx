@@ -40,7 +40,7 @@ const SearchField = ({
 
   useEffect(() => {
     setValue(query.get('name') || '');
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const SearchField = ({
         onChange={(event) => onChange(event.currentTarget.value)}
         classNames={{
           input: cn(
-            'form-input rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
+            'form-input rounded-0.5 border border-brand-grey-400 bg-primary py-3 pl-8 pr-4 text-sm placeholder:text-sm placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
             classNames?.input
           ),
           section: 'text-brand-grey-600',
