@@ -1,11 +1,10 @@
 'use client';
 
-import { Button, TextInput } from '@mantine/core';
-import { hasLength, isEmail, useForm } from '@mantine/form';
+import { Button, TextInput, UnstyledButton } from '@mantine/core';
+import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
-import { dirtyFields } from '@/shared/lib/helpers';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import { useAuth } from '@/shared/hooks/useAuth';
 
@@ -18,57 +17,74 @@ export const UpdateUserForm = () => {
       firstName: '',
       lastName: '',
       email: '',
+      sendOffersAndNews: false,
     },
 
     validate: {
-      firstName: (val) => {
-        let error = null;
-
-        if (val.trim().length) {
-          error = hasLength(
-            { min: 2 },
-            'Field must have 2 or more characters'
-          )(val);
-        }
-
-        return error;
-      },
-      lastName: (val) => {
-        let error = null;
-
-        if (val.trim().length) {
-          error = hasLength(
-            { min: 2 },
-            'Field must have 2 or more characters'
-          )(val);
-        }
-
-        return error;
-      },
-      email: (val) => {
-        let error = null;
-
-        if (val.trim().length) {
-          error = isEmail('Invalid email')(val);
-        }
-
-        return error;
-      },
+      firstName: isNotEmpty('Please enter your first name'),
+      lastName: isNotEmpty('Please enter your last name'),
+      email: isEmail('Please enter a valid email address'),
     },
   });
 
   return (
     <form
-      className={cn('mt-8', classes.form)}
+      className={classes.form}
       onSubmit={form.onSubmit(async (values) => {
         try {
-          const [updatedUser, count] = dirtyFields(values);
-          // If there are no changes, omit the call to API
-          if (count === 0) return;
           if (!currentUser) return;
 
-          const { registerDate, userId, roles, ...prevUser } = currentUser;
-          await updateUser({ ...prevUser, ...updatedUser });
+          const {
+            registerDate,
+            userId,
+            roles,
+            email: currentUserEmail,
+            ...prevUser
+          } = currentUser;
+
+          const {
+            sendOffersAndNews,
+            email: emailField,
+            ...formFields
+          } = values;
+
+          const request = {
+            ...prevUser,
+            ...formFields,
+            phoneNumber: !!prevUser.phoneNumber.trim()
+              ? prevUser.phoneNumber
+              : '+16-573-698-7573',
+            billingAddress: prevUser.billingAddress ?? {
+              firstName: prevUser.firstName,
+              lastName: prevUser.lastName,
+              company: '',
+              country: '',
+              zip: '',
+              state: '',
+              city: '',
+              addressLine1: '',
+              addressLine2: '',
+              phoneNumber: !!prevUser.phoneNumber.trim()
+                ? prevUser.phoneNumber
+                : '+16-573-698-7573',
+            },
+            shippingAddress: prevUser.shippingAddress ?? {
+              firstName: prevUser.firstName,
+              lastName: prevUser.lastName,
+              company: '',
+              country: '',
+              zip: '',
+              state: '',
+              city: '',
+              addressLine1: '',
+              addressLine2: '',
+              phoneNumber: !!prevUser.phoneNumber.trim()
+                ? prevUser.phoneNumber
+                : '+16-573-698-7573',
+            },
+          };
+
+          await updateUser(request);
 
           form.clearErrors();
           form.reset();
@@ -78,6 +94,7 @@ export const UpdateUserForm = () => {
       })}
     >
       <TextInput
+        withAsterisk
         label='First Name'
         type='text'
         classNames={{
@@ -91,9 +108,9 @@ export const UpdateUserForm = () => {
           error: 'form-error',
         }}
         {...form.getInputProps('firstName')}
-        placeholder='Enter your First Name'
       />
       <TextInput
+        withAsterisk
         label='Last Name'
         type='text'
         classNames={{
@@ -107,9 +124,9 @@ export const UpdateUserForm = () => {
           error: 'form-error',
         }}
         {...form.getInputProps('lastName')}
-        placeholder='Enter your Last Name'
       />
       <TextInput
+        withAsterisk
         label='Email Address'
         classNames={{
           root: 'form-root',
@@ -122,14 +139,16 @@ export const UpdateUserForm = () => {
           error: 'form-error',
         }}
         {...form.getInputProps('email')}
-        placeholder='Enter your Email'
       />
-      <Button
+      <UnstyledButton
         type='submit'
-        className={cn('btn mt-9 bg-secondary uppercase', classes.inputSizing)}
+        className={cn(
+          'btn mt-9 bg-secondary uppercase text-primary',
+          classes.inputSizing
+        )}
       >
         Update
-      </Button>
+      </UnstyledButton>
     </form>
   );
 };

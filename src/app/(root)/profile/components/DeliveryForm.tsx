@@ -1,15 +1,11 @@
 'use client';
 import { cn } from '@/shared/lib/utils';
-import { Button, Group, TextInput } from '@mantine/core';
+import { Group, TextInput, UnstyledButton } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import {
-  cleanPostcode,
-  dirtyFields,
-  formatUserAttributes,
-} from '@/shared/lib/helpers';
+import { cleanPostcode, dirtyFields } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
@@ -20,16 +16,16 @@ export const DeliveryForm = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      country: '',
-      city: '',
-      postcode: '',
-      company: '',
-      addressOne: '',
-      addressTwo: '',
-      contactNumber: '',
-      county: '',
+      firstName: currentUser?.firstName || '',
+      lastName: currentUser?.lastName || '',
+      country: currentUser?.shippingAddress?.country || '',
+      city: currentUser?.shippingAddress?.city || '',
+      postcode: currentUser?.shippingAddress?.zip || '',
+      company: currentUser?.shippingAddress?.company || '',
+      addressOne: currentUser?.shippingAddress?.addressLine1 || '',
+      addressTwo: currentUser?.shippingAddress?.addressLine2 || '',
+      contactNumber: currentUser?.phoneNumber || '',
+      county: currentUser?.shippingAddress?.state || '',
     },
 
     transformValues(values) {
@@ -56,7 +52,7 @@ export const DeliveryForm = () => {
     <form
       className={classes.form}
       onSubmit={form.onSubmit(async (values) => {
-        const [newAttributes, count] = dirtyFields(values);
+        const [_, count] = dirtyFields(values);
         // If there are no changes, omit the call to API
 
         if (count === 0) return;
@@ -64,11 +60,40 @@ export const DeliveryForm = () => {
 
         const { registerDate, userId, roles, ...prevUser } = currentUser;
 
-        const formatedAttributes = formatUserAttributes(newAttributes);
-
-        let request = {
+        const request = {
           ...prevUser,
-          attributes: formatedAttributes,
+          phoneNumber: !!prevUser.phoneNumber.trim()
+            ? prevUser.phoneNumber
+            : '+16-573-698-7573',
+          billingAddress: prevUser.billingAddress ?? {
+            firstName: prevUser.firstName,
+            lastName: prevUser.lastName,
+            company: '',
+            country: '',
+            zip: '',
+            state: '',
+            city: '',
+            addressLine1: '',
+            addressLine2: '',
+            phoneNumber: !!prevUser.phoneNumber.trim()
+              ? prevUser.phoneNumber
+              : '+16-573-698-7573',
+          },
+          shippingAddress: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            company:
+              values.company || (prevUser.shippingAddress.company ?? 'None'),
+            country: values.country,
+            zip: values.postcode,
+            state: values.county,
+            city: values.city,
+            addressLine1: values.addressOne,
+            addressLine2:
+              values.addressTwo ||
+              (prevUser.shippingAddress?.addressLine2 ?? ' '),
+            phoneNumber: values.contactNumber,
+          },
         };
 
         await updateUser(request);
@@ -181,9 +206,12 @@ export const DeliveryForm = () => {
           placeholder='Enter County'
         />
       </Group>
-      <Button type='submit' className={classes.submitAddress}>
+      <UnstyledButton
+        type='submit'
+        className={cn('btn', classes.submitAddress)}
+      >
         Add Address
-      </Button>
+      </UnstyledButton>
     </form>
   );
 };

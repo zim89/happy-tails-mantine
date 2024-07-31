@@ -60,6 +60,7 @@ export const LocationFields = ({ form }: Props) => {
           root: cn('form-root', classes.fieldSizing),
           label: 'form-label block text-left',
           input: cn('form-input', form?.errors?.country && 'form-error--input'),
+          error: 'form-error',
         }}
         placeholder='Pick your country'
         label='Country'
@@ -78,6 +79,7 @@ export const LocationFields = ({ form }: Props) => {
           root: cn('form-root', classes.fieldSizing),
           label: 'form-label block text-left',
           input: cn('form-input', form?.errors?.city && 'form-error--input'),
+          error: 'form-error',
         }}
         {...form.getInputProps('city')}
         limit={10}

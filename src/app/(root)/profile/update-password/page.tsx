@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Stepper } from '@mantine/core';
+import { Button, Stepper, UnstyledButton } from '@mantine/core';
 import { useState } from 'react';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
@@ -12,10 +12,12 @@ import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { useResetPasswordMutation } from '@/shared/api/authApi';
 
 export default function UpdatePassword() {
   const { currentUser } = useAuth();
   const [step, setStep] = useState(0);
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
 
@@ -24,11 +26,7 @@ export default function UpdatePassword() {
 
   const proceedCode = async () => {
     try {
-      const request = new URLSearchParams({
-        email: currentUser.email,
-      });
-
-      await axios.post('/users/reset-password', request);
+      await resetPassword({ email: currentUser.email }).unwrap();
 
       nextStep();
     } catch (err) {
@@ -56,18 +54,21 @@ export default function UpdatePassword() {
             </span>
           </p>
         </hgroup>
-        <Button
-          classNames={{
-            root: cn('btn mt-4 w-full bg-secondary', classes.inputSizing),
-          }}
+        <UnstyledButton
+          className={cn(
+            'btn my-4 w-full bg-secondary text-primary',
+            classes.inputSizing
+          )}
           onClick={proceedCode}
         >
           Send
-        </Button>
+        </UnstyledButton>
       </Stepper.Step>
       <Stepper.Step>
         <hgroup className='text-center'>
-          <h1 className='text-[2rem]/[2.4rem]'>Update your password</h1>
+          <h1 className='hidden text-[2rem]/[2.4rem] lg:block'>
+            Update your password
+          </h1>
           <p className={classes.profileParagraph}>
             <span className='inline-block max-w-[360px]'>
               Enter the verification code we just sent to email and create a new
@@ -90,9 +91,9 @@ export default function UpdatePassword() {
               </span>
             </p>
           </hgroup>
-          <Button classNames={{ root: 'bg-black mt-8' }}>
+          <UnstyledButton className='btn mt-8 bg-secondary text-primary'>
             <Link href='/profile'>Return to my account</Link>
-          </Button>
+          </UnstyledButton>
         </div>
       </Stepper.Completed>
     </Stepper>
