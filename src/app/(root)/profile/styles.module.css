@@ -33,7 +33,7 @@
 }
 
 .submitAddress {
-  @apply btn mb-16 mt-6 bg-secondary uppercase text-primary md:mb-28 md:w-[380px] lg:w-[315px];
+  @apply mb-16 mt-6 bg-secondary uppercase text-primary md:mb-28 md:w-[380px] lg:w-[315px];
 }
 
 /* Layout */

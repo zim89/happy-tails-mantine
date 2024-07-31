@@ -206,7 +206,10 @@ export const DeliveryForm = () => {
           placeholder='Enter County'
         />
       </Group>
-      <UnstyledButton type='submit' className={classes.submitAddress}>
+      <UnstyledButton
+        type='submit'
+        className={cn('btn', classes.submitAddress)}
+      >
         Add Address
       </UnstyledButton>
     </form>
