@@ -1,13 +1,15 @@
 'use client';
 
-import { Button, PasswordInput, UnstyledButton } from '@mantine/core';
 import { useForm, hasLength, matchesField, isNotEmpty } from '@mantine/form';
+import { PasswordInput, UnstyledButton } from '@mantine/core';
 import { Eye, EyeOff } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { isAxiosQueryError } from '@/shared/lib/helpers';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useResetPasswordVerifyMutation } from '@/shared/api/authApi';
 
@@ -79,8 +81,16 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
       };
 
       await dispatch(request).unwrap();
+
+      form.clearErrors();
+      form.reset();
+      nextStep();
     } catch (err) {
-      console.error(err);
+      if (isAxiosQueryError(err) && err.status === 404) {
+        toast.error('The provided code was not found');
+      } else {
+        toast.error('Oops! Something went wrong! Try again later.');
+      }
     }
   };
 
@@ -92,10 +102,6 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
           code: values.code,
           newPassword: values.password,
         });
-
-        nextStep();
-        form.clearErrors();
-        form.reset();
       })}
     >
       <PasswordInput

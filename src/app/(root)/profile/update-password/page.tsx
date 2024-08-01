@@ -5,19 +5,20 @@ import { useState } from 'react';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
-import axios from '@/shared/lib/interceptor';
 import { cn } from '@/shared/lib/utils';
 import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useResetPasswordMutation } from '@/shared/api/authApi';
+import { CodeVerification } from '../components/CodeVerification';
 
 export default function UpdatePassword() {
   const { currentUser } = useAuth();
   const [step, setStep] = useState(0);
-  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const [resetPassword] = useResetPasswordMutation();
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
 
@@ -27,10 +28,10 @@ export default function UpdatePassword() {
   const proceedCode = async () => {
     try {
       await resetPassword({ email: currentUser.email }).unwrap();
-
       nextStep();
     } catch (err) {
-      console.error(err);
+      console.log('Error: ', err);
+      toast.error('Oops! Something went wrong! Try again later.');
     }
   };
 
@@ -45,24 +46,7 @@ export default function UpdatePassword() {
       }}
     >
       <Stepper.Step>
-        <hgroup className='text-center'>
-          <h1 className='text-[2rem]/[2.4rem]'>Update your password</h1>
-          <p className={cn(classes.profileParagraph)}>
-            <span className='inline-block max-w-[360px]'>
-              To change your password, we will send you verification code to{' '}
-              <b>{currentUser.email}</b>
-            </span>
-          </p>
-        </hgroup>
-        <UnstyledButton
-          className={cn(
-            'btn my-4 w-full bg-secondary text-primary',
-            classes.inputSizing
-          )}
-          onClick={proceedCode}
-        >
-          Send
-        </UnstyledButton>
+        <CodeVerification currentUser={currentUser} nextStep={nextStep} />
       </Stepper.Step>
       <Stepper.Step>
         <hgroup className='text-center'>
