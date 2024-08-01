@@ -10,6 +10,7 @@ import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
+import dayjs from 'dayjs';
 
 type Props = {
   order: Order;
@@ -38,7 +39,7 @@ export const OrderDetails = ({
             alt={`${order.orderProductDTOList.length} items`}
             className='blur-[2px] filter'
           />
-          <div className='z-50 text-center'>
+          <div className='z-10 text-center'>
             <span
               className={cn(
                 '-mb-2 block text-2xl font-bold shadow-sm',
@@ -67,8 +68,14 @@ export const OrderDetails = ({
           revealedOrders.includes(order.number) ? 'col-span-2' : undefined
         )}
       >
-        <p className='py-4 text-sm'>№{order.number}</p>
-        <CustomBadge name={order.orderStatus} color={order.orderStatus} />
+        <p className='py-4 text-sm'>
+          №{order.number} from{' '}
+          {dayjs.unix(order.createdDate).format('DD.MM.YY')}
+        </p>
+        <CustomBadge
+          name={order.orderStatus}
+          color={order.orderStatus.toLowerCase()}
+        />
       </div>
       <div className='ml-auto flex gap-8'>
         <div className='text-center text-sm'>

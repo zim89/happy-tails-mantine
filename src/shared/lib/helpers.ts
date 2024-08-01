@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 
-import { Order, AxiosQueryError, ProductStatus } from '../types/types';
+import {
+  Order,
+  AxiosQueryError,
+  ProductStatus,
+  ProductColor,
+  ProductSizeValues,
+} from '../types/types';
 import { ErrorResponse } from './constants';
 
 export const formatDateToClockTime = (date: string | number) => {
@@ -211,4 +217,14 @@ export const convertMeasurement = (value: number) => {
 
 export const getCurrentMonth = () => {
   return dayjs(Date.now()).format('MMMM');
+};
+
+export const formatColor = (color: ProductColor) => {
+  if (color === 'ONE COLOR') return color.toLowerCase();
+  else return color;
+};
+
+export const formatSize = (size: ProductSizeValues) => {
+  if (size === 'ONE_SIZE') return size.replace('_', ' ').toLowerCase();
+  else return size;
 };
