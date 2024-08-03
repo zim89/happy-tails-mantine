@@ -16,10 +16,17 @@ import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import classes from './ProblemReport.module.css';
 import { ThankYouModal } from '@/app/(root)/profile/components/ThankYouModal';
+import { useAddFeedbackMutation } from '@/shared/api/feedbackApi';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import Loader from '@/components/Loader';
+import { wait } from '@/shared/lib/helpers';
 
 export default function ProblemReport() {
   const [formVisible, { open: openForm, close: closeForm }] = useDisclosure();
+  const [dispatch] = useAddFeedbackMutation();
   const [isSent, { open, close }] = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -72,24 +79,35 @@ export default function ProblemReport() {
         request.imageSrc = res.data.data.link;
       }
 
-      console.log(request);
+      setIsLoading(true);
+      // Awaits 5 seconds for more natural appearing of modals
+      await wait();
+      await dispatch(request).unwrap();
+
       // Reset and close the form
+      setIsLoading(false);
       form.reset();
       closeForm();
 
       // Open 'Thank You' modal
       open();
     } catch (err) {
-      if (err instanceof AxiosError)
-        throw new Error("Failed request, see what's happened: ", err);
+      setIsLoading(false);
+      console.error(err);
+      if (err instanceof AxiosError) {
+        return toast.error(err.message);
+      } else {
+        return toast.error('Uh-oh, some error occurred, please try again!');
+      }
     }
   };
 
   return (
     <>
-      <Button className={classes.reportButton} onClick={openForm}>
+      <UnstyledButton className={classes.reportButton} onClick={openForm}>
         Report a problem
-      </Button>
+      </UnstyledButton>
+
       <Modal
         size={572}
         opened={formVisible}
@@ -204,9 +222,13 @@ export default function ProblemReport() {
             </span>
           </UnstyledButton>
 
-          <button disabled={!!form.errors['termsOfService']} type='submit'>
+          <UnstyledButton
+            disabled={!!form.errors['termsOfService'] || isLoading}
+            type='submit'
+          >
+            {isLoading && <Loader size={14} c='white' mr={10} />}
             Send
-          </button>
+          </UnstyledButton>
         </form>
       </Modal>
       <ThankYouModal opened={isSent} close={close} />

@@ -1,4 +1,4 @@
-import { Button, Modal } from '@mantine/core';
+import { Button, Modal, UnstyledButton } from '@mantine/core';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 
@@ -29,9 +29,13 @@ export const ThankYouModal = ({ close, opened }: Props) => {
           }
         </p>
       </hgroup>
-      <Button classNames={{ root: 'bg-black font-bold mb-8' }}>
+      <UnstyledButton
+        classNames={{
+          root: 'bg-secondary font-bold mb-8 rounded-sm text-primary text-center py-[10px] w-full max-w-[calc(100%-48px)] md:max-w-[164px] whitespace-pre',
+        }}
+      >
         <Link href='/'>Back to homepage</Link>
-      </Button>
+      </UnstyledButton>
     </Modal>
   );
 };

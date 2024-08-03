@@ -174,12 +174,19 @@ export const mockLongRequest = (value?: boolean) =>
             path: '/',
             timestamp: Date.now(),
             status: 418,
-            error: 'Exprected Error',
+            error: 'Expected Error',
             message: 'The error is emitted successfully!',
           })
         );
       }
     }, 5000);
+  });
+
+export const wait = (value = 5000) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, value);
   });
 
 export function isAxiosQueryError(error: any): error is AxiosQueryError {

@@ -11,7 +11,7 @@ type Verification = {
 const axiosInstance = axios.create({
   baseURL:
     process.env.NODE_ENV === 'production'
-      ? `https://happy-tails-mantine.vercel.app/api/`
+      ? `${process.env.NEXT_PUBLIC_SITE_DOMAIN}/api/`
       : `http://localhost:3000/api/`,
   headers: {
     'Content-Type': 'application/json',
