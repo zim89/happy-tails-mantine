@@ -49,7 +49,7 @@ export const isOrderStatus = (param: any): param is Order['orderStatus'] => {
   return orderStatusList.includes(param);
 };
 
-export const orderPalette = {
+export const orderPalette: Record<string, string> = {
   in_progress: '#fbbc04',
   new: '#4285f4',
   cancelled: '#c63129',

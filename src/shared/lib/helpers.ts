@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 
-import { Order, AxiosQueryError, ProductStatus } from '../types/types';
+import {
+  Order,
+  AxiosQueryError,
+  ProductStatus,
+  ProductColor,
+  ProductSizeValues,
+} from '../types/types';
 import { ErrorResponse } from './constants';
 
 export const formatDateToClockTime = (date: string | number) => {
@@ -168,12 +174,19 @@ export const mockLongRequest = (value?: boolean) =>
             path: '/',
             timestamp: Date.now(),
             status: 418,
-            error: 'Exprected Error',
+            error: 'Expected Error',
             message: 'The error is emitted successfully!',
           })
         );
       }
     }, 5000);
+  });
+
+export const wait = (value = 5000) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, value);
   });
 
 export function isAxiosQueryError(error: any): error is AxiosQueryError {
@@ -211,4 +224,14 @@ export const convertMeasurement = (value: number) => {
 
 export const getCurrentMonth = () => {
   return dayjs(Date.now()).format('MMMM');
+};
+
+export const formatColor = (color: ProductColor) => {
+  if (color === 'ONE COLOR') return color.toLowerCase();
+  else return color;
+};
+
+export const formatSize = (size: ProductSizeValues) => {
+  if (size === 'ONE_SIZE') return size.replace('_', ' ').toLowerCase();
+  else return size;
 };

@@ -28,6 +28,7 @@ import { discountApi } from '../api/discountApi';
 import { taxApi } from '../api/taxApi';
 import { cartApi } from '../api/cartApi';
 import { bannerApi } from '../api/bannerApi';
+import { feedbackApi } from '../api/feedbackApi';
 
 const createNoopStorage = () => {
   return {
@@ -96,6 +97,7 @@ export const store = configureStore({
     [taxApi.reducerPath]: taxApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
     [bannerApi.reducerPath]: bannerApi.reducer,
+    [feedbackApi.reducerPath]: feedbackApi.reducer,
     favorites: favoritesPersistedReducer,
     cart: cartPersistedReducer,
     auth: authPersistedReducer,
@@ -119,6 +121,7 @@ export const store = configureStore({
       .concat(shippingMethodsApi.middleware)
       .concat(taxApi.middleware)
       .concat(cartApi.middleware)
+      .concat(feedbackApi.middleware)
       .concat(bannerApi.middleware),
 });
 

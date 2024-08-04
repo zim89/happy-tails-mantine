@@ -61,7 +61,7 @@
 }
 
 .reportButton {
-  @apply bg-black font-bold;
+  @apply rounded-sm bg-secondary px-4 py-[10px] text-center font-bold text-primary;
 }
 
 .customScroll::-webkit-scrollbar {

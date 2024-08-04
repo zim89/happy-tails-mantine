@@ -1,7 +1,8 @@
-import { UnstyledButton } from '@mantine/core';
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { Tooltip, UnstyledButton } from '@mantine/core';
+import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import dayjs from 'dayjs';
 
 import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
@@ -9,6 +10,8 @@ import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
+import { formatColor, formatSize } from '@/shared/lib/helpers';
+import { orderPalette } from '@/shared/lib/constants';
 
 type Props = {
   order: Order;
@@ -22,15 +25,19 @@ export const OrderDetailsMobile = ({
 }: Props) => {
   return (
     <div className='md:hidden'>
-      <div
-        className={cn(
-          'rounded-t-[40px] py-1 text-center text-xs font-bold text-primary md:hidden',
-          order.orderStatus === 'SHIPPED' ? 'bg-[#389B48]' : 'bg-[#FBBC04]'
-        )}
-      >
-        {order.orderStatus === 'SHIPPED' ? 'DONE' : 'IN PROGRESS'}
-      </div>
-      <div className='grid grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4'>
+      {revealedOrders.includes(order.number) && (
+        <div
+          className={
+            'rounded-t-[40px] py-1 text-center text-xs font-bold text-primary md:hidden'
+          }
+          style={{
+            backgroundColor: orderPalette[order.orderStatus.toLowerCase()],
+          }}
+        >
+          {order.orderStatus}
+        </div>
+      )}
+      <div className='grid grid-cols-[auto_1fr_auto] items-center border border-brand-grey-300 p-4'>
         {order.orderProductDTOList.length > 1 ? (
           <div
             className={
@@ -45,7 +52,7 @@ export const OrderDetailsMobile = ({
               alt={`${order.orderProductDTOList.length} items`}
               className='blur-[2px] filter'
             />
-            <div className='z-50 text-center'>
+            <div className='z-10 text-center'>
               <span
                 className={cn(
                   '-mb-2 block text-2xl font-bold shadow-sm',
@@ -98,25 +105,40 @@ export const OrderDetailsMobile = ({
                 height={52}
               />
               <div className='ml-4 py-4 text-xs'>
-                <p className='mb-1 inline-flex items-center gap-2'>
+                <p className='mb-1 inline-flex items-center gap-2 capitalize'>
                   <span
                     className={cn(
                       'inline-block size-[14px] rounded-full border border-brand-grey-400',
                       BG_COLORS[product.productColor]
                     )}
                   ></span>{' '}
-                  {product.productColor} / {product.productSize}
+                  {formatColor(product.productColor)} /{' '}
+                  {formatSize(product.productSize)}
                 </p>
                 <p>Quantity: {product.count}</p>
               </div>
               <div className='ml-auto text-center text-sm'>
-                <p className='mb-1'>Order amount</p>
-                <p>{product.productPrice * product.count}$</p>
+                <p className='mb-1'>Item amount</p>
+                <p>
+                  {product.count * (product.salePrice || product.productPrice)}$
+                </p>
               </div>
             </Fragment>
           ))}
         {revealedOrders.includes(order.number) && (
           <>
+            <div className='col-span-3'>
+              <Tooltip
+                label={`
+             Price of products (${order.priceOfProducts}$) + Shipping method (${order.shippingMethodDTO.price}$) + Tax (${order.taxAmount}$)
+            `}
+              >
+                <p className='inline-flex items-center gap-1 pb-1 pt-2 font-bold'>
+                  <span>Total: {order.totalPrice}$</span>
+                  <Info size={16} />
+                </p>
+              </Tooltip>
+            </div>
             <p className='col-span-2 inline-flex items-center gap-2 text-sm text-brand-orange-400'>
               <FileText size={16} /> Electronic check
             </p>
@@ -127,6 +149,15 @@ export const OrderDetailsMobile = ({
           </>
         )}
       </div>
+      {revealedOrders.includes(order.number) && (
+        <div
+          className={
+            'rounded-b-[40px] bg-brand-grey-400 py-1 text-center text-xs font-bold text-primary md:hidden'
+          }
+        >
+          from {dayjs.unix(order.createdDate).format('DD.MM.YY')}
+        </div>
+      )}
     </div>
   );
 };
