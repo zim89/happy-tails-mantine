@@ -9,7 +9,7 @@ export const Details = () => {
   const { checked: omitted, value, ...rest } = form.getInputProps('isHero');
 
   return (
-    <div className='mb-8 rounded border border-[#C8C8C8] bg-white'>
+    <div className='mb-8 rounded border border-brand-grey-400 bg-white'>
       <p className='p-3 text-center text-xl font-bold'>Details</p>
       <Checkbox
         color='black'
@@ -17,7 +17,7 @@ export const Details = () => {
         checked={value}
         {...rest}
         classNames={{
-          root: 'group py-6 mb-8 px-4 bg-[#EEE]',
+          root: 'group py-6 mb-8 px-4 bg-brand-grey-300',
           body: 'checkbox-body',
           inner: 'checkbox-inner',
           input: 'checkbox-input',
