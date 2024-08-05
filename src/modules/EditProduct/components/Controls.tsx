@@ -19,7 +19,9 @@ export const Controls = ({ setNotification }: Props) => {
     isDirty,
     handleSubmit: handlePutRequest,
   } = useContext(context);
-  const { update: setUnsavedState } = useContext(UnsavedChangesContext);
+  const { update: setUnsavedState, unsavedChanges } = useContext(
+    UnsavedChangesContext
+  );
 
   // Handle leaving while there are unsaved changes
   useEffect(() => {
@@ -46,7 +48,7 @@ export const Controls = ({ setNotification }: Props) => {
     }
   };
 
-  if (!isDirty) return;
+  if (!unsavedChanges) return;
 
   return (
     <div className='mt-12 flex gap-[42px]'>

@@ -31,6 +31,9 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
   useEffect(() => {
     const { hasErrors } = form.validate();
 
+    // Prevent updating the state of sizes initially
+    if (!form.isDirty()) return;
+
     // Update sizes array only when form's values are correct
     if (!hasErrors) {
       setSizes((s) => {
