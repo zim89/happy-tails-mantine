@@ -29,6 +29,8 @@ export const Controls = ({ setNotification }: Props) => {
   const handleSubmit = async () => {
     try {
       await handlePutRequest();
+      setUnsavedState((prev) => ({ ...prev, unsavedChanges: false }));
+      setNotification('Success', 'Product saved successfully!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setNotification(

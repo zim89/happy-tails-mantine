@@ -200,7 +200,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
         ? sizes.map<ProductSize>((s) => {
             if (s.id === 'form') {
               return {
-                description: s.values.description || '',
+                description: s.values.description,
                 productStatus:
                   s.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
                 quantity: s.values.quantity,

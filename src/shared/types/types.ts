@@ -94,7 +94,7 @@ export type ProductSize = {
   size: ProductSizeValues;
   quantity: number;
   productStatus: ProductStatus;
-  description: string | null;
+  description: string;
 };
 
 type RelatedProduct = {
