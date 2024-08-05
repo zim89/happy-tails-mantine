@@ -22,10 +22,10 @@ export default function Page() {
           innovative ideas for your success.`}
           </p>
         </hgroup>
+        <Introduction />
+        <TeamList />
+        <Technologies />
       </Container>
-      <Introduction />
-      <TeamList />
-      <Technologies />
     </>
   );
 }

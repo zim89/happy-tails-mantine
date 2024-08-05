@@ -42,7 +42,7 @@ function HeroBlog() {
       />
       <div className='absolute inset-0 z-10 bg-gradient-to-r from-black/40 to-black/40'></div>
 
-      <div className='absolute left-[48px] top-[100px] z-20 w-[283px] md:top-[82px] md:w-[476px] lg:left-[99px] lg:top-[146px] lg:w-[473px]'>
+      <div className='absolute left-1/2 top-[100px] z-20 w-[283px] -translate-x-1/2 md:top-[82px] md:w-[476px] lg:left-[99px] lg:top-[146px] lg:w-[473px] lg:translate-x-0'>
         <h2 className='mb-2 text-2xl/[1.2] font-bold text-primary'>
           {data.title}
         </h2>
