@@ -7,7 +7,7 @@ export default function Introduction() {
   return (
     <>
       <div className='max-w-screen flex justify-between gap-2 lg:gap-7'>
-        <div className='relative min-h-[125px] min-w-[200px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
+        <div className='relative min-h-[110px] min-w-[170px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[290px]'>
           <Image
             className='object-cover'
             src={teams[0].src}
@@ -16,7 +16,7 @@ export default function Introduction() {
             alt={teams[0].alt}
           />
         </div>
-        <div className='relative min-h-[125px] min-w-[200px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
+        <div className='relative min-h-[110px] min-w-[170px] flex-1 md:min-h-[115px] md:min-w-[186px] lg:min-h-[170px] lg:min-w-[265px]'>
           <Image
             className='object-cover'
             src={teams[1].src}
@@ -25,7 +25,7 @@ export default function Introduction() {
             alt={teams[1].alt}
           />
         </div>
-        <div className='relative hidden flex-1 md:block md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
+        <div className='relative hidden flex-1 md:block md:min-h-[110px] md:min-w-[186px] lg:min-h-[170px] lg:min-w-[265px]'>
           <Image
             className='object-cover'
             src={teams[2].src}
@@ -34,7 +34,7 @@ export default function Introduction() {
             alt={teams[2].alt}
           />
         </div>
-        <div className='relative hidden flex-1 md:block md:min-h-[115px] md:min-w-[186px] lg:min-h-[180px] lg:min-w-[300px]'>
+        <div className='relative hidden flex-1 md:min-h-[115px] md:min-w-[186px] lg:block lg:min-h-[170px] lg:min-w-[265px]'>
           <Image
             className='object-cover'
             src={teams[3].src}
