@@ -97,10 +97,11 @@ export const postApi = createApi({
         url: `/posts`,
         method: 'post',
         data: {
-          title: title,
-          authorName: authorName,
-          posterImgSrc: posterImgSrc,
-          content: content,
+          title,
+          authorName,
+          posterImgSrc,
+          content,
+          hero,
           postStatus: 'PUBLISHED',
         },
         headers: {

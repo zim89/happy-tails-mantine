@@ -34,6 +34,7 @@ export const Details = ({ status }: Props) => {
           color='black'
           label='Assign as the main article'
           checked={value}
+          disabled={value}
           {...rest}
           classNames={{
             root: cn(
@@ -43,7 +44,11 @@ export const Details = ({ status }: Props) => {
             body: 'checkbox-body',
             inner: 'checkbox-inner',
             input: 'checkbox-input',
-            label: 'checkbox-label font-bold',
+            label: cn(
+              'checkbox-label font-bold',
+              // If the input is disabled, style the label in such way
+              value && 'text-brand-grey-600'
+            ),
           }}
         />
         {status !== 'DRAFT' && (

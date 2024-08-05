@@ -1,10 +1,6 @@
-import Image from 'next/image';
 import React, { useMemo } from 'react';
 
 import Modal, { Props as ModalProps } from '@/components/ModalWindow';
-import Notify, { NotifyProps } from '@/components/Notify';
-
-import check_circle from '@/assets/icons/additional/check-circle.svg';
 import ModalFooter, { Props as FooterProps } from '@/components/ModalFooter';
 
 type ModalContentProps = {

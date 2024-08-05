@@ -91,6 +91,8 @@ export const Header = ({ editor }: Props) => {
           posterImgSrc = res.data.data.link;
         }
 
+        console.log('New Form Values: ', form.values);
+
         const { id } = await dispatch({
           authorName: author || 'Happy Tails Admin',
           content,
@@ -98,8 +100,8 @@ export const Header = ({ editor }: Props) => {
           posterImgSrc,
           hero: isHero,
         }).unwrap();
-        setIsEdited(false);
         router.push(`/admin/blogs/${id}`);
+        setIsEdited(false);
         setNotification('Success', 'Post creation succeeded!');
       } catch (err) {
         if (err instanceof AxiosError) {
