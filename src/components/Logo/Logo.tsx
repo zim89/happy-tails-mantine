@@ -7,6 +7,7 @@ function Logo() {
   return (
     <>
       <Image
+        role='img'
         src='/logo/logo-mobile.svg'
         height={42}
         width={43}
@@ -14,6 +15,7 @@ function Logo() {
         className='md:hidden'
       />
       <Image
+        role='img'
         src='/logo/logo-tablet.svg'
         width={237}
         height={42}
@@ -21,6 +23,7 @@ function Logo() {
         className='hidden md:max-lg:block'
       />
       <Image
+        role='img'
         src='/logo/logo-desktop.svg'
         height={54}
         width={283}

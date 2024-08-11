@@ -34,7 +34,9 @@ export const Profile = ({ user }: Props) => {
         {user.shippingAddress?.phoneNumber ? (
           <p className='p-4'>{user.shippingAddress.phoneNumber}</p>
         ) : (
-          <p className='p-4'>User has not provided a phone number</p>
+          <p className='p-4 font-semibold text-brand-grey-800'>
+            User has not provided a phone number
+          </p>
         )}
       </>
     </div>

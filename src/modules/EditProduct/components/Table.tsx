@@ -6,8 +6,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useDebouncedState } from '@mantine/hooks';
-import Image from 'next/image';
 import { useContext, useMemo } from 'react';
 
 import { cn } from '@/shared/lib/utils';
@@ -61,25 +59,12 @@ const columns = [
 export default function Table() {
   const { sizes } = useContext(context);
 
-  const data = useMemo(
-    () =>
-      sizes
-        .filter((s) => s.id === 'form')
-        .map((s) => {
-          if (s.id === 'form') {
-            return {
-              size: s.values.size,
-              quantity: s.values.quantity,
-            };
-          } else {
-            return {
-              size: s.size,
-              quantity: s.quantity,
-            };
-          }
-        }),
-    [sizes]
-  );
+  const data = useMemo(() => {
+    return sizes.map((size) => ({
+      size: size.id === 'form' ? size.values.size : size.size,
+      quantity: size.id === 'form' ? size.values.quantity : size.quantity,
+    }));
+  }, [sizes]);
 
   const table = useReactTable({
     data,

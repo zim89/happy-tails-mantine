@@ -5,20 +5,25 @@ import { Banknote, Package } from 'lucide-react';
 
 import { User } from '@/shared/types/auth.types';
 import { getUserByEmail } from '@/shared/lib/requests';
-import {
-  formatDateFromArray,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { formatDateFromArray } from '@/shared/lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosError } from 'axios';
+
+type Guest = {
+  kind: 'guest';
+  email: string;
+};
+
+type SignedUser = {
+  kind: 'user';
+} & User;
 
 type Props = {
   userEmail: string;
 };
 export const ClientDetails = ({ userEmail }: Props) => {
   const { setNotification } = useContext(notifyContext);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<SignedUser | Guest | null>(null);
 
   useEffect(() => {
     if (!userEmail) return;
@@ -26,10 +31,10 @@ export const ClientDetails = ({ userEmail }: Props) => {
     (async () => {
       try {
         const user = await getUserByEmail(userEmail);
-        setUser(user);
+        setUser({ ...user, kind: 'user' });
       } catch (err) {
         if (isAxiosError(err) && err.response?.data.status === 404) {
-          setNotification('Failed', err.response?.data.message);
+          setUser({ kind: 'guest', email: userEmail });
         }
         console.error('Request failed: ', err);
       }
@@ -37,6 +42,25 @@ export const ClientDetails = ({ userEmail }: Props) => {
   }, [userEmail]);
 
   if (!user) return null;
+
+  if (user.kind === 'guest')
+    return (
+      <div className='rounded border border-brand-grey-300 bg-white'>
+        <div className='flex items-center justify-between px-4'>
+          <h2 className='py-[22px] text-xl font-bold'>Client details</h2>
+          <p className='whitespace-nowrap text-xs text-brand-grey-800'>
+            The user is just a guest
+          </p>
+        </div>
+        <div className='flex border-y border-brand-grey-300'>
+          <p className='flex items-center gap-2 border-r border-brand-grey-300 p-3 text-sm font-bold uppercase text-brand-grey-800'>
+            <Banknote width={16} />
+            <span>Email</span>
+          </p>
+          <p className='flex items-center  px-4 text-sm'>{userEmail}</p>
+        </div>
+      </div>
+    );
 
   return (
     <div className='rounded border border-brand-grey-300 bg-white'>

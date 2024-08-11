@@ -23,8 +23,8 @@ export const Actions = ({ index }: Props) => {
       newSizes.splice(index, 1);
       return newSizes;
     });
-    setOpened(() => false);
     setNotification('Success', 'Size deleted successfully!');
+    setOpened(() => false);
   };
 
   const openModal = () => {

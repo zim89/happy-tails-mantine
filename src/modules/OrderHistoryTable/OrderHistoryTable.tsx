@@ -10,7 +10,5 @@ export default function OrderHistoryTable({ email }: Props) {
     state.filter((ord) => ord.email === email)
   );
 
-  if (!orders.length) return null;
-
   return <Table orders={orders} />;
 }

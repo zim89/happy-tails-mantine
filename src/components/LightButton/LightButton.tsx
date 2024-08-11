@@ -1,6 +1,6 @@
 import { UnstyledButton } from '@mantine/core';
 
-type Props = {
+export type Props = {
   handler: () => void;
   children: React.ReactNode;
   disabled?: boolean;

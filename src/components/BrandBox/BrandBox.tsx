@@ -1,8 +1,7 @@
 import { cn } from '@/shared/lib/utils';
 import { CustomComponentProps } from '@/shared/types/types';
-import { CSSProperties } from 'react';
 
-type Props = {
+export type Props = {
   children: React.ReactNode;
   title: string;
   rightSection?: React.ReactNode;
@@ -16,6 +15,7 @@ export default function BrandBox({
 }: Props) {
   return (
     <div
+      data-testid='box-container'
       className={cn(
         'mt-8 overflow-clip rounded-t border border-brand-grey-300 bg-white',
         className
