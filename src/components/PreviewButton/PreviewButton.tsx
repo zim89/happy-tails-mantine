@@ -10,7 +10,9 @@ export default function PreviewButton({ handler, color = 'black' }: Props) {
   return (
     <UnstyledButton
       data-testid='preview-button'
-      color={color}
+      style={{
+        color,
+      }}
       classNames={{
         root: 'flex items-center gap-2 hover:bg-brand-grey-300 px-4 rounded',
       }}

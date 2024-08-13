@@ -1,5 +1,5 @@
 import { test, describe, expect } from 'vitest';
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { TestWrapper } from '../TestWrapper';
 import PreviewButton, { Props } from './PreviewButton';
 
@@ -20,9 +20,7 @@ describe('PreviewButton', () => {
 
   test('renders its color correctly', () => {
     const { getByTestId } = render(<TestPreviewButton handler={() => {}} />);
-    expect(getByTestId('preview-button')).toHaveStyle(
-      'background-color: ButtonFace;'
-    );
+    expect(getByTestId('preview-button')).toHaveStyle('color: rgb(0, 0, 0);');
   });
 
   test('renders its color correctly when the prop is set', () => {
@@ -31,7 +29,7 @@ describe('PreviewButton', () => {
     );
 
     expect(getByTestId('preview-button')).toHaveStyle(
-      'background-color: rgb(0, 255, 53);'
+      'color: rgb(0, 255, 53);'
     );
   });
 });
