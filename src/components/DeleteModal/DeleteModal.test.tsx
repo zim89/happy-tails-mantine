@@ -12,7 +12,7 @@ const TestDeleteModal = (props: Props) => {
   );
 };
 
-test('It renders', () => {
+test('should render', () => {
   render(
     <TestDeleteModal>
       {(Modal) => {
@@ -36,7 +36,7 @@ test('It renders', () => {
   expect(screen.getByTestId('text')).toBeInTheDocument();
 });
 
-test("It renders a modal when it's active", () => {
+test("should render a modal when it's active", () => {
   render(
     <TestDeleteModal>
       {(Modal) => {
@@ -60,13 +60,13 @@ test("It renders a modal when it's active", () => {
   expect(screen.getByTestId('text')).toBeVisible();
 });
 
-test("It doesn't render a modal when it's not active", () => {
-  render(
+test("shouldn't render a modal when it's not active", () => {
+  const { findByTestId, queryByTestId } = render(
     <TestDeleteModal>
       {(Modal) => {
         return (
           <Modal
-            opened
+            opened={false}
             onClose={() => {}}
             footerProps={{
               singleBtn: true,
@@ -81,5 +81,5 @@ test("It doesn't render a modal when it's not active", () => {
     </TestDeleteModal>
   );
 
-  expect(screen.getByTestId('text')).not.toBeVisible();
+  expect(queryByTestId('text')).toBeNull();
 });

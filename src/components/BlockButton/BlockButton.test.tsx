@@ -1,12 +1,21 @@
 import { expect, test } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useContext, useEffect } from 'react';
+import * as hooks from '@mantine/hooks';
+
 import { TestWrapper } from '../TestWrapper';
 import BlockButton, { Props } from './BlockButton';
-import { fireEvent, render, screen } from '@testing-library/react';
 import {
   UnsavedChangesContext,
   UnsavedChangesProvider,
 } from '@/shared/context/unsaved.context';
-import { useContext, useEffect } from 'react';
+
+vi.mock('@mantine/hooks', () => ({
+  useDisclosure: () => [
+    false,
+    { close: vi.fn(), open: vi.fn(), toggle: vi.fn() },
+  ],
+}));
 
 const ButtonContent = () => {
   return <span role='textbox'>Test button</span>;
@@ -66,7 +75,7 @@ test('Should not trigger handler when unsavedChanges prop is true', () => {
   expect(onClick).not.toHaveBeenCalled();
 });
 
-test('Should trigger handler when unsavedChanges prop is false', () => {
+test('should trigger handler when unsavedChanges prop is false', () => {
   const onClick = vi.fn();
   render(
     <Wrapper>
@@ -80,14 +89,25 @@ test('Should trigger handler when unsavedChanges prop is false', () => {
   expect(onClick).toHaveBeenCalled();
 });
 
-test("Button click triggers modal's opening", () => {
-  render(
+test("click event should trigger modal's opening", () => {
+  const handler = vi.fn();
+
+  const useDisclosure = vi.spyOn(hooks, 'useDisclosure');
+  useDisclosure.mockReturnValue([
+    true,
+    { close: vi.fn(), open: vi.fn(), toggle: vi.fn() },
+  ]);
+
+  const { getByRole, getByTestId } = render(
     <Wrapper>
-      <TestButton onClick={() => {}} unsavedChanges={false}>
+      <TestButton onClick={handler} unsavedChanges={true}>
         <ButtonContent />
       </TestButton>
     </Wrapper>
   );
 
-  expect(screen.getByRole('dialog')).not.toBeVisible();
+  fireEvent.click(getByRole('button'));
+
+  expect(handler).not.toHaveBeenCalled();
+  expect(getByTestId('modal-content')).toBeVisible();
 });

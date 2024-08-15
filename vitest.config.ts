@@ -10,7 +10,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      provider: 'v8',
+      provider: 'istanbul',
     },
     css: true,
     setupFiles: 'src/shared/config/testSetup.ts',

@@ -32,9 +32,8 @@ test('It renders all its internal buttons', () => {
               <LightButton data-testid='light-button' handler={() => {}}>
                 <span data-testid='light-button'>Light</span>
               </LightButton>
-              <div data-testid='preview-button'>
-                <PreviewButton handler={() => {}} />
-              </div>
+
+              <PreviewButton handler={() => {}} />
             </>
           );
         }}
@@ -44,7 +43,5 @@ test('It renders all its internal buttons', () => {
 
   expect(screen.getByTestId('dark-button')).toBeInTheDocument();
   expect(screen.getByTestId('light-button')).toBeInTheDocument();
-  expect(
-    screen.getByTestId('preview-button').querySelector('button')
-  ).toBeInTheDocument();
+  expect(screen.getByTestId('preview-button')).toBeInTheDocument();
 });

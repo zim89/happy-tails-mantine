@@ -35,7 +35,7 @@ test('It renders with a custom right section', () => {
   render(
     <TestBrandBox
       title='Test title'
-      rightSection={<span role='option'>Hello, it's me!</span>}
+      rightSection={<span role='option'>{`Hello, it's me!`}</span>}
     >
       <h1>Test</h1>
     </TestBrandBox>
