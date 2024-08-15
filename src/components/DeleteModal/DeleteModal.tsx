@@ -8,7 +8,7 @@ type ModalContentProps = {
   footerProps: FooterProps;
 } & ModalProps;
 
-type Props = {
+export type Props = {
   children(
     Modal: (props: ModalContentProps) => React.ReactNode
   ): React.ReactNode;

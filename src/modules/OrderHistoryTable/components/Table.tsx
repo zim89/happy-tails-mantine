@@ -190,9 +190,10 @@ export const Table = ({ orders }: Props) => {
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}
         message='User has not made any orders in the store yet'
+        className='min-h-full'
       />
 
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
+      {table.getPageCount() > 1 && <TablePagination visible table={table} />}
     </div>
   );
 };

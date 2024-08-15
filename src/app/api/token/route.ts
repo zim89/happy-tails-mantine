@@ -13,5 +13,7 @@ export async function GET(req: NextRequest) {
 
   const { tokens } = await oauth2Client.getToken(code);
 
+  console.log('Tokens: ', tokens);
+
   return Response.json({ tokens });
 }

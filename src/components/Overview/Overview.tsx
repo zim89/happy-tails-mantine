@@ -7,7 +7,11 @@ import styles from './style.module.css';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 
-export default function Overview({ children }: { children: React.ReactNode }) {
+export type Props = {
+  children: React.ReactNode;
+};
+
+export default function Overview({ children }: Props) {
   const collapse = useRef<HTMLDivElement>(null);
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -21,12 +25,16 @@ export default function Overview({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className={cn('text-left', styles.markdown)}>
+    <div
+      className={cn('text-left', styles.markdown)}
+      data-testid='overview-container'
+    >
       <div
         ref={collapse}
         className='relative max-h-[26.875rem] overflow-hidden transition-[max-height] duration-500'
       >
         <div
+          data-testid='collapsable'
           className={cn(
             'absolute bottom-0 h-[15.3125rem] w-screen bg-[linear-gradient(356deg,_#fdfdfd_29.88%,_transparent_92.68%)] transition-opacity duration-500 md:h-[13.6875rem] lg:h-[10.375rem]',
             opened && 'opacity-0'
@@ -35,6 +43,7 @@ export default function Overview({ children }: { children: React.ReactNode }) {
         {children}
       </div>
       <button
+        role='button'
         className='mt-2 w-36 py-2.5 text-left font-bold'
         onClick={onCollapse}
       >

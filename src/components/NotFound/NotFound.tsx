@@ -13,6 +13,7 @@ export default function NotFound() {
   return (
     <div className={classes.wrapper}>
       <Image
+        data-testid='image'
         className={classes.image}
         src='https://i.imgur.com/DxNCZvh.png'
         width={isDesktop ? 700 : 460}
@@ -20,10 +21,8 @@ export default function NotFound() {
         alt='Dog looks on 404 page'
       />
       <div className={classes.rightSection}>
-        <p className={cn(classes.primaryText, 'text-[rgb(22,22,22)]')}>
-          Ooops...
-        </p>
-        <p className={cn(classes.primaryText, 'text-[#F39324]')}>
+        <p className={cn(classes.primaryText, 'text-secondary')}>Ooops...</p>
+        <p className={cn(classes.primaryText, 'text-brand-orange-400')}>
           Page not found
         </p>
         <p className={classes.secondaryText}>
@@ -31,7 +30,9 @@ export default function NotFound() {
           go back to home page.`}
         </p>
         <Button classNames={{ root: classes.button }}>
-          <Link href='/'>Back to homepage</Link>
+          <Link role='link' href='/'>
+            Back to homepage
+          </Link>
         </Button>
       </div>
     </div>

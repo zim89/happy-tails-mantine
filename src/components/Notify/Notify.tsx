@@ -9,7 +9,6 @@ export type NotifyProps = {
   classNames?: NotificationProps['classNames'] & { progress?: string };
 } & Omit<NotificationProps, 'onClose' | 'classNames'>;
 export default function Notify({
-  kind,
   visible,
   text,
   onClose,

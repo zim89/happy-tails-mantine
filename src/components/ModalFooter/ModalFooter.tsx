@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEvent, MouseEventHandler } from 'react';
+import { CSSProperties, MouseEventHandler } from 'react';
 
 import styles from './ModalFooter.module.css';
 
@@ -25,8 +25,13 @@ export type Props = CommonProps & (SingleButtonProps | DoubleButtonProps);
 export default function ModalFooter(props: Props) {
   if (props.singleBtn) {
     return (
-      <div className={styles.controls} style={props.containerStyles}>
+      <div
+        className={styles.controls}
+        style={props.containerStyles}
+        data-testid='modal-footer'
+      >
         <span
+          data-testid='single-button'
           is='button'
           className={
             props.primaryBtnClassName ||
@@ -40,8 +45,13 @@ export default function ModalFooter(props: Props) {
     );
   } else
     return (
-      <div className={styles.controls} style={props.containerStyles}>
+      <div
+        className={styles.controls}
+        style={props.containerStyles}
+        data-testid='modal-footer'
+      >
         <span
+          data-testid='secondary-button'
           is='button'
           onClick={props.secondaryBtnOnClick}
           className={
@@ -54,6 +64,7 @@ export default function ModalFooter(props: Props) {
 
         <span
           is='button'
+          data-testid='primary-button'
           className={
             props.primaryBtnClassName ||
             'cursor-pointer rounded-sm bg-secondary px-12 py-2 text-primary'

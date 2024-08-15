@@ -7,7 +7,7 @@ import WarnModal from '@/components/DeleteModal';
 
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 
-type Props = UnstyledButtonProps & {
+export type Props = UnstyledButtonProps & {
   onClick: () => void;
   children: React.ReactNode;
 };
@@ -20,6 +20,8 @@ export default function BlockButton({ onClick, children, ...props }: Props) {
   return (
     <>
       <UnstyledButton
+        role='button'
+        className='rounded-md bg-red-500 p-2 text-white hover:bg-red-600'
         onClick={context && context.unsavedChanges ? openMain : onClick}
         {...props}
       >
@@ -29,6 +31,8 @@ export default function BlockButton({ onClick, children, ...props }: Props) {
         {(Modal) => (
           <>
             <Modal
+              className='rounded-md bg-white p-4 shadow-md'
+              role='dialog'
               onClose={closeMain}
               opened={openedMain}
               size={380}
@@ -52,7 +56,10 @@ export default function BlockButton({ onClick, children, ...props }: Props) {
                 },
               }}
             >
-              <div className='flex items-center gap-3'>
+              <div
+                className='flex items-center gap-3'
+                data-testid='modal-content'
+              >
                 <Image
                   src='/icons/file_attention.svg'
                   alt={"Attention, your changes aren't saved!"}
@@ -61,7 +68,7 @@ export default function BlockButton({ onClick, children, ...props }: Props) {
                 />
                 <hgroup>
                   <h2 className='mb-3 font-bold'>You have unsaved changes!</h2>
-                  <p className='text-sm text-[#A0A0A0]'>
+                  <p className='text-sm text-brand-grey-600'>
                     Are you sure you want to proceed?
                   </p>
                 </hgroup>

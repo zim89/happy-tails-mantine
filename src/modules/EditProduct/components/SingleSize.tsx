@@ -17,7 +17,7 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
   const form = useForm<SizeForm['values']>({
     initialValues: {
       description:
-        size.id === 'form' ? size.values.description : size.description || '',
+        size.id === 'form' ? size.values.description : size.description,
       size: size.id === 'form' ? size.values.size : size.size,
       quantity: size.id === 'form' ? size.values.quantity : size.quantity,
     },
@@ -31,6 +31,9 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
   useEffect(() => {
     const { hasErrors } = form.validate();
 
+    // Prevent updating the state of sizes initially
+    if (!form.isDirty()) return;
+
     // Update sizes array only when form's values are correct
     if (!hasErrors) {
       setSizes((s) => {
@@ -39,7 +42,7 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
         return newSizes;
       });
     }
-  }, [form.values.size, form.values.quantity]);
+  }, [form.values.size, form.values.quantity, form.values.description]);
 
   return (
     <div className={classes.variant}>
@@ -86,6 +89,7 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
 
       <div className={classes.variantInputs}>
         <Textarea
+          {...form.getInputProps('description')}
           rows={5}
           classNames={{
             root: 'form-root w-full mb-6',
@@ -98,7 +102,6 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
             error: 'form-error',
           }}
           label='Description'
-          {...form.getInputProps('description')}
         />
       </div>
     </div>
