@@ -1,6 +1,6 @@
 import classes from './classes.module.css';
 
-type Props = {
+export type Props = {
   children(group: typeof PageHeader.group): React.ReactNode;
   rightSection?: React.ReactNode;
 };
@@ -8,18 +8,20 @@ type Props = {
 export default function PageHeader({ children, rightSection = null }: Props) {
   return (
     <>
-      <div className={classes.header}>
+      <div className={classes.header} role='rowgroup'>
         {children(PageHeader.group)}
-        {rightSection}
+        {rightSection && rightSection}
       </div>
     </>
   );
 }
 
 const Group = (props: { title: string; additional?: string }) => (
-  <hgroup>
+  <hgroup role='group'>
     <h2>{props.title}</h2>
-    {props.additional && <p>{props.additional}</p>}
+    {props.additional && (
+      <p data-testid='additional-text'>{props.additional}</p>
+    )}
   </hgroup>
 );
 

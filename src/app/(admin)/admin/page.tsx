@@ -11,7 +11,6 @@ import TopCategories from '@/modules/TopCategories';
 import { getAccessToken, retrieveToken } from '@/shared/api/seoApi';
 import { KEYS } from '@/shared/constants/localStorageKeys';
 import { AdminPanelContext } from '@/shared/context/panel.context';
-import axiosInstance from '@/shared/lib/interceptor';
 
 export default function Page() {
   const tokenFromStore = retrieveToken();

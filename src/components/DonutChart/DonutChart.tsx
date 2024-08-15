@@ -1,9 +1,10 @@
-import { Cell, Legend, Pie, PieChart } from 'recharts';
-import { CustomLegend } from './components/CustomLegend';
 import { CSSProperties } from 'react';
+import { Cell, Legend, Pie, PieChart } from 'recharts';
+
+import { CustomLegend } from './components/CustomLegend';
 import { convertMeasurement } from '@/shared/lib/helpers';
 
-type Props = {
+export type Props = {
   width: number;
   height: number;
   data: {
@@ -14,7 +15,7 @@ type Props = {
 };
 export default function DonutChart({ width, height, data, colors }: Props) {
   return (
-    <PieChart width={width} height={height}>
+    <PieChart role='chart-wrapper' width={width} height={height}>
       <Pie
         data={data}
         innerRadius={76}
@@ -30,6 +31,7 @@ export default function DonutChart({ width, height, data, colors }: Props) {
         ))}
       </Pie>
       <text
+        data-testid='chart-value'
         x={width / 2}
         y={height / 2 - 17}
         dy={8}
@@ -53,7 +55,7 @@ export default function DonutChart({ width, height, data, colors }: Props) {
       <Legend
         content={
           <CustomLegend
-            data={data.map((item, index) => ({
+            data={data.map((item) => ({
               name: item.name,
               color: colors[item.name] || 'black',
             }))}

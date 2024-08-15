@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test, describe } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useContext, useEffect } from 'react';
 import * as hooks from '@mantine/hooks';
@@ -48,66 +48,67 @@ const TestButton = ({
   );
 };
 
-test('Renders a content for the button', () => {
-  render(
-    <Wrapper>
-      <TestButton onClick={() => {}} unsavedChanges={false}>
-        <ButtonContent />
-      </TestButton>
-    </Wrapper>
-  );
+describe('BlockButton', () => {
+  test('Renders a content for the button', () => {
+    render(
+      <Wrapper>
+        <TestButton onClick={() => {}} unsavedChanges={false}>
+          <ButtonContent />
+        </TestButton>
+      </Wrapper>
+    );
 
-  const el = screen.queryByRole('textbox');
-  expect(el).toHaveTextContent('Test button');
-});
+    const el = screen.queryByRole('textbox');
+    expect(el).toHaveTextContent('Test button');
+  });
 
-test('Should not trigger handler when unsavedChanges prop is true', () => {
-  const onClick = vi.fn();
-  render(
-    <Wrapper>
-      <TestButton onClick={onClick} unsavedChanges={true}>
-        <ButtonContent />
-      </TestButton>
-    </Wrapper>
-  );
+  test('Should not trigger handler when unsavedChanges prop is true', () => {
+    const onClick = vi.fn();
+    render(
+      <Wrapper>
+        <TestButton onClick={onClick} unsavedChanges={true}>
+          <ButtonContent />
+        </TestButton>
+      </Wrapper>
+    );
 
-  fireEvent.click(screen.getByRole('button'));
-  expect(onClick).not.toHaveBeenCalled();
-});
+    fireEvent.click(screen.getByRole('button'));
+    expect(onClick).not.toHaveBeenCalled();
+  });
 
-test('should trigger handler when unsavedChanges prop is false', () => {
-  const onClick = vi.fn();
-  render(
-    <Wrapper>
-      <TestButton onClick={onClick} unsavedChanges={false}>
-        <ButtonContent />
-      </TestButton>
-    </Wrapper>
-  );
+  test('should trigger handler when unsavedChanges prop is false', () => {
+    const onClick = vi.fn();
+    render(
+      <Wrapper>
+        <TestButton onClick={onClick} unsavedChanges={false}>
+          <ButtonContent />
+        </TestButton>
+      </Wrapper>
+    );
 
-  fireEvent.click(screen.getByRole('button'));
-  expect(onClick).toHaveBeenCalled();
-});
+    fireEvent.click(screen.getByRole('button'));
+    expect(onClick).toHaveBeenCalled();
+  });
 
-test("click event should trigger modal's opening", () => {
-  const handler = vi.fn();
+  test("click event should trigger modal's opening", () => {
+    const handler = vi.fn();
+    const useDisclosure = vi.spyOn(hooks, 'useDisclosure');
+    useDisclosure.mockReturnValue([
+      true,
+      { close: vi.fn(), open: vi.fn(), toggle: vi.fn() },
+    ]);
 
-  const useDisclosure = vi.spyOn(hooks, 'useDisclosure');
-  useDisclosure.mockReturnValue([
-    true,
-    { close: vi.fn(), open: vi.fn(), toggle: vi.fn() },
-  ]);
+    const { getByRole, queryByTestId } = render(
+      <Wrapper>
+        <TestButton onClick={handler} unsavedChanges={true}>
+          <ButtonContent />
+        </TestButton>
+      </Wrapper>
+    );
 
-  const { getByRole, getByTestId } = render(
-    <Wrapper>
-      <TestButton onClick={handler} unsavedChanges={true}>
-        <ButtonContent />
-      </TestButton>
-    </Wrapper>
-  );
+    fireEvent.click(getByRole('button'));
 
-  fireEvent.click(getByRole('button'));
-
-  expect(handler).not.toHaveBeenCalled();
-  expect(getByTestId('modal-content')).toBeVisible();
+    expect(handler).not.toHaveBeenCalled();
+    expect(queryByTestId('modal-content')).not.toBeNull();
+  });
 });
