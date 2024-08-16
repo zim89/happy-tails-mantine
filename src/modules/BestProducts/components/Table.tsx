@@ -11,7 +11,7 @@ import {
 import { Product } from '@/shared/types/types';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { useMemo } from 'react';
 
 const columnHelper = createColumnHelper<Product & { totalPaid: number }>();

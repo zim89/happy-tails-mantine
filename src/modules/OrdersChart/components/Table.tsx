@@ -12,7 +12,7 @@ import { Table as MantineTable } from '@mantine/core';
 
 import type { Order } from '@/shared/types/types';
 import { CustomBadge } from '@/components/Badge/Badge';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TableHead } from '@/components/TableHead';
 
 const columnHelper = createColumnHelper<Order>();

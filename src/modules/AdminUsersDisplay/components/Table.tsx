@@ -19,7 +19,7 @@ import classes from '../classes.module.css';
 import { Actions } from './Actions';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
 
 type Props = {

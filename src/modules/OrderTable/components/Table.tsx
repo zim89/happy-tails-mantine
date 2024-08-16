@@ -24,7 +24,7 @@ import UpdateStatus from './UpdateStatus';
 import classes from '../styles.module.css';
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
 import { TableHead } from '@/components/TableHead';
 

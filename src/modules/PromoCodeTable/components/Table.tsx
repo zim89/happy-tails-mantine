@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { Clock3 } from 'lucide-react';
 import { Table as MantineTable } from '@mantine/core';
 
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
 import { TableHead } from '@/components/TableHead';
 import { CustomBadge } from '@/components/Badge';

@@ -21,7 +21,7 @@ import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';
 import { Message } from '../lib/mock';
 import { Star } from './Star';

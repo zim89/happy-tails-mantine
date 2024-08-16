@@ -20,7 +20,7 @@ import { SearchEntry } from '@/components/SearchEntry';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { TablePagination } from '@/components/TablePagination';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import classes from './classes.module.css';
 import { Actions } from './ui/Actions';
 
