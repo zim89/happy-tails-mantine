@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';

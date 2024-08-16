@@ -19,7 +19,7 @@ import {
 import { useState, useMemo, useContext } from 'react';
 import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';

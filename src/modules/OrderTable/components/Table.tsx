@@ -22,7 +22,7 @@ import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge/Badge';
 import UpdateStatus from './UpdateStatus';
 import classes from '../styles.module.css';
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination';

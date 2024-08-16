@@ -10,7 +10,7 @@ import {
 import { Table as MantineTable } from '@mantine/core';
 
 import { User } from '@/shared/types/auth.types';
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
 import { formatDateFromArray } from '@/shared/lib/helpers';
