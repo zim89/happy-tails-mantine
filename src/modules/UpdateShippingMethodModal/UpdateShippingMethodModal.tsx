@@ -9,7 +9,7 @@ import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 import classes from './classes.module.css';
-import ModalWindow from '@/components/ModalWindow';
+import ModalWindow from '@/components/ModalWindow/ModalWindow';
 import { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import { useUpdateShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
 

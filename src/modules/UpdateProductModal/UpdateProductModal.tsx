@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 
 import styles from './classes.module.css';
-import Modal from '@/components/ModalWindow';
+import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';

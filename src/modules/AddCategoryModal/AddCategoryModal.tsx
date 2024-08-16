@@ -18,7 +18,7 @@ import styles from './AddCategoryModal.module.css';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
-import Modal from '@/components/ModalWindow';
+import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';

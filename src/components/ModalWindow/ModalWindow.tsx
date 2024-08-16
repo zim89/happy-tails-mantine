@@ -6,7 +6,7 @@ export type Props = {
 export default function ModalWindow({ children, ...rest }: Props) {
   return (
     <>
-      <Modal centered {...rest}>
+      <Modal centered {...rest} data-testid='modal-window'>
         {children}
       </Modal>
     </>

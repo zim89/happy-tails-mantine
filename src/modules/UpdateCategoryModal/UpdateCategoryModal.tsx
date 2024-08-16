@@ -16,7 +16,7 @@ import { useDisclosure } from '@mantine/hooks';
 
 import styles from './UpdateCategoryModal.module.css';
 
-import Modal from '@/components/ModalWindow';
+import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
