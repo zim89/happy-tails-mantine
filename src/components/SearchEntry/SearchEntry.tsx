@@ -1,8 +1,7 @@
-import { cn } from '@/shared/lib/utils';
 import { TextInput } from '@mantine/core';
 import { Search } from 'lucide-react';
 
-type Props = {
+export type Props = {
   value: string;
   handleChange: (value: string) => void;
 };
@@ -12,6 +11,7 @@ export const SearchEntry = ({ value, handleChange }: Props) => {
       defaultValue={value}
       onChange={(e) => handleChange(e.target.value)}
       placeholder='Search'
+      data-testid='search'
       width={297}
       leftSection={<Search className='h-4 w-4' />}
       classNames={{

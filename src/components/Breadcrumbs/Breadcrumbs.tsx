@@ -32,15 +32,11 @@ export default function Breadcrumbs({ crumbs, classNames = {} }: Props) {
       data-testid='breadcrumbs'
     >
       {crumbs.map((crumb, index, arr) => (
-        <div data-testid='crumb'>
+        <div data-testid='crumb' key={index}>
           {index !== arr.length - 1 ? (
-            <BlockLink key={index} href={crumb.href!}>
-              {crumb.text}
-            </BlockLink>
+            <BlockLink href={crumb.href!}>{crumb.text}</BlockLink>
           ) : (
-            <span key={index} className='text-brand-grey-600'>
-              {crumb.text}
-            </span>
+            <span className='text-brand-grey-600'>{crumb.text}</span>
           )}
         </div>
       ))}
