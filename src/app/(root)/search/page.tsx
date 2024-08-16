@@ -5,7 +5,7 @@ import { Container } from '@mantine/core';
 
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import CatalogProductList from '@/modules/CatalogProductList';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import Toolbar from '@/modules/Toolbar';
 import { CATEGORY } from '@/shared/lib/constants';
 import SearchForm from '@/modules/SearchForm';

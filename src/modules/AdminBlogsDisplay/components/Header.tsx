@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';

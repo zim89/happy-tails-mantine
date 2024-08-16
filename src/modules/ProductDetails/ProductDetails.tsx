@@ -13,7 +13,7 @@ import { Info, Minus, Plus } from 'lucide-react';
 import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { cn } from '@/shared/lib/utils';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';

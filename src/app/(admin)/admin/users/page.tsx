@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import AdminUsersDisplay from '@/modules/AdminUsersDisplay';
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
 import { Container } from '@mantine/core';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import HeroBlog from './ui/HeroBlog';
 import PostList from './ui/PostList';
 import { fetchAllPosts } from '@/shared/lib/requests';

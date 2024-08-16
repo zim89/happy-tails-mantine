@@ -13,13 +13,12 @@ export type Crumb = {
   href?: string;
 };
 
-export default function Breadcrumbs({
-  crumbs,
-  classNames = {},
-}: {
+export type Props = {
   crumbs: Crumb[];
   classNames?: Partial<Record<BreadcrumbsStylesNames, string>>;
-}) {
+};
+
+export default function Breadcrumbs({ crumbs, classNames = {} }: Props) {
   return (
     <RawBreadcrumbs
       classNames={{
@@ -30,18 +29,21 @@ export default function Breadcrumbs({
           classNames.root
         ),
       }}
+      data-testid='breadcrumbs'
     >
-      {crumbs.map((crumb, index, arr) =>
-        index !== arr.length - 1 ? (
-          <BlockLink key={index} href={crumb.href!}>
-            {crumb.text}
-          </BlockLink>
-        ) : (
-          <span key={index} className='text-brand-grey-600'>
-            {crumb.text}
-          </span>
-        )
-      )}
+      {crumbs.map((crumb, index, arr) => (
+        <div data-testid='crumb'>
+          {index !== arr.length - 1 ? (
+            <BlockLink key={index} href={crumb.href!}>
+              {crumb.text}
+            </BlockLink>
+          ) : (
+            <span key={index} className='text-brand-grey-600'>
+              {crumb.text}
+            </span>
+          )}
+        </div>
+      ))}
     </RawBreadcrumbs>
   );
 }

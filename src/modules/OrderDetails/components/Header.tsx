@@ -6,7 +6,7 @@ import { Mail } from 'lucide-react';
 import { useContext, useState } from 'react';
 
 import { CustomBadge } from '@/components/Badge/Badge';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
 import { mockLongRequest } from '@/shared/lib/helpers';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';

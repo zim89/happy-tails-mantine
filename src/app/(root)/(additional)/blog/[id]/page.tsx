@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
-import { PostContent } from "./ui/PostContent";
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
+import { PostContent } from './ui/PostContent';
 import ShareInSocial from './ui/ShareInSocial';
 import PopularPosts from './ui/PopularPosts';
 import { fetchOnePost } from '@/shared/lib/requests';
@@ -22,7 +22,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     headline: post.title,
     image: post.posterImgSrc,
     datePublished: formatDateToISO(post.publishedAt?.toString()),
-    dateModified: formatDateToISO((post.updatedAt || post.publishedAt)?.toString()),
+    dateModified: formatDateToISO(
+      (post.updatedAt || post.publishedAt)?.toString()
+    ),
     author: {
       '@type': 'Person',
       name: post.authorName,
@@ -32,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <Script
-        id="blog-schema"
+        id='blog-schema'
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
@@ -44,8 +46,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               { href: '/blog', text: 'Blog' },
               { text: post.title },
             ]}
-
-            classNames={{ root: "p-0 pt-4" }}
+            classNames={{ root: 'p-0 pt-4' }}
           />
         </Container>
 

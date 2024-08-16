@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import AdminProductsDisplay from '@/modules/AdminProductsDisplay';
 import { Metadata } from 'next';
 
