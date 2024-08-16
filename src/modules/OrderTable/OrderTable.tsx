@@ -2,7 +2,7 @@
 
 import { useFindManyQuery } from '@/shared/api/ordersApi';
 import Table from './components/Table';
-import OrderCounter from '@/components/OrderCounter';
+import OrderCounter from '@/components/OrderCounter/OrderCounter';
 import { calculateOrders } from '@/shared/lib/helpers';
 import styles from './styles.module.css';
 

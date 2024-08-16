@@ -17,10 +17,18 @@ export default function OrderCounter({
   canceled,
 }: OrderCounterProps) {
   return (
-    <ul className={cn('flex divide-x border border-brand-grey-300', className)}>
+    <ul
+      className={cn('flex divide-x border border-brand-grey-300', className)}
+      data-testid='counter-wrapper'
+    >
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
-          <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{newOrders}</p>
+          <p
+            className='mb-1 text-[1.75rem]/[1.21428] font-bold'
+            data-testid='new-orders-count'
+          >
+            {newOrders}
+          </p>
           <h3 className='text-sm text-brand-grey-800'>New Orders</h3>
         </div>
         <Image
@@ -32,7 +40,10 @@ export default function OrderCounter({
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
-          <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>
+          <p
+            className='mb-1 text-[1.75rem]/[1.21428] font-bold'
+            data-testid='in-progress-count'
+          >
             {inProgress}
           </p>
           <h3 className='text-sm text-brand-grey-800'>In Progress</h3>
@@ -46,7 +57,12 @@ export default function OrderCounter({
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
-          <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{completed}</p>
+          <p
+            className='mb-1 text-[1.75rem]/[1.21428] font-bold'
+            data-testid='completed-count'
+          >
+            {completed}
+          </p>
           <h3 className='text-sm text-brand-grey-800'>Completed</h3>
         </div>
         <Image
@@ -58,7 +74,12 @@ export default function OrderCounter({
       </li>
       <li className='flex basis-1/4 justify-between px-6 py-3'>
         <div>
-          <p className='mb-1 text-[1.75rem]/[1.21428] font-bold'>{canceled}</p>
+          <p
+            className='mb-1 text-[1.75rem]/[1.21428] font-bold'
+            data-testid='canceled-count'
+          >
+            {canceled}
+          </p>
           <h3 className='text-sm text-brand-grey-800'>Canceled</h3>
         </div>
         <Image
