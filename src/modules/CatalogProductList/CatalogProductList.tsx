@@ -8,8 +8,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import { Group, Pagination } from '@mantine/core';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import PaginationNextBtn from '@/components/PaginationNextBtn/PaginationNextBtn';
+import PaginationPrevBtn from '@/components/PaginationPrevBtn/PaginationPrevBtn';
 import { ProductCountContext } from './ProductCountContext';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import type { Category, Sort } from '@/shared/types/types';

@@ -1,5 +1,5 @@
-import PaginationNextBtn from '@/components/PaginationNextBtn';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import PaginationNextBtn from '@/components/PaginationNextBtn/PaginationNextBtn';
+import PaginationPrevBtn from '@/components/PaginationPrevBtn/PaginationPrevBtn';
 import { Pagination, Group, PaginationProps } from '@mantine/core';
 
 import styles from './PaginationBar.module.css';

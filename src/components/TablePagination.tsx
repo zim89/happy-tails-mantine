@@ -2,8 +2,8 @@ import { Group, Pagination, Select } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 import { Table } from '@tanstack/react-table';
 
-import PaginationPrevBtn from './PaginationPrevBtn';
-import PaginationNextBtn from './PaginationNextBtn';
+import PaginationPrevBtn from './PaginationPrevBtn/PaginationPrevBtn';
+import PaginationNextBtn from './PaginationNextBtn/PaginationNextBtn';
 
 type Props<T> = {
   visible?: boolean;
