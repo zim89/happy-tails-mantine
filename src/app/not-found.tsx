@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import NotFoundComponent from '@/components/NotFound';
-import LayoutTemplate from "@/components/LayoutTemplate";
+import LayoutTemplate from '@/components/LayoutTemplate/LayoutTemplate';
 
 export const metadata: Metadata = {
   title: 'Not Found | 404',
