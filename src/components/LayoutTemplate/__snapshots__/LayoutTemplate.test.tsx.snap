@@ -1,9 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`LayoutTemplate > renders correctly 1`] = `
-<span
-  data-testid="test"
->
-  Test
-</span>
-`;

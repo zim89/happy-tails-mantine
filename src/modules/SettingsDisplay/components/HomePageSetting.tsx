@@ -21,7 +21,7 @@ import {
   useFindManyQuery,
   useUpdateBannerMutation,
 } from '@/shared/api/bannerApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { publishImage } from '@/shared/lib/requests';
 import { CustomSelectDropdown } from './CustomSelectDropdown';

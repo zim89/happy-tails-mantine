@@ -7,7 +7,7 @@ import { notifyContext } from '@/shared/context/notification.context';
 import { Form } from './components/Form';
 import { UpdateProductProvider } from './lib/utils';
 import { useFindOneQuery } from '@/shared/api/productApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { Sizes } from './components/Sizes';
 import { Controls } from './components/Controls';
 

@@ -16,7 +16,7 @@ import {
   selectCartTotalPrice,
 } from '@/shared/redux/cart/cartSlice';
 import { cn } from '@/shared/lib/utils';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import PromoCode from './PromoCode';
 import Checkbox from '@/components/Checkbox';
 import { useRouter } from 'next/navigation';

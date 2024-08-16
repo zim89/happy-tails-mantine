@@ -4,7 +4,7 @@ import React from 'react';
 import { useGetHeroQuery } from '@/shared/api/postApi';
 import Image from 'next/image';
 import Link from 'next/link';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { PostContent } from '../[id]/ui/PostContent';
 
 function HeroBlog() {

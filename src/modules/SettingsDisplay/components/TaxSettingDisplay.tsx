@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetTaxQuery } from '@/shared/api/taxApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { TaxForm } from './TaxForm';
 
 export const TaxSettingDisplay = () => {
