@@ -13,7 +13,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
 
-interface Props {
+export interface Props {
   product: Product;
   withText?: boolean;
   disabled?: boolean;
