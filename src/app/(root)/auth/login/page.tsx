@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-
 import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import LoginForm from '@/components/auth/LoginForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
@@ -35,13 +34,13 @@ export default function Page() {
           Or Sign in with
         </p>
         <div className='grid grid-cols-2 gap-5 md:gap-4'>
-          <button
-            type='button'
+          <Link
+            href={`https://accounts.google.com/o/oauth2/auth?client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL_PROD : process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL_DEV}&response_type=code&scope=email profile openid`}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
             Google
-          </button>
+          </Link>
           <button
             type='button'
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'

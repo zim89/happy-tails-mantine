@@ -119,6 +119,15 @@ export const authApi = createApi({
         },
       }),
     }),
+    loginOauth: builder.mutation<LoginResponse, string>({
+      query: (code) => ({
+        url: '/login/oauth2/code/google',
+        method: 'get',
+        params: {
+          code,
+        },
+      }),
+    }),
     logout: builder.mutation<void, void>({
       query: () => ({
         url: '/user/logout',
@@ -149,6 +158,7 @@ export const {
   useResetPasswordMutation,
   useResetPasswordVerifyMutation,
   useLoginMutation,
+  useLoginOauthMutation,
   useLogoutMutation,
   useGetUserInfoQuery,
   useUpdateDetailsMutation,
