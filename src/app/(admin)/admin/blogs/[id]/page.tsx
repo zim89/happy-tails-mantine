@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import PostDetails from '@/modules/PostDetails';
 import { fetchOnePost } from '@/shared/lib/requests';
 import { notFound } from 'next/navigation';

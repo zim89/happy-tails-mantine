@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 import Checkbox from '@/components/Checkbox';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { useLoginMutation } from '@/shared/api/authApi';
 import { cn } from '@/shared/lib/utils';
 import { setAuthData } from '@/shared/redux/auth/authSlice';

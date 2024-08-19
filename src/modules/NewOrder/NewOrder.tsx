@@ -20,7 +20,7 @@ import BlockButton from '@/components/BlockButton';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { notifyContext } from '@/shared/context/notification.context';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
 import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
 

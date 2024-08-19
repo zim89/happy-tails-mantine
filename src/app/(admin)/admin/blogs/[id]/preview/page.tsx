@@ -17,7 +17,7 @@ import Footer from '@/modules/Footer';
 import HeaderTemplate from '@/components/HeaderTemplate/HeaderTemplate';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import PostList from '@/components/PostList';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { PostFormContext } from '@/shared/context/postform.context';
 
 export default function Page() {

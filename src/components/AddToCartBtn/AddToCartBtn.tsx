@@ -7,7 +7,7 @@ import { Product } from '@/shared/types/types';
 import { addToCart, openCartDrawer } from '@/shared/redux/cart/cartSlice';
 import { cn } from '@/shared/lib/utils';
 
-interface Props {
+export interface Props {
   product: Product;
   size?: string;
 }
@@ -23,6 +23,7 @@ export default function AddToCartBtn({ product, size }: Props) {
 
   return (
     <button
+      role='button'
       disabled={!isAvailable}
       onClick={onClick}
       className={cn(

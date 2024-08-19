@@ -3,7 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 
 import ProductCountContextProvider from '@/modules/CatalogProductList/ProductCountContext';
 import ProductList from '@/modules/CatalogProductList';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import Toolbar from '@/modules/Toolbar';
 import Overview from '@/components/Overview';
 

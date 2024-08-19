@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import EditProduct from '@/modules/EditProduct';
 
 export const metadata: Metadata = {

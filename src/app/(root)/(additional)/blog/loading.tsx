@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { Container } from '@mantine/core';
 import BlogSkeleton from './ui/BlogSkeleton';
 

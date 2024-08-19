@@ -2,7 +2,7 @@ import { rem } from '@mantine/core';
 
 import { cn } from '@/shared/lib/utils';
 
-type Props = {
+export type Props = {
   message: string;
   visible: boolean;
   className?: string;

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Container, Tabs } from '@mantine/core';
 import { ChevronRight } from 'lucide-react';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import styles from './styles.module.css';
 
 export default function DeliveryAndReturnsPage() {

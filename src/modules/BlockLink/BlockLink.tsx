@@ -22,7 +22,11 @@ export default function BlockLink({ children, ...props }: Props) {
   const [openedMain, { open: openMain, close: closeMain }] =
     useDisclosure(false);
 
-  const link = <Link {...props}>{children}</Link>;
+  const link = (
+    <Link data-testid='block-link' {...props}>
+      {children}
+    </Link>
+  );
 
   return (
     <>

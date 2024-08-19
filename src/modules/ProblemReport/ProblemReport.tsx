@@ -19,7 +19,7 @@ import { ThankYouModal } from '@/app/(root)/profile/components/ThankYouModal';
 import { useAddFeedbackMutation } from '@/shared/api/feedbackApi';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { wait } from '@/shared/lib/helpers';
 
 export default function ProblemReport() {

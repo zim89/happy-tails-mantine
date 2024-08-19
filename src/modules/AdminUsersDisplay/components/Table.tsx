@@ -10,7 +10,7 @@ import {
 import { Table as MantineTable } from '@mantine/core';
 
 import { User } from '@/shared/types/auth.types';
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
 import { formatDateFromArray } from '@/shared/lib/helpers';
@@ -19,8 +19,8 @@ import classes from '../classes.module.css';
 import { Actions } from './Actions';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
-import { EmptyRow } from '@/components/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 
 type Props = {
   data: User[];

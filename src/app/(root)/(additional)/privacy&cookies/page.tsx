@@ -1,6 +1,6 @@
 import { Container } from '@mantine/core';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 import classes from './classes.module.css';
 import { cn } from '@/shared/lib/utils';

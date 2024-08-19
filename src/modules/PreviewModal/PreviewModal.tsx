@@ -1,7 +1,7 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import Modal from '@/components/ModalWindow';
+import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalFooter from '@/components/ModalFooter';
 
 export default function PreviewModal() {

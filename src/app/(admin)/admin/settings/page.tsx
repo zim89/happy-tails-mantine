@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import PageHeader from '@/components/PageHeader';
 import { SettingsDisplay } from '@/modules/SettingsDisplay';
 

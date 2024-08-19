@@ -3,8 +3,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import styles from './PaginationBar.module.css';
 import { Group, Pagination } from '@mantine/core';
-import PaginationNextBtn from '@/components/PaginationNextBtn';
-import PaginationPrevBtn from '@/components/PaginationPrevBtn';
+import PaginationNextBtn from '@/components/PaginationNextBtn/PaginationNextBtn';
+import PaginationPrevBtn from '@/components/PaginationPrevBtn/PaginationPrevBtn';
 
 type PaginationStatefulProps<T> = {
   initial: T[];

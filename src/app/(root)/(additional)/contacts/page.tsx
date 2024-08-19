@@ -1,7 +1,5 @@
-import {
-  Container,
-} from '@mantine/core';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import { Container } from '@mantine/core';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 import styles from './styles.module.css';
 import { ContactForm } from './components/ContactForm';
@@ -11,7 +9,7 @@ export default function ContactsPage() {
     <Container>
       <Breadcrumbs
         crumbs={[{ href: '/', text: 'Home' }, { text: 'Contacts' }]}
-        classNames={{ root: "p-0 pt-4" }}
+        classNames={{ root: 'p-0 pt-4' }}
       />
 
       <div className={styles.content}>

@@ -4,8 +4,9 @@ import { PasswordInput, TextInput } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import Checkbox from '@/components/Checkbox';
 import { useRouter } from 'next/navigation';
+
+import Checkbox from '@/components/Checkbox';
 import { useAppDispatch } from '@/shared/redux/store';
 import { useLoginMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
@@ -31,7 +32,6 @@ export default function LoginForm() {
   const onSubmit = async (values: FormValues) => {
     try {
       const data = await login(values).unwrap();
-      console.log('Login: ', data);
       dispatch(setAuthData(data));
       router.push('/');
     } catch (error) {
@@ -40,8 +40,9 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(onSubmit)} className='space-y-8'>
+    <form onSubmit={form.onSubmit(onSubmit)} className='space-y-8' role='form'>
       <TextInput
+        data-testid='email-field'
         radius='xs'
         label='Email'
         placeholder=''
@@ -58,6 +59,7 @@ export default function LoginForm() {
       />
 
       <PasswordInput
+        data-testid='password-field'
         radius='xs'
         label='Password'
         placeholder=''
@@ -87,7 +89,11 @@ export default function LoginForm() {
 
           <Link href={'/auth/forgot-password'}>Forgot Password?</Link>
         </div>
-        <button className='btn btn-primary w-full' disabled={isLoading}>
+        <button
+          data-testid='submit-btn'
+          className='btn btn-primary w-full'
+          disabled={isLoading}
+        >
           Sign In
         </button>
       </div>

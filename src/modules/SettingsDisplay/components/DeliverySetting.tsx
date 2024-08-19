@@ -8,7 +8,7 @@ import { deliveries } from '../lib/data';
 import { ShippingForm } from './ShippingForm';
 import { AddShippingMethodForm } from './AddShippingMethodForm';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 
 export const DeliverySetting = () => {
   const [isAdding, setIsAdding] = useState(false);

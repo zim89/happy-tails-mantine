@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 
-import Modal, { Props as ModalProps } from '@/components/ModalWindow';
+import Modal, {
+  Props as ModalProps,
+} from '@/components/ModalWindow/ModalWindow';
 import ModalFooter, { Props as FooterProps } from '@/components/ModalFooter';
 
 type ModalContentProps = {

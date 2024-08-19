@@ -1,11 +1,11 @@
-import ProductAdditionalInfo from '@/components/ProductAdditionalInfo';
+import ProductAdditionalInfo from '@/components/ProductAdditionalInfo/ProductAdditionalInfo';
 import { getProductById } from '@/shared/lib/requests';
 import { AxiosError } from 'axios';
 import { notFound } from 'next/navigation';
 
 const getProduct = async (id: string) => {
   return await getProductById(id);
-}
+};
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
@@ -31,11 +31,10 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   }
 }
 export default function DashboardLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <>
       {children}

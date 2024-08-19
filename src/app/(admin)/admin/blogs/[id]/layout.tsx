@@ -1,6 +1,6 @@
 'use client';
 
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import { useFindOneQuery } from '@/shared/api/postApi';
 import { PostFormProvider } from '@/shared/context/postform.context';
 import { isAxiosQueryError } from '@/shared/lib/helpers';

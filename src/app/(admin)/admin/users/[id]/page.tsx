@@ -1,9 +1,9 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import UserDetails from '@/modules/UserDetails';
 
 type Props = {
-    params: { id: string }
-}
+  params: { id: string };
+};
 export default function Page({ params: { id } }: Props) {
   return (
     <>
@@ -14,11 +14,11 @@ export default function Page({ params: { id } }: Props) {
           { text: 'Profile' },
         ]}
         classNames={{
-          root: "p-0 m-0 mb-8"
+          root: 'p-0 m-0 mb-8',
         }}
       />
 
-      <UserDetails id={id}/>
+      <UserDetails id={id} />
     </>
   );
 }

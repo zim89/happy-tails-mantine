@@ -12,20 +12,25 @@ import {
 } from '@/shared/redux/favorites/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
+import { createSelector } from '@reduxjs/toolkit';
 
-interface Props {
+export interface Props {
   product: Product;
   withText?: boolean;
   disabled?: boolean;
 }
 export default function AddToWishBtn({ withText, disabled, product }: Props) {
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector(selectFavorites);
-  const isFavorite = favorites.some(({ id }) => id === product.id);
+  const isFavourite = useAppSelector(
+    createSelector([selectFavorites], (items) =>
+      items.some(({ id }) => id === product.id)
+    )
+  );
+
   const isWishlist = usePathname() === '/wishlist';
 
   const toggleFavorite = () => {
-    if (isFavorite) {
+    if (isFavourite) {
       dispatch(removeFromFavorites(product.id));
       return;
     }
@@ -36,11 +41,12 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
     <>
       {withText ? (
         <button
+          data-testid='btn-with-text'
           onClick={toggleFavorite}
           disabled={disabled}
           className={clsx(
             'group/fav flex items-center gap-2 whitespace-nowrap bg-primary px-4 py-3 transition-colors duration-300',
-            isFavorite
+            isFavourite
               ? 'text-brand-orange-400 hover:text-brand-orange-500'
               : 'text-secondary hover:text-brand-orange-500',
             disabled && 'text-secondary/40 hover:bg-primary'
@@ -49,16 +55,17 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
           <Heart
             className={clsx(
               'h-5 w-5 stroke-2 transition-colors duration-300',
-              isFavorite &&
+              isFavourite &&
                 'fill-brand-orange-400 stroke-brand-orange-400 group-hover/fav:fill-brand-orange-500 group-hover/fav:stroke-brand-orange-500'
             )}
           />
           <span className='text-base font-bold transition-colors duration-300'>
-            {isFavorite ? 'Remove from Wishlist' : 'Add to Wishlist'}
+            {isFavourite ? 'Remove from Wishlist' : 'Add to Wishlist'}
           </span>
         </button>
       ) : (
         <button
+          data-testid='btn-without-text'
           onClick={toggleFavorite}
           disabled={disabled}
           className={clsx(
@@ -72,7 +79,7 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
             <Heart
               className={clsx(
                 'h-6 w-6 stroke-2',
-                isFavorite && 'fill-secondary'
+                isFavourite && 'fill-secondary'
               )}
             />
           )}

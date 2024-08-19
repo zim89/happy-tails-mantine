@@ -8,7 +8,7 @@ import { Details } from './components/Details';
 import { Header } from './components/Header';
 import ImageBox from '@/modules/ImageBox';
 import { useFindOneQuery } from '@/shared/api/postApi';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 
 type Props = {
   postId: string;

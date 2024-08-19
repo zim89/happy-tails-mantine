@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import CategoryLine from './CategoryRow';
 import styles from '../CategoriesDisplay.module.css';
 import { Category } from '@/shared/types/types';
-import { EmptyRow } from '@/components/EmptyRow';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 
 type Props = {
   categories: Category[];

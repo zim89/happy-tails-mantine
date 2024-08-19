@@ -18,13 +18,13 @@ import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 
 import classes from '../classes.module.css';
-import { EntriesCount } from '@/components/EntriesCount';
+import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge';
 import { TableHead } from '@/components/TableHead';
-import { EmptyRow } from '@/components/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Order>();
