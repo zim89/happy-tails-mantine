@@ -2,9 +2,11 @@
 
 import Loader from '@/components/Loader';
 import { useLoginOauthMutation } from '@/shared/api/authApi';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
-import { Center } from '@mantine/core';
+import { Center, Stack } from '@mantine/core';
+import Link from 'next/link';
 import { redirect, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -28,15 +30,22 @@ export default function CallbackPage() {
     };
 
     fn();
-  }, [login, params]);
+  }, [login, dispatch, router, params]);
 
-  if (isLoading)
-    if (error)
-      return (
-        <Center h='100%'>
-          <p className='font-medium text-brand-red-400'>Something went wrong</p>
-        </Center>
-      );
+  if (error)
+    return (
+      <Center h='100%'>
+        <Stack>
+          <p className='text-2xl font-bold text-brand-red-400'>
+            {error.status}: Something went wrong
+          </p>
+
+          <Link href={APP_PAGES.LOGIN} className='btn btn-primary w-full'>
+            Return to login page
+          </Link>
+        </Stack>
+      </Center>
+    );
 
   return (
     <Center h='100%'>
