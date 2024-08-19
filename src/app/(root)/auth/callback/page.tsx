@@ -20,7 +20,7 @@ export default function CallbackPage() {
     const fn = async () => {
       if (params.get('code')) {
         try {
-          const { data } = await login(params.get('code')!).unwrap();
+          const data = await login(params.get('code')!).unwrap();
           dispatch(setAuthData(data));
           router.push('/');
         } catch (err) {
@@ -37,7 +37,7 @@ export default function CallbackPage() {
       <Center h='100%'>
         <Stack>
           <p className='text-2xl font-bold text-brand-red-400'>
-            {error.status}: Something went wrong
+            Something went wrong
           </p>
 
           <Link href={APP_PAGES.LOGIN} className='btn btn-primary w-full'>
