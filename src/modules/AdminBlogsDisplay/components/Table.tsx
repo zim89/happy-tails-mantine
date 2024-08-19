@@ -14,7 +14,7 @@ import classes from '../classes.module.css';
 import { SearchEntry } from '@/components/SearchEntry';
 import { cn } from '@/shared/lib/utils';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 

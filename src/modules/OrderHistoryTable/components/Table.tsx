@@ -24,7 +24,7 @@ import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge';
 import { TableHead } from '@/components/TableHead';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Order>();

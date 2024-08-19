@@ -20,7 +20,7 @@ import { Actions } from './Actions';
 import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 
 type Props = {
   data: User[];

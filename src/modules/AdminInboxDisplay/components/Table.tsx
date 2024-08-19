@@ -22,7 +22,7 @@ import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
-import { TablePagination } from '@/components/TablePagination';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { Message } from '../lib/mock';
 import { Star } from './Star';
 import { formatDateToClockTime } from '@/shared/lib/helpers';

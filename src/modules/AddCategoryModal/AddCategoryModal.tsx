@@ -130,6 +130,7 @@ export default function AddCategoryModal() {
           leftSection={<PlusCircle size={20} />}
           onClick={open}
           bg={'black'}
+          data-testid='modal-handler'
         >
           Add category
         </Button>
@@ -147,13 +148,13 @@ export default function AddCategoryModal() {
       >
         <ModalHeader heading='Add Category' handleClose={close} />
 
-        <form>
+        <form data-testid='modal-form'>
           <TextInput
             classNames={{
               root: 'form-root',
               label: 'form-label',
               wrapper: 'flex border-2 gap-2 focus:outline outline-2',
-              section: 'static w-auto text-[#161616] whitespace-nowrap',
+              section: 'static w-auto text-secondary whitespace-nowrap',
               input: cn(
                 'form-input h-[40px] rounded-sm border-0 p-1 outline-none',
                 form?.errors?.categoryName && 'form-error--input'
@@ -178,13 +179,14 @@ export default function AddCategoryModal() {
           </InputLabel>
 
           {!previewImage.current?.image || !previewImage.current?.name ? (
-            <div className={styles.upload}>
+            <div className={styles.upload} data-testid='upload'>
               <label htmlFor='file'>
                 <UploadCloud color='white' />
                 <span>Select Image</span>
               </label>
               <FileInput
                 id='file'
+                data-testid='upload-field'
                 className='pointer-events-none w-full'
                 placeholder='Max file size 500 kB'
                 {...form.getInputProps('image')}
@@ -202,15 +204,16 @@ export default function AddCategoryModal() {
               />
             </div>
           ) : (
-            <div className={styles.previewWrapper}>
+            <div className={styles.previewWrapper} data-testid='preview'>
               <Image
+                data-testid='preview-image'
                 className={styles.previewImage}
                 width={32}
                 height={32}
                 src={previewImage.current.image}
                 alt={previewImage.current.name}
               />
-              <p>{previewImage.current.name}</p>
+              <p data-testid='preview-name'>{previewImage.current.name}</p>
               <button onClick={clearFile} className='ml-[42px]'>
                 <X size={14} alignmentBaseline='central' />
               </button>
