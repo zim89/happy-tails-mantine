@@ -7,23 +7,19 @@ type Props = {
   order: Order;
 };
 
-const tax = 1.49;
-const expressShipping = 20;
-const standardShipping = 10;
-
 export const ProductTable = ({ order }: Props) => {
-  const shipping =
-    order.shippingMethodDTO.name === 'Standard' ? standardShipping : expressShipping;
+  const shipping = order.shippingMethodDTO.price;
   const discount = order.discountAmount;
   const total =
     order.orderProductDTOList.reduce(
       (total, product) =>
-        total + (product.productPrice * product.count + tax - discount),
+        total +
+        (product.productPrice * product.count + order.taxAmount - discount),
       0
     ) + shipping;
 
   return (
-    <section className='mt-8 overflow-hidden rounded-[4px] border-[1px] border-[#EEE] bg-white font-bold'>
+    <section className='mt-8 overflow-hidden rounded-[4px] border border-brand-grey-300 bg-white font-bold'>
       <h2 className='p-4 text-xl'>Order details</h2>
       <Table
         highlightOnHover
@@ -35,7 +31,8 @@ export const ProductTable = ({ order }: Props) => {
       >
         <Table.Thead
           classNames={{
-            thead: 'bg-[#EEE] uppercase text-xs font-bold text-[#787878]',
+            thead:
+              'bg-brand-grey-300 uppercase text-xs font-bold text-brand-grey-800',
           }}
         >
           <Table.Tr title='Image'>
@@ -69,14 +66,14 @@ export const ProductTable = ({ order }: Props) => {
               <Table.Td>
                 ${(product.productPrice * product.count).toFixed(2)}
               </Table.Td>
-              <Table.Td>${tax}</Table.Td>
+              <Table.Td>${order.taxAmount}</Table.Td>
               {/* If there is a discount code, cut off subtotal by 10 percent */}
               <Table.Td>
                 $
                 {(
                   product.productPrice * product.count -
                   (order.discountAmount ? order.discountAmount : 0) +
-                  tax
+                  order.taxAmount
                 ).toFixed(2)}
               </Table.Td>
             </Table.Tr>
@@ -88,7 +85,7 @@ export const ProductTable = ({ order }: Props) => {
           <span className='text-xl font-bold'>$ {shipping}</span>
           <p className='text-sm/[21px] font-normal'>Shipping</p>
         </div>
-        <div className='flex-1 border-x-[1px] border-[#EEE] p-3 text-center'>
+        <div className='flex-1 border-x-[1px] border-brand-grey-300 p-3 text-center'>
           <span className='text-xl font-bold'>
             $ {discount * order.orderProductDTOList.length}
           </span>
