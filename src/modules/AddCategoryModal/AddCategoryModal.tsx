@@ -164,6 +164,7 @@ export default function AddCategoryModal() {
             withErrorStyles
             type='text'
             label='Category Name'
+            data-testid='category-input'
             {...form.getInputProps('categoryName')}
           />
 
@@ -186,6 +187,9 @@ export default function AddCategoryModal() {
               </label>
               <FileInput
                 id='file'
+                fileInputProps={{
+                  role: 'upload-field',
+                }}
                 data-testid='upload-field'
                 className='pointer-events-none w-full'
                 placeholder='Max file size 500 kB'
@@ -214,7 +218,11 @@ export default function AddCategoryModal() {
                 alt={previewImage.current.name}
               />
               <p data-testid='preview-name'>{previewImage.current.name}</p>
-              <button onClick={clearFile} className='ml-[42px]'>
+              <button
+                onClick={clearFile}
+                className='ml-[42px]'
+                data-testid='clear-image'
+              >
                 <X size={14} alignmentBaseline='central' />
               </button>
             </div>

@@ -1,14 +1,15 @@
 'use client';
 
+import { Center, Stack } from '@mantine/core';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+
 import Loader from '@/components/Loader';
 import { useLoginOauthMutation } from '@/shared/api/authApi';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
-import { Center, Stack } from '@mantine/core';
-import Link from 'next/link';
-import { redirect, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function CallbackPage() {
   const params = useSearchParams();

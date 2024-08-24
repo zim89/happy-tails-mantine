@@ -77,7 +77,11 @@ export default function AddCodeModal() {
 
   return (
     <>
-      <UnstyledButton className={classes.actionButton} onClick={() => open()}>
+      <UnstyledButton
+        className={classes.actionButton}
+        onClick={() => open()}
+        data-testid='modal-handler'
+      >
         <PlusCircle width={20} />
         Add new promo code
       </UnstyledButton>
@@ -90,10 +94,14 @@ export default function AddCodeModal() {
           content: classes.modalContent,
         }}
         onClose={close}
+        data-testid='modal'
       >
         <ModalHeader heading='Create new promo code' handleClose={close} />
 
-        <form className='grid grid-cols-2 grid-rows-2 gap-x-12 gap-y-[30px]'>
+        <form
+          className='grid grid-cols-2 grid-rows-2 gap-x-12 gap-y-[30px]'
+          data-testid='modal-form'
+        >
           <TextInput
             classNames={{
               root: 'form-root',
