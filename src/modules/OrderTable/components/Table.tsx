@@ -9,6 +9,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  SortingState,
 } from '@tanstack/react-table';
 import { flushSync } from 'react-dom';
 import { useEffect, useState } from 'react';
@@ -102,6 +103,14 @@ export default function Table({ data }: { data: Order[] }) {
   const table = useReactTable({
     columns,
     data,
+    initialState: {
+      sorting: [
+        {
+          id: 'createdDate',
+          desc: true,
+        },
+      ],
+    },
     state: {
       columnFilters,
       globalFilter,

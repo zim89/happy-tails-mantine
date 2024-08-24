@@ -178,6 +178,14 @@ export const Table = ({ data }: Props) => {
   const table = useReactTable({
     data: tableData,
     columns,
+    initialState: {
+      sorting: [
+        {
+          desc: true,
+          id: 'sentAt',
+        },
+      ],
+    },
     state: {
       globalFilter: search,
     },
