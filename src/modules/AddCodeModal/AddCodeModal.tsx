@@ -103,6 +103,7 @@ export default function AddCodeModal() {
           data-testid='modal-form'
         >
           <TextInput
+            data-testid='discount-field'
             classNames={{
               root: 'form-root',
               label: 'form-label',
@@ -121,6 +122,7 @@ export default function AddCodeModal() {
             {...form.getInputProps('discount')}
           />
           <TextInput
+            data-testid='min-price-field'
             classNames={{
               root: 'form-root',
               label: 'form-label',
@@ -140,6 +142,7 @@ export default function AddCodeModal() {
           />
           <DateInput
             id={uniqueStartingDateId}
+            data-testid='beginning-date-input'
             {...form.getInputProps('beginningDate')}
             classNames={{
               input:
@@ -175,6 +178,7 @@ export default function AddCodeModal() {
             }
           />
           <DateInput
+            data-testid='expiration-date-input'
             id={uniqueExpirationDateId}
             {...form.getInputProps('expirationDate')}
             classNames={{
