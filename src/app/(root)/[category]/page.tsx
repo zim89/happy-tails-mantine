@@ -9,33 +9,14 @@ import Overview from '@/components/Overview';
 
 import { categoriesDesc } from './lib/seo';
 import { getAllCategories } from '@/shared/lib/requests';
-import { Category } from '@/shared/types/types';
 
 type Props = {
   params: { category: string };
 };
 
-// It's cached to avoid repetitions of requests
-let cachedCategories: Category[] = [];
-
-async function memoizedGetAllCategories() {
-  if (!cachedCategories.length) {
-    cachedCategories = await getAllCategories();
-  }
-  return cachedCategories;
-}
-
-export async function generateStaticParams() {
-  const categories = await memoizedGetAllCategories();
-
-  return categories.map((category) => ({
-    category: category.name.toLowerCase(),
-  }));
-}
-
 export async function generateMetadata({ params }: Props) {
   try {
-    const categories = await memoizedGetAllCategories();
+    const categories = await getAllCategories();
 
     const found = categories.find(
       (cat) => cat.name.toLowerCase() === decodeURIComponent(params.category)
@@ -56,15 +37,18 @@ export async function generateMetadata({ params }: Props) {
   }
 }
 
+// Revalidation time for a pages
+export const revalidate = 100;
 export const dynamicParams = false;
 
-export default async function CatalogPage({ params }: Props) {
+export default async function CatalogPage(props: Props) {
   const categories = await getAllCategories();
 
   // Used category.name because in product there is only a name of a category, not its path
   // It's used for breadcrumbs' links in product details page
   const category = categories.find(
-    (cat) => cat.name.toLowerCase() === decodeURIComponent(params.category)
+    (cat) =>
+      cat.name.toLowerCase() === decodeURIComponent(props.params.category)
   );
 
   if (!category) notFound();

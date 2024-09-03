@@ -24,4 +24,5 @@ class ResizeObserver {
   disconnect() {}
 }
 
-window.ResizeObserver = ResizeObserver;
+(window.URL.createObjectURL = vi.fn((file: File) => '/next.svg')),
+  (window.ResizeObserver = ResizeObserver);
