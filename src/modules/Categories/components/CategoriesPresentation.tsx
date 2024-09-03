@@ -22,7 +22,7 @@ export default function CategoriesPresentation() {
         <CategoryBadge
           key={category.path}
           name={category.name}
-          path={`/${category.path}`}
+          path={`/${category.name.toLowerCase()}`}
           position={{
             x: category.coordinateOnBannerX,
             y: category.coordinateOnBannerY,

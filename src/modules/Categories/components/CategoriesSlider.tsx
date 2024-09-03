@@ -21,7 +21,7 @@ export default function CategoriesSlider() {
         {data.content.map((category) => (
           <Carousel.Slide key={category.id} w='12.5rem'>
             <Link
-              href={category.path}
+              href={'/' + category.name.toLowerCase()}
               className='flex size-full cursor-pointer flex-col items-center justify-center gap-2 border border-brand-grey-400 shadow-[0_2px_8px_0_#00000029]'
             >
               <div
