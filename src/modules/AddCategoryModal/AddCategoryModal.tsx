@@ -24,6 +24,7 @@ import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
+import { file } from 'googleapis/build/src/apis/file';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -81,6 +82,18 @@ export default function AddCategoryModal() {
       let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
       if (image && process.env.NODE_ENV === 'production') {
+        const regex = /^image\/(gif|webp|png|jpeg)$/;
+        const match = image.type.match(regex);
+
+        if (!match) {
+          clearAndClose();
+          setNotification(
+            'Failed',
+            'Forbidden image type. Available image types are: gif, webp, png and jpeg'
+          );
+          return;
+        }
+
         const form = new FormData();
         form.append('image', image);
         form.append('title', `CATEGORY: ${categoryName}`);
