@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import * as React from 'react';
 import { Container } from '@mantine/core';
@@ -30,8 +30,8 @@ export default function Header() {
                   <SearchMenu />
                 </span>
               </div>
-              
-              <Link href="/">
+
+              <Link href='/'>
                 <Logo />
               </Link>
 

@@ -85,9 +85,7 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
                 height={isDesktop ? 42 : 32}
                 width={isDesktop ? 42 : 32}
               />
-              <p className='navLink'>
-                {item.name === 'Leads&harnesses' ? 'Leads' : item.name}
-              </p>
+              <p className='navLink'>{item.name}</p>
             </Link>
           </li>
         ))}
