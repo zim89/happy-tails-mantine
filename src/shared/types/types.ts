@@ -32,7 +32,7 @@ type ProductColorSizes = {
     productStatus: ProductStatus;
     description: Product['description'];
   }[];
-  imagePath: Product['imagePath'];
+  imagePath: Product['imagePath'] | null;
 }[];
 
 export type CreateProductBody = {

@@ -163,6 +163,7 @@ export default function AddCategoryModal() {
 
         <form data-testid='modal-form'>
           <TextInput
+            withAsterisk
             classNames={{
               root: 'form-root',
               label: 'form-label',
@@ -186,7 +187,9 @@ export default function AddCategoryModal() {
               label: styles.fileLabel,
             }}
           >
-            <span>Image</span>
+            <span>
+              Image <span className='text-[var(--mantine-color-error)]'>*</span>
+            </span>
             <Tooltip label='.png, .jpeg, .gif, .webp'>
               <Info size={16} className='cursor-pointer' />
             </Tooltip>
@@ -199,6 +202,7 @@ export default function AddCategoryModal() {
                 <span>Select Image</span>
               </label>
               <FileInput
+                withAsterisk
                 id='file'
                 fileInputProps={{
                   role: 'upload-field',

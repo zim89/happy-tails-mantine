@@ -100,7 +100,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
             >
               <div className={styles.message}>
                 <Image
-                  src='/icons/categories/file_error.svg'
+                  src='/icons/file_error.svg'
                   alt=''
                   width={64}
                   height={64}

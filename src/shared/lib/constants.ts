@@ -1,4 +1,4 @@
-import { Category, ErrorData, Order, Product } from '../types/types';
+import { Category, ErrorData, Order } from '../types/types';
 
 export const DEFAULT_CATEGORY_IMAGE = 'https://i.imgur.com/dhBg9XH.png';
 

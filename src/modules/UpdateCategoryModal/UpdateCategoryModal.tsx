@@ -89,6 +89,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       let requestBody = {
         ...category,
         name: categoryName,
+        title: categoryName,
+        description: `Category name: ${categoryName}`,
       };
 
       // Uploading an image
@@ -158,6 +160,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               ),
               error: 'form-error',
             }}
+            withAsterisk
             withErrorStyles
             type='text'
             label='Category Name'
@@ -180,7 +183,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               label: styles.fileLabel,
             }}
           >
-            <span>Image</span>
+            <span>
+              {' '}
+              Image <span className='text-[var(--mantine-color-error)]'>*</span>
+            </span>
             <Tooltip label='.png, .jpeg, .gif, .webp'>
               <Info size={16} className='cursor-pointer' />
             </Tooltip>

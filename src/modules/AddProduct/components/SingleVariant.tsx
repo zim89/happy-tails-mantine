@@ -72,6 +72,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
     <div className={classes.variant}>
       <div className={classes.variantInputs}>
         <Select
+          withAsterisk
           {...form.getInputProps('size')}
           classNames={{
             root: 'form-root w-full',
@@ -93,6 +94,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
           data={['XS', 'S', 'M', 'L', 'XL', 'XXL', 'ONE SIZE']}
         />
         <Select
+          withAsterisk
           {...form.getInputProps('color')}
           classNames={{
             root: 'form-root w-full',
@@ -129,6 +131,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
       </div>
       <div className={classes.variantInputs}>
         <TextInput
+          withAsterisk
           {...form.getInputProps('quantity')}
           classNames={{
             root: 'form-root w-full ',
@@ -145,6 +148,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
           label='Quantity'
         />
         <TextInput
+          withAsterisk
           {...form.getInputProps('price')}
           classNames={{
             root: 'form-root w-full',
@@ -166,7 +170,9 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
       {!variantImage.current?.path || !variantImage.current?.name ? (
         <div className={classes.upload}>
           <p className='m-0 flex items-center gap-1'>
-            <span>Image</span>
+            <span>
+              Image <span className='text-[var(--mantine-color-error)]'>*</span>
+            </span>
             <Tooltip label='.jpeg,.jpg,.png,.gif,.apng,.tiff' withArrow>
               <Info
                 size={16}

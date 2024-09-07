@@ -2,7 +2,7 @@ import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect } from 'react';
 
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { CreateProductBody } from '@/shared/types/types';
+import { AxiosQueryError, CreateProductBody } from '@/shared/types/types';
 import { ProductForm, context } from '../lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
@@ -10,13 +10,15 @@ import { publishImage } from '@/shared/lib/requests';
 
 import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 type Props = {
   setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 export const Controls = ({ setNotification }: Props) => {
-  const { productForm, previewImage, variants } = useContext(context);
+  const { productForm, previewImage, variants, setVariants } =
+    useContext(context);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
 
   const [dispatch] = useCreateMutation();
@@ -38,86 +40,94 @@ export const Controls = ({ setNotification }: Props) => {
 
   const clearAndClose = () => {
     productForm.reset();
+    setVariants([]);
     clearFile();
   };
 
   const handleSubmit = async ({
     image,
     categoryName,
-    quantity,
     ...rest
   }: ProductForm['values']) => {
     const { hasErrors } = productForm.validate();
     if (hasErrors) return;
 
-    const variantErrors = variants.some((variant) => {
-      if (!variant) return;
-      const { hasErrors } = variant.validate();
-      return hasErrors;
-    });
-
-    if (variantErrors) return;
-
     try {
-      let imagePath = '';
+      if (!variants.length)
+        throw {
+          data: 'Variants must be specified',
+          status: 400,
+        } as AxiosQueryError;
 
-      if (image) {
+      const variantErrors = variants.some((variant) => {
+        if (!variant) return;
+        const { hasErrors } = variant.validate();
+        return hasErrors;
+      });
+
+      if (variantErrors) return;
+
+      let imagePath = DEFAULT_CATEGORY_IMAGE;
+
+      if (image && process.env.NODE_ENV === 'production') {
         imagePath = await publishImage(image, rest.name);
       }
 
-      let totalQuantity = Number(quantity);
+      let totalQuantity = 0;
 
       let productColorSizes: CreateProductBody['productColorSizes'] = [];
-      if (variants.length) {
-        variants.forEach(async (variant) => {
-          if (!variant) return;
 
-          // Update total quantity of the product
-          totalQuantity += Number(variant.values.quantity);
+      variants.forEach(async (variant) => {
+        if (!variant) return;
 
-          // Add size for each color
-          let candidateIndex = productColorSizes.findIndex(
-            (v) => v.color === variant.values.color
-          );
+        // Update total quantity of the product
+        totalQuantity += Number(variant.values.quantity);
 
-          if (candidateIndex !== -1) {
-            productColorSizes[candidateIndex].productSizes.push({
-              size: variant.values.size,
-              productStatus:
-                variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-              quantity: variant.values.quantity,
-              description: `${rest.description} (${variant.values.color})`,
-            });
-          } else {
-            let variantImagePath = '';
+        // Add size for each color
+        let candidateIndex = productColorSizes.findIndex(
+          (v) => v.color === variant.values.color
+        );
 
-            if (variant.values.variantImage) {
-              variantImagePath = await publishImage(
-                variant.values.variantImage,
-                `${rest.name} in ${variant.values.color}`
-              );
-            }
+        if (candidateIndex !== -1) {
+          productColorSizes[candidateIndex].productSizes.push({
+            size: variant.values.size,
+            productStatus:
+              variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+            quantity: variant.values.quantity,
+            description: `${rest.description} (${variant.values.color})`,
+          });
+        } else {
+          let variantImagePath = DEFAULT_CATEGORY_IMAGE;
 
-            productColorSizes.push({
-              color: variant.values.color,
-              imagePath: variantImagePath,
-              productSizes: [
-                {
-                  size: variant.values.size,
-                  quantity: variant.values.quantity,
-                  productStatus:
-                    variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-                  description: `${rest.description} (${variant.values.color})`,
-                },
-              ],
-            });
+          if (
+            variant.values.variantImage &&
+            process.env.NODE_ENV === 'production'
+          ) {
+            variantImagePath = await publishImage(
+              variant.values.variantImage,
+              `${rest.name} in ${variant.values.color}`
+            );
           }
-        });
-      }
+
+          productColorSizes.push({
+            color: variant.values.color,
+            imagePath: variantImagePath,
+            productSizes: [
+              {
+                size: variant.values.size,
+                quantity: variant.values.quantity,
+                productStatus:
+                  variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+                description: `${rest.description} (${variant.values.color})`,
+              },
+            ],
+          });
+        }
+      });
 
       const newProduct: Partial<CreateProductBody> = {
         ...rest,
-        productColorSizes: productColorSizes,
+        productColorSizes,
         imagePath,
         totalQuantity,
         onSale: true,
@@ -128,14 +138,11 @@ export const Controls = ({ setNotification }: Props) => {
 
       candidate && (newProduct.categoryId = candidate.id);
 
-      console.log(newProduct);
-
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();
       setNotification('Success', 'Product created successfully!');
     } catch (err) {
-      clearAndClose();
       console.error(err);
 
       if (isAxiosQueryError(err)) {
