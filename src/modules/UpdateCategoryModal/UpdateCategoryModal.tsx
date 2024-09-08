@@ -24,6 +24,7 @@ import { cn } from '@/shared/lib/utils';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 import { notifyContext } from '@/shared/context/notification.context';
+import { publishImage } from '@/shared/lib/requests';
 
 type Props = {
   categoryLine: Category;
@@ -89,27 +90,16 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       let requestBody = {
         ...category,
         name: categoryName,
+        title: categoryName,
+        description: `Category name: ${categoryName}`,
       };
 
       // Uploading an image
       if (image) {
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('type', 'image');
-        formData.append('title', `Category image: ${categoryName}`);
-
-        const res = await axios.post(
-          'https://api.imgur.com/3/image/',
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+        requestBody.imgSrc = await publishImage(
+          image,
+          `Category: ${categoryName}`
         );
-
-        requestBody.imgSrc = res.data.data.link;
       }
 
       await dispatch({ req: requestBody }).unwrap();
@@ -158,6 +148,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               ),
               error: 'form-error',
             }}
+            withAsterisk
             withErrorStyles
             type='text'
             label='Category Name'
@@ -180,7 +171,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               label: styles.fileLabel,
             }}
           >
-            <span>Image</span>
+            <span>
+              {' '}
+              Image <span className='text-[var(--mantine-color-error)]'>*</span>
+            </span>
             <Tooltip label='.png, .jpeg, .gif, .webp'>
               <Info size={16} className='cursor-pointer' />
             </Tooltip>

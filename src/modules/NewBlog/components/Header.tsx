@@ -13,6 +13,7 @@ import PageHeader from '@/components/PageHeader';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { notifyContext } from '@/shared/context/notification.context';
+import { publishImage } from '@/shared/lib/requests';
 
 type Props = {
   editor: Editor;
@@ -69,29 +70,15 @@ export const Header = ({ editor }: Props) => {
     try {
       const { author, content, image, title, isHero } = form.values;
 
-      const params = new FormData();
-      params.append('image', image!);
-      params.append('title', `Post poster for: ${form.values.title}`);
-
       let posterImgSrc = 'https://placehold.co/600x400.png';
 
       try {
-        if (process.env.NODE_ENV !== 'development') {
-          const res = await axios.post(
-            'https://api.imgur.com/3/image/',
-            params,
-            {
-              headers: {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-                'Content-Type': 'multipart/form-data',
-              },
-            }
+        if (image) {
+          posterImgSrc = await publishImage(
+            image,
+            `Post poster for: ${form.values.title}`
           );
-
-          posterImgSrc = res.data.data.link;
         }
-
-        console.log('New Form Values: ', form.values);
 
         const { id } = await dispatch({
           authorName: author || 'Happy Tails Admin',

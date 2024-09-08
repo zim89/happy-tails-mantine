@@ -226,10 +226,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
 
     if (imageField && imageField.type !== 'Empty') {
       // Upload the image to the server and get the public URL
-      productImage =
-        process.env.NODE_ENV === 'production'
-          ? await publishImage(imageField, form.values.name)
-          : 'https://placehold.co/600x600.png';
+      productImage = await publishImage(imageField, form.values.name);
     }
 
     const requestBody: ProductPutRequest = {

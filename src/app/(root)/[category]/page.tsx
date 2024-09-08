@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 // Revalidation time for a pages
-export const revalidate = 100;
+export const revalidate = 10;
 export const dynamicParams = false;
 
 export default async function CatalogPage(props: Props) {
@@ -52,6 +52,8 @@ export default async function CatalogPage(props: Props) {
   );
 
   if (!category) notFound();
+
+  console.log(category);
 
   return (
     <>

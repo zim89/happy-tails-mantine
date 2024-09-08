@@ -33,6 +33,7 @@ export const Form = () => {
           <div className={classes.inputRow}>
             <TextInput
               {...productForm.getInputProps('name')}
+              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',
@@ -49,6 +50,7 @@ export const Form = () => {
             />
             <TextInput
               {...productForm.getInputProps('price')}
+              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',
@@ -69,6 +71,7 @@ export const Form = () => {
           <div className={classes.inputRow}>
             <Select
               {...productForm.getInputProps('productStatus')}
+              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',
@@ -87,28 +90,12 @@ export const Form = () => {
               label='Status'
               data={['IN STOCK', 'OUT OF STOCK'] as ProductStatus[]}
             />
-            <TextInput
-              {...productForm.getInputProps('quantity')}
-              classNames={{
-                root: 'form-root w-full',
-                label: 'form-label',
-                wrapper: 'flex gap-2 focus:outline outline-2',
-                section: 'static w-auto text-secondary whitespace-nowrap',
-                input: cn(
-                  'form-input rounded-sm px-2 outline-none',
-                  productForm?.errors?.quantity && 'form-error--input'
-                ),
-                error: 'form-error',
-              }}
-              type='number'
-              min={0}
-              max={Number.MAX_SAFE_INTEGER}
-              label='Quantity'
-            />
           </div>
           <div className={classes.inputRow}>
             <Select
               {...productForm.getInputProps('categoryName')}
+              defaultValue={null}
+              withAsterisk
               classNames={{
                 root: 'form-root w-full',
                 label: 'form-label',
@@ -129,7 +116,6 @@ export const Form = () => {
             />
 
             <Select
-              defaultValue={'INDOORS'}
               {...productForm.getInputProps('productType')}
               classNames={{
                 root: 'form-root w-full',
@@ -155,7 +141,10 @@ export const Form = () => {
             <>
               <div className={classes.upload}>
                 <p className='m-0 flex items-center gap-1'>
-                  <span>Image</span>
+                  <span>
+                    Image{' '}
+                    <span className='text-[var(--mantine-color-error)]'>*</span>
+                  </span>
                   <Tooltip label='.jpeg,.jpg,.png,.gif,.apng,.tiff' withArrow>
                     <Info
                       size={16}
@@ -170,6 +159,7 @@ export const Form = () => {
                     <span>Select Image</span>
                   </label>
                   <FileInput
+                    withAsterisk
                     id='file'
                     w='100%'
                     placeholder='Max file size 500 kB'
@@ -206,6 +196,7 @@ export const Form = () => {
           )}
         </div>
         <Textarea
+          withAsterisk
           classNames={{
             root: 'form-root w-full mb-6',
             label: 'form-label',

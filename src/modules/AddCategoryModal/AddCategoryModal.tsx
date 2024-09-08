@@ -24,7 +24,7 @@ import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
-import { file } from 'googleapis/build/src/apis/file';
+import { publishImage } from '@/shared/lib/requests';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -81,31 +81,8 @@ export default function AddCategoryModal() {
 
       let imgSrc = DEFAULT_CATEGORY_IMAGE;
 
-      if (image && process.env.NODE_ENV === 'production') {
-        const regex = /^image\/(gif|webp|png|jpeg)$/;
-        const match = image.type.match(regex);
-
-        if (!match) {
-          clearAndClose();
-          setNotification(
-            'Failed',
-            'Forbidden image type. Available image types are: gif, webp, png and jpeg'
-          );
-          return;
-        }
-
-        const form = new FormData();
-        form.append('image', image);
-        form.append('title', `CATEGORY: ${categoryName}`);
-
-        const res = await axios.post('https://api.imgur.com/3/image/', form, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        imgSrc = res.data.data.link;
+      if (image) {
+        imgSrc = await publishImage(image, `Category: ${categoryName}`);
       }
 
       const newCategory = {
@@ -163,6 +140,7 @@ export default function AddCategoryModal() {
 
         <form data-testid='modal-form'>
           <TextInput
+            withAsterisk
             classNames={{
               root: 'form-root',
               label: 'form-label',
@@ -186,7 +164,9 @@ export default function AddCategoryModal() {
               label: styles.fileLabel,
             }}
           >
-            <span>Image</span>
+            <span>
+              Image <span className='text-[var(--mantine-color-error)]'>*</span>
+            </span>
             <Tooltip label='.png, .jpeg, .gif, .webp'>
               <Info size={16} className='cursor-pointer' />
             </Tooltip>
@@ -199,6 +179,7 @@ export default function AddCategoryModal() {
                 <span>Select Image</span>
               </label>
               <FileInput
+                withAsterisk
                 id='file'
                 fileInputProps={{
                   role: 'upload-field',
