@@ -69,7 +69,7 @@ export const Controls = ({ setNotification }: Props) => {
 
       let imagePath = DEFAULT_CATEGORY_IMAGE;
 
-      if (image && process.env.NODE_ENV === 'production') {
+      if (image) {
         imagePath = await publishImage(image, rest.name);
       }
 

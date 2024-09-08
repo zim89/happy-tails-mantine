@@ -40,10 +40,6 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             leftSection={<Edit2 size={16} />}
             className='rounded-none hover:bg-brand-grey-200'
           >
-            {/* <UpdateProductModal
-              setNotification={setNotification}
-              productLine={productLine}
-            /> */}
             <Link href={`/admin/products/${productLine.id}`}>Edit</Link>
           </Menu.Item>
           <Menu.Item
