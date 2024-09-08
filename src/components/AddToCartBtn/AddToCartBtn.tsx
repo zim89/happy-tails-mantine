@@ -16,7 +16,7 @@ export default function AddToCartBtn({ product, size }: Props) {
   const isAvailable = product.productStatus === 'IN STOCK';
 
   const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
     dispatch(addToCart({ ...product, size: size ?? 'ONE SIZE' }));
     dispatch(openCartDrawer());
   };

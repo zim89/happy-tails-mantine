@@ -31,17 +31,17 @@ export default function ProductCard({ product, router }: Props) {
   );
 
   return (
-    <div
-      className='group/card h-[479px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:w-[373px]'
-      onClick={() => router?.push(`/products/${product.id}`)}
-    >
+    <Link href={`/products/${product.id}`}>
       <div
-        className={clsx(
-          'h-full overflow-hidden',
-          !isAvailable && 'text-secondary/40'
-        )}
+        className='group/card h-[479px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:w-[373px]'
+        onClick={() => router?.push(`/products/${product.id}`)}
       >
-        <Link href={`/products/${product.id}`}>
+        <div
+          className={clsx(
+            'h-full overflow-hidden',
+            !isAvailable && 'text-secondary/40'
+          )}
+        >
           <div
             className={clsx(
               'relative mb-5 transition-all duration-500',
@@ -63,67 +63,80 @@ export default function ProductCard({ product, router }: Props) {
               }}
             />
           </div>
-        </Link>
 
-        <div className='mb-2 flex h-[18px] items-center justify-between'>
-          <p className='text-start text-xs leading-normal'>{product.article}</p>
-          <ul className='hidden lg:flex lg:gap-2'>
-            {colorList.length > 0 &&
-              colorList
-                .filter((item) => item.colorName !== product.color)
-                .map((item) => {
-                  return (
-                    <li key={item.productId}>
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          `inline-block size-[18px] rounded-full border border-brand-grey-400`,
-                          BG_COLORS[item.colorName]
-                        )}
-                      />
-                    </li>
-                  );
-                })}
-          </ul>
-        </div>
+          <div className='mb-2 flex h-[18px] items-center justify-between'>
+            <p className='text-start text-xs leading-normal'>
+              {product.article}
+            </p>
+            <ul className='hidden lg:flex lg:gap-2'>
+              {colorList.length > 0 &&
+                colorList
+                  .filter((item) => item.colorName !== product.color)
+                  .map((item) => {
+                    return (
+                      <li key={item.productId}>
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            `inline-block size-[18px] rounded-full border border-brand-grey-400`,
+                            BG_COLORS[item.colorName]
+                          )}
+                        />
+                      </li>
+                    );
+                  })}
+            </ul>
+          </div>
 
-        <p className='mb-3 h-12 text-xl font-bold leading-none'>
-          {product.name}
-        </p>
+          <p className='mb-3 h-12 text-xl font-bold leading-none'>
+            {product.name}
+          </p>
 
-        <p
-          className={clsx(
-            'relative text-start text-base',
-            sizes.length === 0 && 'mb-5'
+          <p
+            className={clsx(
+              'relative text-start text-base',
+              sizes.length === 0 && 'mb-5'
+            )}
+          >
+            <NumberFormatter
+              prefix='$ '
+              value={product.price}
+              decimalScale={2}
+            />
+            <span
+              onClick={(e) => e.preventDefault()}
+              className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'
+            >
+              <AddToWishBtn product={product} />
+            </span>
+          </p>
+
+          {sizes.length > 0 && (
+            <ul className='flex justify-between py-5'>
+              {sizes.map((item) => (
+                <li key={item.size}>
+                  <button
+                    disabled={!item.isAvailable}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedSize(item);
+                    }}
+                    className={cn(
+                      'flex h-8 w-12 items-center justify-center rounded-3xl border border-brand-grey-400 text-base text-black disabled:text-brand-grey-400',
+                      item.size === selectedSize?.size &&
+                        'border-2 border-black'
+                    )}
+                  >
+                    {item.size}
+                  </button>
+                </li>
+              ))}
+            </ul>
           )}
-        >
-          <NumberFormatter prefix='$ ' value={product.price} decimalScale={2} />
-          <span className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'>
-            <AddToWishBtn product={product} />
-          </span>
-        </p>
 
-        {sizes.length > 0 && (
-          <ul className='flex justify-between py-5'>
-            {sizes.map((item) => (
-              <li key={item.size}>
-                <button
-                  disabled={!item.isAvailable}
-                  onClick={() => setSelectedSize(item)}
-                  className={cn(
-                    'flex h-8 w-12 items-center justify-center rounded-3xl border border-brand-grey-400 text-base text-black disabled:text-brand-grey-400',
-                    item.size === selectedSize?.size && 'border-2 border-black'
-                  )}
-                >
-                  {item.size}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <AddToCartBtn product={product} size={selectedSize?.size} />
+          <AddToCartBtn product={product} size={selectedSize?.size} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
