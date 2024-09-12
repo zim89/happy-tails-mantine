@@ -76,7 +76,6 @@ export default function CheckoutForm() {
       };
 
       try {
-        console.log(formData);
         const response = await createOrder(formData).unwrap();
         if ((response as ResponseError).status === 400) {
           toast.error('Something went wrong. Please try again later.');

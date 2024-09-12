@@ -390,7 +390,7 @@ export default function DeliveryForm() {
           {!checked && (
             <div className='space-y-4 pt-6'>
               <TextInput
-                {...form.getInputProps('billingAddressF.firstName')}
+                {...form.getInputProps('billingAddress.firstName')}
                 withAsterisk
                 label='First Name'
                 classNames={{
