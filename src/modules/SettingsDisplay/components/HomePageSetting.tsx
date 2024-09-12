@@ -30,6 +30,7 @@ import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { findImageSource } from '../lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { SITE_DOMAIN } from '@/shared/constants/env.const';
 
 type PreviewImage = {
   id: number | null;
@@ -61,10 +62,7 @@ export const HomePageSetting = () => {
 
   const productsPages = useMemo(() => {
     return products.map((product) => {
-      const prefix =
-        process.env.NODE_ENV !== 'production'
-          ? 'http://localhost:3000'
-          : process.env.NEXT_PUBLIC_SITE_DOMAIN;
+      const prefix = SITE_DOMAIN;
 
       return prefix + '/products/' + product.id;
     });
@@ -72,10 +70,7 @@ export const HomePageSetting = () => {
 
   const categoriesPages = useMemo(() => {
     return categories.map((cat) => {
-      const prefix =
-        process.env.NODE_ENV !== 'production'
-          ? 'http://localhost:3000'
-          : process.env.NEXT_PUBLIC_SITE_DOMAIN;
+      const prefix = SITE_DOMAIN;
 
       return prefix + '/' + cat.path;
     });
@@ -83,10 +78,7 @@ export const HomePageSetting = () => {
 
   const postsPages = useMemo(() => {
     return posts.map((post) => {
-      const prefix =
-        process.env.NODE_ENV !== 'production'
-          ? 'http://localhost:3000'
-          : process.env.NEXT_PUBLIC_SITE_DOMAIN;
+      const prefix = SITE_DOMAIN;
 
       return prefix + '/blog/' + post.id;
     });
@@ -238,7 +230,7 @@ export const HomePageSetting = () => {
 
         let imageLink = 'https://placehold.co/1200x800.png';
 
-        if (process.env.NODE_ENV === 'production' && image instanceof File) {
+        if (image) {
           imageLink = await publishImage(image, bannerProp);
         }
 

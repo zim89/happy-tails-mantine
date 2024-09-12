@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/utils';
 import { setDiscount } from '@/shared/redux/checkout/checkoutSlice';
 import type { Discount } from '@/shared/api/discountApi';
 import { selectCartTotalPrice } from '@/shared/redux/cart/cartSlice';
+import { API_URL } from '@/shared/constants/env.const';
 
 export default function PromoCode() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,9 +28,7 @@ export default function PromoCode() {
   });
 
   const fetchDiscount = async () => {
-    const res = await axios.get(
-      process.env.NEXT_PUBLIC_BASE_URL + `/discount/${form.values.code}`
-    );
+    const res = await axios.get(API_URL + `/discount/${form.values.code}`);
     return res.data;
   };
 

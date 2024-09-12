@@ -18,6 +18,7 @@ import { useUpdateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { productTypeList } from '@/shared/lib/constants';
+import { publishImage } from '@/shared/lib/requests';
 
 type Props = {
   productLine: Product;
@@ -112,23 +113,10 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
 
       // Uploading an image
       if (image) {
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('type', 'image');
-        formData.append('title', `Product image: ${rest.name}`);
-
-        const res = await axios.post(
-          'https://api.imgur.com/3/image/',
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+        requestBody.imagePath = await publishImage(
+          image,
+          `Product image: ${rest.name}`
         );
-
-        requestBody.imagePath = res.data.data.link;
       }
 
       await dispatch({ req: requestBody }).unwrap();

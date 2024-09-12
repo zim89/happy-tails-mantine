@@ -1,5 +1,6 @@
-import { AxiosError } from "axios";
-import axios from "@/shared/lib/interceptor";
+import { AxiosError } from 'axios';
+import axios from '@/shared/lib/interceptor';
+import { API_URL } from '../constants/env.const';
 
 export type Credentials = {
   content: string;
@@ -9,29 +10,29 @@ export type Credentials = {
 };
 
 enum FeedStatus {
-  NEW = "NEW"
+  NEW = 'NEW',
 }
 
 export type Response = {
-    userId: string | null;
-    id: number;
-    feedbackStatus: FeedStatus;
-    sentAt: number;
-    resolvedAt: number | null;
+  userId: string | null;
+  id: number;
+  feedbackStatus: FeedStatus;
+  sentAt: number;
+  resolvedAt: number | null;
 } & Credentials;
 
 export const postRequest = async ({
   content,
   userEmail,
   userName,
-  imageSrc
+  imageSrc,
 }: Credentials) => {
   try {
-    const res = await axios.post<Response>(`${process.env.NEXT_PUBLIC_BASE_URL}/feedback`, {
+    const res = await axios.post<Response>(`${API_URL}/feedback`, {
       content,
       userName,
       userEmail,
-      imageSrc
+      imageSrc,
     });
 
     return res;

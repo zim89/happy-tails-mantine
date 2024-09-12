@@ -7,6 +7,7 @@ import Overview from '@/components/Overview';
 import Toolbar from '@/modules/Toolbar';
 import { BackendResponse, Category, Product } from '@/shared/types/types';
 import { getAllCategories } from '@/shared/lib/requests';
+import { API_URL } from '@/shared/constants/env.const';
 
 const category: Category = {
   id: 0,
@@ -38,9 +39,9 @@ Ensure your dog's safety and style during walks with our exquisite collection of
 
 export default async function AllProducts() {
   const categories = await getAllCategories();
-  const { totalElements } = (await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL + '/products?size=1'
-  ).then((res) => res.json())) as BackendResponse<Product>;
+  const { totalElements } = (await fetch(API_URL + '/products?size=1').then(
+    (res) => res.json()
+  )) as BackendResponse<Product>;
 
   category.productCount = totalElements;
 

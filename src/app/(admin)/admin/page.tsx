@@ -29,28 +29,33 @@ export default function Page() {
     if (!code) return;
 
     (async () => {
-      const res = await getAccessToken(code);
+      try {
+        const res = await getAccessToken(code);
 
-      localStorage.setItem(
-        KEYS['google_verification'],
-        JSON.stringify({
-          access_token: res.data.tokens.access_token,
-          refresh_token: res.data.tokens.refresh_token,
-          expires_in: res.data.tokens.expiry_date,
-        })
-      );
+        localStorage.setItem(
+          KEYS['google_verification'],
+          JSON.stringify({
+            access_token: res.data.tokens.access_token,
+            refresh_token: res.data.tokens.refresh_token,
+            expires_in: res.data.tokens.expiry_date,
+          })
+        );
 
-      setToken(res.data.tokens.access_token);
+        setToken(res.data.tokens.access_token);
 
-      // Hide search params: code and scope
-      const newRelativeUrl = window.location.pathname;
-      window.history.pushState({}, '', newRelativeUrl);
+        // Hide search params: code and scope
+        const newRelativeUrl = window.location.pathname;
+        window.history.pushState({}, '', newRelativeUrl);
+      } catch (err) {
+        console.log(err);
+        window.history.pushState({}, '', window.location.pathname);
+      }
     })();
   }, [code]);
 
   if (!code && !token)
     return redirect(
-      `${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_PROD : process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_DEV}`
+      'https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fwebmasters&access_type=offline&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fadmin%2F&client_id=171015409943-jb4s4l6rba9c2nr9tm1r454s3kv95jpe.apps.googleusercontent.com'
     );
 
   return (

@@ -6,17 +6,15 @@ import { User } from '../types/auth.types';
 import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
 import { DEFAULT_CATEGORY_IMAGE } from './constants';
+import { API_URL, IMGUR_CLIENT_ID } from '../constants/env.const';
 
 export const getProductById = async (id: string) => {
   try {
-    const request = await axios.get<Product>(
-      process.env.NEXT_PUBLIC_BASE_URL + '/products/' + id,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const request = await axios.get<Product>(API_URL + '/products/' + id, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     const result = request.data;
     return result;
@@ -28,7 +26,7 @@ export const getProductById = async (id: string) => {
 export const getProductList = async () => {
   try {
     const request = await axios.get<BackendResponse<Product[]>>(
-      process.env.NEXT_PUBLIC_BASE_URL + '/products',
+      API_URL + '/products',
       {
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ export const getUserByEmail = async (email: string) => {
 export const getAllCategories = async () => {
   try {
     const res = await axios.get<BackendResponse<Category[]>>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category`
+      `${API_URL}/category`
     );
     const categories: Category[] = res.data.content;
     return categories;
@@ -72,7 +70,7 @@ export const fetchAllPosts = async (
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published?page=${page}&size=${size}`,
+      `${API_URL}/posts/published?page=${page}&size=${size}`,
       { cache: 'no-store' }
     );
     return await res.json();
@@ -83,9 +81,7 @@ export const fetchAllPosts = async (
 
 export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
   try {
-    const res = await axios(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/published`
-    );
+    const res = await axios(`${API_URL}/posts/published`);
     return res.data;
   } catch (error) {
     throw new Error('Failed to fetch posts');
@@ -95,7 +91,7 @@ export const fetchPostList = async (): Promise<BackendResponse<Post[]>> => {
 export const fetchOnePost = async (id: string): Promise<Post | null> => {
   unstable_noStore();
   try {
-    const res = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`);
+    const res = await axios(`${API_URL}/posts/${id}`);
     if (res.status === 404) return null;
     return res.data;
   } catch (error) {
@@ -105,7 +101,7 @@ export const fetchOnePost = async (id: string): Promise<Post | null> => {
 
 export const fetchHeroPost = async (): Promise<Post> => {
   try {
-    const res = await axios(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/hero`);
+    const res = await axios(`${API_URL}/posts/hero`);
     return res.data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -117,9 +113,7 @@ export const fetchHeroPost = async (): Promise<Post> => {
 
 export const fetchLastFivePosts = async (): Promise<Post[]> => {
   try {
-    const res = await axios(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/posts/last-five`
-    );
+    const res = await axios(`${API_URL}/posts/last-five`);
     return res.data;
   } catch (error) {
     throw new Error('Failed to fetch last posts');
@@ -149,7 +143,7 @@ export const publishImage = async (
     try {
       const res = await axios.post('https://api.imgur.com/3/image/', params, {
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+          Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
           'Content-Type': 'multipart/form-data',
         },
       });

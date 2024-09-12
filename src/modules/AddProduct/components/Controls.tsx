@@ -1,3 +1,5 @@
+'use client';
+
 import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect } from 'react';
 
@@ -49,6 +51,7 @@ export const Controls = ({ setNotification }: Props) => {
     categoryName,
     ...rest
   }: ProductForm['values']) => {
+    console.log('Triggered', variants);
     const { hasErrors } = productForm.validate();
     if (hasErrors) return;
 
@@ -99,10 +102,7 @@ export const Controls = ({ setNotification }: Props) => {
         } else {
           let variantImagePath = DEFAULT_CATEGORY_IMAGE;
 
-          if (
-            variant.values.variantImage &&
-            process.env.NODE_ENV === 'production'
-          ) {
+          if (variant.values.variantImage) {
             variantImagePath = await publishImage(
               variant.values.variantImage,
               `${rest.name} in ${variant.values.color}`
@@ -137,7 +137,6 @@ export const Controls = ({ setNotification }: Props) => {
       const candidate = categoryList.find((cat) => cat.name === categoryName);
 
       candidate && (newProduct.categoryId = candidate.id);
-
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();

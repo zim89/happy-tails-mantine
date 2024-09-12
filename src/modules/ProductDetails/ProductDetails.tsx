@@ -18,7 +18,6 @@ import { cn } from '@/shared/lib/utils';
 import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
-import noImage from '@/assets/images/no-img.png';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
 import Link from 'next/link';
 import { generateSizes } from '@/shared/helpers/size.helpers';
@@ -73,11 +72,9 @@ export default function ProductDetails({ product }: Props) {
             {/*  ProductDetails Image*/}
             <div className='relative mb-9 h-[341px] w-full flex-none overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
-                src={product.imagePath ?? noImage}
+                src={product.imagePath ?? '/images/no-img.png'}
                 alt={product.name}
-                blurDataURL={
-                  product.imagePath || '/images/no-image.512x512.png'
-                }
+                blurDataURL={product.imagePath || '/images/no-img.png'}
                 priority={true}
                 fill
                 sizes='(min-width: 1280px) 100vw, 50vw'
@@ -230,7 +227,11 @@ export default function ProductDetails({ product }: Props) {
 
                 <div className='flex w-[458px] gap-3'>
                   <div className='hidden w-full md:block md:max-w-[274px]'>
-                    <AddToCartBtn product={product} size={selectedSize?.size} />
+                    <AddToCartBtn
+                      product={product}
+                      count={Number(quantity || 1)}
+                      size={selectedSize?.size}
+                    />
                   </div>
 
                   <AddToWishBtn withText product={product} />
@@ -238,7 +239,11 @@ export default function ProductDetails({ product }: Props) {
               </div>
 
               <div className='md:hidden'>
-                <AddToCartBtn product={product} size={selectedSize?.size} />
+                <AddToCartBtn
+                  product={product}
+                  count={Number(quantity || 1)}
+                  size={selectedSize?.size}
+                />
               </div>
 
               <div className='mt-8 flex items-center gap-3 bg-brand-green-200 px-4 py-6'>

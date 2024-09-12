@@ -2,8 +2,7 @@ import { MetadataRoute } from 'next';
 
 import { fetchPostList } from '@/shared/lib/requests';
 import { getProductList, getAllCategories } from '@/shared/lib/requests';
-
-const URL = process.env.NEXT_PUBLIC_SITE_DOMAIN;
+import { SITE_DOMAIN } from '@/shared/constants/env.const';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productsRequest = await getProductList();
@@ -16,17 +15,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = postsRequest.content || [];
 
   const parsedCategories = categories.map(({ path, createdAt, updatedAt }) => ({
-    url: `${URL}/${encodeURIComponent(path)}`,
+    url: `${SITE_DOMAIN}/${encodeURIComponent(path)}`,
     lastModified: new Date(updatedAt || createdAt!).toISOString(),
   }));
 
   const parsedProducts = products.map(({ id, updatedAt, createdAt }) => ({
-    url: `${URL}/products/${id}`,
+    url: `${SITE_DOMAIN}/products/${id}`,
     lastModified: new Date(updatedAt || createdAt!).toISOString(),
   }));
 
   const parsedPosts = posts.map(({ id, createdAt, updatedAt }) => ({
-    url: `${URL}/blog/${id}`,
+    url: `${SITE_DOMAIN}/blog/${id}`,
     lastModified: new Date(updatedAt || createdAt).toISOString(),
   }));
 
@@ -38,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/wishlist',
     '/blog',
   ].map((route) => ({
-    url: `${URL}${route}`,
+    url: `${SITE_DOMAIN}${route}`,
     lastModified: new Date().toISOString(),
   }));
 

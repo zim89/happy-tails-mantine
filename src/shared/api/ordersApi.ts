@@ -7,6 +7,7 @@ import type {
   Sort,
 } from '../types/types';
 import { axiosBaseQuery } from '@/shared/api/authApi';
+import { SITE_DOMAIN } from '../constants/env.const';
 
 type OrderPayload = CreateOrderBody;
 
@@ -165,9 +166,7 @@ export const {
 
 export const getDiscount = async (code: string) => {
   try {
-    const res = await axios.get(
-      process.env.NEXT_PUBLIC_SITE_DOMAIN + '/api/discount/' + code
-    );
+    const res = await axios.get(SITE_DOMAIN + '/api/discount/' + code);
     return res.data;
   } catch (err) {
     throw err;

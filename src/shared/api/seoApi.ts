@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 import { KEYS } from '../constants/localStorageKeys';
+import { API_URL, SITE_DOMAIN } from '../constants/env.const';
 
 type Verification = {
   refresh_token: string;
@@ -9,10 +10,7 @@ type Verification = {
 };
 
 const axiosInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? `${process.env.NEXT_PUBLIC_SITE_DOMAIN}/api/`
-      : `http://localhost:3000/api/`,
+  baseURL: `${SITE_DOMAIN}/api/`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -51,7 +49,8 @@ axiosInstance.interceptors.response.use(
 
       // Attempt to refresh the token
       const refresh = verification.refresh_token;
-      const res = await refreshAccessToken(refresh);
+      const res = await refreshAccessToken(verification.access_token);
+
       const access_token = res.data.accessToken;
       const expires_in = res.data.expiryDate;
 

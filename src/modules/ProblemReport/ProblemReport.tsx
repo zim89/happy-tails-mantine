@@ -1,5 +1,4 @@
 import {
-  Button,
   FileInput,
   Modal,
   Textarea,
@@ -21,6 +20,7 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Loader from '@/components/Loader/Loader';
 import { wait } from '@/shared/lib/helpers';
+import { publishImage } from '@/shared/lib/requests';
 
 export default function ProblemReport() {
   const [formVisible, { open: openForm, close: closeForm }] = useDisclosure();
@@ -61,22 +61,10 @@ export default function ProblemReport() {
       };
 
       if (file) {
-        // It works only in secured connection and not in localhost domain //
-        const payload = new FormData();
-        payload.append('image', file);
-        payload.append('type', 'image');
-        payload.append('title', `PROBLEM REPORT by ${email}`);
-        const res = await axios.post(
-          'https://api.imgur.com/3/image/',
-          payload,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+        request.imageSrc = await publishImage(
+          file,
+          `PROBLEM REPORT by ${email}`
         );
-        request.imageSrc = res.data.data.link;
       }
 
       setIsLoading(true);

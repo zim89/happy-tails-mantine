@@ -16,6 +16,7 @@ import {
 import { hasLength, isEmail, useForm } from '@mantine/form';
 
 import styles from '../styles.module.css';
+import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 
 export const ContactForm = () => {
   const router = useRouter();
@@ -66,7 +67,7 @@ export const ContactForm = () => {
           payload,
           {
             headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+              Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
               'Content-Type': 'multipart/form-data',
             },
           }

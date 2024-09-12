@@ -1,6 +1,7 @@
 import { google } from 'googleapis';
 import { NextRequest } from 'next/server';
 import { setToken } from '../utils';
+import { GOOGLE_API_KEY } from '@/shared/constants/env.const';
 
 const searchConsoleApi = google.searchconsole('v1');
 
@@ -8,7 +9,7 @@ const getAnalytics = async (token: string, payload: object) => {
   try {
     const res = await searchConsoleApi.searchanalytics.query({
       siteUrl: 'https://happy-tails-mantine.vercel.app/',
-      key: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+      key: GOOGLE_API_KEY,
       access_token: token,
       requestBody: {
         ...payload,

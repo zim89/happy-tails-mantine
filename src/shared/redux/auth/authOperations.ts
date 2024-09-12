@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { KEYCLOAK_CLIENT_ID, KEYCLOAK_URL } from '@/shared/constants/env.const';
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL!,
+  baseURL: `${KEYCLOAK_URL}`,
 });
 
 const setToken = (token: string) => {
@@ -33,14 +34,12 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, thunkApi) => {
     try {
-      console.log(process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL);
-
       const { data } = await instance.post(
-        "/token",
+        '/token',
         new URLSearchParams({
           grant_type: 'password',
           scope: 'openid email address phone',
-          client_id: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID!,
+          client_id: `${KEYCLOAK_CLIENT_ID}`,
           username: credentials.email,
           password: credentials.password,
         }),

@@ -21,7 +21,7 @@ export default function BlockButton({ onClick, children, ...props }: Props) {
     <>
       <UnstyledButton
         role='button'
-        className='rounded-md bg-red-500 p-2 text-white hover:bg-red-600'
+        className='rounded-md'
         onClick={context && context.unsavedChanges ? openMain : onClick}
         {...props}
       >

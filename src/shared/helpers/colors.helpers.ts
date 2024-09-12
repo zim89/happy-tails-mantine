@@ -1,6 +1,5 @@
 import { COLORS } from '../constants/colors.const';
 import type { Product } from '../types/types';
-import noImage from '@/assets/images/no-img.png';
 
 export const generateColorList = (product: Product) => {
   const colors: {
@@ -15,7 +14,7 @@ export const generateColorList = (product: Product) => {
     if (color.name === product.color) {
       colors.push({
         productId: product.id,
-        productImage: product.imagePath ?? noImage,
+        productImage: product.imagePath ?? '/images/no-img.png',
         colorName: color.name,
         colorHex: color.hex,
         href: `/products/${product.id}`,
@@ -29,7 +28,8 @@ export const generateColorList = (product: Product) => {
     if (relatedColorItem) {
       colors.push({
         productId: relatedColorItem.relatedProductId,
-        productImage: relatedColorItem.relatedProductImagePath ?? noImage,
+        productImage:
+          relatedColorItem.relatedProductImagePath ?? '/images/no-img.png',
         colorName: color.name,
         colorHex: color.hex,
         href: `/products/${relatedColorItem.relatedProductId}`,
