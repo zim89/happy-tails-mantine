@@ -3,6 +3,7 @@ import { clearAuthData } from '@/shared/redux/auth/authSlice';
 import { useLogoutMutation } from '@/shared/api/authApi';
 import { useAppDispatch } from '@/shared/redux/store';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { useCallback } from 'react';
 
 type Props = {
   children: (logout: () => void) => React.ReactNode;
@@ -11,7 +12,7 @@ export default function Logout({ children }: Props) {
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     // Forced to redirect by explicitly reloading the page (window.location.replace)
     // cause otherwise the logout triggers malfunction
     // Explaination: when you clear auth data without state reset it redirects you to 403 page instead of login page
@@ -22,7 +23,7 @@ export default function Logout({ children }: Props) {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [dispatch, logout]);
 
   return <>{children(handleLogout)}</>;
 }
