@@ -10,6 +10,7 @@ import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import classes from './classes.module.css';
 import { notifyContext } from '@/shared/context/notification.context';
 import PageHeader from '@/components/PageHeader';
+import { API_URL } from '@/shared/constants/env.const';
 
 export default function AdminOrderHeader() {
   const [opened, setOpened] = useState(false);
@@ -79,10 +80,7 @@ export default function AdminOrderHeader() {
                   <Printer size={16} className='mr-2 inline-block' /> Print
                 </Menu.Item>
                 <Menu.Item>
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_BASE_URL}/orders/export`}
-                    download
-                  >
+                  <a href={`${API_URL}/orders/export`} download>
                     <File size={16} className='mr-2 inline-block' /> Csv
                   </a>
                 </Menu.Item>

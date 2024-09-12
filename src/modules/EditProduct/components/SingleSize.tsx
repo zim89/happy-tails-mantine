@@ -16,8 +16,7 @@ type Props = {
 export const SingleSize = ({ size, index, setSizes }: Props) => {
   const form = useForm<SizeForm['values']>({
     initialValues: {
-      description:
-        size.id === 'form' ? size.values.description : size.description,
+      description: '',
       size: size.id === 'form' ? size.values.size : size.size,
       quantity: size.id === 'form' ? size.values.quantity : size.quantity,
     },
@@ -84,24 +83,6 @@ export const SingleSize = ({ size, index, setSizes }: Props) => {
             ),
             error: 'form-error -bottom-3',
           }}
-        />
-      </div>
-
-      <div className={classes.variantInputs}>
-        <Textarea
-          {...form.getInputProps('description')}
-          rows={5}
-          classNames={{
-            root: 'form-root w-full mb-6',
-            label: 'form-label',
-            wrapper: 'grid h-full',
-            input: cn(
-              'form-input textarea p-2',
-              form?.errors?.description && 'form-error--input'
-            ),
-            error: 'form-error',
-          }}
-          label='Description'
         />
       </div>
     </div>

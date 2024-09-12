@@ -11,9 +11,11 @@ export async function GET(req: NextRequest) {
       { status: 400 }
     );
 
+  console.log('Before request', code);
+
   const { tokens } = await oauth2Client.getToken(code);
 
-  console.log('Tokens: ', tokens);
+  console.log(tokens);
 
   return Response.json({ tokens });
 }

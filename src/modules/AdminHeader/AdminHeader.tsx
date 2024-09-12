@@ -28,7 +28,7 @@ export default function AdminHeader({ user }: Props) {
           {(logOut) => (
             <BlockButton
               classNames={{
-                root: 'flex gap-2 font-bold py-2 px-6 border border-solid rounded border-brand-grey-400 text-sm items-center',
+                root: 'flex gap-2 font-bold py-2 px-6 bg-transparent text-black border border-solid rounded border-brand-grey-400 text-sm items-center',
               }}
               onClick={logOut}
             >

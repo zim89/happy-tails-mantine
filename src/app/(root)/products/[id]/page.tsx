@@ -7,7 +7,7 @@ import Script from 'next/script';
 
 import { useFindOneQuery } from '@/shared/api/productApi';
 import { availabilityMap } from '@/shared/lib/helpers';
-import noImage from '@/assets/images/no-img.png';
+import { SITE_DOMAIN } from '@/shared/constants/env.const';
 
 const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
 
@@ -45,12 +45,12 @@ export default function ProductPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: data.name,
-    image: data.imagePath ? data.imagePath : noImage,
+    image: data.imagePath ? data.imagePath : '/images/no-img.png',
     description: data.description,
     offers: {
       '@type': 'Offer',
       availability: availabilityMap[data.productStatus || 'OUT OF STOCK'],
-      url: `${process.env.NEXT_PUBLIC_SITE_DOMAIN}/products/${data.id}`,
+      url: `${SITE_DOMAIN}/products/${data.id}`,
       category: data.categoryName,
       itemCondition: 'https://schema.org/NewCondition',
       priceSpecification: {

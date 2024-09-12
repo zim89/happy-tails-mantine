@@ -48,6 +48,8 @@ export const Form = () => {
               type='text'
               label='Name'
             />
+          </div>
+          <div className={classes.inputRow}>
             <TextInput
               {...productForm.getInputProps('price')}
               withAsterisk
@@ -67,8 +69,6 @@ export const Form = () => {
               max={Number.MAX_SAFE_INTEGER}
               label='Price, $'
             />
-          </div>
-          <div className={classes.inputRow}>
             <Select
               {...productForm.getInputProps('productStatus')}
               withAsterisk

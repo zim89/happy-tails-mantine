@@ -11,11 +11,12 @@ import {
   VerifyEmailData,
 } from '@/shared/types/auth.types';
 import { AxiosQueryError, ErrorData } from '@/shared/types/types';
+import { API_URL } from '../constants/env.const';
 
 export const axiosBaseQuery =
   (
     { baseUrl }: { baseUrl: string } = {
-      baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
+      baseUrl: API_URL!,
     }
   ): BaseQueryFn<
     {

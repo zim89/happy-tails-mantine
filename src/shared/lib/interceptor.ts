@@ -1,12 +1,13 @@
 import axios from 'axios';
+import { API_URL } from '../constants/env.const';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL!,
+  baseURL: `${API_URL}`,
   headers: {
     'Content-Type': 'application/json',
     // Add any other headers or configurations you need
   },
-  withCredentials: true
+  withCredentials: true,
 });
 
 export default axiosInstance;

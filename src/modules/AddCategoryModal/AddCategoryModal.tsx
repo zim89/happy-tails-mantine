@@ -6,13 +6,13 @@ import {
   FileInput,
   InputLabel,
   TextInput,
+  Textarea,
   Tooltip,
 } from '@mantine/core';
 import { Info, PlusCircle, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
-import { isNotEmpty, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import axios from 'axios';
 
 import styles from './AddCategoryModal.module.css';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
@@ -40,6 +40,7 @@ export default function AddCategoryModal() {
     initialValues: {
       categoryName: '',
       image: null as File | null,
+      description: '',
     },
 
     onValuesChange(values) {
@@ -53,6 +54,13 @@ export default function AddCategoryModal() {
       categoryName: (value) =>
         !value.trim() ? 'Entered an invalid category name' : null,
       image: isNotEmpty('Image must not be empty'),
+      description: (value) => {
+        if (!value.trim().length) {
+          return 'Description is required';
+        } else if (hasLength({ min: 0, max: 255 })(value)) {
+          return 'Description should not exceed 255 characters';
+        }
+      },
     },
   });
 
@@ -73,6 +81,7 @@ export default function AddCategoryModal() {
   const handleSubmit = async ({
     categoryName,
     image,
+    description,
   }: (typeof form)['values']) => {
     try {
       const res = form.validate();
@@ -88,6 +97,7 @@ export default function AddCategoryModal() {
       const newCategory = {
         name: categoryName,
         title: categoryName,
+        description,
         imgSrc,
         coordinateOnBannerX: 0,
         coordinateOnBannerY: 0,
@@ -157,6 +167,23 @@ export default function AddCategoryModal() {
             label='Category Name'
             data-testid='category-input'
             {...form.getInputProps('categoryName')}
+          />
+
+          <Textarea
+            withAsterisk
+            rows={10}
+            classNames={{
+              root: 'form-root w-full mt-4',
+              label: 'form-label',
+              wrapper: 'grid h-full',
+              input: cn(
+                'form-input textarea p-2',
+                form?.errors?.description && 'form-error--input'
+              ),
+              error: 'form-error -bottom-4',
+            }}
+            label='Description'
+            {...form.getInputProps('description')}
           />
 
           <InputLabel

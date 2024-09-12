@@ -46,3 +46,4 @@ links.md
 https_cert
 server.ts
 /.env.production
+/.env.development

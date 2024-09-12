@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { API_URL } from '../constants/env.const';
 
 export const oauthApi = createApi({
   reducerPath: 'oautApi',
   tagTypes: ['OAuth'],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+    baseUrl: API_URL,
   }),
   endpoints: (builder) => ({
     getToken: builder.query({

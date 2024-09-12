@@ -7,7 +7,6 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
-import noImage from '@/assets/images/no-img.png';
 
 import '@mantine/carousel/styles.css';
 import { Product } from '@/shared/types/types';
@@ -122,7 +121,7 @@ export default function ProductSlider({
                 >
                   <Stack gap={20}>
                     <Image
-                      src={item.imagePath ?? noImage}
+                      src={item.imagePath ?? '/images/no-img.png'}
                       alt={item.name}
                       width={304}
                       height={287}

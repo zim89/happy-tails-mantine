@@ -14,6 +14,7 @@ import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/context/postform.context';
+import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 
 export const sharedProps = {
   toolbarBtn: {
@@ -56,7 +57,7 @@ export default function PostEditor({ editor }: Props) {
     payload.append('title', `Image for post: ${file.name}`);
     const res = await axios.post('https://api.imgur.com/3/image/', payload, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID}`,
+        Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
         'Content-Type': 'multipart/form-data',
       },
     });

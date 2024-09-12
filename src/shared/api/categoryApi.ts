@@ -43,7 +43,6 @@ export const categoriesApi = createApi({
           method: 'POST',
           data: JSON.stringify({
             ...payload,
-            description: `Category name: ${payload.name}`,
             overview: `Category name: ${payload.name}`,
           }),
 

@@ -5,7 +5,6 @@ import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
-import noImage from '@/assets/images/no-img.png';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Product } from '@/shared/types/types';
 import AddToCartBtn from '@/components/AddToCartBtn/AddToCartBtn';
@@ -53,7 +52,7 @@ export default function ProductCard({ product, router }: Props) {
             )}
           >
             <Image
-              src={product.imagePath ?? noImage}
+              src={product.imagePath ?? '/images/no-img.png'}
               alt={product.name}
               fill
               priority={true}
@@ -134,7 +133,7 @@ export default function ProductCard({ product, router }: Props) {
             </ul>
           )}
 
-          <AddToCartBtn product={product} size={selectedSize?.size} />
+          <AddToCartBtn product={product} count={1} size={selectedSize?.size} />
         </div>
       </div>
     </Link>
