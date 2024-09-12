@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { Info, PlusCircle, UploadCloud, X } from 'lucide-react';
 import Image from 'next/image';
-import { isNotEmpty, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 
 import styles from './AddCategoryModal.module.css';
@@ -54,7 +54,13 @@ export default function AddCategoryModal() {
       categoryName: (value) =>
         !value.trim() ? 'Entered an invalid category name' : null,
       image: isNotEmpty('Image must not be empty'),
-      description: isNotEmpty('Description must not be empty'),
+      description: (value) => {
+        if (!value.trim().length) {
+          return 'Description is required';
+        } else if (hasLength({ min: 0, max: 255 })(value)) {
+          return 'Description should not exceed 255 characters';
+        }
+      },
     },
   });
 

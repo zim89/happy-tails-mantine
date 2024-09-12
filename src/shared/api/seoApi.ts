@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 import { KEYS } from '../constants/localStorageKeys';
-import { API_URL, SITE_DOMAIN } from '../constants/env.const';
+import { API_URL, GOOGLE_AUTH_URL, SITE_DOMAIN } from '../constants/env.const';
 
 type Verification = {
   refresh_token: string;
@@ -23,9 +23,12 @@ axiosInstance.interceptors.request.use(
       ? JSON.parse(candidate)
       : null;
 
+    console.log(config.params);
+
     if (verification) {
       config.headers.Authorization = `Bearer ${verification.access_token}`;
     }
+
     return config;
   },
   (error) => {
@@ -35,43 +38,14 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    const candidate = localStorage.getItem(KEYS['google_verification']);
-    let verification: Verification = JSON.parse(candidate!);
+  (error) => {
+    const status = error.response ? error.response.status : null;
+    if (status === 401 && !error.config.sent) {
+      error.config.sent = true;
 
-    if (
-      error.response.data.message === 'Invalid Credentials' &&
-      !originalRequest._retry
-    ) {
-      // Marking that we've already retried to avoid infinite loop
-      originalRequest._retry = true;
-
-      // Attempt to refresh the token
-      const refresh = verification.refresh_token;
-      const res = await refreshAccessToken(verification.access_token);
-
-      const access_token = res.data.accessToken;
-      const expires_in = res.data.expiryDate;
-
-      // Update the header with the new token
-      axiosInstance.defaults.headers.common['Authorization'] =
-        `Bearer ${access_token}`;
-
-      localStorage.setItem(
-        KEYS['google_verification'],
-        JSON.stringify({
-          access_token,
-          refresh_token: verification.refresh_token,
-          expires_in: expires_in,
-        })
-      );
-
-      // Resend the original request with the new token
-      return axiosInstance(originalRequest);
+      return axiosInstance.request(error.config);
     }
 
-    // If the refresh fails or other errors, just return the error
     return Promise.reject(error);
   }
 );
