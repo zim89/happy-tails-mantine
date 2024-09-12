@@ -211,6 +211,19 @@
   .form-error--input {
     @apply border-brand-red-400 text-secondary;
   }
+
+  /* Modal Heading */
+  .modal-heading {
+    @apply flex items-center gap-3;
+  }
+
+  .modal-heading h2 {
+    @apply mb-3 font-bold;
+  }
+
+  .modal-heading p {
+    @apply text-sm text-[#A0A0A0];
+  }
 }
 
 /*noinspection CssInvalidFunction*/

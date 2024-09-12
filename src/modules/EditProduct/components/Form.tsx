@@ -54,6 +54,8 @@ export const Form = () => {
               type='text'
               label='Name'
             />
+          </div>
+          <div className={classes.inputRow}>
             <Select
               {...productForm.getInputProps('color')}
               classNames={{
@@ -85,8 +87,6 @@ export const Form = () => {
                 ] as ProductColor[]
               }
             />
-          </div>
-          <div className={classes.inputRow}>
             <NumberInput
               {...productForm.getInputProps('price')}
               classNames={{
@@ -102,22 +102,6 @@ export const Form = () => {
               }}
               min={0}
               label='Price, $'
-            />
-            <NumberInput
-              {...productForm.getInputProps('quantity')}
-              classNames={{
-                root: 'form-root w-full',
-                label: 'form-label',
-                wrapper: 'flex gap-2 focus:outline outline-2',
-                section: 'hidden',
-                input: cn(
-                  'form-input rounded-sm px-2 outline-none',
-                  productForm?.errors?.quantity && 'form-error--input'
-                ),
-                error: 'form-error -bottom-3',
-              }}
-              min={0}
-              label='Quantity'
             />
           </div>
           <div className={classes.inputRow}>
