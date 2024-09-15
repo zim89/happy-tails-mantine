@@ -55,7 +55,7 @@ export default function Page() {
           >
             <UnstyledButton
               type='submit'
-              className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
             >
               <GoogleIcon />
               Google
@@ -80,7 +80,7 @@ export default function Page() {
           >
             <UnstyledButton
               type='submit'
-              className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
             >
               <FacebookIcon />
               Facebook
