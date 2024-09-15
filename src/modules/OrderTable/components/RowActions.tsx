@@ -42,13 +42,13 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
         </Menu.Target>
 
         <Menu.Dropdown className='p-0 py-2'>
-          <Menu.Item
-            leftSection={<Eye />}
-            className='mb-1 rounded-none hover:bg-brand-grey-200'
-          >
+          <Menu.Item className='mb-1 rounded-none hover:bg-brand-grey-200'>
             <Link
+              className='flex h-full w-full items-center gap-3'
+              shallow
               href={`/admin/orders/${ctx.row.original.number.toLowerCase()}`}
             >
+              <Eye />
               View
             </Link>
           </Menu.Item>

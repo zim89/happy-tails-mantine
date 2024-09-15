@@ -4,18 +4,19 @@ import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
-import file_attention from '@/assets/icons/categories/file_attention.svg';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { User } from '@/shared/types/auth.types';
 import { useDeleteUserMutation } from '@/shared/api/usersApi';
+import { useContext } from 'react';
+import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   user: User;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteUserModal({ user, setNotification }: Props) {
+export default function DeleteUserModal({ user }: Props) {
   const [dispatch] = useDeleteUserMutation();
+  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
