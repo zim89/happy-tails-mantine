@@ -8,7 +8,7 @@ import { useContext } from 'react';
 
 import { Order } from '@/shared/types/types';
 import { notifyContext } from '@/shared/context/notification.context';
-import DeleteOrderModal from '@/modules/DeleteOrderModal/DeleteOrderModal';
+import DeleteOrderModal from '@/modules/DeleteOrderModal';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
   const { setNotification } = useContext(notifyContext);

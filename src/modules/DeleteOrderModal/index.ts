@@ -1,1 +1,1 @@
-export { DeleteOrderModal } from './DeleteOrderModal';
+export { default } from './DeleteOrderModal';
