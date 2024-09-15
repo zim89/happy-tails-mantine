@@ -4,27 +4,30 @@ import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
+import { Order } from '@/shared/types/types';
+
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { User } from '@/shared/types/auth.types';
-import { useDeleteUserMutation } from '@/shared/api/usersApi';
-import { useContext } from 'react';
-import { notifyContext } from '@/shared/context/notification.context';
+import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
 
 type Props = {
-  user: User;
+  orderLine: Order;
+  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteUserModal({ user }: Props) {
-  const [dispatch] = useDeleteUserMutation();
-  const { setNotification } = useContext(notifyContext);
+export default function DeleteOrderModal({
+  orderLine,
+  setNotification,
+}: Props) {
+  const [dispatch] = useDeleteOrderMutation();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleDelete = async () => {
     try {
-      await dispatch({ userId: user.userId }).unwrap();
-      closeMain();
-      setNotification('Success', 'User deleted successfully!');
+      await dispatch({ number: orderLine.number }).unwrap();
+      setNotification('Success', 'Successfully deleted!');
+      close();
     } catch (err) {
-      closeMain();
+      close();
       if (isAxiosQueryError(err)) {
         setNotification(
           'Failed',
@@ -35,24 +38,21 @@ export default function DeleteUserModal({ user }: Props) {
     }
   };
 
-  const [openedMain, { open: openMain, close: closeMain }] =
-    useDisclosure(false);
-
   return (
     <DeleteModal>
       {(Modal) => (
         <>
           {/* Opens a modal window */}
-          <span onClick={openMain} className='block p-0 text-black'>
+          <span onClick={open} className='block p-0 text-black'>
             Delete
           </span>
 
           <Modal
-            onClose={closeMain}
-            opened={openedMain}
+            onClose={close}
+            opened={opened}
             footerProps={{
               singleBtn: false,
-              secondaryBtnOnClick: closeMain,
+              secondaryBtnOnClick: close,
               secondaryBtnText: 'Cancel',
               primaryBtnOnClick: handleDelete,
               primaryBtnText: 'Delete',
@@ -66,13 +66,13 @@ export default function DeleteUserModal({ user }: Props) {
             <div className='flex items-center gap-3'>
               <Image
                 src='/icons/file_attention.svg'
-                alt={user.userId}
+                alt=''
                 width={64}
                 height={64}
               />
               <hgroup>
-                <h2 className='mb-3 font-bold'>{`Delete user #${user.userId}?`}</h2>
-                <p>Are you sure you want to delete the selected user?</p>
+                <h2 className='mb-3 font-bold'>{`Delete order #${orderLine.number}?`}</h2>
+                <p>Are you sure you want to delete the selected order?</p>
               </hgroup>
             </div>
           </Modal>

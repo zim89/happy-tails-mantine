@@ -4,6 +4,8 @@ import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import LoginForm from '@/components/auth/LoginForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { GOOGLE_OAUTH_REDIRECT } from '@/shared/constants/env.const';
+import { signIn } from '../../../../../auth';
+import { UnstyledButton } from '@mantine/core';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Login Page',
@@ -35,20 +37,55 @@ export default function Page() {
           Or Sign in with
         </p>
         <div className='grid grid-cols-2 gap-5 md:gap-4'>
-          <Link
+          {/* <Link
             href={`https://accounts.google.com/o/oauth2/auth?client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${GOOGLE_OAUTH_REDIRECT}&response_type=code&scope=email profile openid`}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
             Google
-          </Link>
-          <button
-            type='button'
-            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
+          </Link> */}
+          <form
+            action={async () => {
+              'use server';
+              await signIn('google', {
+                redirectTo: 'http://localhost:3000/auth/callback',
+                redirect: true,
+              });
+            }}
           >
-            <FacebookIcon />
-            Facebook
-          </button>
+            <UnstyledButton
+              type='submit'
+              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+            >
+              <GoogleIcon />
+              Google
+            </UnstyledButton>
+          </form>
+
+          <form
+            action={async () => {
+              'use server';
+              await signIn('facebook', {
+                redirectTo: 'http://localhost:3000/',
+                redirect: true,
+              });
+            }}
+          >
+            <UnstyledButton
+              type='submit'
+              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+            >
+              <FacebookIcon />
+              Facebook
+            </UnstyledButton>
+          </form>
+          {/* <button
+                type='button'
+                className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
+              >
+                <FacebookIcon />
+                Facebook
+              </button> */}
         </div>
       </div>
     </div>

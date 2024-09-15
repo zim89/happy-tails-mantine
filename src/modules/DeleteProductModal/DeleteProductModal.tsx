@@ -23,7 +23,7 @@ export default function DeleteProductModal({
     try {
       await dispatch({ id: productLine.id }).unwrap();
       closeMain();
-      setNotification('Success');
+      setNotification('Success', 'Product deleted successfully');
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {

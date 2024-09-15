@@ -45,6 +45,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",
+    "next-auth": "^5.0.0-beta.20",
     "next-mdx-remote": "^4.4.1",
     "react": "^18",
     "react-dom": "^18",

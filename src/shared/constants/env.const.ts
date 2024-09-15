@@ -1,5 +1,7 @@
 export const SITE_DOMAIN = process.env.NEXT_PUBLIC_SITE_DOMAIN;
 export const GOOGLE_AUTH_URL = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
+export const GOOGLE_AUTH_URL_HOME =
+  process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL_HOME;
 export const IMGUR_CLIENT_ID = process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID;
 export const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const GOOGLE_OAUTH_REDIRECT = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
@@ -8,3 +10,5 @@ export const GOOGLE_API_ID = process.env.NEXT_GOOGLE_API_CLIENT_ID;
 export const GOOGLE_API_SECRET = process.env.NEXT_GOOGLE_API_CLIENT_SECRET;
 export const KEYCLOAK_URL = process.env.NEXT_PUBLIC_KEYCLOAK_AUTH_URL;
 export const KEYCLOAK_CLIENT_ID = process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID;
+export const FACEBOOK_API_SECRET = process.env.NEXT_FACEBOOK_API_CLIENT_SECRET;
+export const FACEBOOK_API_ID = process.env.NEXT_FACEBOOK_API_CLIENT_ID;

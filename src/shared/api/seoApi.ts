@@ -23,8 +23,6 @@ axiosInstance.interceptors.request.use(
       ? JSON.parse(candidate)
       : null;
 
-    console.log(config.params);
-
     if (verification) {
       config.headers.Authorization = `Bearer ${verification.access_token}`;
     }

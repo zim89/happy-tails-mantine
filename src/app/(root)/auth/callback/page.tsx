@@ -22,6 +22,7 @@ export default function CallbackPage() {
       if (params.get('code')) {
         try {
           const data = await login(params.get('code')!).unwrap();
+
           dispatch(setAuthData(data));
           router.push('/');
         } catch (err) {
