@@ -37,6 +37,13 @@ export default function Page() {
           Or Sign in with
         </p>
         <div className='grid grid-cols-2 gap-5 md:gap-4'>
+          {/* <Link
+            href={`https://accounts.google.com/o/oauth2/auth?client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${GOOGLE_OAUTH_REDIRECT}&response_type=code&scope=email profile openid`}
+            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+          >
+            <GoogleIcon />
+            Google
+          </Link> */}
           <form
             action={async () => {
               'use server';
@@ -54,6 +61,7 @@ export default function Page() {
               Google
             </UnstyledButton>
           </form>
+
           {/* <button
             type='button'
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'

@@ -3,7 +3,7 @@ import LineChart from '@/modules/LineChart';
 import OrdersChart from '@/modules/OrdersChart';
 import Stats from '@/modules/Stats';
 import TopCategories from '@/modules/TopCategories';
-import { signIn, auth } from '../../../../auth';
+import { auth } from '../../../../auth';
 
 export default async function Page() {
   const session = await auth();
@@ -15,14 +15,6 @@ export default async function Page() {
       <OrdersChart />
       <TopCategories />
       {session && <LineChart />}
-      <form
-        action={async () => {
-          'use server';
-          await signIn('google');
-        }}
-      >
-        <button type='submit'>Sign In</button>
-      </form>
     </div>
   );
 }
