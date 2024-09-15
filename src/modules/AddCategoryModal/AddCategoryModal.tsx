@@ -97,6 +97,7 @@ export default function AddCategoryModal() {
       const newCategory = {
         name: categoryName,
         title: categoryName,
+        path: categoryName.toLowerCase(),
         description,
         imgSrc,
         coordinateOnBannerX: 0,

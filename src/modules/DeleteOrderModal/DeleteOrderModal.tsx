@@ -4,28 +4,30 @@ import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
-import { Product } from '@/shared/types/types';
-import { useRemoveMutation } from '@/shared/api/productApi';
+import { Order } from '@/shared/types/types';
+
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
 
 type Props = {
-  productLine: Product;
+  orderLine: Order;
   setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteProductModal({
-  productLine,
+export default function DeleteOrderModal({
+  orderLine,
   setNotification,
 }: Props) {
-  const [dispatch] = useRemoveMutation();
+  const [dispatch] = useDeleteOrderMutation();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleDelete = async () => {
     try {
-      await dispatch({ id: productLine.id }).unwrap();
-      closeMain();
-      setNotification('Success', 'Product deleted successfully');
+      await dispatch({ number: orderLine.number }).unwrap();
+      setNotification('Success', 'Successfully deleted!');
+      close();
     } catch (err) {
-      closeMain();
+      close();
       if (isAxiosQueryError(err)) {
         setNotification(
           'Failed',
@@ -36,24 +38,21 @@ export default function DeleteProductModal({
     }
   };
 
-  const [openedMain, { open: openMain, close: closeMain }] =
-    useDisclosure(false);
-
   return (
     <DeleteModal>
       {(Modal) => (
         <>
           {/* Opens a modal window */}
-          <span onClick={openMain} className='block p-0 text-black'>
+          <span onClick={open} className='block p-0 text-black'>
             Delete
           </span>
 
           <Modal
-            onClose={closeMain}
-            opened={openedMain}
+            onClose={close}
+            opened={opened}
             footerProps={{
               singleBtn: false,
-              secondaryBtnOnClick: closeMain,
+              secondaryBtnOnClick: close,
               secondaryBtnText: 'Cancel',
               primaryBtnOnClick: handleDelete,
               primaryBtnText: 'Delete',
@@ -67,13 +66,13 @@ export default function DeleteProductModal({
             <div className='flex items-center gap-3'>
               <Image
                 src='/icons/file_attention.svg'
-                alt={productLine.name}
+                alt=''
                 width={64}
                 height={64}
               />
               <hgroup>
-                <h2 className='mb-3 font-bold'>{`Delete "${productLine.name}"?`}</h2>
-                <p>Are you sure you want to delete the selected product?</p>
+                <h2 className='mb-3 font-bold'>{`Delete order #${orderLine.number}?`}</h2>
+                <p>Are you sure you want to delete the selected order?</p>
               </hgroup>
             </div>
           </Modal>

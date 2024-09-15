@@ -76,6 +76,8 @@ export const HomePageSetting = () => {
     });
   }, [categories.length]);
 
+  console.log('productsPages', categoriesPages);
+
   const postsPages = useMemo(() => {
     return posts.map((post) => {
       const prefix = SITE_DOMAIN;
