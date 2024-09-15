@@ -62,13 +62,6 @@ export default function Page() {
             </UnstyledButton>
           </form>
 
-          {/* <button
-            type='button'
-            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
-          >
-            <FacebookIcon />
-            Facebook
-          </button> */}
           <form
             action={async () => {
               'use server';
@@ -86,6 +79,13 @@ export default function Page() {
               Facebook
             </UnstyledButton>
           </form>
+          {/* <button
+                type='button'
+                className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
+              >
+                <FacebookIcon />
+                Facebook
+              </button> */}
         </div>
       </div>
     </div>
