@@ -9,7 +9,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  SortingState,
 } from '@tanstack/react-table';
 import { flushSync } from 'react-dom';
 import { useEffect, useState } from 'react';
