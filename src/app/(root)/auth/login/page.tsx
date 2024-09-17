@@ -1,14 +1,9 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { FacebookIcon, GoogleIcon } from '@/components/Icons';
+import { GoogleIcon } from '@/components/Icons';
 import LoginForm from '@/components/auth/LoginForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import { signIn } from '../../../../../auth';
-import { UnstyledButton } from '@mantine/core';
-import {
-  GOOGLE_API_ID,
-  GOOGLE_OAUTH_REDIRECT,
-} from '@/shared/constants/env.const';
+import { GOOGLE_AUTH_URL } from '@/shared/constants/env.const';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Login Page',
@@ -39,64 +34,14 @@ export default function Page() {
         <p className='relative text-center text-base text-brand-grey-700 before:absolute before:left-0 before:top-1/2 before:h-px before:w-[98px] before:-translate-y-1/2 before:bg-brand-grey-400 after:absolute after:right-0 after:top-1/2 after:h-px after:w-[98px] after:-translate-y-1/2 after:bg-brand-grey-400'>
           Or Sign in with
         </p>
-        <div className='grid grid-cols-2 gap-5 md:gap-4'>
-          {/* <Link
-            href={`https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_API_ID}&redirect_uri=${GOOGLE_OAUTH_REDIRECT}&response_type=code&scope=email profile openid`}
-            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
-          >
-            <GoogleIcon />
-            Google
-          </Link> */}
+        <div>
           <Link
-            href={`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(GOOGLE_OAUTH_REDIRECT!)}&code_challenge=6DxPu9hKLTcQtgKUTWbaeeIWlGIznuMxoZ0ZBtnyF2U&code_challenge_method=S256&scope=openid%20profile%20email&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow`}
+            href={`${GOOGLE_AUTH_URL}`}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
             Google
           </Link>
-          {/* https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=171015409943-jb4s4l6rba9c2nr9tm1r454s3kv95jpe.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fcallback%2Fgoogle&code_challenge=6DxPu9hKLTcQtgKUTWbaeeIWlGIznuMxoZ0ZBtnyF2U&code_challenge_method=S256&scope=openid%20profile%20email&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow */}
-          {/* <form
-            action={async () => {
-              'use server';
-              await signIn('google', {
-                redirectTo: 'http://localhost:3000/auth/callback',
-                redirect: true,
-              });
-            }}
-          >
-            <UnstyledButton
-              type='submit'
-              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
-            >
-              <GoogleIcon />
-              Google
-            </UnstyledButton>
-          </form> */}
-
-          <form
-            action={async () => {
-              'use server';
-              await signIn('facebook', {
-                redirectTo: 'http://localhost:3000/',
-                redirect: true,
-              });
-            }}
-          >
-            <UnstyledButton
-              type='submit'
-              className='flex w-full items-center justify-center gap-2 rounded-0.5 border border-solid border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
-            >
-              <FacebookIcon />
-              Facebook
-            </UnstyledButton>
-          </form>
-          {/* <button
-                type='button'
-                className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
-              >
-                <FacebookIcon />
-                Facebook
-              </button> */}
         </div>
       </div>
     </div>

@@ -4,16 +4,10 @@ import Categories from '@/modules/Categories';
 import Featured from '@/modules/Featured';
 import HeroCarousel from '@/modules/HeroCarousel';
 import WhyUs from '@/modules/WhyUs';
-import { auth } from 'auth';
+import { useAuth } from '@/shared/hooks/useAuth';
 import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
-  const session = await auth();
-
-  if (!session) {
-    redirect('/auth/login');
-  }
-
   return (
     <>
       <HeroCarousel />

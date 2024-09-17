@@ -10,6 +10,7 @@ import { useLoginOauthMutation } from '@/shared/api/authApi';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
+import axiosInstance from '@/shared/lib/interceptor';
 
 export default function CallbackPage() {
   const params = useSearchParams();
@@ -19,14 +20,10 @@ export default function CallbackPage() {
 
   useEffect(() => {
     const fn = async () => {
-      console.log('Code: ', params.get('code'));
-
       if (params.get('code')) {
         try {
-          console.log('Triggered oauth login');
-          const data = await login(params.get('code')!).unwrap();
-
-          console.log('Completed: ', data);
+          await login(params.get('code')!).unwrap();
+          const { data } = await axiosInstance.get('/user/info');
 
           dispatch(setAuthData(data));
           router.push('/');
