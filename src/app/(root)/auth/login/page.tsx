@@ -3,9 +3,12 @@ import { Metadata } from 'next';
 import { FacebookIcon, GoogleIcon } from '@/components/Icons';
 import LoginForm from '@/components/auth/LoginForm';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import { GOOGLE_OAUTH_REDIRECT } from '@/shared/constants/env.const';
 import { signIn } from '../../../../../auth';
 import { UnstyledButton } from '@mantine/core';
+import {
+  GOOGLE_API_ID,
+  GOOGLE_OAUTH_REDIRECT,
+} from '@/shared/constants/env.const';
 
 export const metadata: Metadata = {
   title: 'Happy Tails | Login Page',
@@ -38,13 +41,21 @@ export default function Page() {
         </p>
         <div className='grid grid-cols-2 gap-5 md:gap-4'>
           {/* <Link
-            href={`https://accounts.google.com/o/oauth2/auth?client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${GOOGLE_OAUTH_REDIRECT}&response_type=code&scope=email profile openid`}
+            href={`https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_API_ID}&redirect_uri=${GOOGLE_OAUTH_REDIRECT}&response_type=code&scope=email profile openid`}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
             Google
           </Link> */}
-          <form
+          <Link
+            href={`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(GOOGLE_OAUTH_REDIRECT!)}&code_challenge=6DxPu9hKLTcQtgKUTWbaeeIWlGIznuMxoZ0ZBtnyF2U&code_challenge_method=S256&scope=openid%20profile%20email&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow`}
+            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
+          >
+            <GoogleIcon />
+            Google
+          </Link>
+          {/* https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=171015409943-jb4s4l6rba9c2nr9tm1r454s3kv95jpe.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fcallback%2Fgoogle&code_challenge=6DxPu9hKLTcQtgKUTWbaeeIWlGIznuMxoZ0ZBtnyF2U&code_challenge_method=S256&scope=openid%20profile%20email&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow */}
+          {/* <form
             action={async () => {
               'use server';
               await signIn('google', {
@@ -60,7 +71,7 @@ export default function Page() {
               <GoogleIcon />
               Google
             </UnstyledButton>
-          </form>
+          </form> */}
 
           <form
             action={async () => {

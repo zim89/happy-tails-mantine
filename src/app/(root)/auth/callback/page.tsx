@@ -19,9 +19,14 @@ export default function CallbackPage() {
 
   useEffect(() => {
     const fn = async () => {
+      console.log('Code: ', params.get('code'));
+
       if (params.get('code')) {
         try {
+          console.log('Triggered oauth login');
           const data = await login(params.get('code')!).unwrap();
+
+          console.log('Completed: ', data);
 
           dispatch(setAuthData(data));
           router.push('/');
