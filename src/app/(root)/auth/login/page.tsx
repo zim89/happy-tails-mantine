@@ -48,7 +48,7 @@ export default function Page() {
             Google
           </Link> */}
           <Link
-            href={`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(GOOGLE_OAUTH_REDIRECT!)}&code_challenge=6DxPu9hKLTcQtgKUTWbaeeIWlGIznuMxoZ0ZBtnyF2U&code_challenge_method=S256&scope=openid%20profile%20email&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow`}
+            href={`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=320287221695-83tuus2agus0o9tgsmr19935tvad32lo.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(GOOGLE_OAUTH_REDIRECT!)}&scope=openid%20profile%20email`}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
