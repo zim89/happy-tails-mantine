@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { Button } from '@mantine/core';
 import Link from 'next/link';
 
 export default function Featured() {
@@ -19,13 +18,12 @@ export default function Featured() {
             <h3 className='mb-4 text-2xl uppercase'>
               Clothing for dog: STAY STYLISH
             </h3>
-            <Button
-              component={Link}
+            <Link
               href='/clothing'
-              className='h-11 min-w-full rounded-sm bg-black md:min-w-[232px]'
+              className='btn btn-primary w-full md:max-w-[232px]'
             >
               View Products
-            </Button>
+            </Link>
           </div>
         </div>
         <div className='md:flex'>
@@ -41,13 +39,12 @@ export default function Featured() {
               For Active Walks
             </p>
             <h3 className='mb-4 text-2xl uppercase'>Leads Collection</h3>
-            <Button
-              component={Link}
+            <Link
               href='/leads'
-              className='h-11 min-w-full rounded-sm bg-black md:max-w-[232px]'
+              className='btn btn-primary w-full md:max-w-[232px]'
             >
               View Products
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

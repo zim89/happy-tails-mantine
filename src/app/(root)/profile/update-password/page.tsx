@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Stepper, UnstyledButton } from '@mantine/core';
+import { Stepper, UnstyledButton } from '@mantine/core';
 import { useState } from 'react';
 import { redirect } from 'next/navigation';
 import { Check } from 'lucide-react';

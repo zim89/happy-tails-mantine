@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
