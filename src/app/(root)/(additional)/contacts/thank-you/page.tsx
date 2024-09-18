@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Button, Container, Group, UnstyledButton } from '@mantine/core';
+import { Container, Group, UnstyledButton } from '@mantine/core';
 import Link from 'next/link';
 
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
