@@ -42,10 +42,7 @@ export const ContactForm = () => {
           'Maximum message length is 255 characters. Please shorten your message.'
         )(value);
 
-        if (min) return min;
-        if (max) return max;
-
-        return null;
+        return min || max;
       },
       userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       termsOfService: (value) =>
