@@ -39,7 +39,7 @@ export default function HeroCarousel() {
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={autoplay.current.reset}
         classNames={{
-          viewport: 'w-[calc(100vw-16px)]',
+          viewport: 'w-screen',
           indicators: '!bottom-3 md:!bottom-6 lg:!bottom-8',
           indicator: cn(
             banners.length > 1
@@ -58,7 +58,7 @@ export default function HeroCarousel() {
           ))
         ) : (
           <Slide
-            classNames={{ image: 'object-[2em_-2em]' }}
+            classNames={{ image: 'object-center object-contain' }}
             banner={'/images/hero-dog-bg-cleared.png'}
             href='/products'
           />
