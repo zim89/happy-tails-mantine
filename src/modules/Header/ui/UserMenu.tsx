@@ -20,7 +20,7 @@ export default function UserMenu() {
       {!isAuth ? (
         <Link
           href={APP_PAGES.LOGIN}
-          className='hidden items-center justify-center text-secondary lg:flex'
+          className='flex items-center justify-center text-secondary'
           aria-label={'Logout'}
         >
           <UserRound className='iconBtn' />
@@ -28,7 +28,7 @@ export default function UserMenu() {
       ) : isAdmin ? (
         <Link
           href={'/admin'}
-          className='hidden items-center justify-center text-secondary lg:flex'
+          className='flex items-center justify-center text-secondary'
           aria-label={'Admin Panel'}
         >
           <UserRound className='iconBtn' />
