@@ -75,9 +75,11 @@ export default async function CatalogPage(props: Props) {
             <Toolbar category={category} categories={categories} />
             <ProductList category={category} />
           </ProductCountContextProvider>
-          <Overview>
-            <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
-          </Overview>
+          {category.overview.trim().length > 0 && (
+            <Overview>
+              <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
+            </Overview>
+          )}
         </div>
       </div>
     </>

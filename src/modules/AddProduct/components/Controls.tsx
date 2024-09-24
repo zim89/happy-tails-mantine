@@ -51,7 +51,6 @@ export const Controls = ({ setNotification }: Props) => {
     categoryName,
     ...rest
   }: ProductForm['values']) => {
-    console.log('Triggered', variants);
     const { hasErrors } = productForm.validate();
     if (hasErrors) return;
 
@@ -80,7 +79,7 @@ export const Controls = ({ setNotification }: Props) => {
 
       let productColorSizes: CreateProductBody['productColorSizes'] = [];
 
-      variants.forEach(async (variant) => {
+      for await (const variant of variants) {
         if (!variant) return;
 
         // Update total quantity of the product
@@ -123,7 +122,7 @@ export const Controls = ({ setNotification }: Props) => {
             ],
           });
         }
-      });
+      }
 
       const newProduct: Partial<CreateProductBody> = {
         ...rest,

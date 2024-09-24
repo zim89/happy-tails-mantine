@@ -11,7 +11,6 @@ import {
 import { Info, UploadCloud, X } from 'lucide-react';
 import { isNotEmpty, useForm } from '@mantine/form';
 import Image from 'next/image';
-import axios from 'axios';
 import { useDisclosure } from '@mantine/hooks';
 
 import styles from './UpdateCategoryModal.module.css';

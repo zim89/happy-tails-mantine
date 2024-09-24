@@ -1,7 +1,12 @@
-import axios, { AxiosError, isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
-import { BackendResponse, Category, Product } from '../types/types';
+import {
+  AxiosQueryError,
+  BackendResponse,
+  Category,
+  Product,
+} from '../types/types';
 import { User } from '../types/auth.types';
 import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
@@ -124,36 +129,36 @@ export const publishImage = async (
   image: Blob | string,
   title: string
 ): Promise<string> => {
-  if (process.env.NODE_ENV === 'production') {
-    const params = new FormData();
-    params.append('image', image);
-    params.append('title', title);
+  // if (process.env.NODE_ENV === 'production') {
+  const params = new FormData();
+  params.append('image', image);
+  params.append('title', title);
 
-    const regex = /^image\/(gif|webp|png|jpeg)$/;
-    const match =
-      image instanceof Blob ? image.type.match(regex) : image.match(regex);
+  const regex = /^image\/(gif|webp|png|jpeg)$/;
+  const match =
+    image instanceof Blob ? image.type.match(regex) : image.match(regex);
 
-    if (!match) {
-      throw new AxiosError(
-        'Forbidden image type. Available image types are: gif, webp, png and jpeg',
-        '422'
-      );
-    }
-
-    try {
-      const res = await axios.post('https://api.imgur.com/3/image/', params, {
-        headers: {
-          Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      return res.data.data.link;
-    } catch (err) {
-      if (isAxiosError(err)) console.log(err);
-      throw err;
-    }
-  } else {
-    return DEFAULT_CATEGORY_IMAGE;
+  if (!match) {
+    throw {
+      data: 'Forbidden image type. Available image types are: gif, webp, png and jpeg',
+      status: 422,
+    } as AxiosQueryError;
   }
+
+  try {
+    const res = await axios.post('https://api.imgur.com/3/image/', params, {
+      headers: {
+        Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data.data.link;
+  } catch (err) {
+    if (isAxiosError(err)) console.log(err);
+    throw err;
+  }
+  // } else {
+  //   return DEFAULT_CATEGORY_IMAGE;
+  // }
 };
