@@ -17,6 +17,8 @@ import { hasLength, isEmail, useForm } from '@mantine/form';
 
 import styles from '../styles.module.css';
 import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
+import Link from 'next/link';
 
 export const ContactForm = () => {
   const router = useRouter();
@@ -169,9 +171,9 @@ export const ContactForm = () => {
         />
 
         <span>
-          After reading the <a href='#'>privacy policy</a>, I consent to the
-          processing of my personal data, which will be used to answer my
-          questions.
+          After reading the <Link href={APP_PAGES.POLICY}>privacy policy</Link>,
+          I consent to the processing of my personal data, which will be used to
+          answer my questions.
         </span>
       </UnstyledButton>
 
