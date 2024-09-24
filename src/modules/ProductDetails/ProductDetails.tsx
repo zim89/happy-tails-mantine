@@ -41,17 +41,19 @@ export default function ProductDetails({ product }: Props) {
   );
 
   const handlersRef = useRef<NumberInputHandlers>(null);
-  const [quantity, setQuantity] = useState<string | number>(
-    product.totalQuantity === 0 ? 0 : 1
-  );
 
   const sizes = generateSizes(product.productSizes);
   const [selectedSize, setSelectedSize] = useState(
     sizes.length > 0 ? sizes.find((item) => item.isAvailable) : null
   );
 
+  const [quantity, setQuantity] = useState<string | number>(
+    product.totalQuantity === 0 ? 0 : 1
+  );
+
   const isAvailable = product.productStatus === 'IN STOCK';
   const colorList = generateColorList(product);
+  const isOneSize = product.productSizes?.[0]?.size === 'ONE SIZE';
 
   return (
     <>
@@ -147,7 +149,10 @@ export default function ProductDetails({ product }: Props) {
                     <li key={item.size}>
                       <button
                         disabled={!item.isAvailable}
-                        onClick={() => setSelectedSize(item)}
+                        onClick={() => {
+                          setQuantity(1);
+                          setSelectedSize(item);
+                        }}
                         className={cn(
                           'flex h-10 w-[75px] items-center justify-center rounded-3xl border border-brand-grey-400 text-base text-black disabled:text-brand-grey-400',
                           item.size === selectedSize?.size &&
@@ -201,7 +206,11 @@ export default function ProductDetails({ product }: Props) {
                     allowDecimal={false}
                     step={1}
                     min={1}
-                    max={product.totalQuantity}
+                    max={
+                      selectedSize
+                        ? selectedSize.productSize?.quantity
+                        : product.totalQuantity
+                    }
                     value={quantity}
                     onChange={setQuantity}
                     readOnly
@@ -213,11 +222,15 @@ export default function ProductDetails({ product }: Props) {
                   <button
                     onClick={() => handlersRef.current?.increment()}
                     disabled={
-                      quantity === product.totalQuantity || !isAvailable
+                      quantity === selectedSize?.productSize?.quantity ||
+                      !isAvailable
                     }
                     className={cn(
                       'px-4 py-3',
-                      (quantity === product.totalQuantity || !isAvailable) &&
+                      ((isOneSize &&
+                        quantity === product.productSizes?.[0]?.quantity) ||
+                        quantity === selectedSize?.productSize?.quantity ||
+                        !isAvailable) &&
                         'text-brand-grey-400'
                     )}
                   >
