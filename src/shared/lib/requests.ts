@@ -1,7 +1,12 @@
-import axios, { AxiosError, isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
-import { BackendResponse, Category, Product } from '../types/types';
+import {
+  AxiosQueryError,
+  BackendResponse,
+  Category,
+  Product,
+} from '../types/types';
 import { User } from '../types/auth.types';
 import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
@@ -134,10 +139,10 @@ export const publishImage = async (
       image instanceof Blob ? image.type.match(regex) : image.match(regex);
 
     if (!match) {
-      throw new AxiosError(
-        'Forbidden image type. Available image types are: gif, webp, png and jpeg',
-        '422'
-      );
+      throw {
+        data: 'Forbidden image type. Available image types are: gif, webp, png and jpeg',
+        status: 422,
+      } as AxiosQueryError;
     }
 
     try {

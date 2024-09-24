@@ -116,7 +116,6 @@ export default function AddCategoryModal() {
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }
-      console.error(err);
     }
   };
 
