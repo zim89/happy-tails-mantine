@@ -14,7 +14,11 @@ export default function BestSellers() {
         Our Bestseller
       </h2>
 
-      <ProductSlider alt data={data.content} />
+      <ProductSlider
+        alt
+        data={data.content}
+        className='relative max-md:left-1/2 max-md:right-1/2 max-md:-ml-[50vw] max-md:-mr-[50vw] max-md:!w-screen max-md:!max-w-full max-md:!p-0'
+      />
     </section>
   );
 }

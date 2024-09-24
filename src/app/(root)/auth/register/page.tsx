@@ -34,20 +34,13 @@ export default function Page() {
         <p className='relative text-center text-base text-brand-grey-700 before:absolute before:left-0 before:top-1/2 before:h-px before:w-[98px] before:-translate-y-1/2 before:bg-brand-grey-400 after:absolute after:right-0 after:top-1/2 after:h-px after:w-[98px] after:-translate-y-1/2 after:bg-brand-grey-400'>
           Or Sign Up with
         </p>
-        <div className='grid grid-cols-2 gap-5 md:gap-4'>
+        <div className='grid grid-cols-1'>
           <button
             type='button'
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />
             Google
-          </button>
-          <button
-            type='button'
-            className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold'
-          >
-            <FacebookIcon />
-            Facebook
           </button>
         </div>
       </div>

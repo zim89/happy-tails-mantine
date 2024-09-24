@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, TextInput, UnstyledButton } from '@mantine/core';
+import { TextInput, UnstyledButton } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';

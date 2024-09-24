@@ -1,4 +1,4 @@
-import { Button, Modal, UnstyledButton } from '@mantine/core';
+import { Modal, UnstyledButton } from '@mantine/core';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 

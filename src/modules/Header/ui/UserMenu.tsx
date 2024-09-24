@@ -20,20 +20,21 @@ export default function UserMenu() {
       {!isAuth ? (
         <Link
           href={APP_PAGES.LOGIN}
-          className='hidden items-center justify-center text-secondary lg:flex'
+          className='flex items-center justify-center text-secondary'
           aria-label={'Logout'}
         >
           <UserRound className='iconBtn' />
         </Link>
-      ) : isAdmin ? (
-        <Link
-          href={'/admin'}
-          className='hidden items-center justify-center text-secondary lg:flex'
-          aria-label={'Admin Panel'}
-        >
-          <UserRound className='iconBtn' />
-        </Link>
       ) : (
+        // : isAdmin ? (
+        //   <Link
+        //     href={'/admin'}
+        //     className='flex items-center justify-center text-secondary'
+        //     aria-label={'Admin Panel'}
+        //   >
+        //     <UserRound className='iconBtn' />
+        //   </Link>
+        // )
         <Menu
           opened={opened}
           onChange={setOpened}
@@ -64,6 +65,18 @@ export default function UserMenu() {
                 <Link href={item.href}>{item.label}</Link>
               </Menu.Item>
             ))}
+
+            {isAdmin && (
+              <Menu.Item>
+                <Link
+                  href={'/admin'}
+                  className='text-secondary'
+                  aria-label={'Admin Panel'}
+                >
+                  Admin panel
+                </Link>
+              </Menu.Item>
+            )}
 
             <Menu.Item>
               <Logout>

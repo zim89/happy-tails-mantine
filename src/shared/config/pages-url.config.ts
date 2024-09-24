@@ -15,6 +15,7 @@ class PAGES {
   CART = `/cart`;
   CHECKOUT = `/checkout`;
   CONFIRMATION = `${this.CHECKOUT}/confirmation`;
+  POLICY = `/privacy&cookies`;
   // Auxiliaries
   UNAUTHORIZED = `/403`;
 }

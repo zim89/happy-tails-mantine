@@ -60,37 +60,38 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={form.onSubmit(onSubmit)} className='space-y-5'>
-      <TextInput
-        radius='xs'
-        label='First Name'
-        placeholder=''
-        {...form.getInputProps('firstName')}
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            form?.errors?.firstName && 'border-brand-red-400 text-secondary'
-          ),
-          error: 'form-error',
-        }}
-      />
-
-      <TextInput
-        radius='xs'
-        label='Last Name'
-        placeholder=''
-        {...form.getInputProps('lastName')}
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            form?.errors?.lastName && 'border-brand-red-400 text-secondary'
-          ),
-          error: 'form-error',
-        }}
-      />
+      <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-2'>
+        <TextInput
+          radius='xs'
+          label='First Name'
+          placeholder=''
+          {...form.getInputProps('firstName')}
+          classNames={{
+            root: 'form-root',
+            label: 'form-label',
+            input: cn(
+              'form-input',
+              form?.errors?.firstName && 'border-brand-red-400 text-secondary'
+            ),
+            error: 'form-error',
+          }}
+        />
+        <TextInput
+          radius='xs'
+          label='Last Name'
+          placeholder=''
+          {...form.getInputProps('lastName')}
+          classNames={{
+            root: 'form-root',
+            label: 'form-label',
+            input: cn(
+              'form-input',
+              form?.errors?.lastName && 'border-brand-red-400 text-secondary'
+            ),
+            error: 'form-error',
+          }}
+        />
+      </div>
 
       <TextInput
         radius='xs'
@@ -108,48 +109,58 @@ export default function RegisterForm() {
         }}
       />
 
-      <PasswordInput
-        radius='xs'
-        label='Password'
-        placeholder=''
-        {...form.getInputProps('password')}
-        visibilityToggleIcon={({ reveal }) =>
-          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
-        }
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            'pr-11',
-            form?.errors?.password && 'border-brand-red-400 text-secondary'
-          ),
-          visibilityToggle: 'text-secondary',
-          error: 'form-error',
-        }}
-      />
+      <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-2'>
+        <PasswordInput
+          radius='xs'
+          label='Password'
+          placeholder=''
+          {...form.getInputProps('password')}
+          visibilityToggleIcon={({ reveal }) =>
+            reveal ? (
+              <Eye className='h-5 w-5' />
+            ) : (
+              <EyeOff className='h-5 w-5' />
+            )
+          }
+          classNames={{
+            root: 'form-root',
+            label: 'form-label',
+            input: cn(
+              'form-input',
+              'pr-11',
+              form?.errors?.password && 'border-brand-red-400 text-secondary'
+            ),
+            visibilityToggle: 'text-secondary',
+            error: 'form-error',
+          }}
+        />
 
-      <PasswordInput
-        radius='xs'
-        label='Confirm Password'
-        placeholder=''
-        {...form.getInputProps('confirmPassword')}
-        visibilityToggleIcon={({ reveal }) =>
-          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
-        }
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            'pr-11',
-            form?.errors?.confirmPassword &&
-              'border-brand-red-400 text-secondary'
-          ),
-          visibilityToggle: 'text-secondary',
-          error: 'form-error',
-        }}
-      />
+        <PasswordInput
+          radius='xs'
+          label='Confirm Password'
+          placeholder=''
+          {...form.getInputProps('confirmPassword')}
+          visibilityToggleIcon={({ reveal }) =>
+            reveal ? (
+              <Eye className='h-5 w-5' />
+            ) : (
+              <EyeOff className='h-5 w-5' />
+            )
+          }
+          classNames={{
+            root: 'form-root',
+            label: 'form-label',
+            input: cn(
+              'form-input',
+              'pr-11',
+              form?.errors?.confirmPassword &&
+                'border-brand-red-400 text-secondary'
+            ),
+            visibilityToggle: 'text-secondary',
+            error: 'form-error',
+          }}
+        />
+      </div>
 
       <button
         className={cn('btn btn-primary w-full', isLoading && 'btn-disabled')}

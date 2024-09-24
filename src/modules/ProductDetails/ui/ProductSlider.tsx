@@ -1,6 +1,14 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Card, Container, Stack, Text } from '@mantine/core';
+import {
+  Box,
+  Card,
+  Container,
+  ContainerProps,
+  Stack,
+  Text,
+  useMatches,
+} from '@mantine/core';
 import { Carousel, Embla } from '@mantine/carousel';
 import { useViewportSize } from '@mantine/hooks';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
@@ -11,7 +19,7 @@ import clsx from 'clsx';
 import '@mantine/carousel/styles.css';
 import { Product } from '@/shared/types/types';
 
-type ProductSliderProps = {
+type ProductSliderProps = ContainerProps & {
   targetCategory?: string;
   data: Product[];
   alt?: boolean;
@@ -21,13 +29,24 @@ export default function ProductSlider({
   data,
   alt,
   targetCategory,
+  ...props
 }: ProductSliderProps) {
   const { width } = useViewportSize();
 
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [hasPrevSlide, setHasPrevSlide] = useState(false);
   const [hasNextSlide, setHasNextSlide] = useState(true);
-  const slidesToScroll = useRef(1);
+
+  const slidesToScroll = useMatches({
+    base: 1,
+    md: 2,
+    lg: 3,
+  });
+
+  const align = useMatches({
+    base: 'center',
+    md: 'start',
+  } as const);
 
   const scrollPrev = useCallback(() => {
     if (embla) embla.scrollPrev();
@@ -50,14 +69,8 @@ export default function ProductSlider({
     }
   }, [embla, handleSelect]);
 
-  useEffect(() => {
-    if (width >= 768 && width < 1280) slidesToScroll.current = 2;
-    if (width > 1280) slidesToScroll.current = 3;
-    else slidesToScroll.current = 1;
-  }, [width]);
-
   return (
-    <Container>
+    <Container {...props}>
       {!alt && (
         <div className='mb-9 flex items-center justify-between'>
           <h2 className='text-xl font-bold leading-normal md:text-[28px]'>
@@ -92,15 +105,15 @@ export default function ProductSlider({
         getEmblaApi={setEmbla}
         withControls={!!alt}
         draggable={!!alt}
-        align={'start'}
+        align={alt ? align : 'start'}
         slideGap={16}
         slideSize={{ base: '100%', md: '50%', lg: '33.33%' }}
-        slidesToScroll={alt ? 'auto' : slidesToScroll.current}
+        slidesToScroll={alt ? 'auto' : slidesToScroll}
         speed={4}
         dragFree={!alt}
         controlsOffset={0}
         classNames={{
-          slide: 'max-w-max',
+          slide: 'max-w-[356px] lg:max-w-[397px]',
           controls:
             '!hidden lg:!flex [--_controls-left:-22px_!important] [--_controls-right:-22px_!important]',
           control:
@@ -116,7 +129,7 @@ export default function ProductSlider({
                   padding={28}
                   radius={2}
                   classNames={{
-                    root: 'border-brand-grey-400 w-[340px] md:w-full h-full',
+                    root: 'border-brand-grey-400 w-full h-full',
                   }}
                 >
                   <Stack gap={20}>

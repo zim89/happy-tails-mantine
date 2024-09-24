@@ -17,6 +17,8 @@ import { hasLength, isEmail, useForm } from '@mantine/form';
 
 import styles from '../styles.module.css';
 import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
+import { APP_PAGES } from '@/shared/config/pages-url.config';
+import Link from 'next/link';
 
 export const ContactForm = () => {
   const router = useRouter();
@@ -32,10 +34,18 @@ export const ContactForm = () => {
 
     validate: {
       email: isEmail('Invalid email'),
-      content: hasLength(
-        { min: 30, max: 255 },
-        'Minimum message length is 30 characters. Please extend your message.'
-      ),
+      content: (value) => {
+        const min = hasLength(
+          { min: 30 },
+          'Minimum message length is 30 characters. Please extend your message.'
+        )(value);
+        const max = hasLength(
+          { max: 255 },
+          'Maximum message length is 255 characters. Please shorten your message.'
+        )(value);
+
+        return min || max;
+      },
       userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       termsOfService: (value) =>
         !value && 'You must agree to the Terms of Service',
@@ -161,9 +171,9 @@ export const ContactForm = () => {
         />
 
         <span>
-          After reading the <a href='#'>privacy policy</a>, I consent to the
-          processing of my personal data, which will be used to answer my
-          questions.
+          After reading the <Link href={APP_PAGES.POLICY}>privacy policy</Link>,
+          I consent to the processing of my personal data, which will be used to
+          answer my questions.
         </span>
       </UnstyledButton>
 
