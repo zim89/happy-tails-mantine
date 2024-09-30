@@ -52,6 +52,8 @@ export default function OrdersList({ orders }: Props) {
         })),
       };
 
+      // TODO: fix the type
+      // @ts-ignore
       const response = await createOrder(formData).unwrap();
       if ((response as ResponseError).status === 400) {
         toast.error('Something went wrong. Please try again later.');

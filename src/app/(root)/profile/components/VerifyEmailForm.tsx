@@ -50,7 +50,7 @@ export const VerifyEmailForm = () => {
 
   return (
     <div className='flex flex-col items-center gap-4'>
-      <h3>You aren't permitted to the action, unless you verify your email</h3>
+      <h3>{`You aren't permitted to the action, unless you verify your email`}</h3>
       <LoaderBackground loading={isLoadingCode || isLoadingVerification}>
         {isSentCodeSuccess ? (
           <PinInput onComplete={handleVerifyEmail} size='md' length={6} />
