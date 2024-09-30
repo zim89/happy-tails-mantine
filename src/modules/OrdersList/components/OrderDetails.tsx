@@ -16,12 +16,14 @@ type Props = {
   order: Order;
   revealedOrders: string[];
   handleReveal(orderID: string): void;
+  handleRepeatOrder: (order: Order) => void;
 };
 
 export const OrderDetails = ({
   handleReveal,
   order,
   revealedOrders,
+  handleRepeatOrder,
 }: Props) => {
   return (
     <div className='hidden grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4 md:grid'>
@@ -53,7 +55,10 @@ export const OrderDetails = ({
         </div>
       ) : (
         <Image
-          src={order.orderProductDTOList[0].productImagePath}
+          src={
+            order.orderProductDTOList[0].productImagePath ||
+            '/images/no-img.png'
+          }
           width={52}
           height={52}
           alt={order.orderProductDTOList[0].productName}
@@ -106,7 +111,7 @@ export const OrderDetails = ({
         order.orderProductDTOList.map((product, index) => (
           <Fragment key={index}>
             <Image
-              src={product.productImagePath}
+              src={product.productImagePath || '/images/no-img.png'}
               width={52}
               height={52}
               alt={product.productName}
@@ -126,7 +131,11 @@ export const OrderDetails = ({
             <div className='ml-auto mr-20 text-center text-xs'>
               <p className='mb-1'>Item amount</p>
               <p>
-                $ {product.count * (product.salePrice || product.productPrice)}
+                ${' '}
+                {product.count *
+                  (product.salePrice != null
+                    ? product.salePrice
+                    : product.productPrice)}
               </p>
             </div>
           </Fragment>
@@ -138,7 +147,9 @@ export const OrderDetails = ({
           </p>
           <div className='mt-8 flex justify-end gap-4'>
             <LightButton handler={() => {}}>Leave a review</LightButton>
-            <DarkButton handler={() => {}}>Repeat the order</DarkButton>
+            <DarkButton handler={() => handleRepeatOrder(order)}>
+              Repeat the order
+            </DarkButton>
           </div>
         </Fragment>
       )}

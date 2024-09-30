@@ -14,6 +14,7 @@ type Address = {
 export interface User {
   userId: string;
   email: string;
+  emailVerified: boolean;
   firstName: string;
   lastName: string;
   registerDate: number[];
@@ -40,6 +41,6 @@ export interface LoginData {
 
 export interface LoginResponse extends User {}
 
-export interface VerifyEmailData extends LoginData {
+export type VerifyEmailData = {
   code: number | string;
-}
+} & Partial<LoginData>;

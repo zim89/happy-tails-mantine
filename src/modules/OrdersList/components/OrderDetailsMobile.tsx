@@ -47,7 +47,10 @@ export const OrderDetailsMobile = ({
             }
           >
             <Image
-              src={order.orderProductDTOList[0].productImagePath}
+              src={
+                order.orderProductDTOList[0].productImagePath ||
+                '/images/no-img.png'
+              }
               fill
               alt={`${order.orderProductDTOList.length} items`}
               className='blur-[2px] filter'
@@ -68,7 +71,10 @@ export const OrderDetailsMobile = ({
           </div>
         ) : (
           <Image
-            src={order.orderProductDTOList[0].productImagePath}
+            src={
+              order.orderProductDTOList[0].productImagePath ||
+              '/images/no-img.png'
+            }
             width={52}
             height={52}
             alt={order.orderProductDTOList[0].productName}
@@ -99,7 +105,7 @@ export const OrderDetailsMobile = ({
           order.orderProductDTOList.map((product, index) => (
             <Fragment key={index}>
               <Image
-                src={product.productImagePath}
+                src={product.productImagePath || '/images/no-img.png'}
                 alt={product.productName}
                 width={52}
                 height={52}
@@ -120,7 +126,11 @@ export const OrderDetailsMobile = ({
               <div className='ml-auto text-center text-sm'>
                 <p className='mb-1'>Item amount</p>
                 <p>
-                  {product.count * (product.salePrice || product.productPrice)}$
+                  {product.count *
+                    (product.salePrice != null
+                      ? product.salePrice
+                      : product.productPrice)}
+                  $
                 </p>
               </div>
             </Fragment>

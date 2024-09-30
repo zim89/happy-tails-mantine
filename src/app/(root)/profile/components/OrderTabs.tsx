@@ -1,4 +1,5 @@
 'use client';
+
 import { Tabs } from '@mantine/core';
 
 import Toolbar from '@/modules/OrderToolbar';
@@ -14,6 +15,8 @@ type Props = {
   orders: Order[];
 };
 export const OrderTabs = ({ orders }: Props) => {
+  console.log(orders);
+
   return (
     <Tabs
       defaultValue='orders'

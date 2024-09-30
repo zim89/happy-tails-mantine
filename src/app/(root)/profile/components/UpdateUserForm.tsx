@@ -1,5 +1,3 @@
-'use client';
-
 import { TextInput, UnstyledButton } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 

@@ -11,8 +11,6 @@ export default function SidebarMenu() {
   const { currentUser } = useAuth();
   const path = usePathname();
 
-  console.log(path);
-
   return (
     <ul className='mt-11 hidden w-[274px] p-0 lg:mt-0 lg:block'>
       {profileMenu[0] && (

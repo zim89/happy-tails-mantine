@@ -9,7 +9,7 @@ import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
 
 export const OrderHistoryDisplay = () => {
-  const { data } = useFindManyByEmailQuery({ page: 0, limit: 10 });
+  const { data } = useFindManyByEmailQuery({ page: 0, limit: 1000000000 });
 
   if (!data) return;
 
