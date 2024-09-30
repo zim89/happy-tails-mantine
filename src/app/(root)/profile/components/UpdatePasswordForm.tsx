@@ -1,182 +1,71 @@
 'use client';
 
-import { useForm, hasLength, matchesField, isNotEmpty } from '@mantine/form';
-import { PasswordInput, UnstyledButton } from '@mantine/core';
-import { Eye, EyeOff } from 'lucide-react';
+import { Stepper, UnstyledButton } from '@mantine/core';
+import { useState } from 'react';
 import { redirect } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { Check } from 'lucide-react';
+import Link from 'next/link';
 
-import { cn } from '@/shared/lib/utils';
+import { NewPasswordFields } from '../components/NewPasswordFields';
 import classes from '../styles.module.css';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { isAxiosQueryError } from '@/shared/lib/helpers';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import { useResetPasswordVerifyMutation } from '@/shared/api/authApi';
-import { useState } from 'react';
-import { LoaderBackground } from '@/components/LoaderBackground';
+import { CodeVerification } from '../components/CodeVerification';
 
-type Props = {
-  nextStep: () => void;
-};
-export const UpdatePasswordForm = ({ nextStep }: Props) => {
-  const [dispatch, { isLoading }] = useResetPasswordVerifyMutation();
-
-  const form = useForm({
-    initialValues: {
-      code: '',
-      password: '',
-      confirmPassword: '',
-    },
-
-    validate: {
-      code: (val) => {
-        let error = null;
-
-        error = isNotEmpty('The code must be provisioned')(val);
-
-        if (error) return error;
-
-        const reg = /^\d+$/;
-        error = val.search(reg);
-
-        if (error === -1) return 'Code must contain only numbers';
-
-        return null;
-      },
-      password: (val) => {
-        let error = null;
-
-        error = hasLength(
-          { min: 6 },
-          'Password must have 6 or more symbols'
-        )(val);
-
-        return error;
-      },
-      confirmPassword: (val, values) => {
-        let error = null;
-
-        error = matchesField('password', 'Passwords do not match')(val, values);
-
-        return error;
-      },
-    },
-  });
-
+export default function UpdatePasswordForm() {
   const { currentUser } = useAuth();
+  const [step, setStep] = useState(0);
 
   if (!currentUser) redirect(APP_PAGES.LOGIN);
 
-  const updatePassword = async ({
-    code,
-    newPassword,
-  }: {
-    code: string;
-    newPassword: string;
-  }) => {
-    try {
-      const request = {
-        email: currentUser.email,
-        newPassword,
-        confirmPassword: newPassword,
-        code,
-      };
-
-      await dispatch(request).unwrap();
-
-      form.clearErrors();
-      form.reset();
-      nextStep();
-    } catch (err) {
-      if (isAxiosQueryError(err) && err.status === 404) {
-        toast.error('The provided code was not found');
-      } else {
-        toast.error('Oops! Something went wrong! Try again later.');
-      }
-    }
-  };
+  const nextStep = () =>
+    setStep((current) => (current < 2 ? current + 1 : current));
 
   return (
-    <form
-      className={cn('mt-2', classes.form)}
-      onSubmit={form.onSubmit(async (values) => {
-        await updatePassword({
-          code: values.code,
-          newPassword: values.password,
-        });
-      })}
+    <Stepper
+      active={step}
+      color='rgba(0, 0, 0, 1)'
+      completedIcon={<Check />}
+      classNames={{
+        root: 'mt-10 lg:mt-8 flex flex-col items-center',
+        steps: 'max-w-[700px] px-6 w-full',
+      }}
     >
-      <PasswordInput
-        label='Verification code'
-        type='password'
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            classes.inputSizing,
-            form?.errors?.password && 'form-error--input'
-          ),
-          innerInput: 'form-input',
-          visibilityToggle: 'text-secondary',
-          error: 'form-error',
-        }}
-        visibilityToggleIcon={({ reveal }) =>
-          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
-        }
-        {...form.getInputProps('code')}
-        placeholder='Enter the code you found in email box'
-      />
-      <PasswordInput
-        label='New password'
-        type='password'
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          input: cn(
-            'form-input',
-            classes.inputSizing,
-            form?.errors?.password && 'form-error--input'
-          ),
-          innerInput: 'form-input',
-          visibilityToggle: 'text-secondary',
-          error: 'form-error',
-        }}
-        visibilityToggleIcon={({ reveal }) =>
-          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
-        }
-        {...form.getInputProps('password')}
-        placeholder='Enter your new password'
-      />
-      <PasswordInput
-        label='Repeat password'
-        type='password'
-        classNames={{
-          root: 'form-root',
-          label: 'form-label',
-          visibilityToggle: 'text-secondary',
-          innerInput: 'form-input',
-          input: cn(
-            'form-input',
-            classes.inputSizing,
-            form?.errors?.confirmPassword && 'form-error--input'
-          ),
-          error: 'form-error',
-        }}
-        visibilityToggleIcon={({ reveal }) =>
-          reveal ? <Eye className='h-5 w-5' /> : <EyeOff className='h-5 w-5' />
-        }
-        {...form.getInputProps('confirmPassword')}
-        placeholder='Confirm your new password'
-      />
-      <LoaderBackground loading={isLoading} className='mb-20 mt-6'>
-        <UnstyledButton
-          type='submit'
-          className={cn('btn bg-secondary text-primary', classes.inputSizing)}
-        >
-          Update Password
-        </UnstyledButton>
-      </LoaderBackground>
-    </form>
+      <Stepper.Step>
+        <CodeVerification currentUser={currentUser} nextStep={nextStep} />
+      </Stepper.Step>
+      <Stepper.Step>
+        <hgroup className='text-center'>
+          <h1 className='hidden text-[2rem]/[2.4rem] lg:block'>
+            Update your password
+          </h1>
+          <p className={classes.profileParagraph}>
+            <span className='inline-block max-w-[360px]'>
+              Enter the verification code we just sent to email and create a new
+              password
+            </span>
+          </p>
+        </hgroup>
+        <NewPasswordFields nextStep={nextStep} />
+      </Stepper.Step>
+      <Stepper.Completed>
+        <div className='flex flex-col'>
+          <hgroup className='text-center'>
+            <h1 className='whitespace-pre text-[2rem]/[2.4rem] font-black'>
+              <span>Password Updated</span>
+              <Check className='ml-4 inline-block' size={36} />
+            </h1>
+            <p className={classes.profileParagraph}>
+              <span className='inline-block max-w-[360px]'>
+                Your password has been successfully updated
+              </span>
+            </p>
+          </hgroup>
+          <UnstyledButton className='btn mt-8 bg-secondary text-primary'>
+            <Link href='/profile'>Return to my account</Link>
+          </UnstyledButton>
+        </div>
+      </Stepper.Completed>
+    </Stepper>
   );
-};
+}

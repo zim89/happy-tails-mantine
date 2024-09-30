@@ -1,12 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { cn } from '@/shared/lib/utils';
 
 export default function SidebarMenu() {
   const { currentUser } = useAuth();
+  const path = usePathname();
+
+  console.log(path);
 
   return (
     <ul className='mt-11 hidden w-[274px] p-0 lg:mt-0 lg:block'>
@@ -29,7 +34,12 @@ export default function SidebarMenu() {
           >
             <item.icon size={24} />
             <Link href={item.href} className='block w-full'>
-              <span className='py-2 text-sm text-secondary hover:text-brand-orange-500'>
+              <span
+                className={cn(
+                  'py-2 text-sm text-secondary hover:text-brand-orange-500',
+                  item.href === path && 'text-brand-orange-500'
+                )}
+              >
                 {item.label}
               </span>
             </Link>

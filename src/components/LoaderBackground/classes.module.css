@@ -1,10 +1,11 @@
 .loaderBg {
+  background-size: 400px 400px;
   background: repeating-linear-gradient(
-    135deg,
+    45deg,
     rgba(243, 147, 36, 1) 0%,
     rgba(243, 147, 36, 1) 2%,
     rgba(238, 238, 238, 1) 2%,
-    rgba(238, 238, 238, 1) 4%
+    rgba(238, 238, 238, 1) 4.1%
   );
 
   @apply animate-[loading_60s_linear_infinite];

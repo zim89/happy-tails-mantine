@@ -1,3 +1,5 @@
+'use client';
+
 import { UseFormReturnType } from '@mantine/form';
 import { XCircle } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
@@ -65,7 +67,7 @@ export const PostalCodeField = ({ form }: Props) => {
         if (err instanceof AxiosError) {
           form.setFieldError(
             'postcode',
-            `${err.response?.data.message}. Please, put the code yourself`
+            'No codes with the given city was found. Please, put the code yourself'
           );
         }
       }
@@ -79,7 +81,7 @@ export const PostalCodeField = ({ form }: Props) => {
         root: cn('form-root', classes.fieldSizing),
         label: 'form-label block text-left',
         input: cn('form-input', form?.errors?.city && 'form-error--input'),
-        error: 'form-error',
+        error: 'form-error -bottom-5 text-left',
       }}
       {...form.getInputProps('postcode')}
       label='Postcode'

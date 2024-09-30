@@ -12,10 +12,7 @@ export const LoaderBackground = ({ children, loading, ...props }: Props) => {
   if (!loading) return <div className={props.className}>{children}</div>;
 
   return (
-    <div
-      {...props}
-      className={cn('bg-slate-700 p-1', classes.loaderBg, props.className)}
-    >
+    <div {...props} className={cn('p-1', classes.loaderBg, props.className)}>
       {children}
     </div>
   );
