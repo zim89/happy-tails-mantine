@@ -12,12 +12,14 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { isAxiosQueryError } from '@/shared/lib/helpers';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useResetPasswordVerifyMutation } from '@/shared/api/authApi';
+import { useState } from 'react';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 type Props = {
   nextStep: () => void;
 };
 export const UpdatePasswordForm = ({ nextStep }: Props) => {
-  const [dispatch] = useResetPasswordVerifyMutation();
+  const [dispatch, { isLoading }] = useResetPasswordVerifyMutation();
 
   const form = useForm({
     initialValues: {
@@ -96,7 +98,7 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
 
   return (
     <form
-      className={cn('mt-8', classes.form)}
+      className={cn('mt-2', classes.form)}
       onSubmit={form.onSubmit(async (values) => {
         await updatePassword({
           code: values.code,
@@ -167,15 +169,14 @@ export const UpdatePasswordForm = ({ nextStep }: Props) => {
         {...form.getInputProps('confirmPassword')}
         placeholder='Confirm your new password'
       />
-      <UnstyledButton
-        type='submit'
-        className={cn(
-          'btn mb-20 mt-6 bg-secondary text-primary',
-          classes.inputSizing
-        )}
-      >
-        Update Password
-      </UnstyledButton>
+      <LoaderBackground loading={isLoading} className='mb-20 mt-6'>
+        <UnstyledButton
+          type='submit'
+          className={cn('btn bg-secondary text-primary', classes.inputSizing)}
+        >
+          Update Password
+        </UnstyledButton>
+      </LoaderBackground>
     </form>
   );
 };

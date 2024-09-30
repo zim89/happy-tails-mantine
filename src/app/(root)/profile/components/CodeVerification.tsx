@@ -5,6 +5,8 @@ import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useResetPasswordMutation } from '@/shared/api/authApi';
 import { User } from '@/shared/types/auth.types';
+import { useState } from 'react';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 type Props = {
   nextStep: () => void;
@@ -13,9 +15,11 @@ type Props = {
 
 export const CodeVerification = ({ nextStep, currentUser }: Props) => {
   const [resetPassword] = useResetPasswordMutation();
+  const [sent, setSent] = useState(false);
 
   const proceedCode = async () => {
     try {
+      setSent(true);
       await resetPassword({ email: currentUser.email }).unwrap();
       nextStep();
     } catch (err) {
@@ -35,15 +39,18 @@ export const CodeVerification = ({ nextStep, currentUser }: Props) => {
           </span>
         </p>
       </hgroup>
-      <UnstyledButton
-        className={cn(
-          'btn my-4 w-full bg-secondary text-primary',
-          classes.inputSizing
-        )}
-        onClick={proceedCode}
-      >
-        Send
-      </UnstyledButton>
+      <LoaderBackground loading={sent} className='my-4'>
+        <UnstyledButton
+          className={cn(
+            'btn !w-full bg-secondary text-primary',
+            classes.inputSizing
+          )}
+          onClick={proceedCode}
+          disabled={sent}
+        >
+          Send
+        </UnstyledButton>
+      </LoaderBackground>
     </>
   );
 };

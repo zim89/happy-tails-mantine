@@ -42,21 +42,17 @@ export const UpdateUserForm = () => {
             ...prevUser
           } = currentUser;
 
-          const {
-            sendOffersAndNews,
-            email: emailField,
-            ...formFields
-          } = values;
+          const { sendOffersAndNews, ...formFields } = values;
 
           const request = {
             ...prevUser,
             ...formFields,
-            phoneNumber: !!prevUser.phoneNumber.trim()
+            phoneNumber: prevUser.phoneNumber
               ? prevUser.phoneNumber
-              : '+16-573-698-7573',
+              : '+00-000-000-0000',
             billingAddress: prevUser.billingAddress ?? {
-              firstName: prevUser.firstName,
-              lastName: prevUser.lastName,
+              firstName: formFields.firstName,
+              lastName: formFields.lastName,
               company: '',
               country: '',
               zip: '',
@@ -64,13 +60,13 @@ export const UpdateUserForm = () => {
               city: '',
               addressLine1: '',
               addressLine2: '',
-              phoneNumber: !!prevUser.phoneNumber.trim()
+              phoneNumber: prevUser.phoneNumber
                 ? prevUser.phoneNumber
-                : '+16-573-698-7573',
+                : '+00-000-000-0000',
             },
             shippingAddress: prevUser.shippingAddress ?? {
-              firstName: prevUser.firstName,
-              lastName: prevUser.lastName,
+              firstName: formFields.firstName,
+              lastName: formFields.lastName,
               company: '',
               country: '',
               zip: '',
@@ -78,9 +74,9 @@ export const UpdateUserForm = () => {
               city: '',
               addressLine1: '',
               addressLine2: '',
-              phoneNumber: !!prevUser.phoneNumber.trim()
+              phoneNumber: prevUser.phoneNumber
                 ? prevUser.phoneNumber
-                : '+16-573-698-7573',
+                : '+00-000-000-0000',
             },
           };
 
