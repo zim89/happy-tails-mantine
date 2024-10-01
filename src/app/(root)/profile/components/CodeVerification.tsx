@@ -40,7 +40,7 @@ export const CodeVerification = ({ nextStep, currentUser, vars }: Props) => {
           </span>
         </p>
       </hgroup>
-      <LoaderBackground vars={vars} loading={sent} className='my-4'>
+      <LoaderBackground loading={sent} className='my-4'>
         <UnstyledButton
           className={cn(
             'btn !w-full bg-secondary text-primary',

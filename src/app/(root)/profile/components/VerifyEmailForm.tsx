@@ -71,10 +71,7 @@ export const VerifyEmailForm = ({ classNames, vars }: Props) => {
           ? 'Enter the code sent to your email'
           : `You aren't permitted to the action, unless you verify your email`}
       </h3>
-      <LoaderBackground
-        vars={vars}
-        loading={isLoadingCode || isLoadingVerification}
-      >
+      <LoaderBackground loading={isLoadingCode || isLoadingVerification}>
         {isSentCodeSuccess ? (
           <PinInput onComplete={handleVerifyEmail} size='md' length={6} />
         ) : (
