@@ -3,7 +3,6 @@
 import { Tabs } from '@mantine/core';
 
 import Toolbar from '@/modules/OrderToolbar';
-import { PaginationStateful } from '@/modules/PaginationBar';
 import { cn } from '@/shared/lib/utils';
 import OrdersList from '@/modules/OrdersList';
 
@@ -15,8 +14,6 @@ type Props = {
   orders: Order[];
 };
 export const OrderTabs = ({ orders }: Props) => {
-  console.log(orders);
-
   return (
     <Tabs
       defaultValue='orders'
@@ -38,14 +35,9 @@ export const OrderTabs = ({ orders }: Props) => {
       >
         <Toolbar />
 
-        <PaginationStateful initial={orders} maxItems={7}>
-          {(paginatedOrders, panel) => (
-            <div className='mt-6'>
-              <OrdersList orders={paginatedOrders} />
-              <div className='mt-12'>{panel}</div>
-            </div>
-          )}
-        </PaginationStateful>
+        <div className='mt-6'>
+          <OrdersList orders={orders} />
+        </div>
       </Tabs.Panel>
       <Tabs.Panel value='warranty-returns'>
         <div className={classes.box}>

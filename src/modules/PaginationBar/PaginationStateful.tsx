@@ -25,6 +25,9 @@ export default function PaginationStateful<T>({
   const paginate = (page: number) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
+
+    console.log(page);
+
     replace(`${path}?${params.toString()}`);
 
     if (page === 1) {
@@ -46,15 +49,15 @@ export default function PaginationStateful<T>({
       }}
     >
       {/* If there are more pages than only one, then show pagination controls */}
-      {Math.floor(initial.length / maxItems) > 0 && (
-        <Group gap={0} justify='end'>
-          <div className={styles.paginationOptions}>
-            <Pagination.Previous icon={PaginationPrevBtn} />
-            <Pagination.Items />
-            <Pagination.Next icon={PaginationNextBtn} />
-          </div>
-        </Group>
-      )}
+      {/* {Math.floor(initial.length / maxItems) > 0 && ( */}
+      <Group gap={0} justify='end'>
+        <div className={styles.paginationOptions}>
+          <Pagination.Previous icon={PaginationPrevBtn} />
+          <Pagination.Items />
+          <Pagination.Next icon={PaginationNextBtn} />
+        </div>
+      </Group>
+      {/* )} */}
     </Pagination.Root>
   );
 

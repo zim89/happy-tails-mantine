@@ -27,7 +27,7 @@ export const DeliveryForm = () => {
       company: currentUser?.shippingAddress?.company || '',
       addressOne: currentUser?.shippingAddress?.addressLine1 || '',
       addressTwo: currentUser?.shippingAddress?.addressLine2 || '',
-      contactNumber: currentUser?.phoneNumber || '',
+      contactNumber: currentUser?.phoneNumber.replace(/\"/g, '') || '',
       county: currentUser?.shippingAddress?.state || '',
     },
 

@@ -39,13 +39,13 @@ const SearchField = ({
   };
 
   useEffect(() => {
-    setValue(query.get('name') || '');
+    setValue(query.get('search') || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(query);
-    debounced ? params.set('name', debounced) : params.delete('name');
+    debounced ? params.set('search', debounced) : params.delete('search');
     replace(`${path}?${params.toString()}`);
   }, [debounced, path, query, replace]);
 

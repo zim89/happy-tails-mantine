@@ -24,22 +24,22 @@ export default function UpdatePasswordForm() {
 
   return (
     <div className='relative'>
-      {!currentUser.emailVerified && (
-        <LoadingOverlay
-          visible={true}
-          zIndex={20}
-          overlayProps={{ blur: 2 }}
-          loaderProps={{
-            children: (
-              <VerifyEmailForm
-                classNames={{
-                  root: 'pt-28 px-10',
-                }}
-              />
-            ),
-          }}
-        />
-      )}
+      <LoadingOverlay
+        visible={!currentUser.emailVerified}
+        zIndex={20}
+        overlayProps={{ blur: 2 }}
+        loaderProps={{
+          children: (
+            <VerifyEmailForm
+              classNames={{
+                root: 'pt-28 px-10',
+                headings: 'text-center',
+              }}
+            />
+          ),
+        }}
+      />
+
       <Stepper
         active={step}
         color='rgba(0, 0, 0, 1)'

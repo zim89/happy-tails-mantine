@@ -65,7 +65,7 @@
 }
 
 .box {
-  @apply mx-auto mt-10 flex min-h-[70vh] flex-col pb-10 text-center md:min-h-[50vh] md:max-w-[572px] md:items-center;
+  @apply relative mx-auto mt-10 flex min-h-[70vh] flex-col pb-10 text-center md:min-h-[50vh] md:max-w-[572px] md:items-center;
 }
 
 .content {
