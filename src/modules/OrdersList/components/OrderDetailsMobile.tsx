@@ -111,7 +111,7 @@ export const OrderDetailsMobile = ({
             <Fragment key={index}>
               <Image
                 src={product.productImagePath || '/images/no-img.png'}
-                alt={product.productName}
+                alt={product.productName ?? 'Product'}
                 width={52}
                 height={52}
               />
