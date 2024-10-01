@@ -7,6 +7,7 @@ import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { toast } from 'react-toastify';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
@@ -84,11 +85,12 @@ export const UpdateUserForm = () => {
             },
           };
 
-          await updateUser(request);
+          await updateUser(request).unwrap();
 
           form.clearErrors();
           form.reset();
         } catch (err) {
+          toast.error('Something went wrong. Please try again later.');
           console.log(err);
         }
       })}
