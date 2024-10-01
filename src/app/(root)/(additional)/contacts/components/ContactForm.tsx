@@ -1,7 +1,7 @@
 'use client';
 import { Paperclip } from 'lucide-react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   FileInput,
@@ -19,9 +19,15 @@ import { cn } from '@/shared/lib/utils';
 import styles from '../styles.module.css';
 import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { useEffect } from 'react';
+import { useAuth } from '@/shared/hooks/useAuth';
 
 export const ContactForm = () => {
+  const { isAuth, currentUser } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
+
+  const state = params.get('state');
 
   const form = useForm({
     initialValues: {
@@ -51,6 +57,21 @@ export const ContactForm = () => {
         !value && 'You must agree to the Terms of Service',
     },
   });
+
+  useEffect(() => {
+    if (state) {
+      form.setFieldValue('content', `I'm writing about an order #${state}`);
+      router.replace('/contacts');
+    }
+    if (isAuth) {
+      form.setFieldValue(
+        'userName',
+        `${currentUser?.firstName} ${currentUser?.lastName}`
+      );
+      currentUser?.emailVerified &&
+        form.setFieldValue('email', `${currentUser?.email}`);
+    }
+  }, [state, isAuth]);
 
   const handleSubmit = async ({
     content,
