@@ -1,15 +1,68 @@
 'use client';
 
-import { OrderTabs } from '@/app/(root)/profile/components/OrderTabs';
-import { useFindManyByEmailQuery } from '@/shared/api/ordersApi';
 import { UnstyledButton } from '@mantine/core';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import { OrderTabs } from '@/app/(root)/profile/components/OrderTabs';
+import { useFindManyByEmailQuery } from '@/shared/api/ordersApi';
 import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
+import { mapFilterToDate } from '@/shared/helpers/date.helpers';
 
 export const OrderHistoryDisplay = () => {
-  const { data } = useFindManyByEmailQuery({ page: 0, limit: 1000000000 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data } = useFindManyByEmailQuery({
+    page: currentPage - 1,
+    limit: 1000000000000,
+  });
+
+  const [filtered, setFiltered] = useState(data?.content || []);
+
+  const params = useSearchParams();
+  const router = useRouter();
+
+  const searchParam = params.get('search');
+  const pageParam = params.get('page');
+  const filterParam = params.get('filter');
+
+  useEffect(() => {
+    if (searchParam?.trim() && data) {
+      setFiltered(
+        data.content.filter(
+          (order) =>
+            order.orderStatus
+              .toLowerCase()
+              .includes(searchParam.toLowerCase()) ||
+            order.number.toLowerCase().includes(searchParam.toLowerCase())
+        )
+      );
+    } else if (data) {
+      setFiltered(data.content);
+    }
+  }, [searchParam]);
+
+  useEffect(() => {
+    if (filterParam?.trim()) {
+      console.log(filtered);
+      setFiltered((prev) =>
+        prev.filter((item) => item.createdDate >= mapFilterToDate(filterParam!))
+      );
+    }
+  }, [filterParam]);
+
+  useEffect(() => {
+    pageParam ? setCurrentPage(Number(pageParam)) : router.replace('?page=1');
+  }, [pageParam]);
+
+  useEffect(() => {
+    if (data) {
+      setCurrentPage(1); // Reset page when new data is received
+      setFiltered(data!.content); // Reset filtered orders when new data is received
+      router.replace('?page=1'); // Reset search query when new data is received
+    }
+  }, [data]);
 
   if (!data) return;
 
@@ -24,7 +77,7 @@ export const OrderHistoryDisplay = () => {
         Order History
       </h1>
       {data.content.length > 0 ? (
-        <OrderTabs orders={data.content} />
+        <OrderTabs orders={filtered} />
       ) : (
         <div className={classes.box}>
           <hgroup>

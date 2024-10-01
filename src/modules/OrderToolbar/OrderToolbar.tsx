@@ -11,8 +11,8 @@ const menu = [
   { label: 'For all time', value: 'all' },
   { label: 'For the last 30 days', value: 'L30D' },
   { label: 'For the last 6 months', value: 'L6M' },
-  { label: '2023', value: '2023' },
-  { label: '2022', value: '2022' },
+  { label: '2023', value: 'YPAST' },
+  { label: '2022', value: '2YPAST' },
 ];
 
 export default function OrderToolbar() {
@@ -35,13 +35,17 @@ export default function OrderToolbar() {
   );
 
   useEffect(() => {
-    router.push(
-      pathname +
-        '?' +
-        createQueryString({
-          time: selected.value,
-        })
-    );
+    if (selected.value === 'all') {
+      router.replace('/profile/order-history');
+    } else {
+      router.push(
+        pathname +
+          '?' +
+          createQueryString({
+            filter: selected.value,
+          })
+      );
+    }
 
     close();
 

@@ -75,6 +75,7 @@ export default function OrdersList({ orders }: Props) {
           {/** Mobile only */}
           <OrderDetailsMobile
             handleReveal={handleOpen}
+            handleRepeatOrder={handleRepeatOrder}
             order={order}
             revealedOrders={activeOrders}
           />

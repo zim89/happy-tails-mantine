@@ -34,6 +34,7 @@ export default function UpdatePasswordForm() {
               <VerifyEmailForm
                 classNames={{
                   root: 'pt-28 px-10',
+                  headings: 'text-center',
                 }}
               />
             ),

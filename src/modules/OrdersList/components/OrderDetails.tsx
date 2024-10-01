@@ -41,7 +41,7 @@ export const OrderDetails = ({
           <Image
             src={
               order.orderProductDTOList[0].productImagePath ??
-              'https://placehold.co/600x400'
+              '/images/no-img.png'
             }
             fill
             alt={`${order.orderProductDTOList.length} items`}

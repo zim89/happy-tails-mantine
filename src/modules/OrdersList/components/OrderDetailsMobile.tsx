@@ -12,17 +12,22 @@ import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { formatColor, formatSize } from '@/shared/lib/helpers';
 import { orderPalette } from '@/shared/lib/constants';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   order: Order;
   revealedOrders: string[];
   handleReveal(orderID: string): void;
+  handleRepeatOrder: (order: Order) => void;
 };
 export const OrderDetailsMobile = ({
   order,
   handleReveal,
   revealedOrders,
+  handleRepeatOrder,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <div className='md:hidden'>
       {revealedOrders.includes(order.number) && (
@@ -153,8 +158,14 @@ export const OrderDetailsMobile = ({
               <FileText size={16} /> Electronic check
             </p>
             <div className='flex flex-col gap-4'>
-              <LightButton handler={() => {}}>Leave a review</LightButton>
-              <DarkButton handler={() => {}}>Repeat the order</DarkButton>
+              <LightButton
+                handler={() => router.push(`/contacts?state=${order.number}`)}
+              >
+                Leave a review
+              </LightButton>
+              <DarkButton handler={() => handleRepeatOrder(order)}>
+                Repeat the order
+              </DarkButton>
             </div>
           </>
         )}
