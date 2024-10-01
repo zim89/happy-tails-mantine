@@ -47,7 +47,10 @@ export const OrderDetailsMobile = ({
             }
           >
             <Image
-              src={order.orderProductDTOList[0].productImagePath}
+              src={
+                order.orderProductDTOList[0].productImagePath ??
+                'https://placehold.co/600x400'
+              }
               fill
               alt={`${order.orderProductDTOList.length} items`}
               className='blur-[2px] filter'
@@ -68,10 +71,13 @@ export const OrderDetailsMobile = ({
           </div>
         ) : (
           <Image
-            src={order.orderProductDTOList[0].productImagePath}
+            src={
+              order.orderProductDTOList[0].productImagePath ??
+              'https://placehold.co/600x400'
+            }
             width={52}
             height={52}
-            alt={order.orderProductDTOList[0].productName}
+            alt={order.orderProductDTOList[0].productName ?? 'Product'}
             className={
               revealedOrders.includes(order.number) ? 'hidden' : 'mr-4 block'
             }
@@ -99,8 +105,8 @@ export const OrderDetailsMobile = ({
           order.orderProductDTOList.map((product, index) => (
             <Fragment key={index}>
               <Image
-                src={product.productImagePath}
-                alt={product.productName}
+                src={product.productImagePath ?? 'https://placehold.co/600x400'}
+                alt={product.productName ?? 'Product'}
                 width={52}
                 height={52}
               />
