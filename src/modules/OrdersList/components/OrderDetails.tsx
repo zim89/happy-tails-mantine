@@ -2,6 +2,8 @@ import { Tooltip, UnstyledButton } from '@mantine/core';
 import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 import { CustomBadge } from '@/components/Badge';
 import DarkButton from '@/components/DarkButton';
@@ -10,7 +12,6 @@ import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
-import dayjs from 'dayjs';
 
 type Props = {
   order: Order;
@@ -25,6 +26,8 @@ export const OrderDetails = ({
   revealedOrders,
   handleRepeatOrder,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <div className='hidden grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4 md:grid'>
       {order.orderProductDTOList.length > 1 ? (
@@ -146,7 +149,11 @@ export const OrderDetails = ({
             <FileText size={16} /> Electronic check
           </p>
           <div className='mt-8 flex justify-end gap-4'>
-            <LightButton handler={() => {}}>Leave a review</LightButton>
+            <LightButton
+              handler={() => router.push(`/contacts?state=${order.number}`)}
+            >
+              Leave a review
+            </LightButton>
             <DarkButton handler={() => handleRepeatOrder(order)}>
               Repeat the order
             </DarkButton>

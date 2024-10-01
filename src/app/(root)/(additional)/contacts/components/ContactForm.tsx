@@ -2,10 +2,7 @@
 import { Paperclip } from 'lucide-react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-
-import Checkbox from '@/components/Checkbox';
-import { postRequest } from '@/shared/api/contactsApi';
-import { cn } from '@/shared/lib/utils';
+import Link from 'next/link';
 import {
   FileInput,
   Textarea,
@@ -15,10 +12,13 @@ import {
 } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 
+import Checkbox from '@/components/Checkbox';
+import { postRequest } from '@/shared/api/contactsApi';
+import { cn } from '@/shared/lib/utils';
+
 import styles from '../styles.module.css';
 import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import Link from 'next/link';
 
 export const ContactForm = () => {
   const router = useRouter();
