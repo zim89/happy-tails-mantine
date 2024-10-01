@@ -110,6 +110,12 @@ export const ordersApi = createApi({
         url: `/orders/${email}/${orderNumber}`,
       }),
     }),
+    findUserOrders: builder.query<BackendResponse<Order[]>, void>({
+      query: () => ({
+        url: '/orders',
+      }),
+      providesTags: ['Orders'],
+    }),
     createOrder: builder.mutation<Order, OrderPayload>({
       query: (params) => ({
         url: '/orders',
@@ -193,6 +199,7 @@ export const {
   useFindOneQuery,
   useFindOneByEmailAndCodeQuery,
   useFindManyByEmailQuery,
+  useFindUserOrdersQuery,
 } = ordersApi;
 
 export const getDiscount = async (code: string) => {

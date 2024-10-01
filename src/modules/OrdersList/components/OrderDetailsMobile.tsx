@@ -77,7 +77,7 @@ export const OrderDetailsMobile = ({
             }
             width={52}
             height={52}
-            alt={order.orderProductDTOList[0].productName}
+            alt={order.orderProductDTOList[0].productName ?? 'Product'}
             className={
               revealedOrders.includes(order.number) ? 'hidden' : 'mr-4 block'
             }
@@ -106,7 +106,7 @@ export const OrderDetailsMobile = ({
             <Fragment key={index}>
               <Image
                 src={product.productImagePath || '/images/no-img.png'}
-                alt={product.productName}
+                alt={product.productName ?? 'Product'}
                 width={52}
                 height={52}
               />
