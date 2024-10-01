@@ -16,17 +16,17 @@ export const UpdateUserDisplay = () => {
       <h1 className={cn(classes.boxHeading, 'mb-8 hidden lg:block')}>
         Update your details
       </h1>
+
       <UpdateUserForm />
-      {!currentUser?.emailVerified && (
-        <LoadingOverlay
-          visible={true}
-          zIndex={10}
-          overlayProps={{ blur: 2 }}
-          loaderProps={{
-            children: <VerifyEmailForm />,
-          }}
-        />
-      )}
+
+      <LoadingOverlay
+        visible={!currentUser?.emailVerified}
+        zIndex={10}
+        overlayProps={{ blur: 2 }}
+        loaderProps={{
+          children: <VerifyEmailForm />,
+        }}
+      />
     </div>
   );
 };
