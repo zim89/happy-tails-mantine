@@ -37,6 +37,7 @@ export default function ContactForm() {
   }, [isAuth, currentUser, contactData, dispatch]);
 
   const form = useForm({
+    mode: 'uncontrolled',
     initialValues: {
       email: '',
       subscription: true,
@@ -52,6 +53,14 @@ export default function ContactForm() {
     dispatch(setContactData(formData));
     setIsCompleted(true);
     scrollIntoView();
+  };
+
+  const handleCompleted = () => {
+    form.setValues({
+      email: contactData?.email || '',
+      subscription: contactData?.subscription || true,
+    });
+    setIsCompleted(false);
   };
 
   return (
@@ -89,6 +98,7 @@ export default function ContactForm() {
                 <label className='text-sm/normal'>Email</label>
                 <TextInput
                   {...form.getInputProps('email')}
+                  key={form.key('email')}
                   classNames={{
                     root: 'form-root',
                     label: 'form-label',
@@ -105,6 +115,7 @@ export default function ContactForm() {
               <Checkbox
                 label='Email me with news and offers'
                 {...form.getInputProps('subscription', { type: 'checkbox' })}
+                key={form.key('subscription')}
                 classNames={{
                   body: 'flex items-center',
                   label: 'text-sm/normal',
@@ -143,7 +154,7 @@ export default function ContactForm() {
                 <button
                   type='button'
                   className='relative font-bold after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-secondary'
-                  onClick={() => setIsCompleted(false)}
+                  onClick={handleCompleted}
                 >
                   Edit
                 </button>

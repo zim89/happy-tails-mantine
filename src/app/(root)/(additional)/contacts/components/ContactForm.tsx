@@ -10,7 +10,7 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { hasLength, isEmail, useForm } from '@mantine/form';
+import { hasLength, isEmail, useForm, matches } from '@mantine/form';
 
 import Checkbox from '@/components/Checkbox';
 import { postRequest } from '@/shared/api/contactsApi';
@@ -52,7 +52,7 @@ export const ContactForm = () => {
 
         return min || max;
       },
-      userName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
+      userName: matches(/^[a-zA-Z]+$/, 'Name should contain only letters'),
       termsOfService: (value) =>
         !value && 'You must agree to the Terms of Service',
     },

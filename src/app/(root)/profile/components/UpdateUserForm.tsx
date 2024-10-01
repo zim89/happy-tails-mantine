@@ -96,6 +96,7 @@ export const UpdateUserForm = () => {
           form.clearErrors();
           form.reset();
         } catch (err) {
+          toast.error('Something went wrong. Please try again later.');
           console.log(err);
           toast.error('Oops! Something went wrong! Try again later.');
         }

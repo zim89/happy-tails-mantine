@@ -39,7 +39,10 @@ export const OrderDetails = ({
           }
         >
           <Image
-            src={order.orderProductDTOList[0].productImagePath}
+            src={
+              order.orderProductDTOList[0].productImagePath ??
+              'https://placehold.co/600x400'
+            }
             fill
             alt={`${order.orderProductDTOList.length} items`}
             className='blur-[2px] filter'
@@ -64,7 +67,7 @@ export const OrderDetails = ({
           }
           width={52}
           height={52}
-          alt={order.orderProductDTOList[0].productName}
+          alt={order.orderProductDTOList[0].productName ?? 'Product'}
           className={
             revealedOrders.includes(order.number) ? 'hidden' : 'mr-4 block'
           }
@@ -117,7 +120,7 @@ export const OrderDetails = ({
               src={product.productImagePath || '/images/no-img.png'}
               width={52}
               height={52}
-              alt={product.productName}
+              alt={product.productName ?? 'Product'}
             />
             <div className='ml-4 py-4 text-xs'>
               <p className='mb-1 inline-flex items-center gap-2'>
