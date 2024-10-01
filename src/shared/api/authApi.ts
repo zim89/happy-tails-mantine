@@ -141,6 +141,12 @@ export const authApi = createApi({
         method: 'get',
       }),
     }),
+    sendVerificationCode: builder.mutation<void, void>({
+      query: () => ({
+        url: '/users/send-verification-email',
+        method: 'post',
+      }),
+    }),
     // FIXME: Fix any type
     updateDetails: builder.mutation<any, any>({
       query: (payload) => ({
@@ -163,4 +169,5 @@ export const {
   useLogoutMutation,
   useGetUserInfoQuery,
   useUpdateDetailsMutation,
+  useSendVerificationCodeMutation,
 } = authApi;

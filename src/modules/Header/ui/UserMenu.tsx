@@ -25,14 +25,6 @@ export default function UserMenu() {
         >
           <UserRound className='iconBtn' />
         </Link>
-      ) : isAdmin ? (
-        <Link
-          href={'/admin'}
-          className='flex items-center justify-center text-secondary'
-          aria-label={'Admin Panel'}
-        >
-          <UserRound className='iconBtn' />
-        </Link>
       ) : (
         <Menu
           opened={opened}
@@ -59,6 +51,18 @@ export default function UserMenu() {
             </button>
           </Menu.Target>
           <Menu.Dropdown>
+            {isAdmin && (
+              <Menu.Item>
+                <Link
+                  href={'/admin'}
+                  className='text-secondary'
+                  aria-label={'Admin Panel'}
+                >
+                  Admin panel
+                </Link>
+              </Menu.Item>
+            )}
+
             {profileMenu.map((item) => (
               <Menu.Item key={item.id}>
                 <Link href={item.href}>{item.label}</Link>

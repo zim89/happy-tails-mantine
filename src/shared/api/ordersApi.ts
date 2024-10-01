@@ -27,6 +27,36 @@ export const ordersApi = createApi({
   tagTypes: ['Orders'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
+    findManyByEmail: builder.query<
+      BackendResponse<Order[]>,
+      { page: number; limit: number; sort?: Sort }
+    >({
+      query: ({ page, limit, sort }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          size: limit.toString(),
+        });
+
+        if (sort) params.append('sort', sort.join(','));
+
+        return {
+          url: `/orders?${params}`,
+          headers: {
+            'Content-type': 'application/json',
+          },
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ number: id }) => ({
+                type: 'Orders' as const,
+                id,
+              })),
+              { type: 'Orders', id: 'LIST' },
+            ]
+          : [{ type: 'Orders', id: 'LIST' }],
+    }),
     findMany: builder.query<
       BackendResponse<Order[]>,
       { page: number; limit: number; sort?: Sort }
@@ -168,6 +198,7 @@ export const {
   useAddCommentMutation,
   useFindOneQuery,
   useFindOneByEmailAndCodeQuery,
+  useFindManyByEmailQuery,
   useFindUserOrdersQuery,
 } = ordersApi;
 

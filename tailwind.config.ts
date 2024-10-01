@@ -31,6 +31,17 @@ const config: Config = {
             transform: 'scaleX(100%)',
           },
         },
+        loading: {
+          '0%': {
+            'background-position': 'initial',
+          },
+          '50%': {
+            'background-position': '1200px 0px',
+          },
+          '100%': {
+            'background-position': 'initial',
+          },
+        },
       },
       fontFamily: {
         lato: ['var(--font-lato)', 'sans-serif'],

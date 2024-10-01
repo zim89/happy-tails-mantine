@@ -1,0 +1,14 @@
+.loaderBg {
+  --gradient-spacing: 4.51%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(243, 147, 36, 1) 0%,
+    rgba(243, 147, 36, 1) 10%,
+    #f2e2c0 60%,
+    #f2e2c0 70%,
+    rgba(243, 147, 36, 1) 90%,
+    rgba(243, 147, 36, 1) 100%
+  );
+
+  @apply animate-[loading_5s_linear_infinite];
+}

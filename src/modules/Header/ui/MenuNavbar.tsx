@@ -18,7 +18,7 @@ type MenuNavbarProps = {
 };
 function MenuNavbar({ menu, path }: MenuNavbarProps) {
   const { isDesktop } = useDeviceSize();
-  const { isAuth, currentUser } = useAuth();
+  const { isAuth, currentUser, isAdmin } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   return (
@@ -99,23 +99,38 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
           )}
         </li>
         {isUserMenuOpen && !isDesktop ? (
-          profileMenu.map((item) => (
-            <li
-              key={item.id}
-              className='border-b border-b-brand-grey-300 lg:border-none'
-            >
-              <Link
-                href={item.href}
-                onClick={close}
-                className={cn(
-                  'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
-                  path === item.href && 'font-bold'
-                )}
+          <>
+            {isAdmin && (
+              <li className='border-b border-b-brand-grey-300 lg:border-none'>
+                <Link
+                  href='/admin'
+                  onClick={close}
+                  className={cn(
+                    'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3'
+                  )}
+                >
+                  <p className='navLink'>Admin panel</p>
+                </Link>
+              </li>
+            )}
+            {profileMenu.map((item) => (
+              <li
+                key={item.id}
+                className='border-b border-b-brand-grey-300 lg:border-none'
               >
-                <p className='navLink'>{item.label}</p>
-              </Link>
-            </li>
-          ))
+                <Link
+                  href={item.href}
+                  onClick={close}
+                  className={cn(
+                    'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
+                    path === item.href && 'font-bold'
+                  )}
+                >
+                  <p className='navLink'>{item.label}</p>
+                </Link>
+              </li>
+            ))}
+          </>
         ) : (
           <>
             <li className='border-b border-b-brand-grey-300 lg:border-none'>

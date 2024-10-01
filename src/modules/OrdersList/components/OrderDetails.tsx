@@ -2,6 +2,8 @@ import { Tooltip, UnstyledButton } from '@mantine/core';
 import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 import { CustomBadge } from '@/components/Badge';
 import DarkButton from '@/components/DarkButton';
@@ -10,19 +12,22 @@ import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
-import dayjs from 'dayjs';
 
 type Props = {
   order: Order;
   revealedOrders: string[];
   handleReveal(orderID: string): void;
+  handleRepeatOrder: (order: Order) => void;
 };
 
 export const OrderDetails = ({
   handleReveal,
   order,
   revealedOrders,
+  handleRepeatOrder,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <div className='hidden grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4 md:grid'>
       {order.orderProductDTOList.length > 1 ? (
@@ -57,8 +62,8 @@ export const OrderDetails = ({
       ) : (
         <Image
           src={
-            order.orderProductDTOList[0].productImagePath ??
-            'https://placehold.co/600x400'
+            order.orderProductDTOList[0].productImagePath ||
+            '/images/no-img.png'
           }
           width={52}
           height={52}
@@ -112,7 +117,7 @@ export const OrderDetails = ({
         order.orderProductDTOList.map((product, index) => (
           <Fragment key={index}>
             <Image
-              src={product.productImagePath ?? 'https://placehold.co/600x400'}
+              src={product.productImagePath || '/images/no-img.png'}
               width={52}
               height={52}
               alt={product.productName ?? 'Product'}
@@ -132,7 +137,11 @@ export const OrderDetails = ({
             <div className='ml-auto mr-20 text-center text-xs'>
               <p className='mb-1'>Item amount</p>
               <p>
-                $ {product.count * (product.salePrice || product.productPrice)}
+                ${' '}
+                {product.count *
+                  (product.salePrice != null
+                    ? product.salePrice
+                    : product.productPrice)}
               </p>
             </div>
           </Fragment>
@@ -143,8 +152,14 @@ export const OrderDetails = ({
             <FileText size={16} /> Electronic check
           </p>
           <div className='mt-8 flex justify-end gap-4'>
-            <LightButton handler={() => {}}>Leave a review</LightButton>
-            <DarkButton handler={() => {}}>Repeat the order</DarkButton>
+            <LightButton
+              handler={() => router.push(`/contacts?state=${order.number}`)}
+            >
+              Leave a review
+            </LightButton>
+            <DarkButton handler={() => handleRepeatOrder(order)}>
+              Repeat the order
+            </DarkButton>
           </div>
         </Fragment>
       )}

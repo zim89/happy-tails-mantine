@@ -11,16 +11,8 @@
   @apply flex min-h-[700px] flex-col pt-6;
 }
 
-.box {
-  @apply mx-auto mt-10 flex min-h-[70vh] flex-col pb-10 text-center md:min-h-[50vh] md:max-w-[572px] md:items-center;
-}
-
 .boxHeading {
   @apply text-[2.25rem] leading-9;
-}
-
-.boxParagraph {
-  @apply py-4 font-light;
 }
 
 /* Delivery form */
@@ -33,7 +25,7 @@
 }
 
 .submitAddress {
-  @apply mb-16 mt-6 bg-secondary uppercase text-primary md:mb-28 md:w-[380px] lg:w-[315px];
+  @apply w-full bg-secondary uppercase text-primary md:w-[380px] lg:w-[315px];
 }
 
 /* Layout */
@@ -44,10 +36,6 @@
   }
 
   @apply p-0;
-}
-
-.content {
-  @apply px-3 py-0 md:py-10 lg:mt-0 lg:px-8;
 }
 
 /* Profile page */
@@ -74,4 +62,16 @@
 
 .clearField {
   @apply h-6 w-6 fill-brand-grey-800 stroke-primary group-hover:fill-secondary;
+}
+
+.box {
+  @apply mx-auto mt-10 flex min-h-[70vh] flex-col pb-10 text-center md:min-h-[50vh] md:max-w-[572px] md:items-center;
+}
+
+.content {
+  @apply px-3 py-0 md:py-10 lg:mt-0 lg:px-8;
+}
+
+.boxParagraph {
+  @apply py-4 font-light;
 }

@@ -1,18 +1,21 @@
 'use client';
-import { cn } from '@/shared/lib/utils';
+
 import { Group, TextInput, UnstyledButton } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
+import { toast } from 'react-toastify';
 
 import classes from '../styles.module.css';
+import { cn } from '@/shared/lib/utils';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import { cleanPostcode, dirtyFields } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
-  const [updateUser] = useUpdateDetailsMutation();
+  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
 
   const form = useForm({
     initialValues: {
@@ -48,60 +51,64 @@ export const DeliveryForm = () => {
     },
   });
 
-  return (
-    <form
-      className={classes.form}
-      onSubmit={form.onSubmit(async (values) => {
-        const [_, count] = dirtyFields(values);
-        // If there are no changes, omit the call to API
+  const handleSubmit = async (values: typeof form.values) => {
+    try {
+      const [_, count] = dirtyFields(values);
+      // If there are no changes, omit the call to API
 
-        if (count === 0) return;
-        if (!currentUser) return;
+      if (count === 0) return;
+      if (!currentUser) return;
 
-        const { registerDate, userId, roles, ...prevUser } = currentUser;
+      const { registerDate, userId, roles, ...prevUser } = currentUser;
 
-        const request = {
-          ...prevUser,
-          phoneNumber: !!prevUser.phoneNumber.trim()
+      const request = {
+        ...prevUser,
+        phoneNumber: prevUser.phoneNumber
+          ? prevUser.phoneNumber.replace(/\"/g, '')
+          : '+8-240-158-9939',
+        billingAddress: prevUser.billingAddress ?? {
+          firstName: prevUser.firstName,
+          lastName: prevUser.lastName,
+          company: '',
+          country: '',
+          zip: '',
+          state: '',
+          city: '',
+          addressLine1: '',
+          addressLine2: '',
+          phoneNumber: prevUser.phoneNumber
             ? prevUser.phoneNumber
-            : '+16-573-698-7573',
-          billingAddress: prevUser.billingAddress ?? {
-            firstName: prevUser.firstName,
-            lastName: prevUser.lastName,
-            company: '',
-            country: '',
-            zip: '',
-            state: '',
-            city: '',
-            addressLine1: '',
-            addressLine2: '',
-            phoneNumber: !!prevUser.phoneNumber.trim()
-              ? prevUser.phoneNumber
-              : '+16-573-698-7573',
-          },
-          shippingAddress: {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            company:
-              values.company || (prevUser.shippingAddress.company ?? 'None'),
-            country: values.country,
-            zip: values.postcode,
-            state: values.county,
-            city: values.city,
-            addressLine1: values.addressOne,
-            addressLine2:
-              values.addressTwo ||
-              (prevUser.shippingAddress?.addressLine2 ?? ' '),
-            phoneNumber: values.contactNumber,
-          },
-        };
+            : '+8-240-158-9939',
+        },
+        shippingAddress: {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          company:
+            values.company || (prevUser.shippingAddress.company ?? 'None'),
+          country: values.country,
+          zip: values.postcode,
+          state: values.county,
+          city: values.city,
+          addressLine1: values.addressOne,
+          addressLine2:
+            values.addressTwo ||
+            (prevUser.shippingAddress?.addressLine2 ?? ' '),
+          phoneNumber: values.contactNumber,
+        },
+      };
 
-        await updateUser(request);
+      await updateUser(request);
 
-        form.clearErrors();
-        form.reset();
-      })}
-    >
+      form.clearErrors();
+      form.reset();
+    } catch (err) {
+      console.error('Error: ', err);
+      toast.error('Oops! Something went wrong! Try again later.');
+    }
+  };
+
+  return (
+    <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
       <Group className={classes.fieldsGroup}>
         <TextInput
           withAsterisk
@@ -206,12 +213,14 @@ export const DeliveryForm = () => {
           placeholder='Enter County'
         />
       </Group>
-      <UnstyledButton
-        type='submit'
-        className={cn('btn', classes.submitAddress)}
-      >
-        Add Address
-      </UnstyledButton>
+      <LoaderBackground loading={isLoading} className='mb-16 mt-6 md:mb-28'>
+        <UnstyledButton
+          type='submit'
+          className={cn('btn', classes.submitAddress)}
+        >
+          Add Address
+        </UnstyledButton>
+      </LoaderBackground>
     </form>
   );
 };
