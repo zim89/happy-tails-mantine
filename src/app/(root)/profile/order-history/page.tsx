@@ -1,40 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { UnstyledButton } from '@mantine/core';
 
 import { cn } from '@/shared/lib/utils';
 import { OrderTabs } from '../components/OrderTabs';
 import classes from '../styles.module.css';
-import { BackendResponse, Order } from '@/shared/types/types';
-import axios from '@/shared/lib/interceptor';
+import { useFindUserOrdersQuery } from '@/shared/api/ordersApi';
 
 function OrderPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const res = await axios<BackendResponse<Order[]>>(
-        'https://happytails-backend.lav.net.ua/happytails/api/orders?page=0&size=10'
-      );
-
-      setOrders(res.data.content);
-    })();
-  }, []);
+  const { data: orders } = useFindUserOrdersQuery();
 
   return (
     <>
       <h1
         className={cn(
           'heading mt-10 hidden px-6 lg:block',
-          orders.length === 0 && 'text-center'
+          orders?.content.length === 0 && 'text-center'
         )}
       >
         Order History
       </h1>
-      {orders.length > 0 ? (
-        <OrderTabs orders={orders} />
+      {orders && orders.content.length > 0 ? (
+        <OrderTabs orders={orders.content} />
       ) : (
         <div className={classes.box}>
           <hgroup>
