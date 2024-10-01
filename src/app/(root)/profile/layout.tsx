@@ -16,10 +16,8 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { isAuth, currentUser } = useAuth();
+  const { isAuth } = useAuth();
   const router = useRouter();
-
-  console.log(currentUser);
 
   useEffect(() => {
     if (!isAuth) router.push(APP_PAGES.UNAUTHORIZED);

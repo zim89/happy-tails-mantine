@@ -1,15 +1,19 @@
 import { TextInput, UnstyledButton } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
+import { toast } from 'react-toastify';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { toast } from 'react-toastify';
+import { useAppDispatch } from '@/shared/redux/store';
+import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
-  const [updateUser] = useUpdateDetailsMutation();
+  const [updateUser, { isLoading }] = useUpdateDetailsMutation();
+  const dispatch = useAppDispatch();
 
   const form = useForm({
     initialValues: {
@@ -47,8 +51,8 @@ export const UpdateUserForm = () => {
             ...prevUser,
             ...formFields,
             phoneNumber: prevUser.phoneNumber
-              ? prevUser.phoneNumber
-              : '+00-000-000-0000',
+              ? prevUser.phoneNumber.replace(/\"/g, '')
+              : '+8-240-158-9939',
             billingAddress: prevUser.billingAddress ?? {
               firstName: formFields.firstName,
               lastName: formFields.lastName,
@@ -61,7 +65,7 @@ export const UpdateUserForm = () => {
               addressLine2: '',
               phoneNumber: prevUser.phoneNumber
                 ? prevUser.phoneNumber
-                : '+00-000-000-0000',
+                : '+8-240-158-9939',
             },
             shippingAddress: prevUser.shippingAddress ?? {
               firstName: formFields.firstName,
@@ -75,11 +79,19 @@ export const UpdateUserForm = () => {
               addressLine2: '',
               phoneNumber: prevUser.phoneNumber
                 ? prevUser.phoneNumber
-                : '+00-000-000-0000',
+                : '+8-240-158-9939',
             },
           };
 
-          await updateUser(request);
+          await updateUser(request).unwrap();
+          dispatch(
+            setAuthData({
+              ...currentUser,
+              firstName: formFields.firstName,
+              lastName: formFields.lastName,
+              email: formFields.email,
+            })
+          );
 
           form.clearErrors();
           form.reset();
@@ -136,15 +148,17 @@ export const UpdateUserForm = () => {
         }}
         {...form.getInputProps('email')}
       />
-      <UnstyledButton
-        type='submit'
-        className={cn(
-          'btn mt-9 bg-secondary uppercase text-primary',
-          classes.inputSizing
-        )}
-      >
-        Update
-      </UnstyledButton>
+      <LoaderBackground loading={isLoading} className='mt-9'>
+        <UnstyledButton
+          type='submit'
+          className={cn(
+            'btn bg-secondary uppercase text-primary',
+            classes.inputSizing
+          )}
+        >
+          Update
+        </UnstyledButton>
+      </LoaderBackground>
     </form>
   );
 };

@@ -2,6 +2,7 @@
 
 import { Group, TextInput, UnstyledButton } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
+import { toast } from 'react-toastify';
 
 import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
@@ -11,7 +12,6 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
 import { LoaderBackground } from '@/components/LoaderBackground';
-import { toast } from 'react-toastify';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -64,8 +64,8 @@ export const DeliveryForm = () => {
       const request = {
         ...prevUser,
         phoneNumber: prevUser.phoneNumber
-          ? prevUser.phoneNumber
-          : '+00-000-000-0000',
+          ? prevUser.phoneNumber.replace(/\"/g, '')
+          : '+8-240-158-9939',
         billingAddress: prevUser.billingAddress ?? {
           firstName: prevUser.firstName,
           lastName: prevUser.lastName,
@@ -78,7 +78,7 @@ export const DeliveryForm = () => {
           addressLine2: '',
           phoneNumber: prevUser.phoneNumber
             ? prevUser.phoneNumber
-            : '+00-000-000-0000',
+            : '+8-240-158-9939',
         },
         shippingAddress: {
           firstName: values.firstName,
@@ -97,12 +97,10 @@ export const DeliveryForm = () => {
         },
       };
 
-      const res = await updateUser(request);
+      await updateUser(request);
 
-      console.log(res);
-
-      // form.clearErrors();
-      // form.reset();
+      form.clearErrors();
+      form.reset();
     } catch (err) {
       console.error('Error: ', err);
       toast.error('Oops! Something went wrong! Try again later.');

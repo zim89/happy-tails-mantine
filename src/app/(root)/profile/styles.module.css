@@ -25,7 +25,7 @@
 }
 
 .submitAddress {
-  @apply bg-secondary uppercase text-primary md:w-[380px] lg:w-[315px];
+  @apply w-full bg-secondary uppercase text-primary md:w-[380px] lg:w-[315px];
 }
 
 /* Layout */

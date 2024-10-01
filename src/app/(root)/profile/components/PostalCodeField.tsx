@@ -60,7 +60,7 @@ export const PostalCodeField = ({ form }: Props) => {
 
         const transformed = raw.map(
           ({ postal_code, place_name, country_code, state }) =>
-            `${postal_code}, (${country_code}, ${state}, ${place_name})`
+            `${postal_code} (${country_code}, ${state}, ${place_name})`
         );
         setCodes(transformed);
       } catch (err) {

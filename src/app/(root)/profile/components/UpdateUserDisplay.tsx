@@ -20,7 +20,7 @@ export const UpdateUserDisplay = () => {
       {!currentUser?.emailVerified && (
         <LoadingOverlay
           visible={true}
-          zIndex={1000}
+          zIndex={10}
           overlayProps={{ blur: 2 }}
           loaderProps={{
             children: <VerifyEmailForm />,

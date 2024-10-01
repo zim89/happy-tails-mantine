@@ -11,9 +11,10 @@ import { LoaderBackground } from '@/components/LoaderBackground';
 type Props = {
   nextStep: () => void;
   currentUser: User;
+  vars?: { [key: string]: string };
 };
 
-export const CodeVerification = ({ nextStep, currentUser }: Props) => {
+export const CodeVerification = ({ nextStep, currentUser, vars }: Props) => {
   const [resetPassword] = useResetPasswordMutation();
   const [sent, setSent] = useState(false);
 
@@ -39,7 +40,7 @@ export const CodeVerification = ({ nextStep, currentUser }: Props) => {
           </span>
         </p>
       </hgroup>
-      <LoaderBackground loading={sent} className='my-4'>
+      <LoaderBackground vars={vars} loading={sent} className='my-4'>
         <UnstyledButton
           className={cn(
             'btn !w-full bg-secondary text-primary',

@@ -33,8 +33,6 @@ export default function OrdersList({ orders }: Props) {
 
   const handleRepeatOrder = async (order: Order) => {
     try {
-      console.log('Order details: ', order);
-
       const formData = {
         shippingAddress: order.shippingAddress,
         billingAddress: order.billingAddress,
