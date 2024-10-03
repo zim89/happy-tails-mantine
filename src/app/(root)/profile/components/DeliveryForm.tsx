@@ -12,9 +12,12 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { useAppDispatch } from '@/shared/redux/store';
+import { setAuthData } from '@/shared/redux/auth/authSlice';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
+  const dispatch = useAppDispatch();
   const [updateUser, { isLoading }] = useUpdateDetailsMutation();
 
   const form = useForm({
@@ -97,7 +100,8 @@ export const DeliveryForm = () => {
         },
       };
 
-      await updateUser(request).unwrap();
+      const data = await updateUser(request).unwrap();
+      dispatch(setAuthData(data));
 
       form.clearErrors();
       form.reset();
