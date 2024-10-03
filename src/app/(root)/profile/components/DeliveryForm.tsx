@@ -1,7 +1,7 @@
 'use client';
 
 import { Group, TextInput, UnstyledButton } from '@mantine/core';
-import { hasLength, isNotEmpty, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, matches, useForm } from '@mantine/form';
 import { toast } from 'react-toastify';
 
 import classes from '../styles.module.css';
@@ -19,16 +19,16 @@ export const DeliveryForm = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: currentUser?.firstName || '',
-      lastName: currentUser?.lastName || '',
-      country: currentUser?.shippingAddress?.country || '',
-      city: currentUser?.shippingAddress?.city || '',
-      postcode: currentUser?.shippingAddress?.zip || '',
-      company: currentUser?.shippingAddress?.company || '',
-      addressOne: currentUser?.shippingAddress?.addressLine1 || '',
-      addressTwo: currentUser?.shippingAddress?.addressLine2 || '',
-      contactNumber: currentUser?.phoneNumber.replace(/\"/g, '') || '',
-      county: currentUser?.shippingAddress?.state || '',
+      firstName: currentUser?.firstName ?? '',
+      lastName: currentUser?.lastName ?? '',
+      country: currentUser?.shippingAddress?.country ?? '',
+      city: currentUser?.shippingAddress?.city ?? '',
+      postcode: currentUser?.shippingAddress?.zip ?? '',
+      company: currentUser?.shippingAddress?.company ?? '',
+      addressOne: currentUser?.shippingAddress?.addressLine1 ?? '',
+      addressTwo: currentUser?.shippingAddress?.addressLine2 ?? '',
+      contactNumber: currentUser?.phoneNumber.replace(/\"/g, '') ?? '',
+      county: currentUser?.shippingAddress?.state ?? '',
     },
 
     transformValues(values) {
@@ -84,7 +84,7 @@ export const DeliveryForm = () => {
           firstName: values.firstName,
           lastName: values.lastName,
           company:
-            values.company || (prevUser.shippingAddress.company ?? 'None'),
+            values.company || (prevUser.shippingAddress?.company ?? 'None'),
           country: values.country,
           zip: values.postcode,
           state: values.county,
@@ -97,7 +97,7 @@ export const DeliveryForm = () => {
         },
       };
 
-      await updateUser(request);
+      await updateUser(request).unwrap();
 
       form.clearErrors();
       form.reset();
