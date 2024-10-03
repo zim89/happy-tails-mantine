@@ -226,6 +226,18 @@
   }
 }
 
+@layer utilities {
+  .fix-line-clamp > p,
+  .fix-line-clamp > ul,
+  .fix-line-clamp > ol {
+    @apply inline-block;
+  }
+
+  .fix-line-clamp span {
+    @apply line-clamp-3 md:line-clamp-2;
+  }
+}
+
 /*noinspection CssInvalidFunction*/
 .mantine-Container-root {
   width: 100%;
