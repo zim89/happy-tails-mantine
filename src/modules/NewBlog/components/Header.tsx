@@ -14,6 +14,10 @@ import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 type Props = {
   editor: Editor;
@@ -98,11 +102,18 @@ export const Header = ({ editor }: Props) => {
       }
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        console.error(err);
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          form.setFieldValue('image', null);
+          form.setFieldError('image', `${err.data}`);
+        } else {
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
       }
     }
   };

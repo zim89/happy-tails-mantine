@@ -13,7 +13,11 @@ import { publishImage } from '@/shared/lib/requests';
 import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
-import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
+import {
+  CLIENT_ERROR,
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 type Props = {
   setNotification: (type: 'Success' | 'Failed', text?: string) => void;
@@ -145,10 +149,18 @@ export const Controls = ({ setNotification }: Props) => {
       console.error(err);
 
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          productForm.setFieldValue('image', null);
+          productForm.setFieldError('image', `${err.data}`);
+        } else {
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
       }
     }
   };

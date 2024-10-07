@@ -23,6 +23,7 @@ import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
 import Loader from '@/components/Loader/Loader';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
 import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
+import { UNAUTHORIZED } from '@/shared/constants/httpCodes';
 
 export default function NewOrder() {
   const {
@@ -68,7 +69,7 @@ export default function NewOrder() {
 
       if (!currentUser)
         throw new ErrorResponse({
-          status: 401,
+          status: UNAUTHORIZED,
           message: "You're not allowed to do this.",
           error: 'Unauthorized',
           timestamp: Date.now(),
@@ -132,7 +133,6 @@ export default function NewOrder() {
       setNotification('Success', 'Order creation succeeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        console.error(err);
         setNotification(
           'Failed',
           isErrorDataString(err.data) ? err.data : err.data.message

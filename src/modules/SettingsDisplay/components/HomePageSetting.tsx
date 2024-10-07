@@ -31,6 +31,10 @@ import { findImageSource } from '../lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 type PreviewImage = {
   id: number | null;
@@ -261,10 +265,18 @@ export const HomePageSetting = () => {
       }
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          form.setFieldValue('image', null);
+          form.setFieldError('image', `${err.data}`);
+        } else {
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
       }
       console.error('Failed: ', err);
     }

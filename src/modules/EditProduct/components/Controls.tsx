@@ -6,6 +6,10 @@ import { context } from '../lib/utils';
 
 import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 type Props = {
   productId: string;
@@ -35,10 +39,18 @@ export const Controls = ({ setNotification }: Props) => {
       setNotification('Success', 'Product saved successfully!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          productForm.setFieldValue('image', null);
+          productForm.setFieldError('image', `${err.data}`);
+        } else {
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
       } else {
         setNotification(
           'Failed',

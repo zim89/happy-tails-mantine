@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { sharedProps } from '@/modules/PostEditor';
 
 interface Props {
-  handleImageUpload: (file: File) => Promise<string>;
+  handleImageUpload: (file: File) => Promise<string | null>;
 }
 
 const ImageControl = ({ handleImageUpload }: Props) => {
@@ -40,17 +40,20 @@ const ImageControl = ({ handleImageUpload }: Props) => {
   const handleImage = (file: File | null) => {
     if (!file) return;
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       editor?.chain().focus().setImage({ src: '/images/auth-dog.png' }).run();
     } else {
       handleImageUpload(file).then((url) => {
-        editor?.chain().focus().setImage({ src: url }).run();
+        url && editor?.chain().focus().setImage({ src: url }).run();
       });
     }
   };
 
   return (
-    <FileButton onChange={handleImage} accept='image/png,image/jpeg'>
+    <FileButton
+      onChange={handleImage}
+      accept='image/png,image/jpeg,image/webp,image/gif'
+    >
       {(props) => (
         <RichTextEditor.Control
           {...props}
