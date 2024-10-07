@@ -305,7 +305,7 @@ export const HomePageSetting = () => {
                         <FileInput
                           id={`banner-image-${index}`}
                           w='100%'
-                          placeholder='Max file size 500 kB'
+                          placeholder='Max file size 5 MB'
                           {...form.getInputProps(`banner_${index + 1}`)}
                           onChange={(evt) => {
                             const { onChange } = form.getInputProps(

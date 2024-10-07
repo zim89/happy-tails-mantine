@@ -189,7 +189,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
             <FileInput
               id={`variant-image-${index}`}
               w='100%'
-              placeholder='Max file size 500 kB'
+              placeholder='Max file size 5 MB'
               {...form.getInputProps('variantImage')}
               accept='.png,.jpeg,.gif,.webp'
               classNames={{

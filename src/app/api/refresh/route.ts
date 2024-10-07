@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { oauth2Client } from '../utils';
+import { CLIENT_ERROR, SERVER_ERROR } from '@/shared/constants/httpCodes';
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function GET(req: NextRequest) {
     if (!token)
       return Response.json(
         { message: "ERROR: Search query param 'refresh_token' is required" },
-        { status: 400 }
+        { status: CLIENT_ERROR }
       );
 
     oauth2Client.setCredentials({
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
     if (err instanceof Error) {
       return Response.json(
         { message: 'Error refreshing access token: ', err },
-        { status: 500 }
+        { status: SERVER_ERROR }
       );
     }
   }

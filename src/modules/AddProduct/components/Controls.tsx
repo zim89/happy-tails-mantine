@@ -13,6 +13,7 @@ import { publishImage } from '@/shared/lib/requests';
 import BlockLink from '@/modules/BlockLink';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
+import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 
 type Props = {
   setNotification: (type: 'Success' | 'Failed', text?: string) => void;
@@ -58,7 +59,7 @@ export const Controls = ({ setNotification }: Props) => {
       if (!variants.length)
         throw {
           data: 'Variants must be specified',
-          status: 400,
+          status: CLIENT_ERROR,
         } as AxiosQueryError;
 
       const variantErrors = variants.some((variant) => {

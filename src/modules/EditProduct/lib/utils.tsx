@@ -14,6 +14,7 @@ import { AxiosQueryError, Product, ProductSize } from '@/shared/types/types';
 import { ProductPutRequest, useUpdateMutation } from '@/shared/api/productApi';
 import { publishImage } from '@/shared/lib/requests';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
+import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 
 export type SizeForm = UseFormReturnType<
   Omit<ProductSize, 'productStatus'>,
@@ -158,7 +159,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
     if (hasErrors || sizesHasErrors || !previewImage.current.path) {
       const error: AxiosQueryError = {
         data: "Fields haven't filled correctly!",
-        status: 400,
+        status: CLIENT_ERROR,
       };
 
       throw error;

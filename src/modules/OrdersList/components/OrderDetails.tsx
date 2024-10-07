@@ -1,7 +1,7 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
 import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
 import Image from 'next/image';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 
@@ -12,6 +12,7 @@ import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 type Props = {
   order: Order;
@@ -27,6 +28,7 @@ export const OrderDetails = ({
   handleRepeatOrder,
 }: Props) => {
   const router = useRouter();
+  const [orderIsProceeding, setOrderIsProceeding] = useState(false);
 
   return (
     <div className='hidden grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4 md:grid'>
@@ -157,9 +159,21 @@ export const OrderDetails = ({
             >
               Leave a review
             </LightButton>
-            <DarkButton handler={() => handleRepeatOrder(order)}>
-              Repeat the order
-            </DarkButton>
+            <LoaderBackground loading={orderIsProceeding}>
+              <DarkButton
+                handler={async () => {
+                  try {
+                    setOrderIsProceeding(true);
+                    await handleRepeatOrder(order);
+                    setOrderIsProceeding(false);
+                  } catch {
+                    setOrderIsProceeding(false);
+                  }
+                }}
+              >
+                Repeat the order
+              </DarkButton>
+            </LoaderBackground>
           </div>
         </Fragment>
       )}

@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 import type { Order, ShippingAddress } from '../types/types';
 
-export interface ResponseError {
+export abstract class ResponseError {
   timestamp: number;
   status: number;
   error: string;

@@ -4,13 +4,12 @@ import { Fragment, useState } from 'react';
 import { Order } from '@/shared/types/types';
 import { OrderDetailsMobile } from './components/OrderDetailsMobile';
 import { OrderDetails } from './components/OrderDetails';
-import {
-  ResponseError,
-  useCreateOrderAuthMutation,
-} from '@/shared/api/cartApi';
+import { useCreateOrderAuthMutation } from '@/shared/api/cartApi';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 
 type Props = {
   orders: Order[];
@@ -51,18 +50,15 @@ export default function OrdersList({ orders }: Props) {
       };
 
       const response = await createOrder(formData).unwrap();
-      // if ((response as ResponseError).status === 400) {
-      //   toast.error(response.data);
-      //   return;
-      // }
 
       router.push(
         APP_PAGES.CONFIRMATION +
           `?email=${(response as Order).email}&orderNumber=${(response as Order).number}`
       );
     } catch (err) {
-      console.error('Failed to repeat order:', err);
-      toast.error('Failed to repeat the order!');
+      if (isAxiosQueryError(err) && err.status === CLIENT_ERROR) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 
