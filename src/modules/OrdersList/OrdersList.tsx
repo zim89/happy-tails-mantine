@@ -50,13 +50,11 @@ export default function OrdersList({ orders }: Props) {
         })),
       };
 
-      // TODO: fix the type
-      // @ts-ignore
       const response = await createOrder(formData).unwrap();
-      if ((response as ResponseError).status === 400) {
-        toast.error('Something went wrong. Please try again later.');
-        return;
-      }
+      // if ((response as ResponseError).status === 400) {
+      //   toast.error(response.data);
+      //   return;
+      // }
 
       router.push(
         APP_PAGES.CONFIRMATION +

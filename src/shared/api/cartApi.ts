@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from '@/shared/api/authApi';
-import type { Order } from '../types/types';
-import type { Address } from '../redux/checkout/checkoutSlice';
+import type { Order, ShippingAddress } from '../types/types';
 
 export interface ResponseError {
   timestamp: number;
@@ -17,8 +16,8 @@ interface CreateOrderPayload {
     sizeEnum: string;
     count: number;
   }[];
-  billingAddress: Address;
-  shippingAddress: Address;
+  billingAddress: ShippingAddress;
+  shippingAddress: ShippingAddress;
   shippingMethodId: number;
   paymentMethod: string;
   commentOfManager: string | null;

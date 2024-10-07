@@ -3,27 +3,15 @@ import { RootState } from '../store';
 import type { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import type { Tax } from '@/shared/api/taxApi';
 import type { Discount } from '@/shared/api/discountApi';
-
-export interface Address {
-  firstName: string;
-  lastName: string;
-  country: string;
-  state: string;
-  city: string;
-  zip: string;
-  address_line1: string;
-  address_line2?: string;
-  company?: string;
-  phoneNumber: string;
-}
+import { ShippingAddress } from '@/shared/types/types';
 
 export interface CheckoutState {
   contactData: {
     email: string;
     subscription: boolean;
   } | null;
-  shippingAddress: Address | null;
-  billingAddress: Address | null;
+  shippingAddress: ShippingAddress | null;
+  billingAddress: ShippingAddress | null;
   shippingMethod: ShippingMethod | null;
   paymentMethod: string;
   discount: Discount | null;
