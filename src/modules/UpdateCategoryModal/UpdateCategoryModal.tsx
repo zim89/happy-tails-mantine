@@ -24,6 +24,10 @@ import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 type Props = {
   categoryLine: Category;
@@ -106,14 +110,23 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       clearAndClose();
       setNotification('Success', 'Changes saved!');
     } catch (err) {
-      clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        // If a file doesn't match the criterias, then just notify the user, don't close the modal
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          form.setFieldValue('image', null);
+          form.setFieldError('image', `${err.data}`);
+        } else {
+          clearAndClose();
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
+        console.error(err);
       }
-      console.error(err);
     }
   };
 
@@ -188,7 +201,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
               <FileInput
                 id='file'
                 w='100%'
-                placeholder='Max file size 500 kB'
+                placeholder='Max file size 5 MB'
                 {...form.getInputProps('image')}
                 accept='.png,.jpeg,.gif,.webp'
                 classNames={{

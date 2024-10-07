@@ -25,6 +25,10 @@ import { cn } from '@/shared/lib/utils';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -109,12 +113,20 @@ export default function AddCategoryModal() {
       clearAndClose();
       setNotification('Success', 'Category successfully created!');
     } catch (err) {
-      clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
+        if (
+          err.status === UNSUPPORTED_TYPE ||
+          err.status === TOO_LARGE_PAYLOAD
+        ) {
+          form.setFieldValue('image', null);
+          form.setFieldError('image', `${err.data}`);
+        } else {
+          clearAndClose();
+          setNotification(
+            'Failed',
+            isErrorDataString(err.data) ? err.data : err.data.message
+          );
+        }
       }
     }
   };
@@ -213,7 +225,7 @@ export default function AddCategoryModal() {
                 }}
                 data-testid='upload-field'
                 className='pointer-events-none w-full'
-                placeholder='Max file size 500 kB'
+                placeholder='Max file size 5 MB'
                 {...form.getInputProps('image')}
                 accept='.png,.jpeg,.gif,.webp'
                 classNames={{

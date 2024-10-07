@@ -2,6 +2,7 @@
 
 import Loader from '@/components/Loader/Loader';
 import { useFindOneQuery } from '@/shared/api/postApi';
+import { NOT_FOUND } from '@/shared/constants/httpCodes';
 import { PostFormProvider } from '@/shared/context/postform.context';
 import { isAxiosQueryError } from '@/shared/lib/helpers';
 import { notFound } from 'next/navigation';
@@ -16,7 +17,7 @@ export default function Layout({ children, params }: Props) {
 
   if (isLoading) return <Loader />;
 
-  if (isAxiosQueryError(error) && error.status === 404) notFound();
+  if (isAxiosQueryError(error) && error.status === NOT_FOUND) notFound();
 
   if (error)
     return (

@@ -162,7 +162,7 @@ export const Form = () => {
                     withAsterisk
                     id='file'
                     w='100%'
-                    placeholder='Max file size 500 kB'
+                    placeholder='Max file size 5 MB'
                     {...productForm.getInputProps('image')}
                     accept='.png,.jpeg,.gif,.webp'
                     classNames={{

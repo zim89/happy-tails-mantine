@@ -9,6 +9,7 @@ import { Product } from '@/shared/types/types';
 import { useGetDiscountByCodeQuery } from '@/shared/api/discountApi';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
+import { NOT_FOUND } from '@/shared/constants/httpCodes';
 
 type Props = {
   taxRate: number;
@@ -57,7 +58,7 @@ export default function OrderTotal({ form, taxRate }: Props) {
   // If the promo code was cleared or changed and wasn't found, then reset the discount
   useEffect(() => {
     if (
-      (isAxiosQueryError(error) && error.status === 404) ||
+      (isAxiosQueryError(error) && error.status === NOT_FOUND) ||
       promoCode.length !== 6
     ) {
       setDiscount(0);

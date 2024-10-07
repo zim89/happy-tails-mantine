@@ -29,6 +29,7 @@ import {
 import { BG_COLORS } from '@/shared/constants/colors.const';
 import { toast } from 'react-toastify';
 import type { Order } from '@/shared/types/types';
+import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 
 export default function CheckoutForm() {
   const {
@@ -77,7 +78,7 @@ export default function CheckoutForm() {
 
       try {
         const response = await createOrder(formData).unwrap();
-        if ((response as ResponseError).status === 400) {
+        if ((response as ResponseError).status === CLIENT_ERROR) {
           toast.error('Something went wrong. Please try again later.');
           return;
         }

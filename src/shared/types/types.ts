@@ -58,7 +58,7 @@ export type ProductSizeValues =
   | 'ONE SIZE'
   | 'ONE_SIZE';
 
-type ShippingAddress = {
+export type ShippingAddress = {
   firstName: string;
   lastName: string;
   company: string;

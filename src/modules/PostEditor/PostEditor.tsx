@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { useCallback, useContext } from 'react';
 import { Editor } from '@tiptap/react';
 import { TextInput } from '@mantine/core';
@@ -14,7 +13,13 @@ import { cn } from '@/shared/lib/utils';
 import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/context/postform.context';
-import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
+import { publishImage } from '@/shared/lib/requests';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '@/shared/constants/httpCodes';
+import { notifyContext } from '@/shared/context/notification.context';
 
 export const sharedProps = {
   toolbarBtn: {
@@ -48,21 +53,22 @@ type Props = {
 
 export default function PostEditor({ editor }: Props) {
   const { form } = useContext(PostFormContext);
+  const { setNotification } = useContext(notifyContext);
 
   const handleImageUpload = useCallback(async (file: File) => {
-    // It works only in secured connection and does not in localhost domain //
-    const payload = new FormData();
-    payload.append('image', file);
-    payload.append('type', 'image');
-    payload.append('title', `Image for post: ${file.name}`);
-    const res = await axios.post('https://api.imgur.com/3/image/', payload, {
-      headers: {
-        Authorization: `Bearer ${IMGUR_CLIENT_ID}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    try {
+      const res = await publishImage(file, '');
+      return res;
+    } catch (err) {
+      if (isAxiosQueryError(err)) {
+        setNotification(
+          'Failed',
+          isErrorDataString(err.data) ? err.data : err.data.message
+        );
+      }
 
-    return res.data.data.link;
+      return null;
+    }
   }, []);
 
   return (

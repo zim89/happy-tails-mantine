@@ -8,6 +8,7 @@ import { getUserByEmail } from '@/shared/lib/requests';
 import { formatDateFromArray } from '@/shared/lib/helpers';
 import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosError } from 'axios';
+import { NOT_FOUND } from '@/shared/constants/httpCodes';
 
 type Guest = {
   kind: 'guest';
@@ -22,7 +23,6 @@ type Props = {
   userEmail: string;
 };
 export const ClientDetails = ({ userEmail }: Props) => {
-  const { setNotification } = useContext(notifyContext);
   const [user, setUser] = useState<SignedUser | Guest | null>(null);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const ClientDetails = ({ userEmail }: Props) => {
         const user = await getUserByEmail(userEmail);
         setUser({ ...user, kind: 'user' });
       } catch (err) {
-        if (isAxiosError(err) && err.response?.data.status === 404) {
+        if (isAxiosError(err) && err.response?.data.status === NOT_FOUND) {
           setUser({ kind: 'guest', email: userEmail });
         }
         console.error('Request failed: ', err);

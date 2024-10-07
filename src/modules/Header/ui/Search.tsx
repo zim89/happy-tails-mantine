@@ -98,7 +98,7 @@ export default function SearchMenu() {
 
           {!isLoading && isError && (
             <p className='border-b border-b-brand-grey-600 py-3 text-base font-light'>
-              `Sorry, something went wrong. Try again later.`
+              Sorry, something went wrong. Try again later.
             </p>
           )}
 

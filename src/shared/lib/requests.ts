@@ -12,6 +12,12 @@ import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
 import { DEFAULT_CATEGORY_IMAGE } from './constants';
 import { API_URL, IMGUR_CLIENT_ID } from '../constants/env.const';
+import { MAX_FILE_SIZE } from '../constants/sizes.const';
+import {
+  NOT_FOUND,
+  TOO_LARGE_PAYLOAD,
+  UNSUPPORTED_TYPE,
+} from '../constants/httpCodes';
 
 export const getProductById = async (id: string) => {
   try {
@@ -97,7 +103,7 @@ export const fetchOnePost = async (id: string): Promise<Post | null> => {
   unstable_noStore();
   try {
     const res = await axios(`${API_URL}/posts/${id}`);
-    if (res.status === 404) return null;
+    if (res.status === NOT_FOUND) return null;
     return res.data;
   } catch (error) {
     throw new Error('Failed to fetch post');
@@ -141,7 +147,14 @@ export const publishImage = async (
     if (!match) {
       throw {
         data: 'Forbidden image type. Available image types are: gif, webp, png and jpeg',
-        status: 422,
+        status: UNSUPPORTED_TYPE,
+      } as AxiosQueryError;
+    }
+
+    if (image instanceof Blob && image.size > MAX_FILE_SIZE) {
+      throw {
+        data: 'The file you uploaded exceeds the size limit, please compress or choose a smaller file',
+        status: TOO_LARGE_PAYLOAD,
       } as AxiosQueryError;
     }
 

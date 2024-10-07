@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import { NextRequest } from 'next/server';
 import { setToken } from '../utils';
 import { GOOGLE_API_KEY } from '@/shared/constants/env.const';
+import { SERVER_ERROR } from '@/shared/constants/httpCodes';
 
 const searchConsoleApi = google.searchconsole('v1');
 
@@ -38,6 +39,6 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: res });
   } catch (err) {
     if (err instanceof Error)
-      return Response.json({ message: err.message }, { status: 500 });
+      return Response.json({ message: err.message }, { status: SERVER_ERROR });
   }
 }

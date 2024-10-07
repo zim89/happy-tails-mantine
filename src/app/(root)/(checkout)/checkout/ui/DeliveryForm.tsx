@@ -111,8 +111,8 @@ export default function DeliveryForm() {
       state: formData.shippingAddress.state,
       city: formData.shippingAddress.city,
       company: formData.shippingAddress.company ?? '',
-      address_line1: formData.shippingAddress.addressLine1,
-      address_line2: formData.shippingAddress.addressLine2 ?? '',
+      addressLine1: formData.shippingAddress.addressLine1,
+      addressLine2: formData.shippingAddress.addressLine2 ?? '',
     };
     const billingData = {
       firstName: formData.billingAddress.firstName,
@@ -123,8 +123,8 @@ export default function DeliveryForm() {
       state: formData.billingAddress.state,
       city: formData.billingAddress.city,
       company: formData.billingAddress.company ?? '',
-      address_line1: formData.billingAddress.addressLine1,
-      address_line2: formData.billingAddress.addressLine2 ?? '',
+      addressLine1: formData.billingAddress.addressLine1,
+      addressLine2: formData.billingAddress.addressLine2 ?? '',
     };
     dispatch(setShippingData(shippingData));
     dispatch(setBillingData(billingData));
@@ -141,13 +141,13 @@ export default function DeliveryForm() {
     state?: string;
     city: string;
     company?: string;
-    address_line1: string;
-    address_line2?: string;
+    addressLine1: string;
+    addressLine2?: string;
   }) => {
     const address = [];
-    address.push(data.address_line1);
-    if (data.address_line2) {
-      address.push(data.address_line2);
+    address.push(data.addressLine1);
+    if (data.addressLine2) {
+      address.push(data.addressLine2);
     }
     if (data.company) {
       address.push(data.company);
