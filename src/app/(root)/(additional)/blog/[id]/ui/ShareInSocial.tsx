@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function ShareInSocial() {
   return (
@@ -6,7 +7,13 @@ export default function ShareInSocial() {
       <h2 className='text-lg/normal uppercase'>Share</h2>
       <ul className='flex gap-6'>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={'https://www.facebook.com/'}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Happy Tails on Facebook'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='20'
               height='20'
@@ -19,10 +26,16 @@ export default function ShareInSocial() {
                 fill='white'
               />
             </svg>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={'https://www.pinterest.com/'}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Happy Tails on Pinterest'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='20'
               height='20'
@@ -42,10 +55,16 @@ export default function ShareInSocial() {
                 </clipPath>
               </defs>
             </svg>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={'https://x.com/'}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Happy Tails on X'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='22'
               height='21'
@@ -58,7 +77,7 @@ export default function ShareInSocial() {
                 fill='white'
               />
             </svg>
-          </button>
+          </Link>
         </li>
       </ul>
     </div>

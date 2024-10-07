@@ -9,10 +9,11 @@ export default function SocialLinks(): React.JSX.Element {
         <Link
           href={'https://www.facebook.com/'}
           target='_blank'
+          rel='noreferrer noopener'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
-          aria-label="Happy Tails on Facebook"
+          aria-label='Happy Tails on Facebook'
         >
           <Facebook className='h-6 w-6' />
         </Link>
@@ -21,16 +22,23 @@ export default function SocialLinks(): React.JSX.Element {
         <Link
           href={'https://www.youtube.com/'}
           target='_blank'
+          rel='noreferrer noopener'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
-          aria-label="Happy Tails YouTube Channel"
+          aria-label='Happy Tails YouTube Channel'
         >
           <Youtube className='h-6 w-6' />
         </Link>
       </li>
       <li>
-        <Link href={'https://www.tiktok.com/'} target='_blank' className={'group'} aria-label="Happy Tails TikTok Account"> 
+        <Link
+          href={'https://www.tiktok.com/'}
+          target='_blank'
+          rel='noreferrer noopener'
+          className={'group'}
+          aria-label='Happy Tails TikTok Account'
+        >
           <svg
             width='24'
             height='24'
@@ -54,10 +62,11 @@ export default function SocialLinks(): React.JSX.Element {
         <Link
           href={'https://www.instagram.com/'}
           target='_blank'
+          rel='noreferrer noopener'
           className={
             'text-primary transition-colors duration-300 hover:text-brand-orange-400'
           }
-          aria-label="Happy Tails Instagram Page"
+          aria-label='Happy Tails Instagram Page'
         >
           <Instagram className='h-6 w-6' />
         </Link>
