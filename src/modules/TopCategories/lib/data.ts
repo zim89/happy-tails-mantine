@@ -3,6 +3,6 @@ export const COLOR_MAP: { [P: string]: string } = {
   Toys: '#161616',
   Care: '#4285F4',
   Furniture: '#C63129',
-  Leads: '#328C41',
+  Leads: '#F39324',
   Collars: '#DB8420',
 };
