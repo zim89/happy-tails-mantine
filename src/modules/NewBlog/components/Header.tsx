@@ -3,16 +3,19 @@
 import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tiptap/react';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 
 import { useCreatePostMutation } from '@/shared/api/postApi';
 
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import PageHeader from '@/components/PageHeader';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
-import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
@@ -25,7 +28,6 @@ type Props = {
 export const Header = ({ editor }: Props) => {
   const { form, defaultValues } = useContext(PostFormContext);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-  const { setNotification } = useContext(notifyContext);
   const [dispatch] = useCreatePostMutation();
   const router = useRouter();
 
@@ -93,7 +95,7 @@ export const Header = ({ editor }: Props) => {
         }).unwrap();
         router.push(`/admin/blogs/${id}`);
         setIsEdited(false);
-        setNotification('Success', 'Post creation succeeded!');
+        brandNotification('SUCCESS', 'Post creation succeeded!');
       } catch (err) {
         if (err instanceof AxiosError) {
           form.setFieldError('image', err.message);
@@ -109,8 +111,8 @@ export const Header = ({ editor }: Props) => {
           form.setFieldValue('image', null);
           form.setFieldError('image', `${err.data}`);
         } else {
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }

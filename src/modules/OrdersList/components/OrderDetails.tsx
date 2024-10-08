@@ -149,33 +149,28 @@ export const OrderDetails = ({
           </Fragment>
         ))}
       {revealedOrders.includes(order.number) && (
-        <Fragment>
-          <p className='col-span-2 mt-4 inline-flex items-center gap-2 text-sm text-brand-orange-400'>
-            <FileText size={16} /> Electronic check
-          </p>
-          <div className='mt-8 flex justify-end gap-4'>
-            <LightButton
-              handler={() => router.push(`/contacts?state=${order.number}`)}
+        <div className='col-span-3 mt-8 flex justify-end gap-4'>
+          <LightButton
+            handler={() => router.push(`/contacts?state=${order.number}`)}
+          >
+            Leave a review
+          </LightButton>
+          <LoaderBackground loading={orderIsProceeding}>
+            <DarkButton
+              handler={async () => {
+                try {
+                  setOrderIsProceeding(true);
+                  await handleRepeatOrder(order);
+                  setOrderIsProceeding(false);
+                } catch {
+                  setOrderIsProceeding(false);
+                }
+              }}
             >
-              Leave a review
-            </LightButton>
-            <LoaderBackground loading={orderIsProceeding}>
-              <DarkButton
-                handler={async () => {
-                  try {
-                    setOrderIsProceeding(true);
-                    await handleRepeatOrder(order);
-                    setOrderIsProceeding(false);
-                  } catch {
-                    setOrderIsProceeding(false);
-                  }
-                }}
-              >
-                Repeat the order
-              </DarkButton>
-            </LoaderBackground>
-          </div>
-        </Fragment>
+              Repeat the order
+            </DarkButton>
+          </LoaderBackground>
+        </div>
       )}
     </div>
   );

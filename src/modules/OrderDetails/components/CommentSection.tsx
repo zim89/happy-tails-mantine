@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Textarea, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2 } from 'lucide-react';
 
 import { useAddCommentMutation } from '@/shared/api/ordersApi';
-import { notifyContext } from '@/shared/context/notification.context';
+import { brandNotification } from '@/shared/lib/helpers';
 
 type Props = {
   orderNumber: string;
@@ -18,7 +18,6 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
   const [areCommentsOpened, { close: closeComments, toggle: toggleComments }] =
     useDisclosure(false);
   const [dispatch] = useAddCommentMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const closeSection = () => {
     setComment('');
@@ -29,15 +28,15 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
     try {
       await dispatch({ comment, orderNumber }).unwrap();
       closeSection();
-      setNotification('Success', 'Comment posted!');
+      brandNotification('SUCCESS', 'Comment posted!');
     } catch (err) {
-      if (err instanceof Error) setNotification('Failed', err.message);
+      if (err instanceof Error) brandNotification('ERROR', err.message);
     }
   };
 
   return (
-    <div className='col-span-2 rounded-[4px] border-[1px] border-[#EEE] bg-white'>
-      <div className='flex items-center justify-between border-b-[1px] border-[#EEE] p-4'>
+    <div className='col-span-2 rounded-[4px] border border-brand-grey-300 bg-white'>
+      <div className='flex items-center justify-between border-b border-brand-grey-300 p-4'>
         <h2 className='text-xl font-bold'>Comments</h2>
         <UnstyledButton
           classNames={{

@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import {
   Button,
   InputLabel,
@@ -20,8 +20,11 @@ import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
@@ -31,7 +34,6 @@ import { BrandFileInput } from '@/components/BrandFileInput';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const previewImage = useRef<{ image: string | null; name: string | null }>({
     image: null,
@@ -112,7 +114,7 @@ export default function AddCategoryModal() {
       await dispatch(newCategory).unwrap();
 
       clearAndClose();
-      setNotification('Success', 'Category successfully created!');
+      brandNotification('SUCCESS', 'Category successfully created!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         if (
@@ -123,8 +125,8 @@ export default function AddCategoryModal() {
           form.setFieldError('image', `${err.data}`);
         } else {
           clearAndClose();
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }

@@ -154,10 +154,8 @@ export const OrderDetailsMobile = ({
                 </p>
               </Tooltip>
             </div>
-            <p className='col-span-2 inline-flex items-center gap-2 text-sm text-brand-orange-400'>
-              <FileText size={16} /> Electronic check
-            </p>
-            <div className='flex flex-col gap-4'>
+
+            <div className='col-span-3 mt-3 flex justify-center gap-4'>
               <LightButton
                 handler={() => router.push(`/contacts?state=${order.number}`)}
               >

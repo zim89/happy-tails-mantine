@@ -1,14 +1,16 @@
 import { UnstyledButton } from '@mantine/core';
 import Image from 'next/image';
 import { useDisclosure } from '@mantine/hooks';
-import { useContext } from 'react';
 import { Trash2 } from 'lucide-react';
 
 import DeleteModal from '@/components/DeleteModal';
 
 import classes from './classes.module.css';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import { useDeleteShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
 
@@ -18,19 +20,18 @@ type Props = {
 
 export default function DeleteShippingMethodModal({ shippingMethod }: Props) {
   const [deleteShippingMethod] = useDeleteShippingMethodMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
       await deleteShippingMethod(shippingMethod.id).unwrap();
 
       closeMain();
-      setNotification('Success', 'Shipping method successfully deleted!');
+      brandNotification('SUCCESS', 'Shipping method successfully deleted!');
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

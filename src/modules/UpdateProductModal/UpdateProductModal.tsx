@@ -4,7 +4,6 @@ import { UploadCloud, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { Form, useForm } from '@mantine/form';
 import Image from 'next/image';
-import axios from 'axios';
 import { useEffect, useRef } from 'react';
 import { FileInput, Group, Select, Textarea, TextInput } from '@mantine/core';
 
@@ -16,13 +15,16 @@ import { cn } from '@/shared/lib/utils';
 import { Product } from '@/shared/types/types';
 import { useUpdateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { productTypeList } from '@/shared/lib/constants';
 import { publishImage } from '@/shared/lib/requests';
 
 type Props = {
   productLine: Product;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
 type PreviewImage = {
@@ -30,7 +32,7 @@ type PreviewImage = {
   path: string;
 };
 
-const UpdateProductModal = ({ productLine, setNotification }: Props) => {
+const UpdateProductModal = ({ productLine }: Props) => {
   const categoryList = useSelectCategories((res) => res.map((cat) => cat.name));
 
   const form = useForm({
@@ -121,12 +123,12 @@ const UpdateProductModal = ({ productLine, setNotification }: Props) => {
 
       await dispatch({ req: requestBody }).unwrap();
       clearAndClose();
-      setNotification('Success', 'Product updated successfully!');
+      brandNotification('SUCCESS', 'Product updated successfully!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

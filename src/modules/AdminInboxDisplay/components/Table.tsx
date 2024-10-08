@@ -16,7 +16,7 @@ import {
   Menu,
   UnstyledButton,
 } from '@mantine/core';
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
@@ -31,7 +31,6 @@ import { CustomBadge } from '@/components/Badge';
 import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import { filterOptions } from '../lib/data';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   data: Message[];
@@ -85,8 +84,6 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
-  const { setNotification } = useContext(notifyContext);
-
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);
   const [filter, setFilter] = useState<string>('ALL');
@@ -293,10 +290,7 @@ export const Table = ({ data }: Props) => {
                         <StarIcon size={16} />
                         Add star
                       </UnstyledButton>
-                      <DeleteMessagesModal
-                        setNotification={setNotification}
-                        messages={selected}
-                      />
+                      <DeleteMessagesModal messages={selected} />
                     </div>
                   )}
                 </div>
@@ -369,11 +363,7 @@ export const Table = ({ data }: Props) => {
                   );
                 })}
                 <MantineTable.Td>
-                  <Actions
-                    message={row.original}
-                    setMarked={setMarkedStatus}
-                    setNotification={setNotification}
-                  />
+                  <Actions message={row.original} setMarked={setMarkedStatus} />
                 </MantineTable.Td>
               </MantineTable.Tr>
             ))}

@@ -3,13 +3,15 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
-import { useContext } from 'react';
 
 import classes from './classes.module.css';
 
 import DeleteModal from '@/components/DeleteModal';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import {
   Discount,
   useDeleteDiscountCodeMutation,
@@ -20,19 +22,18 @@ type Props = {
 };
 export default function DeleteCodeModal({ promoCode }: Props) {
   const [dispatch] = useDeleteDiscountCodeMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
       await dispatch({ id: promoCode.id }).unwrap();
 
       closeMain();
-      setNotification('Success', 'Promo code successfully deleted!');
+      brandNotification('SUCCESS', 'Promo code successfully deleted!');
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

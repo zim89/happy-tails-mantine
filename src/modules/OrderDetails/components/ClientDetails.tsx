@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Banknote, Package } from 'lucide-react';
 
 import { User } from '@/shared/types/auth.types';
 import { getUserByEmail } from '@/shared/lib/requests';
 import { formatDateFromArray } from '@/shared/lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
 import { isAxiosError } from 'axios';
 import { NOT_FOUND } from '@/shared/constants/httpCodes';
 

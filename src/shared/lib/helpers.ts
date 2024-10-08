@@ -10,6 +10,7 @@ import {
 import { ErrorResponse } from './constants';
 import { UNSUPPORTED_TYPE, TOO_LARGE_PAYLOAD } from '../constants/httpCodes';
 import { MAX_FILE_SIZE } from '../constants/sizes.const';
+import { ToastOptions, toast } from 'react-toastify';
 
 export const formatDateToClockTime = (date: string | number) => {
   return dayjs(date).format('HH:mm');
@@ -271,4 +272,19 @@ export const validateFile = (image: Blob | File | string) => {
   }
 
   return error;
+};
+
+export const brandNotification = (
+  op: 'SUCCESS' | 'ERROR',
+  message: string,
+  opts?: ToastOptions
+) => {
+  const toastOpts: ToastOptions = {
+    position: 'bottom-left',
+    ...opts,
+  };
+
+  return op === 'SUCCESS'
+    ? toast.success(message, toastOpts)
+    : toast.error(message, toastOpts);
 };

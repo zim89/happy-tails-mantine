@@ -1,16 +1,9 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useRef } from 'react';
-import {
-  UnstyledButton,
-  FileInput,
-  InputLabel,
-  TextInput,
-  Tooltip,
-} from '@mantine/core';
-import { Info, UploadCloud, X } from 'lucide-react';
-import { hasLength, isNotEmpty, useForm } from '@mantine/form';
-import Image from 'next/image';
+import { useCallback, useEffect, useRef } from 'react';
+import { UnstyledButton, InputLabel, TextInput, Tooltip } from '@mantine/core';
+import { Info } from 'lucide-react';
+import { hasLength, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 
 import styles from './UpdateCategoryModal.module.css';
@@ -20,9 +13,12 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import { cn } from '@/shared/lib/utils';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
@@ -39,8 +35,6 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image: null,
     name: null,
   });
-
-  const { setNotification } = useContext(notifyContext);
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -120,7 +114,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       await dispatch({ req: requestBody }).unwrap();
 
       clearAndClose();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         // If a file doesn't match the criterias, then just notify the user, don't close the modal
@@ -132,8 +126,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           form.setFieldError('image', `${err.data}`);
         } else {
           clearAndClose();
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }

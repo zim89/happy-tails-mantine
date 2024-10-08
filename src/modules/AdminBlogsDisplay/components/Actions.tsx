@@ -5,15 +5,11 @@ import Link from 'next/link';
 import { Post } from '@/shared/api/postApi';
 import DeletePostModal from '@/modules/DeletePostModal';
 import ArchivePostModal from '@/modules/ArchivePostModal';
-import { notifyContext } from '@/shared/context/notification.context';
-import { useContext } from 'react';
 
 type Props = {
   post: Post;
 };
 export const Actions = ({ post }: Props) => {
-  const { setNotification } = useContext(notifyContext);
-
   return (
     <div className='flex justify-end gap-4'>
       <Link href={`/admin/blogs/${post.id}/preview`}>
@@ -51,13 +47,13 @@ export const Actions = ({ post }: Props) => {
             leftSection={<FolderDown size={16} />}
             className='mb-1 rounded-none hover:bg-brand-grey-200'
           >
-            <ArchivePostModal id={post.id} setNotification={setNotification} />
+            <ArchivePostModal id={post.id} />
           </Menu.Item>
           <Menu.Item
             leftSection={<Trash2 size={16} />}
             className='rounded-none hover:bg-brand-grey-200'
           >
-            <DeletePostModal id={post.id} setNotification={setNotification} />
+            <DeletePostModal id={post.id} />
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

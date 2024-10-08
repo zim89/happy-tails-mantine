@@ -6,29 +6,29 @@ import Image from 'next/image';
 import DeleteModal from '@/components/DeleteModal';
 import { Product } from '@/shared/types/types';
 import { useRemoveMutation } from '@/shared/api/productApi';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 
 type Props = {
   productLine: Product;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteProductModal({
-  productLine,
-  setNotification,
-}: Props) {
+export default function DeleteProductModal({ productLine }: Props) {
   const [dispatch] = useRemoveMutation();
 
   const handleDelete = async () => {
     try {
       await dispatch({ id: productLine.id }).unwrap();
       closeMain();
-      setNotification('Success', 'Product deleted successfully');
+      brandNotification('SUCCESS', 'Product deleted successfully');
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

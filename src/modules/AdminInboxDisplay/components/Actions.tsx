@@ -7,11 +7,10 @@ import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 
 type Props = {
   message: Message;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
   setMarked: (msgs: number[]) => void;
 };
 
-export const Actions = ({ message, setNotification, setMarked }: Props) => {
+export const Actions = ({ message, setMarked }: Props) => {
   return (
     <div className='m-4 flex justify-end gap-4'>
       <Menu width={148} position='bottom-end' keepMounted>
@@ -40,10 +39,7 @@ export const Actions = ({ message, setNotification, setMarked }: Props) => {
             Mark as read
           </Menu.Item>
           <Menu.Item className='rounded-none hover:bg-brand-grey-200'>
-            <DeleteMessagesModal
-              setNotification={setNotification}
-              messages={[message.id]}
-            />
+            <DeleteMessagesModal messages={[message.id]} />
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

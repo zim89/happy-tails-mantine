@@ -4,7 +4,6 @@ import { useForm, isNotEmpty } from '@mantine/form';
 import {
   MutableRefObject,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -28,8 +27,8 @@ import { CustomSelectDropdown } from './CustomSelectDropdown';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { findImageSource } from '../lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
 import {
+  brandNotification,
   isAxiosQueryError,
   isErrorDataString,
   validateFile,
@@ -57,7 +56,6 @@ export const HomePageSetting = () => {
   const [createBanner] = useCreateBannerMutation();
   const [updateBanner] = useUpdateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const products = useSelectProducts((state) => state);
   const categories = useSelectCategories((state) => state);
@@ -217,12 +215,12 @@ export const HomePageSetting = () => {
           [refName]: null,
           [linkProp]: null,
         }));
-        setNotification('Success', `Banner ${index} removed successfully`);
+        brandNotification('SUCCESS', `Banner ${index} removed successfully`);
       }
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }
@@ -269,8 +267,8 @@ export const HomePageSetting = () => {
         } else throw new Error('Id is missing!');
 
         form.resetTouched();
-        setNotification(
-          'Success',
+        brandNotification(
+          'SUCCESS',
           op === 'POST'
             ? `Banner #${id} added successfully`
             : `Banner #${id} updated successfully`
@@ -285,8 +283,8 @@ export const HomePageSetting = () => {
           form.setFieldValue(`banner_${id}`, null);
           form.setFieldError(`banner_${id}`, `${err.data}`);
         } else {
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }

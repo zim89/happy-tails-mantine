@@ -14,12 +14,11 @@ import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { publishImage } from '@/shared/lib/requests';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import {
-  TOO_LARGE_PAYLOAD,
-  UNSUPPORTED_TYPE,
-} from '@/shared/constants/httpCodes';
-import { notifyContext } from '@/shared/context/notification.context';
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 
 export const sharedProps = {
   toolbarBtn: {
@@ -53,7 +52,6 @@ type Props = {
 
 export default function PostEditor({ editor }: Props) {
   const { form } = useContext(PostFormContext);
-  const { setNotification } = useContext(notifyContext);
 
   const handleImageUpload = useCallback(async (file: File) => {
     try {
@@ -61,8 +59,8 @@ export default function PostEditor({ editor }: Props) {
       return res;
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

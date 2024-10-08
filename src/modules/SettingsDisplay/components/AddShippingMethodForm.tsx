@@ -7,9 +7,11 @@ import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
 import { cn } from '@/shared/lib/utils';
 import { useCreateShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
-import { useContext } from 'react';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 
 type Props = {
   onClose: () => void;
@@ -17,7 +19,6 @@ type Props = {
 
 export const AddShippingMethodForm = ({ onClose }: Props) => {
   const [dispatch] = useCreateShippingMethodMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const form = useForm({
     initialValues: {
@@ -43,13 +44,13 @@ export const AddShippingMethodForm = ({ onClose }: Props) => {
         price: form.values.price,
       }).unwrap();
 
-      setNotification('Success', 'Shipping method successfully created!');
+      brandNotification('SUCCESS', 'Shipping method successfully created!');
       form.reset();
       onClose();
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }
