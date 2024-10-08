@@ -84,8 +84,6 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
   const categories = useSelectCategories((state) => state);
   const [dispatch] = useUpdateMutation();
 
-  console.log(product);
-
   const [sizes, setSizes] = useState<ContextType['sizes']>(
     product.productSizes
       ? product.productSizes.map((s) => ({
@@ -149,9 +147,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
   }, [form.isDirty(), sizes]);
 
   const handleSubmit = async () => {
-    const { hasErrors, errors } = form.validate();
-
-    console.log(form.values);
+    const { hasErrors } = form.validate();
 
     const sizesHasErrors = sizes.some(
       (s) => s.id === 'form' && s.validate().hasErrors
