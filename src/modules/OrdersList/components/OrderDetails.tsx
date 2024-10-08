@@ -13,6 +13,7 @@ import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { formatOrderPriceSchema } from '@/shared/helpers/price.helpers';
 
 type Props = {
   order: Order;
@@ -93,11 +94,7 @@ export const OrderDetails = ({
       <div className='ml-auto flex gap-8'>
         <div className='text-center text-sm'>
           <p className='mb-1'>Order amount</p>
-          <Tooltip
-            label={`
-             Price of products (${order.priceOfProducts}$) + Shipping method (${order.shippingMethodDTO.price}$) + Tax (${order.taxAmount}$)
-            `}
-          >
+          <Tooltip label={formatOrderPriceSchema(order)}>
             <p className='inline-flex items-center gap-1'>
               <span>$ {order.totalPrice}</span>
               <Info size={16} />
