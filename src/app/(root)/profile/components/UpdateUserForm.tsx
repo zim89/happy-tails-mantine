@@ -9,6 +9,7 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { useAppDispatch } from '@/shared/redux/store';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
@@ -96,9 +97,12 @@ export const UpdateUserForm = () => {
           form.clearErrors();
           form.reset();
         } catch (err) {
-          toast.error('Something went wrong. Please try again later.');
-          console.log(err);
-          toast.error('Oops! Something went wrong! Try again later.');
+          console.error('Error: ', err);
+          if (isAxiosQueryError(err)) {
+            toast.error(
+              isErrorDataString(err.data) ? err.data : err.data.message
+            );
+          }
         }
       })}
     >

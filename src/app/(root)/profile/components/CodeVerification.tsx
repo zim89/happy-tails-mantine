@@ -7,14 +7,14 @@ import { useResetPasswordMutation } from '@/shared/api/authApi';
 import { User } from '@/shared/types/auth.types';
 import { useState } from 'react';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   nextStep: () => void;
   currentUser: User;
-  vars?: { [key: string]: string };
 };
 
-export const CodeVerification = ({ nextStep, currentUser, vars }: Props) => {
+export const CodeVerification = ({ nextStep, currentUser }: Props) => {
   const [resetPassword] = useResetPasswordMutation();
   const [sent, setSent] = useState(false);
 
@@ -25,7 +25,9 @@ export const CodeVerification = ({ nextStep, currentUser, vars }: Props) => {
       nextStep();
     } catch (err) {
       console.log('Error: ', err);
-      toast.error('Oops! Something went wrong! Try again later.');
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 

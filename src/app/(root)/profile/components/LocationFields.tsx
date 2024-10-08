@@ -25,7 +25,7 @@ type Props = {
 const countries = ['Canada', 'United States'];
 
 export const LocationFields = ({ form }: Props) => {
-  const [found, setFound] = useState(false);
+  const [found, setFound] = useState(!!form.values.city);
   const [cities, setCities] = useState<string[]>([]);
 
   const onResetCity = () => {

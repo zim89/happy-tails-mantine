@@ -50,13 +50,7 @@ export default function UpdatePasswordForm() {
         }}
       >
         <Stepper.Step>
-          <CodeVerification
-            vars={{
-              '--gradient-spacing': '4.4%',
-            }}
-            currentUser={currentUser}
-            nextStep={nextStep}
-          />
+          <CodeVerification currentUser={currentUser} nextStep={nextStep} />
         </Stepper.Step>
         <Stepper.Step>
           <hgroup className='text-center'>
