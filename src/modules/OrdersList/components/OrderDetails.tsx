@@ -1,5 +1,5 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
-import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment, useState } from 'react';
 import dayjs from 'dayjs';
