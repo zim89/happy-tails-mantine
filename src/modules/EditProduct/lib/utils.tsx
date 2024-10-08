@@ -34,7 +34,7 @@ export type ProductForm = UseFormReturnType<
     color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
-    quantity: Product['totalQuantity'];
+
     description: Product['description'];
     image: File | null;
   },
@@ -44,7 +44,7 @@ export type ProductForm = UseFormReturnType<
     color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
-    quantity: Product['totalQuantity'];
+
     description: Product['description'];
     image: File | null;
   }) => {
@@ -53,7 +53,7 @@ export type ProductForm = UseFormReturnType<
     color: Product['color'];
     price: Product['price'];
     productType: Product['productType'];
-    quantity: Product['totalQuantity'];
+
     description: Product['description'];
     image: File | null;
   }
@@ -105,7 +105,6 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       price: product.price,
       color: product.color,
       productType: product.productType,
-      quantity: product.totalQuantity,
       description: product.description,
       image: { type: 'Empty' } as File | null,
     },
@@ -128,7 +127,6 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       image: isNotEmpty('Please select a product image'),
       description: isNotEmpty('Enter a description'),
-      quantity: (val) => (val < 1 ? 'Entered an invalid quantity' : null),
     },
   });
 
@@ -150,6 +148,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
 
   const handleSubmit = async () => {
     const { hasErrors } = form.validate();
+
     const sizesHasErrors = sizes.some(
       (s) => s.id === 'form' && s.validate().hasErrors
     );
@@ -167,7 +166,6 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
 
     const {
       categoryName: categoryNameField,
-      quantity,
       image: imageField,
       ...fieldSelection
     } = form.values;
@@ -188,13 +186,11 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
     let productImage = imagePath;
     let categoryProductId = categoryId;
 
-    const totalProductQuantity =
-      quantity +
-      sizes.reduce((acc, curr) => {
-        if (curr.id !== 'form') return acc;
+    const totalProductQuantity = sizes.reduce((acc, curr) => {
+      if (curr.id !== 'form') return acc;
 
-        return acc + Number(curr.values.quantity);
-      }, 0);
+      return acc + Number(curr.values.quantity);
+    }, 0);
 
     const productSizesArray =
       sizes.length > 0

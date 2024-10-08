@@ -73,6 +73,7 @@ export const Form = () => {
               label='Color'
               data={
                 [
+                  'ONE COLOR',
                   'Black',
                   'Blue',
                   'Brown',
