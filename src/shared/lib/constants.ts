@@ -1,6 +1,6 @@
 import { Category, ErrorData, Order } from '../types/types';
 
-export const DEFAULT_CATEGORY_IMAGE = 'https://i.imgur.com/dhBg9XH.png';
+export const DEFAULT_CATEGORY_IMAGE = 'https://i.imgur.com/AMUKkpA.png';
 
 export const CATEGORY: Category = {
   id: 0,

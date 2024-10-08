@@ -10,7 +10,6 @@ import {
 import { User } from '../types/auth.types';
 import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
-import { DEFAULT_CATEGORY_IMAGE } from './constants';
 import { API_URL, IMGUR_CLIENT_ID } from '../constants/env.const';
 import { MAX_FILE_SIZE } from '../constants/sizes.const';
 import {
@@ -18,6 +17,8 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '../constants/httpCodes';
+import { DEFAULT_CATEGORY_IMAGE } from './constants';
+import { validateFile } from './helpers';
 
 export const getProductById = async (id: string) => {
   try {
@@ -139,26 +140,10 @@ export const publishImage = async (
     const params = new FormData();
     params.append('image', image);
     params.append('title', title);
-
-    const regex = /^image\/(gif|webp|png|jpeg)$/;
-    const match =
-      image instanceof Blob ? image.type.match(regex) : image.match(regex);
-
-    if (!match) {
-      throw {
-        data: 'Forbidden image type. Available image types are: gif, webp, png and jpeg',
-        status: UNSUPPORTED_TYPE,
-      } as AxiosQueryError;
-    }
-
-    if (image instanceof Blob && image.size > MAX_FILE_SIZE) {
-      throw {
-        data: 'The file you uploaded exceeds the size limit, please compress or choose a smaller file',
-        status: TOO_LARGE_PAYLOAD,
-      } as AxiosQueryError;
-    }
-
     try {
+      const validationError = validateFile(image);
+      if (validationError) throw validationError;
+
       const res = await axios.post('https://api.imgur.com/3/image/', params, {
         headers: {
           Authorization: `Bearer ${IMGUR_CLIENT_ID}`,

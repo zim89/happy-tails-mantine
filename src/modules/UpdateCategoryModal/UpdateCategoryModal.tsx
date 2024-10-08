@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { Info, UploadCloud, X } from 'lucide-react';
-import { isNotEmpty, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import Image from 'next/image';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -28,13 +28,18 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { BrandFileInput } from '@/components/BrandFileInput';
 
 type Props = {
   categoryLine: Category;
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useUpdateCategoryMutation();
-  const previewImage = useRef<{ path: string; name: string }>();
+  const previewImage = useRef<{ image: string | null; name: string | null }>({
+    image: null,
+    name: null,
+  });
+
   const { setNotification } = useContext(notifyContext);
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -46,20 +51,23 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
     onValuesChange(values) {
       if (values.image && previewImage.current) {
-        previewImage.current.path = URL.createObjectURL(values.image);
+        previewImage.current.image = URL.createObjectURL(values.image);
         previewImage.current.name = values.image.name;
       }
     },
 
     validate: {
-      categoryName: isNotEmpty('The category name should be filled'),
+      categoryName: hasLength(
+        { min: 2, max: 50 },
+        'Name should be between 2 and 50 characters long.'
+      ),
     },
   });
 
   const changeThumbnail = useCallback(() => {
     if (categoryLine.imgSrc) {
       previewImage.current = {
-        path: categoryLine.imgSrc,
+        image: categoryLine.imgSrc,
         name: categoryLine.name,
       };
     }
@@ -72,8 +80,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
   const clearFile = () => {
     previewImage.current = {
-      path: '',
-      name: '',
+      image: null,
+      name: null,
     };
     form.setFieldValue('image', null);
   };
@@ -88,6 +96,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image,
   }: (typeof form)['values']) => {
     try {
+      const res = form.validate();
+
+      if (res.hasErrors) return;
+
       const { updatedAt, productCount, ...category } = categoryLine;
 
       let requestBody = {
@@ -192,39 +204,11 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </Tooltip>
           </InputLabel>
 
-          {!previewImage.current?.path ? (
-            <div className={styles.upload}>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id='file'
-                w='100%'
-                placeholder='Max file size 5 MB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput),
-                }}
-              />
-            </div>
-          ) : (
-            <div className={styles.previewWrapper}>
-              <Image
-                className={styles.previewImage}
-                width={32}
-                height={32}
-                src={previewImage.current.path}
-                alt={previewImage.current.name}
-              />
-              <p>{previewImage.current.name}</p>
-              <button onClick={clearFile} className={styles.clearImage}>
-                <X size={14} alignmentBaseline='central' />
-              </button>
-            </div>
-          )}
+          <BrandFileInput
+            clearFile={clearFile}
+            form={form}
+            previewImage={previewImage}
+          />
         </form>
 
         <ModalFooter

@@ -3,14 +3,12 @@
 import { useContext, useRef } from 'react';
 import {
   Button,
-  FileInput,
   InputLabel,
   TextInput,
   Textarea,
   Tooltip,
 } from '@mantine/core';
-import { Info, PlusCircle, UploadCloud, X } from 'lucide-react';
-import Image from 'next/image';
+import { Info, PlusCircle } from 'lucide-react';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -29,6 +27,7 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { BrandFileInput } from '@/components/BrandFileInput';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -55,8 +54,10 @@ export default function AddCategoryModal() {
     },
 
     validate: {
-      categoryName: (value) =>
-        !value.trim() ? 'Entered an invalid category name' : null,
+      categoryName: hasLength(
+        { min: 2, max: 50 },
+        'Name should be between 2 and 50 characters long.'
+      ),
       image: isNotEmpty('Image must not be empty'),
       description: (value) => {
         if (!value.trim().length) {
@@ -211,55 +212,11 @@ export default function AddCategoryModal() {
             </Tooltip>
           </InputLabel>
 
-          {!previewImage.current?.image || !previewImage.current?.name ? (
-            <div className={styles.upload} data-testid='upload'>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                withAsterisk
-                id='file'
-                fileInputProps={{
-                  role: 'upload-field',
-                }}
-                data-testid='upload-field'
-                className='pointer-events-none w-full'
-                placeholder='Max file size 5 MB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  root: 'form-root',
-                  wrapper: styles.fileWrapper,
-                  error: 'form-error -left-[155px]',
-                  input: cn(
-                    'form-input',
-                    styles.fileInput,
-                    form?.errors?.image && 'form-error--input'
-                  ),
-                }}
-              />
-            </div>
-          ) : (
-            <div className={styles.previewWrapper} data-testid='preview'>
-              <Image
-                data-testid='preview-image'
-                className={styles.previewImage}
-                width={32}
-                height={32}
-                src={previewImage.current.image}
-                alt={previewImage.current.name}
-              />
-              <p data-testid='preview-name'>{previewImage.current.name}</p>
-              <button
-                onClick={clearFile}
-                className='ml-[42px]'
-                data-testid='clear-image'
-              >
-                <X size={14} alignmentBaseline='central' />
-              </button>
-            </div>
-          )}
+          <BrandFileInput
+            clearFile={clearFile}
+            form={form}
+            previewImage={previewImage}
+          />
         </form>
 
         <ModalFooter

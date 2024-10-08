@@ -8,6 +8,8 @@ import {
   ProductSizeValues,
 } from '../types/types';
 import { ErrorResponse } from './constants';
+import { UNSUPPORTED_TYPE, TOO_LARGE_PAYLOAD } from '../constants/httpCodes';
+import { MAX_FILE_SIZE } from '../constants/sizes.const';
 
 export const formatDateToClockTime = (date: string | number) => {
   return dayjs(date).format('HH:mm');
@@ -234,4 +236,39 @@ export const formatColor = (color: ProductColor) => {
 export const formatSize = (size: ProductSizeValues) => {
   if (size === 'ONE_SIZE') return size.replace('_', ' ').toLowerCase();
   else return size;
+};
+
+export const isFile = (param: unknown): param is File => {
+  return param instanceof File;
+};
+
+export const isBlob = (param: unknown): param is Blob => {
+  return param instanceof Blob;
+};
+
+export const validateFile = (image: Blob | File | string) => {
+  let error: AxiosQueryError | null = null;
+
+  const regex = /\.(png|jpe?g|gif|webp)$/i;
+  let match = null;
+
+  isBlob(image) && (match = image.type.match(regex));
+  isFile(image) && (match = image.name.match(regex));
+  typeof image === 'string' && (match = image.match(regex));
+
+  if (!match) {
+    error = {
+      data: 'Forbidden image type. Available image types are: gif, webp, png and jpeg',
+      status: UNSUPPORTED_TYPE,
+    } as AxiosQueryError;
+  }
+
+  if ((isBlob(image) || isFile(image)) && image.size > MAX_FILE_SIZE) {
+    error = {
+      data: 'The file you uploaded exceeds the size limit, please compress or choose a smaller file',
+      status: TOO_LARGE_PAYLOAD,
+    } as AxiosQueryError;
+  }
+
+  return error;
 };

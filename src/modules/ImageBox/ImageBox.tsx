@@ -9,6 +9,7 @@ import classes from './classes.module.css';
 
 import { cn } from '@/shared/lib/utils';
 import { PostFormContext } from '@/shared/context/postform.context';
+import { MAX_FILE_SIZE } from '@/shared/constants/sizes.const';
 
 export default function FeaturedImage() {
   const { form } = useContext(PostFormContext);
@@ -16,6 +17,20 @@ export default function FeaturedImage() {
 
   const handleImage = (file: File | null) => {
     if (!file) return;
+
+    // Check file size
+    if (file.size > MAX_FILE_SIZE) {
+      return form.setFieldError('image', 'Too large image');
+    }
+
+    const regex = /^image\/(gif|webp|png|jpeg)$/;
+    const match = file.type.match(regex);
+
+    // Handle unsupported file type
+    if (!match) {
+      return form.setFieldError('image', 'Unsupported file type');
+    }
+
     form.setFieldValue('image', file);
   };
 
