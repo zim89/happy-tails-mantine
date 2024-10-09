@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mantine/core';
+import { Anchor, Container } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,12 +32,13 @@ export default function Footer(): React.JSX.Element {
               Don&apos;t hesitate to get in touch with us, we&apos;ll be glad to
               assist you!
             </p>
-            <a
+            <Anchor
               href='mailto:onlinestore.teamch2023@gmail.com'
+              underline='never'
               className='relative self-start text-xs leading-normal text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full lg:text-base'
             >
               onlinestore.teamch2023@gmail.com
-            </a>
+            </Anchor>
 
             <SocialLinks />
           </div>

@@ -20,6 +20,7 @@ export default function CategoriesPresentation() {
 
       {data.content.map((category) => (
         <CategoryBadge
+          type='link'
           key={category.path}
           name={category.name}
           path={`/${category.name.toLowerCase()}`}

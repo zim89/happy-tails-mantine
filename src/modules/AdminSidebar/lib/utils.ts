@@ -76,7 +76,7 @@ export const links: SidebarLinks = [
       { label: 'Main Page', link: '/admin/settings#homePage' },
       { label: 'Delivery', link: '/admin/settings#delivery' },
       { label: 'Promo Code', link: '/admin/settings#promo' },
-      { label: 'Tax', link: '#tax' },
+      { label: 'Tax', link: '/admin/settings#tax' },
     ],
   },
 ] as const;
