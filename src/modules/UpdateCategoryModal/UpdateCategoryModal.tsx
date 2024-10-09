@@ -1,16 +1,9 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useRef } from 'react';
-import {
-  UnstyledButton,
-  FileInput,
-  InputLabel,
-  TextInput,
-  Tooltip,
-} from '@mantine/core';
-import { Info, UploadCloud, X } from 'lucide-react';
-import { isNotEmpty, useForm } from '@mantine/form';
-import Image from 'next/image';
+import { useCallback, useEffect, useRef } from 'react';
+import { UnstyledButton, InputLabel, TextInput, Tooltip } from '@mantine/core';
+import { Info } from 'lucide-react';
+import { hasLength, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 
 import styles from './UpdateCategoryModal.module.css';
@@ -20,22 +13,28 @@ import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import { cn } from '@/shared/lib/utils';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { notifyContext } from '@/shared/context/notification.context';
 import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { BrandFileInput } from '@/components/BrandFileInput';
 
 type Props = {
   categoryLine: Category;
 };
 export default function UpdateCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useUpdateCategoryMutation();
-  const previewImage = useRef<{ path: string; name: string }>();
-  const { setNotification } = useContext(notifyContext);
+  const previewImage = useRef<{ image: string | null; name: string | null }>({
+    image: null,
+    name: null,
+  });
 
   const [opened, { open, close }] = useDisclosure(false);
   const form = useForm({
@@ -46,20 +45,23 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
     onValuesChange(values) {
       if (values.image && previewImage.current) {
-        previewImage.current.path = URL.createObjectURL(values.image);
+        previewImage.current.image = URL.createObjectURL(values.image);
         previewImage.current.name = values.image.name;
       }
     },
 
     validate: {
-      categoryName: isNotEmpty('The category name should be filled'),
+      categoryName: hasLength(
+        { min: 2, max: 50 },
+        'Name should be between 2 and 50 characters long.'
+      ),
     },
   });
 
   const changeThumbnail = useCallback(() => {
     if (categoryLine.imgSrc) {
       previewImage.current = {
-        path: categoryLine.imgSrc,
+        image: categoryLine.imgSrc,
         name: categoryLine.name,
       };
     }
@@ -72,8 +74,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
   const clearFile = () => {
     previewImage.current = {
-      path: '',
-      name: '',
+      image: null,
+      name: null,
     };
     form.setFieldValue('image', null);
   };
@@ -88,6 +90,10 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     image,
   }: (typeof form)['values']) => {
     try {
+      const res = form.validate();
+
+      if (res.hasErrors) return;
+
       const { updatedAt, productCount, ...category } = categoryLine;
 
       let requestBody = {
@@ -108,7 +114,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       await dispatch({ req: requestBody }).unwrap();
 
       clearAndClose();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         // If a file doesn't match the criterias, then just notify the user, don't close the modal
@@ -120,8 +126,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
           form.setFieldError('image', `${err.data}`);
         } else {
           clearAndClose();
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }
@@ -192,39 +198,11 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
             </Tooltip>
           </InputLabel>
 
-          {!previewImage.current?.path ? (
-            <div className={styles.upload}>
-              <label htmlFor='file'>
-                <UploadCloud color='white' />
-                <span>Select Image</span>
-              </label>
-              <FileInput
-                id='file'
-                w='100%'
-                placeholder='Max file size 5 MB'
-                {...form.getInputProps('image')}
-                accept='.png,.jpeg,.gif,.webp'
-                classNames={{
-                  wrapper: styles.fileWrapper,
-                  input: cn('form-input', styles.fileInput),
-                }}
-              />
-            </div>
-          ) : (
-            <div className={styles.previewWrapper}>
-              <Image
-                className={styles.previewImage}
-                width={32}
-                height={32}
-                src={previewImage.current.path}
-                alt={previewImage.current.name}
-              />
-              <p>{previewImage.current.name}</p>
-              <button onClick={clearFile} className={styles.clearImage}>
-                <X size={14} alignmentBaseline='central' />
-              </button>
-            </div>
-          )}
+          <BrandFileInput
+            clearFile={clearFile}
+            form={form}
+            previewImage={previewImage}
+          />
         </form>
 
         <ModalFooter

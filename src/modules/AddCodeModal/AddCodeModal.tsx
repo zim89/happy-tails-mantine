@@ -3,14 +3,16 @@
 import { Modal, TextInput, UnstyledButton } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { useContext } from 'react';
 import { DateInput } from '@mantine/dates';
 import { PlusCircle, Calendar, X } from 'lucide-react';
 
 import ModalFooter from '@/components/ModalFooter';
 import ModalHeader from '@/components/ModalHeader';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 
 import classes from './classes.module.css';
@@ -18,7 +20,6 @@ import { useCreateDiscountCodeMutation } from '@/shared/api/discountApi';
 
 export default function AddCodeModal() {
   const [dispatch] = useCreateDiscountCodeMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const uniqueExpirationDateId = `${Date.now()}_addExpirationDate`;
   const uniqueStartingDateId = `${Date.now()}_addStartDate`;
@@ -62,12 +63,12 @@ export default function AddCodeModal() {
       await dispatch(requestBody).unwrap();
 
       clearAndClose();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       clearAndClose();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

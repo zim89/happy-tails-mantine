@@ -13,6 +13,7 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
 import { cn } from '@/shared/lib/utils';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 type Props = {
   classNames?: {
@@ -43,11 +44,14 @@ export const VerifyEmailForm = ({ classNames, vars }: Props) => {
   const handleVerifyEmail = async (code: string) => {
     try {
       await verifyEmail({ code }).unwrap();
-      toast.success('Email verified successfully');
       dispatch(setAuthData({ ...currentUser, emailVerified: true }));
+
+      toast.success('Email verified successfully');
     } catch (err) {
       console.error(err);
-      toast.error('Failed to verify the email');
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 

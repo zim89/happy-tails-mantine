@@ -3,27 +3,13 @@
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
 import { MoreHorizontal, Trash2, Edit2 } from 'lucide-react';
-import { useContext, useEffect } from 'react';
 
 import DeleteProductModal from '@/modules/DeleteProductModal';
-import UpdateProductModal from '@/modules/UpdateProductModal';
 import { Product } from '@/shared/types/types';
-import { notifyContext } from '@/shared/context/notification.context';
 import Link from 'next/link';
 
 export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
   const productLine = ctx.row.original;
-  const { setNotification, setParams } = useContext(notifyContext);
-
-  useEffect(() => {
-    setParams((prev) => ({
-      success: {
-        ...prev.success,
-        text: 'Product deleted successfully!',
-      },
-      failed: prev.failed,
-    }));
-  }, []);
 
   return (
     <>
@@ -50,10 +36,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
             leftSection={<Trash2 size={16} />}
             className='rounded-none hover:bg-brand-grey-200'
           >
-            <DeleteProductModal
-              setNotification={setNotification}
-              productLine={productLine}
-            />
+            <DeleteProductModal productLine={productLine} />
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

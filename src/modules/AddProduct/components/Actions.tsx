@@ -2,18 +2,17 @@
 
 import { ActionIcon, Menu } from '@mantine/core';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
-import { MouseEvent, useContext, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, useContext, useMemo, useState } from 'react';
 
-import { notifyContext } from '@/shared/context/notification.context';
 import DeleteModal from '@/components/DeleteModal';
 import { context } from '../lib/utils';
+import { brandNotification } from '@/shared/lib/helpers';
 
 type Props = {
   criteria: number;
 };
 
 export const Actions = ({ criteria }: Props) => {
-  const { setNotification, setParams } = useContext(notifyContext);
   const { variants, setVariants } = useContext(context);
   const [opened, setOpened] = useState(false);
 
@@ -28,20 +27,10 @@ export const Actions = ({ criteria }: Props) => {
     [criteria]
   );
 
-  useEffect(() => {
-    setParams((prev) => ({
-      success: {
-        ...prev.success,
-        text: 'Variant deleted successfully!',
-      },
-      failed: prev.failed,
-    }));
-  }, []);
-
   const handleDelete = () => {
     setVariants((prev) => prev.filter((_, vindex) => vindex !== id));
     setOpened(() => false);
-    setNotification('Success', 'Variant deleted successfully!');
+    brandNotification('SUCCESS', 'Variant deleted successfully!');
   };
 
   const openModal = () => {

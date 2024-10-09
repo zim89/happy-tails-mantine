@@ -4,11 +4,13 @@ import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { User } from '@/shared/types/auth.types';
 import { useDeleteUserMutation } from '@/shared/api/usersApi';
-import { useContext } from 'react';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   user: User;
@@ -16,18 +18,17 @@ type Props = {
 
 export default function DeleteUserModal({ user }: Props) {
   const [dispatch] = useDeleteUserMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
       await dispatch({ userId: user.userId }).unwrap();
       closeMain();
-      setNotification('Success', 'User deleted successfully!');
+      brandNotification('SUCCESS', 'User deleted successfully!');
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

@@ -5,19 +5,21 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import DeleteModal from '@/components/DeleteModal';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { useChangePostStatusMutation } from '@/shared/api/postApi';
 
 type Props = {
   id: number;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
   customHandler?: (openHandler: () => void) => React.ReactNode;
   redirect?: string;
 };
 
 export default function ArchivePostModal({
   id,
-  setNotification,
   customHandler,
   redirect,
 }: Props) {
@@ -29,13 +31,13 @@ export default function ArchivePostModal({
       await dispatch({ id, status: 'ARCHIVED' }).unwrap();
 
       closeMain();
-      setNotification('Success', 'Post archived successfully!');
+      brandNotification('SUCCESS', 'Post archived successfully!');
       redirect && router.replace(redirect);
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

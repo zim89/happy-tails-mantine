@@ -4,14 +4,11 @@ import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
 import { Eye, MoreHorizontal, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { useContext } from 'react';
 
 import { Order } from '@/shared/types/types';
-import { notifyContext } from '@/shared/context/notification.context';
 import DeleteOrderModal from '@/modules/DeleteOrderModal';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
-  const { setNotification } = useContext(notifyContext);
   const order = ctx.row.original;
 
   return (
@@ -38,10 +35,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
             leftSection={<Trash />}
             className='rounded-none hover:bg-brand-grey-200'
           >
-            <DeleteOrderModal
-              orderLine={order}
-              setNotification={setNotification}
-            />
+            <DeleteOrderModal orderLine={order} />
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

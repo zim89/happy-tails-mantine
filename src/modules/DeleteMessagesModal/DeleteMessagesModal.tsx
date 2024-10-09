@@ -4,21 +4,18 @@ import DeleteModal from '@/components/DeleteModal';
 import { useDisclosure } from '@mantine/hooks';
 
 import styles from './DeleteMessagesModal.module.css';
+import { brandNotification } from '@/shared/lib/helpers';
 
 type Props = {
   messages: number[];
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteMessagesModal({
-  messages,
-  setNotification,
-}: Props) {
+export default function DeleteMessagesModal({ messages }: Props) {
   const [openedMain, { open: openMain, close: closeMain }] =
     useDisclosure(false);
 
   const handleDelete = () => {
-    setNotification('Failed', "It's not implemented yet... Sorry");
+    brandNotification('ERROR', "It's not implemented yet... Sorry");
     closeMain();
   };
 

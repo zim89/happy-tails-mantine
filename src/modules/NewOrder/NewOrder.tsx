@@ -12,13 +12,16 @@ import OrderTotal from './components/OrderTotal';
 import AddComments from './components/AddComments';
 import { useCreateOrderMutation } from '@/shared/api/ordersApi';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { ErrorResponse } from '@/shared/lib/constants';
 import { CreateOrderBody } from '@/shared/types/types';
 import { SelectedItem } from './lib/types';
 import BlockButton from '@/components/BlockButton';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
-import { notifyContext } from '@/shared/context/notification.context';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
 import Loader from '@/components/Loader/Loader';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
@@ -41,7 +44,6 @@ export default function NewOrder() {
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
   const form = useModel();
   const { currentUser } = useAuth();
-  const { setNotification } = useContext(notifyContext);
 
   const deliveryOpt = useSelectDeliveries((state) =>
     state.find((del) => del.name === form.values.shippingMethod)
@@ -130,11 +132,11 @@ export default function NewOrder() {
 
       await dispatch(orderRequest).unwrap();
       form.reset();
-      setNotification('Success', 'Order creation succeeded!');
+      brandNotification('SUCCESS', 'Order creation succeeded!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

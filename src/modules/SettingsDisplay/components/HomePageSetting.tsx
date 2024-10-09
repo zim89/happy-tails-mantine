@@ -4,7 +4,6 @@ import { useForm, isNotEmpty } from '@mantine/form';
 import {
   MutableRefObject,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -28,8 +27,12 @@ import { CustomSelectDropdown } from './CustomSelectDropdown';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { findImageSource } from '../lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+  validateFile,
+} from '@/shared/lib/helpers';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
 import {
   TOO_LARGE_PAYLOAD,
@@ -53,7 +56,6 @@ export const HomePageSetting = () => {
   const [createBanner] = useCreateBannerMutation();
   const [updateBanner] = useUpdateBannerMutation();
   const [deleteBanner] = useDeleteBannerMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const products = useSelectProducts((state) => state);
   const categories = useSelectCategories((state) => state);
@@ -138,6 +140,14 @@ export const HomePageSetting = () => {
           const bannerProp = `banner_${index + 1}` as const;
           const bannerValue = values[bannerProp];
 
+          if (bannerValue) {
+            const validationError = validateFile(bannerValue);
+
+            if (validationError) {
+              return form.setFieldError(bannerProp, `${validationError.data}`);
+            }
+          }
+
           if (bannerValue instanceof File && banner.current) {
             banner.current.path = URL.createObjectURL(bannerValue);
             banner.current.name = `Banner ${index + 1}`;
@@ -167,7 +177,7 @@ export const HomePageSetting = () => {
     const initial = initialValues();
 
     if (data && initial) {
-      form.setValues(initial);
+      form.initialize(initial);
     }
   }, [data]);
 
@@ -179,6 +189,7 @@ export const HomePageSetting = () => {
         }
       </p>
     );
+
   if (isLoading) return <Loader size={128} />;
 
   const clearFile = async (
@@ -204,12 +215,12 @@ export const HomePageSetting = () => {
           [refName]: null,
           [linkProp]: null,
         }));
-        setNotification('Success', `Banner ${index} removed successfully`);
+        brandNotification('SUCCESS', `Banner ${index} removed successfully`);
       }
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }
@@ -232,7 +243,7 @@ export const HomePageSetting = () => {
         const image = form.getValues()[bannerProp];
         const productPath = form.getValues()[linkProp];
 
-        let imageLink = 'https://placehold.co/1200x800.png';
+        let imageLink = '';
 
         if (image) {
           imageLink = await publishImage(image, bannerProp);
@@ -256,11 +267,11 @@ export const HomePageSetting = () => {
         } else throw new Error('Id is missing!');
 
         form.resetTouched();
-        setNotification(
-          'Success',
+        brandNotification(
+          'SUCCESS',
           op === 'POST'
-            ? `Banner ${id} added successfully`
-            : `Banner ${id} updated successfully`
+            ? `Banner #${id} added successfully`
+            : `Banner #${id} updated successfully`
         );
       }
     } catch (err) {
@@ -269,11 +280,11 @@ export const HomePageSetting = () => {
           err.status === UNSUPPORTED_TYPE ||
           err.status === TOO_LARGE_PAYLOAD
         ) {
-          form.setFieldValue('image', null);
-          form.setFieldError('image', `${err.data}`);
+          form.setFieldValue(`banner_${id}`, null);
+          form.setFieldError(`banner_${id}`, `${err.data}`);
         } else {
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }
@@ -367,7 +378,7 @@ export const HomePageSetting = () => {
                           width={32}
                           height={32}
                           src={banner.current.path}
-                          alt=''
+                          alt={`${banner.current.name}`}
                         />
                         <p>{banner.current.name}</p>
                         <button
@@ -378,9 +389,17 @@ export const HomePageSetting = () => {
                           <X size={14} alignmentBaseline='central' />
                         </button>
                       </div>
+                      {form?.errors[`banner_${index + 1}`] && (
+                        <div className='relative'>
+                          <p className='form-error'>
+                            {form.errors[`banner_${index + 1}`]}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
+
                 <Select
                   {...form.getInputProps(`product_link_${index + 1}`)}
                   label='Link to the product page'

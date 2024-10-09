@@ -1,17 +1,20 @@
 import { Modal, Radio, TextInput, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2, Dot } from 'lucide-react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
-import { Form, useForm } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { Order } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 
 type Props = {
   order: Order;
@@ -19,7 +22,6 @@ type Props = {
 export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
   const [dispatch] = useUpdateOrderMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const form = useForm({
     initialValues: {
@@ -76,13 +78,13 @@ export const ShippingModal = ({ order }: Props) => {
       };
       await dispatch(request);
       close();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       console.error(err);
       close();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

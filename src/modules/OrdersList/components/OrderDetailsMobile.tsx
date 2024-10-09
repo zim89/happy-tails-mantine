@@ -1,8 +1,9 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
-import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment } from 'react';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
@@ -12,7 +13,7 @@ import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { formatColor, formatSize } from '@/shared/lib/helpers';
 import { orderPalette } from '@/shared/lib/constants';
-import { useRouter } from 'next/navigation';
+import { formatOrderPriceSchema } from '@/shared/helpers/price.helpers';
 
 type Props = {
   order: Order;
@@ -142,22 +143,17 @@ export const OrderDetailsMobile = ({
           ))}
         {revealedOrders.includes(order.number) && (
           <>
+            {console.log(order)}
             <div className='col-span-3'>
-              <Tooltip
-                label={`
-             Price of products (${order.priceOfProducts}$) + Shipping method (${order.shippingMethodDTO.price}$) + Tax (${order.taxAmount}$)
-            `}
-              >
+              <Tooltip label={formatOrderPriceSchema(order)}>
                 <p className='inline-flex items-center gap-1 pb-1 pt-2 font-bold'>
                   <span>Total: {order.totalPrice}$</span>
                   <Info size={16} />
                 </p>
               </Tooltip>
             </div>
-            <p className='col-span-2 inline-flex items-center gap-2 text-sm text-brand-orange-400'>
-              <FileText size={16} /> Electronic check
-            </p>
-            <div className='flex flex-col gap-4'>
+
+            <div className='col-span-3 mt-3 flex justify-center gap-4'>
               <LightButton
                 handler={() => router.push(`/contacts?state=${order.number}`)}
               >

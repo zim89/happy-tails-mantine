@@ -1,5 +1,5 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
-import { ChevronDown, ChevronUp, FileText, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Fragment, useState } from 'react';
 import dayjs from 'dayjs';
@@ -13,6 +13,7 @@ import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { formatOrderPriceSchema } from '@/shared/helpers/price.helpers';
 
 type Props = {
   order: Order;
@@ -93,11 +94,7 @@ export const OrderDetails = ({
       <div className='ml-auto flex gap-8'>
         <div className='text-center text-sm'>
           <p className='mb-1'>Order amount</p>
-          <Tooltip
-            label={`
-             Price of products (${order.priceOfProducts}$) + Shipping method (${order.shippingMethodDTO.price}$) + Tax (${order.taxAmount}$)
-            `}
-          >
+          <Tooltip label={formatOrderPriceSchema(order)}>
             <p className='inline-flex items-center gap-1'>
               <span>$ {order.totalPrice}</span>
               <Info size={16} />
@@ -149,33 +146,28 @@ export const OrderDetails = ({
           </Fragment>
         ))}
       {revealedOrders.includes(order.number) && (
-        <Fragment>
-          <p className='col-span-2 mt-4 inline-flex items-center gap-2 text-sm text-brand-orange-400'>
-            <FileText size={16} /> Electronic check
-          </p>
-          <div className='mt-8 flex justify-end gap-4'>
-            <LightButton
-              handler={() => router.push(`/contacts?state=${order.number}`)}
+        <div className='col-span-3 mt-8 flex justify-end gap-4'>
+          <LightButton
+            handler={() => router.push(`/contacts?state=${order.number}`)}
+          >
+            Leave a review
+          </LightButton>
+          <LoaderBackground loading={orderIsProceeding}>
+            <DarkButton
+              handler={async () => {
+                try {
+                  setOrderIsProceeding(true);
+                  await handleRepeatOrder(order);
+                  setOrderIsProceeding(false);
+                } catch {
+                  setOrderIsProceeding(false);
+                }
+              }}
             >
-              Leave a review
-            </LightButton>
-            <LoaderBackground loading={orderIsProceeding}>
-              <DarkButton
-                handler={async () => {
-                  try {
-                    setOrderIsProceeding(true);
-                    await handleRepeatOrder(order);
-                    setOrderIsProceeding(false);
-                  } catch {
-                    setOrderIsProceeding(false);
-                  }
-                }}
-              >
-                Repeat the order
-              </DarkButton>
-            </LoaderBackground>
-          </div>
-        </Fragment>
+              Repeat the order
+            </DarkButton>
+          </LoaderBackground>
+        </div>
       )}
     </div>
   );

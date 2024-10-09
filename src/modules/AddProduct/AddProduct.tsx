@@ -1,17 +1,12 @@
 'use client';
 
-import { useContext } from 'react';
-
 import { Form } from './components/Form';
 import { Variants } from './components/Variants';
 import { AddProductProvider } from './lib/utils';
 import { Controls } from './components/Controls';
 import PageHeader from '@/components/PageHeader';
-import { notifyContext } from '@/shared/context/notification.context';
 
 export default function AddProduct() {
-  const { setNotification } = useContext(notifyContext);
-
   return (
     <AddProductProvider>
       <PageHeader>
@@ -27,7 +22,7 @@ export default function AddProduct() {
 
       <Form />
       <Variants />
-      <Controls setNotification={setNotification} />
+      <Controls />
     </AddProductProvider>
   );
 }

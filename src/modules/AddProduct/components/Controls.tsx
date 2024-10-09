@@ -3,7 +3,11 @@
 import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect } from 'react';
 
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { AxiosQueryError, CreateProductBody } from '@/shared/types/types';
 import { ProductForm, context } from '../lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
@@ -19,11 +23,7 @@ import {
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
 
-type Props = {
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
-};
-
-export const Controls = ({ setNotification }: Props) => {
+export const Controls = () => {
   const { productForm, previewImage, variants, setVariants } =
     useContext(context);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
@@ -144,7 +144,7 @@ export const Controls = ({ setNotification }: Props) => {
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();
-      setNotification('Success', 'Product created successfully!');
+      brandNotification('SUCCESS', 'Product created successfully!');
     } catch (err) {
       console.error(err);
 
@@ -156,8 +156,8 @@ export const Controls = ({ setNotification }: Props) => {
           productForm.setFieldValue('image', null);
           productForm.setFieldError('image', `${err.data}`);
         } else {
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }

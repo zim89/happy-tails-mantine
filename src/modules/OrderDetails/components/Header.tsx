@@ -3,14 +3,13 @@
 import dayjs from 'dayjs';
 import { Loader, UnstyledButton } from '@mantine/core';
 import { Mail } from 'lucide-react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { CustomBadge } from '@/components/Badge/Badge';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
-import { mockLongRequest } from '@/shared/lib/helpers';
+import { brandNotification, mockLongRequest } from '@/shared/lib/helpers';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   order: Order;
@@ -18,23 +17,22 @@ type Props = {
 
 export const Header = ({ order }: Props) => {
   const [isResending, setIsResending] = useState(false);
-  const { setNotification } = useContext(notifyContext);
 
   const resend = async () => {
     try {
       setIsResending(true);
       await mockLongRequest();
       setIsResending(false);
-      setNotification(
-        'Success',
+      brandNotification(
+        'SUCCESS',
         'Order confirmation email has been successfully resent'
       );
     } catch (err) {
       setIsResending(false);
       if (isAxiosQueryError(err)) {
         console.error(err);
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

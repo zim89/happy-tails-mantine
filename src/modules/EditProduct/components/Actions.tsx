@@ -4,16 +4,15 @@ import { ActionIcon, Menu } from '@mantine/core';
 import { MoreHorizontal, Trash2 } from 'lucide-react';
 import { MouseEvent, useContext, useState } from 'react';
 
-import { notifyContext } from '@/shared/context/notification.context';
 import DeleteModal from '@/components/DeleteModal';
 import { context } from '../lib/utils';
+import { brandNotification } from '@/shared/lib/helpers';
 
 type Props = {
   index: number;
 };
 
 export const Actions = ({ index }: Props) => {
-  const { setNotification } = useContext(notifyContext);
   const { setSizes } = useContext(context);
   const [opened, setOpened] = useState(false);
 
@@ -23,7 +22,7 @@ export const Actions = ({ index }: Props) => {
       newSizes.splice(index, 1);
       return newSizes;
     });
-    setNotification('Success', 'Size deleted successfully!');
+    brandNotification('SUCCESS', 'Size deleted successfully!');
     setOpened(() => false);
   };
 

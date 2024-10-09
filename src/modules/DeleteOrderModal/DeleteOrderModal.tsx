@@ -6,31 +6,31 @@ import Image from 'next/image';
 import DeleteModal from '@/components/DeleteModal';
 import { Order } from '@/shared/types/types';
 
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { useDeleteOrderMutation } from '@/shared/api/ordersApi';
 
 type Props = {
   orderLine: Order;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
 };
 
-export default function DeleteOrderModal({
-  orderLine,
-  setNotification,
-}: Props) {
+export default function DeleteOrderModal({ orderLine }: Props) {
   const [dispatch] = useDeleteOrderMutation();
   const [opened, { open, close }] = useDisclosure(false);
 
   const handleDelete = async () => {
     try {
       await dispatch({ number: orderLine.number }).unwrap();
-      setNotification('Success', 'Successfully deleted!');
+      brandNotification('SUCCESS', 'Successfully deleted!');
       close();
     } catch (err) {
       close();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

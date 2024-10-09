@@ -1,12 +1,14 @@
-import { useContext } from 'react';
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2 } from 'lucide-react';
 import Image from 'next/image';
 
 import ModalFooter from '@/components/ModalFooter';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 
 import classes from './classes.module.css';
 import ModalWindow from '@/components/ModalWindow/ModalWindow';
@@ -22,7 +24,6 @@ export default function UpdateShippingMethodModal({
   shippingMethod,
   visible,
 }: Props) {
-  const { setNotification } = useContext(notifyContext);
   const [opened, { open, close }] = useDisclosure(false);
   const [dispatch] = useUpdateShippingMethodMutation();
 
@@ -33,12 +34,12 @@ export default function UpdateShippingMethodModal({
       await dispatch(shippingMethod).unwrap();
 
       close();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       close();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

@@ -1,13 +1,16 @@
 import { TextInput, UnstyledButton } from '@mantine/core';
 import { Edit2 } from 'lucide-react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import BrandBox from '@/components/BrandBox';
 import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
 import { Tax, useUpdateTaxMutation } from '@/shared/api/taxApi';
-import { notifyContext } from '@/shared/context/notification.context';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 
 type Props = {
@@ -21,18 +24,17 @@ export const TaxForm = ({ tax }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [currentTaxRate, setCurrentTaxRate] = useState(previousRate);
   const [dispatch] = useUpdateTaxMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const handleSubmit = async () => {
     try {
       await dispatch({ ...tax, rate: currentTaxRate }).unwrap();
       setIsEditing(false);
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setError(isErrorDataString(err.data) ? err.data : err.data.message);
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

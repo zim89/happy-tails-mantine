@@ -1,7 +1,11 @@
 import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect } from 'react';
 
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { context } from '../lib/utils';
 
 import BlockLink from '@/modules/BlockLink';
@@ -11,12 +15,7 @@ import {
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
 
-type Props = {
-  productId: string;
-  setNotification: (type: 'Success' | 'Failed', text?: string) => void;
-};
-
-export const Controls = ({ setNotification }: Props) => {
+export const Controls = () => {
   const {
     productForm,
     sizes,
@@ -36,7 +35,7 @@ export const Controls = ({ setNotification }: Props) => {
     try {
       await handlePutRequest();
       setUnsavedState((prev) => ({ ...prev, unsavedChanges: false }));
-      setNotification('Success', 'Product saved successfully!');
+      brandNotification('SUCCESS', 'Product saved successfully!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         if (
@@ -46,14 +45,14 @@ export const Controls = ({ setNotification }: Props) => {
           productForm.setFieldValue('image', null);
           productForm.setFieldError('image', `${err.data}`);
         } else {
-          setNotification(
-            'Failed',
+          brandNotification(
+            'ERROR',
             isErrorDataString(err.data) ? err.data : err.data.message
           );
         }
       } else {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           'An error occurred while updating the product'
         );
       }

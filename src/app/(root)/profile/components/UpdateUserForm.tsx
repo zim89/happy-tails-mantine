@@ -1,6 +1,7 @@
-import { TextInput, UnstyledButton } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
+import { TextInput, UnstyledButton } from '@mantine/core';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
@@ -9,6 +10,7 @@ import { useAuth } from '@/shared/hooks/useAuth';
 import { useAppDispatch } from '@/shared/redux/store';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { LoaderBackground } from '@/components/LoaderBackground';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
@@ -17,10 +19,10 @@ export const UpdateUserForm = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      sendOffersAndNews: false,
+      firstName: currentUser?.firstName ?? '',
+      lastName: currentUser?.lastName ?? '',
+      email: currentUser?.email ?? '',
+      sendOffersAndNews: currentUser?.emailVerified ?? false,
     },
 
     validate: {
@@ -29,6 +31,20 @@ export const UpdateUserForm = () => {
       email: isEmail('Please enter a valid email address'),
     },
   });
+
+  useEffect(() => {
+    form.setValues({
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      email: currentUser?.email,
+      sendOffersAndNews: currentUser?.emailVerified,
+    });
+  }, [
+    currentUser?.email,
+    currentUser?.firstName,
+    currentUser?.lastName,
+    currentUser?.emailVerified,
+  ]);
 
   return (
     <form
@@ -95,10 +111,15 @@ export const UpdateUserForm = () => {
 
           form.clearErrors();
           form.reset();
+
+          toast.success('Profile updated successfully!');
         } catch (err) {
-          toast.error('Something went wrong. Please try again later.');
-          console.log(err);
-          toast.error('Oops! Something went wrong! Try again later.');
+          console.error('Error: ', err);
+          if (isAxiosQueryError(err)) {
+            toast.error(
+              isErrorDataString(err.data) ? err.data : err.data.message
+            );
+          }
         }
       })}
     >

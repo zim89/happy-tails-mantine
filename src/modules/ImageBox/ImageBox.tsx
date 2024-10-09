@@ -9,6 +9,7 @@ import classes from './classes.module.css';
 
 import { cn } from '@/shared/lib/utils';
 import { PostFormContext } from '@/shared/context/postform.context';
+import { validateFile } from '@/shared/lib/helpers';
 
 export default function FeaturedImage() {
   const { form } = useContext(PostFormContext);
@@ -16,6 +17,14 @@ export default function FeaturedImage() {
 
   const handleImage = (file: File | null) => {
     if (!file) return;
+
+    const validationError = validateFile(file);
+
+    // Handle unsupported file type
+    if (validationError) {
+      return form.setFieldError('image', `${validationError.data}`);
+    }
+
     form.setFieldValue('image', file);
   };
 

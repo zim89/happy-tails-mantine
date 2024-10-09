@@ -3,19 +3,18 @@
 import { Button, Menu } from '@mantine/core';
 import { Download, File, Files, PlusCircle, Printer } from 'lucide-react';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { json2csv } from 'json-2-csv';
 
 import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import classes from './classes.module.css';
-import { notifyContext } from '@/shared/context/notification.context';
 import PageHeader from '@/components/PageHeader';
 import { API_URL } from '@/shared/constants/env.const';
+import { brandNotification } from '@/shared/lib/helpers';
 
 export default function AdminOrderHeader() {
   const [opened, setOpened] = useState(false);
   const orders = useSelectOrders((state) => state);
-  const { setNotification } = useContext(notifyContext);
 
   const copyToClipboard = async () => {
     try {
@@ -28,10 +27,10 @@ export default function AdminOrderHeader() {
         document.execCommand('copy', true, data);
       }
 
-      setNotification('Success', 'Copied!');
+      brandNotification('SUCCESS', 'Copied!');
     } catch (err) {
       console.log(err);
-      setNotification('Failed', "Couldn't copy. Please try again.");
+      brandNotification('ERROR', "Couldn't copy. Please try again.");
     }
   };
 

@@ -12,7 +12,6 @@ import { KEYS } from '@/shared/constants/localStorageKeys';
 import DeletePostModal from '@/modules/DeletePostModal';
 import ArchivePostModal from '@/modules/ArchivePostModal';
 import { PostFormContext } from '@/shared/context/postform.context';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   status: Post['postStatus'];
@@ -20,7 +19,6 @@ type Props = {
 
 export const Details = ({ status }: Props) => {
   const { form } = useContext(PostFormContext);
-  const { setNotification } = useContext(notifyContext);
   const router = useRouter();
 
   // Checked param doesn't track whether the form was cleared or not (form.reset()); see @/modules/PostDetails/components/Header.tsx - handleCancel function
@@ -71,7 +69,6 @@ export const Details = ({ status }: Props) => {
                 </UnstyledButton>
                 <ArchivePostModal
                   id={Number(form.values.id)}
-                  setNotification={setNotification}
                   customHandler={(openModal) => (
                     <UnstyledButton
                       onClick={openModal}
@@ -87,7 +84,6 @@ export const Details = ({ status }: Props) => {
             <DeletePostModal
               redirect='/admin/blogs'
               id={Number(form.values.id)}
-              setNotification={setNotification}
               customHandler={(openModal) => (
                 <UnstyledButton
                   onClick={openModal}

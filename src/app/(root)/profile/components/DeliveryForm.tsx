@@ -1,19 +1,25 @@
 'use client';
 
 import { Group, TextInput, UnstyledButton } from '@mantine/core';
-import { hasLength, isNotEmpty, matches, useForm } from '@mantine/form';
+import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { toast } from 'react-toastify';
 
 import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
-import { cleanPostcode, dirtyFields } from '@/shared/lib/helpers';
+import {
+  cleanPostcode,
+  dirtyFields,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
 import { LoaderBackground } from '@/components/LoaderBackground';
 import { useAppDispatch } from '@/shared/redux/store';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { useEffect } from 'react';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -22,15 +28,17 @@ export const DeliveryForm = () => {
 
   const form = useForm({
     initialValues: {
-      firstName: currentUser?.firstName ?? '',
-      lastName: currentUser?.lastName ?? '',
+      firstName: currentUser?.shippingAddress?.firstName ?? '',
+      lastName: currentUser?.shippingAddress?.lastName ?? '',
       country: currentUser?.shippingAddress?.country ?? '',
       city: currentUser?.shippingAddress?.city ?? '',
       postcode: currentUser?.shippingAddress?.zip ?? '',
       company: currentUser?.shippingAddress?.company ?? '',
       addressOne: currentUser?.shippingAddress?.addressLine1 ?? '',
       addressTwo: currentUser?.shippingAddress?.addressLine2 ?? '',
-      contactNumber: currentUser?.phoneNumber.replace(/\"/g, '') ?? '',
+      contactNumber: currentUser?.shippingAddress?.phoneNumber
+        ? currentUser?.shippingAddress?.phoneNumber.replace(/\"/g, '')
+        : '',
       county: currentUser?.shippingAddress?.state ?? '',
     },
 
@@ -54,22 +62,36 @@ export const DeliveryForm = () => {
     },
   });
 
+  // It updates the form right after the mutation is succeded
+  useEffect(() => {
+    form.setValues({
+      firstName: currentUser?.shippingAddress?.firstName ?? '',
+      lastName: currentUser?.shippingAddress?.lastName ?? '',
+      country: currentUser?.shippingAddress?.country ?? '',
+      city: currentUser?.shippingAddress?.city ?? '',
+      postcode: currentUser?.shippingAddress?.zip ?? '',
+      company: currentUser?.shippingAddress?.company ?? '',
+      addressOne: currentUser?.shippingAddress?.addressLine1 ?? '',
+      addressTwo: currentUser?.shippingAddress?.addressLine2 ?? '',
+      contactNumber: currentUser?.shippingAddress?.phoneNumber
+        ? currentUser?.shippingAddress?.phoneNumber.replace(/\"/g, '')
+        : '',
+      county: currentUser?.shippingAddress?.state ?? '',
+    });
+  }, [currentUser?.shippingAddress]);
+
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      const [_, count] = dirtyFields(values);
-      // If there are no changes, omit the call to API
-
-      if (count === 0) return;
       if (!currentUser) return;
 
       const { registerDate, userId, roles, ...prevUser } = currentUser;
 
+      if (!form.isDirty()) return;
+
       const request = {
         ...prevUser,
-        phoneNumber: prevUser.phoneNumber
-          ? prevUser.phoneNumber.replace(/\"/g, '')
-          : '+8-240-158-9939',
-        billingAddress: prevUser.billingAddress ?? {
+        phoneNumber: values.contactNumber.replace(/\"/g, ''),
+        billingAddress: {
           firstName: prevUser.firstName,
           lastName: prevUser.lastName,
           company: '',
@@ -79,9 +101,7 @@ export const DeliveryForm = () => {
           city: '',
           addressLine1: '',
           addressLine2: '',
-          phoneNumber: prevUser.phoneNumber
-            ? prevUser.phoneNumber
-            : '+8-240-158-9939',
+          phoneNumber: values.contactNumber.replace(/\"/g, ''),
         },
         shippingAddress: {
           firstName: values.firstName,
@@ -93,10 +113,8 @@ export const DeliveryForm = () => {
           state: values.county,
           city: values.city,
           addressLine1: values.addressOne,
-          addressLine2:
-            values.addressTwo ||
-            (prevUser.shippingAddress?.addressLine2 ?? ' '),
-          phoneNumber: values.contactNumber,
+          addressLine2: values.addressTwo || values.addressOne,
+          phoneNumber: values.contactNumber.replace(/\"/g, ''),
         },
       };
 
@@ -105,9 +123,13 @@ export const DeliveryForm = () => {
 
       form.clearErrors();
       form.reset();
+
+      toast.success('Changes saved successfully!');
     } catch (err) {
       console.error('Error: ', err);
-      toast.error('Oops! Something went wrong! Try again later.');
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   };
 
@@ -176,6 +198,7 @@ export const DeliveryForm = () => {
             error: 'form-error',
           }}
           label='Address Line 1'
+          type='text'
           {...form.getInputProps('addressOne')}
           placeholder='Enter Address Line 1'
         />

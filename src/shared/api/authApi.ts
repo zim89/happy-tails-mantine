@@ -140,6 +140,7 @@ export const authApi = createApi({
         url: '/user/info',
         method: 'get',
       }),
+      providesTags: ['Auth'],
     }),
     sendVerificationCode: builder.mutation<void, void>({
       query: () => ({

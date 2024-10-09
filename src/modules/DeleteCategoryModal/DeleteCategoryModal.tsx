@@ -3,15 +3,17 @@
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
-import { useContext } from 'react';
 
 import styles from './DeleteCategoryModal.module.css';
 
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   categoryLine: Category;
@@ -19,7 +21,6 @@ type Props = {
 
 export default function DeleteCategoryModal({ categoryLine }: Props) {
   const [dispatch] = useRemoveCategoryMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const handleDelete = async () => {
     try {
@@ -30,13 +31,13 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         await dispatch({ id: categoryLine.id }).unwrap();
 
         closeMain();
-        setNotification('Success', 'Category successfully deleted!');
+        brandNotification('SUCCESS', 'Category successfully deleted!');
       }
     } catch (err) {
       closeMain();
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

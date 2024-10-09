@@ -1,14 +1,17 @@
 'use client';
 
 import { Popover, Select, UnstyledButton } from '@mantine/core';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, X, ChevronDown } from 'lucide-react';
 
 import { Order } from '@/shared/types/types';
 import { orderStatusList, isOrderStatus } from '@/shared/lib/constants';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import {
+  brandNotification,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
 import { useChangeStatusMutation } from '@/shared/api/ordersApi';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   children(toggle: () => void): React.ReactNode;
@@ -16,7 +19,6 @@ type Props = {
 };
 export default function UpdateStatus({ children, orderRow }: Props) {
   const [dispatch] = useChangeStatusMutation();
-  const { setNotification } = useContext(notifyContext);
 
   const [opened, setOpened] = useState(false);
   const [selectedOption, setSelectedOption] = useState<
@@ -43,11 +45,11 @@ export default function UpdateStatus({ children, orderRow }: Props) {
         status: selectedOption,
       }).unwrap();
       close();
-      setNotification('Success', 'Changes saved!');
+      brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
       if (isAxiosQueryError(err)) {
-        setNotification(
-          'Failed',
+        brandNotification(
+          'ERROR',
           isErrorDataString(err.data) ? err.data : err.data.message
         );
       }

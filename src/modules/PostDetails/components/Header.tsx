@@ -11,7 +11,6 @@ import {
 } from './Controllers';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
-import { notifyContext } from '@/shared/context/notification.context';
 
 type Props = {
   editor: Editor;
@@ -20,7 +19,6 @@ type Props = {
 export const Header = ({ editor, post }: Props) => {
   const { form, defaultValues } = useContext(PostFormContext);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
-  const { setNotification } = useContext(notifyContext);
 
   const [isEdited, setIsEdited] = useState(false);
   const editorContent = editor?.getHTML();
@@ -62,7 +60,6 @@ export const Header = ({ editor, post }: Props) => {
         <div className='mt-4 flex gap-3 md:mt-0'>
           {isEdited && post.postStatus === 'PUBLISHED' && (
             <PublishedController
-              setNotification={setNotification}
               refetch={() => {
                 form.resetDirty();
               }}
@@ -71,7 +68,6 @@ export const Header = ({ editor, post }: Props) => {
           )}
           {isEdited && post.postStatus === 'ARCHIVED' && (
             <ArchivedController
-              setNotification={setNotification}
               postId={post.id}
               refetch={() => {
                 form.resetDirty();
@@ -80,7 +76,6 @@ export const Header = ({ editor, post }: Props) => {
           )}
           {post.postStatus === 'DRAFT' && (
             <DraftController
-              setNotification={setNotification}
               postId={post.id}
               refetch={() => {
                 form.resetDirty();
