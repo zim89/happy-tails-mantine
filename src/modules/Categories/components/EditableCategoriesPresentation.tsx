@@ -2,6 +2,10 @@
 
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+import { FileInput } from '@mantine/core';
+import { useField } from '@mantine/form';
+import { useEffect, useState } from 'react';
 
 import {
   useCategoriesQuery,
@@ -11,14 +15,13 @@ import Loader from '@/components/Loader/Loader';
 import { Category } from '@/shared/types/types';
 import { Droppable } from '@/components/Droppable';
 import { Draggable } from '@/components/Draggable';
-import { useEffect, useMemo, useState } from 'react';
 import CategoryBadge from '@/modules/Categories/components/CategoryBadge';
-import { FileInput, Tooltip } from '@mantine/core';
-import { useField } from '@mantine/form';
 import { cn } from '@/shared/lib/utils';
-import { isErrorDataString, validateFile } from '@/shared/lib/helpers';
-import { Info } from 'lucide-react';
-import { toast } from 'react-toastify';
+import {
+  isAxiosQueryError,
+  isErrorDataString,
+  validateFile,
+} from '@/shared/lib/helpers';
 
 type TCategoryBadge = Pick<Category, 'id' | 'name' | 'path'> & {
   x: Category['coordinateOnBannerX'];
@@ -70,7 +73,6 @@ export const EditableCategoriesPresentation = () => {
         return;
       }
 
-      console.log(imageInputValue);
       toast.success('Image successfully uploaded!');
     }
   }, [imageInputValue]);
@@ -111,6 +113,10 @@ export const EditableCategoriesPresentation = () => {
       }
     } catch (err) {
       console.error('Error updating category coordinates:', err);
+
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
   }
 
