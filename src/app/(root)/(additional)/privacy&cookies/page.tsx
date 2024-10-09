@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Anchor, Container } from '@mantine/core';
 
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
@@ -26,7 +26,7 @@ export default function PrivacyAndCookiesPage() {
         <h2 className={classes.headSection}>General Information</h2>
         <p>
           This Privacy Policy describes what personal data{' '}
-          <span className='font-bold text-brand-orange-400'>HappyTails</span>,
+          <span className='font-bold text-brand-orange-400'>Happy Tails</span>,
           which owns and operates the website{' '}
           <span className='font-bold text-brand-orange-400'>Happy Tails</span>{' '}
           selling pet supplies, collects, uses, and protects, and how this data
@@ -174,13 +174,13 @@ export default function PrivacyAndCookiesPage() {
           information on how to modify your browser settings or how to block,
           manage or filter cookies can be found in your browser&apos;s help file
           or through such sites as:{' '}
-          <a
+          <Anchor
             className='text-brand-blue underline'
             href='www.allaboutcookies.org.'
             target='_blank'
           >
             www.allaboutcookies.org.
-          </a>
+          </Anchor>
         </p>
         <p>
           Additionally, please note that blocking cookies may not completely
@@ -205,12 +205,12 @@ export default function PrivacyAndCookiesPage() {
           {`If you have any questions or concerns about our Privacy & Cookies
           Policy, please contact us using the information provided below:`}
         </p>
-        <a
+        <Anchor
           href='mailto:onlinestore.teamch2023@gmail.com'
           className='block pt-4 text-brand-blue underline'
         >
           onlinestore.teamch2023@gmail.com
-        </a>
+        </Anchor>
       </div>
       <p className='my-8'>Last Updated: 24/03/2024</p>
     </Container>
