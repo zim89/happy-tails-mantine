@@ -22,24 +22,11 @@ import {
   isErrorDataString,
   validateFile,
 } from '@/shared/lib/helpers';
-
-type TCategoryBadge = Pick<Category, 'id' | 'name' | 'path'> & {
-  x: Category['coordinateOnBannerX'];
-  y: Category['coordinateOnBannerY'];
-};
-
-const parseCoordinates = (categories: Category[]): TCategoryBadge[] => {
-  return categories.map(
-    (cat) =>
-      ({
-        id: cat.id,
-        x: cat.coordinateOnBannerX,
-        y: cat.coordinateOnBannerY,
-        name: cat.name,
-        path: cat.path,
-      }) as TCategoryBadge
-  );
-};
+import {
+  BADGE_HEIGHT,
+  TCategoryBadge,
+  parseCoordinates,
+} from '@/shared/helpers/coords.helpers';
 
 export const EditableCategoriesPresentation = () => {
   const { data, isLoading } = useCategoriesQuery({});
@@ -88,7 +75,8 @@ export const EditableCategoriesPresentation = () => {
       if (candidate) {
         const { newX, newY } = {
           newX: candidate.coordinateOnBannerX + event.delta.x,
-          newY: candidate.coordinateOnBannerY + event.delta.y,
+          newY:
+            candidate.coordinateOnBannerY + (event.delta.y + BADGE_HEIGHT / 2),
         };
 
         const updatedCategory: Category = {
