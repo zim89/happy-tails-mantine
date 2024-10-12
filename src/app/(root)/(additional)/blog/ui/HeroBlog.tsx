@@ -46,7 +46,7 @@ function HeroBlog() {
         <h2 className='mb-2 text-2xl/[1.2] font-bold text-primary'>
           {data.title}
         </h2>
-        <p className='mb-6 line-clamp-2 text-base text-primary'>
+        <p className='mb-6 line-clamp-2 max-h-32 overflow-hidden text-base text-primary md:max-h-24'>
           <PostContent
             content={data.content}
             className='fix-line-clamp brightness-[30] filter'
