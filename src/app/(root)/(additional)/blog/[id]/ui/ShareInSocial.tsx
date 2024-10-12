@@ -1,17 +1,27 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function ShareInSocial() {
+type ShareInSocialProps = {
+  link: string;
+  description: string;
+  image: string;
+};
+
+export default function ShareInSocial({
+  link,
+  description,
+  image,
+}: ShareInSocialProps) {
   return (
     <div className='space-y-3'>
       <h2 className='text-lg/normal uppercase'>Share</h2>
       <ul className='flex gap-6'>
         <li>
           <Link
-            href={'https://www.facebook.com/'}
+            href={`https://www.facebook.com/sharer/sharer.php?u=${link}&picture=${image}&description=${description}`}
             target='_blank'
             rel='noreferrer noopener'
-            aria-label='Happy Tails on Facebook'
+            aria-label='Share on Facebook'
             className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
           >
             <svg
@@ -30,10 +40,10 @@ export default function ShareInSocial() {
         </li>
         <li>
           <Link
-            href={'https://www.pinterest.com/'}
+            href={`http://pinterest.com/pin/create/button/?url=${link}&media=${image}&description=${description}`}
             target='_blank'
             rel='noreferrer noopener'
-            aria-label='Happy Tails on Pinterest'
+            aria-label='Share on Pinterest'
             className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
           >
             <svg
@@ -59,10 +69,10 @@ export default function ShareInSocial() {
         </li>
         <li>
           <Link
-            href={'https://x.com/'}
+            href={`https://twitter.com/share?url=${link}&text=${description}&hashtags=happytails`}
             target='_blank'
             rel='noreferrer noopener'
-            aria-label='Happy Tails on X'
+            aria-label='Share on X'
             className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
           >
             <svg
