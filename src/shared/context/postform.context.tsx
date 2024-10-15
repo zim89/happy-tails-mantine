@@ -90,8 +90,6 @@ export const PostFormProvider = ({ children, post }: FormProviderProps) => {
       title: (value) => {
         if (value.trim().length < 2) {
           return 'The title should be descriptive.';
-        } else if (value.length > 50) {
-          return 'The title is too long.';
         } else if (!titlePattern.test(value)) {
           return 'The title is incorrect';
         }
