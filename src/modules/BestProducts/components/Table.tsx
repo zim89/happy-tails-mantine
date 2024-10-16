@@ -13,7 +13,6 @@ import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { useMemo } from 'react';
-import { Console } from 'console';
 
 const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 

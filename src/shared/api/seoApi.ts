@@ -2,13 +2,6 @@ import axios, { AxiosError } from 'axios';
 
 import { SITE_DOMAIN } from '../constants/env.const';
 
-const axiosInstance = axios.create({
-  baseURL: `${SITE_DOMAIN}/api/`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 export type AggregatedAnalyticsResponse = {
   message: {
     responseAggregationType: string;
@@ -51,9 +44,14 @@ type AnalyticsQuery = {
 
 export const getAnalytics = async (params: AnalyticsQuery) => {
   try {
-    const res = await axiosInstance.post<AggregatedAnalyticsResponse>(
-      'analytics',
-      params
+    const res = await axios.post<AggregatedAnalyticsResponse>(
+      `${SITE_DOMAIN}/api/analytics`,
+      params,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
 
     if (!res) throw new Error('No data returned.');
