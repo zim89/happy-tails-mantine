@@ -75,8 +75,6 @@ type Props = {
   data: Product[];
 };
 export default function ProductsTable({ data }: Props) {
-  console.log('Products: ', data);
-
   const tableRows = useMemo(() => {
     return data
       .map((prod) => ({

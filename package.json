@@ -42,7 +42,6 @@
     "embla-carousel-react": "^7.1.0",
     "googleapis": "^144.0.0",
     "json-2-csv": "^5.5.1",
-    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",
     "next-mdx-remote": "^4.4.1",
@@ -57,7 +56,6 @@
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
     "@types/dompurify": "^3.0.5",
-    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

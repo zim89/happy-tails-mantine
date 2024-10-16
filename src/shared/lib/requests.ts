@@ -1,22 +1,12 @@
 import axios, { isAxiosError } from 'axios';
 
 import authorizedAxios from '@/shared/lib/interceptor';
-import {
-  AxiosQueryError,
-  BackendResponse,
-  Category,
-  Product,
-} from '../types/types';
+import { BackendResponse, Category, Product } from '../types/types';
 import { User } from '../types/auth.types';
 import { Post } from '../api/postApi';
 import { unstable_noStore } from 'next/cache';
 import { API_URL, IMGUR_CLIENT_ID } from '../constants/env.const';
-import { MAX_FILE_SIZE } from '../constants/sizes.const';
-import {
-  NOT_FOUND,
-  TOO_LARGE_PAYLOAD,
-  UNSUPPORTED_TYPE,
-} from '../constants/httpCodes';
+import { NOT_FOUND } from '../constants/httpCodes';
 import { DEFAULT_CATEGORY_IMAGE } from './constants';
 import { validateFile } from './helpers';
 

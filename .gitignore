@@ -47,3 +47,4 @@ https_cert
 server.ts
 /.env.production
 /.env.development
+/key.json
