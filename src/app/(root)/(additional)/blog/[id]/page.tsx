@@ -78,7 +78,11 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </div>
 
                 <div className='space-y-12 lg:space-y-10'>
-                  <ShareInSocial />
+                  <ShareInSocial
+                    link={`${process.env.NEXT_PUBLIC_SITE_DOMAIN}/blog/${post.id}`}
+                    description={`Checkout this post on Happy Tails: ${post.title}`}
+                    image={post.posterImgSrc}
+                  />
                   <Suspense fallback={null}>
                     <PopularPosts />
                   </Suspense>

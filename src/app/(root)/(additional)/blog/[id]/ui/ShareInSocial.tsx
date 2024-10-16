@@ -1,12 +1,29 @@
 import React from 'react';
+import Link from 'next/link';
 
-export default function ShareInSocial() {
+type ShareInSocialProps = {
+  link: string;
+  description: string;
+  image: string;
+};
+
+export default function ShareInSocial({
+  link,
+  description,
+  image,
+}: ShareInSocialProps) {
   return (
     <div className='space-y-3'>
       <h2 className='text-lg/normal uppercase'>Share</h2>
       <ul className='flex gap-6'>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={`https://www.facebook.com/sharer/sharer.php?u=${link}&picture=${image}&description=${description}`}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Share on Facebook'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='20'
               height='20'
@@ -19,10 +36,16 @@ export default function ShareInSocial() {
                 fill='white'
               />
             </svg>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={`http://pinterest.com/pin/create/button/?url=${link}&media=${image}&description=${description}`}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Share on Pinterest'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='20'
               height='20'
@@ -42,10 +65,16 @@ export default function ShareInSocial() {
                 </clipPath>
               </defs>
             </svg>
-          </button>
+          </Link>
         </li>
         <li>
-          <button className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'>
+          <Link
+            href={`https://twitter.com/share?url=${link}&text=${description}&hashtags=happytails`}
+            target='_blank'
+            rel='noreferrer noopener'
+            aria-label='Share on X'
+            className='flex h-10 w-10 items-center justify-center rounded-full bg-brand-grey-900 transition-colors duration-300 hover:bg-secondary'
+          >
             <svg
               width='22'
               height='21'
@@ -58,7 +87,7 @@ export default function ShareInSocial() {
                 fill='white'
               />
             </svg>
-          </button>
+          </Link>
         </li>
       </ul>
     </div>
