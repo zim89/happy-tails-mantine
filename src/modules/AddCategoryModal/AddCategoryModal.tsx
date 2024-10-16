@@ -158,7 +158,6 @@ export default function AddCategoryModal() {
           header: styles.modalHeader,
           content: styles.modalContent,
         }}
-        onChange={() => {}}
         onClose={close}
       >
         <ModalHeader heading='Add Category' handleClose={close} />

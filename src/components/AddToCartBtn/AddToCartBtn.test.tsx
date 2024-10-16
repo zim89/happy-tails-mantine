@@ -47,7 +47,7 @@ let product: Product = {
 
 describe('AddButton', () => {
   test('should render', () => {
-    const { getByRole } = render(<TestAddButton product={product} />);
+    const { getByRole } = render(<TestAddButton count={0} product={product} />);
     expect(getByRole('button')).toBeInTheDocument();
   });
 
@@ -55,7 +55,9 @@ describe('AddButton', () => {
     const productCopy = Object.create(product);
     productCopy.productStatus = 'OUT OF STOCK';
 
-    const { queryByText } = render(<TestAddButton product={productCopy} />);
+    const { queryByText } = render(
+      <TestAddButton count={0} product={productCopy} />
+    );
     expect(queryByText('Out of stock')).toBeDefined();
   });
 
@@ -63,26 +65,41 @@ describe('AddButton', () => {
     const productCopy = Object.create(product);
     productCopy.productStatus = 'IN STOCK';
 
-    const { getByRole } = render(<TestAddButton product={productCopy} />);
+    const { getByRole } = render(
+      <TestAddButton count={0} product={productCopy} />
+    );
     const button = getByRole('button');
 
     expect(button).toHaveTextContent('Add to cart');
   });
 
+  test('should open the cart when the user clicks', () => {
+    const openCartDrawer = vi.spyOn(mod, 'openCartDrawer');
+
+    const { getByRole } = render(<TestAddButton count={1} product={product} />);
+    const button = getByRole('button');
+    fireEvent.click(button);
+
+    expect(openCartDrawer).toHaveBeenCalled();
+  });
+
   test('should pass in correct params to click handler', () => {
     const addToCart = vi.spyOn(mod, 'addToCart');
+
+    const testCount = 6;
 
     const productCopy = Object.create(product);
     productCopy.productStatus = 'IN STOCK';
 
     const { getByRole } = render(
-      <TestAddButton product={productCopy} size='XL' />
+      <TestAddButton count={testCount} product={productCopy} size='XL' />
     );
     const button = getByRole('button');
     fireEvent.click(button);
 
     expect(addToCart).toHaveBeenCalledWith({
       ...productCopy,
+      count: testCount,
       size: 'XL',
     });
   });

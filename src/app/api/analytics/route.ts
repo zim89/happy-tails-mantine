@@ -1,10 +1,33 @@
 import { google } from 'googleapis';
 import { NextRequest } from 'next/server';
-import { setToken } from '../utils';
-import { GOOGLE_API_KEY } from '@/shared/constants/env.const';
+import {
+  GOOGLE_API_KEY,
+  GOOGLE_SA_PRIVATE_KEY,
+  GOOGLE_SA_EMAIL,
+} from '@/shared/constants/env.const';
 import { SERVER_ERROR } from '@/shared/constants/httpCodes';
 
 const searchConsoleApi = google.searchconsole('v1');
+
+const googleJWTClient = new google.auth.JWT(
+  GOOGLE_SA_EMAIL,
+  undefined,
+  GOOGLE_SA_PRIVATE_KEY,
+  [
+    'https://www.googleapis.com/auth/webmasters.readonly',
+    'https://www.googleapis.com/auth/webmasters',
+  ]
+);
+
+const generateJWT = async () => {
+  try {
+    const res = await googleJWTClient.authorize();
+
+    return res.access_token;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const getAnalytics = async (token: string, payload: object) => {
   try {
@@ -25,16 +48,15 @@ const getAnalytics = async (token: string, payload: object) => {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get('Authorization');
     const body = await request.json();
-    if (!token || !body)
+    if (!body)
       return Response.json(
         { message: 'Unauthorized' },
-        { status: 401, statusText: 'Unauthorized' }
+        { status: 400, statusText: 'The payload is required!' }
       );
-    const [_, parsedToken] = token.split(' ');
-    await setToken(parsedToken);
-    const res = await getAnalytics(parsedToken.trim(), body);
+
+    const token = await generateJWT();
+    const res = await getAnalytics(`${token}`, body);
 
     return Response.json({ message: res });
   } catch (err) {

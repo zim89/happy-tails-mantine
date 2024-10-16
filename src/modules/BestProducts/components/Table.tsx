@@ -13,6 +13,7 @@ import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { useMemo } from 'react';
+import { Console } from 'console';
 
 const columnHelper = createColumnHelper<Product & { totalPaid: number }>();
 
@@ -75,8 +76,6 @@ type Props = {
   data: Product[];
 };
 export default function ProductsTable({ data }: Props) {
-  console.log('Products: ', data);
-
   const tableRows = useMemo(() => {
     return data
       .map((prod) => ({

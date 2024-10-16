@@ -166,7 +166,7 @@ export const Controls = () => {
   };
 
   return (
-    <div className='mt-12 flex gap-[42px]'>
+    <div className='mt-12 flex gap-[42px]' data-testid='controls'>
       <UnstyledButton
         classNames={{ root: 'rounded-sm font-bold px-12 py-[10px] bg-white' }}
         styles={{ root: { border: '1px solid #C8C8C8' } }}
@@ -178,6 +178,7 @@ export const Controls = () => {
           root: 'bg-black text-white py-[10px] px-[55px] font-bold rounded-sm',
         }}
         onClick={() => handleSubmit(productForm.values)}
+        data-testid='save-button'
       >
         Save
       </UnstyledButton>

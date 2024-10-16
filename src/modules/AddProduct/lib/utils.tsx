@@ -62,12 +62,12 @@ export type ProductForm = UseFormReturnType<
   }
 >;
 
-type PreviewImage = {
+export type PreviewImage = {
   name: string | null;
   path: string | null;
 };
 
-type ContextType = {
+export type ContextType = {
   productForm: ProductForm;
   variants: (VariantForm | null)[];
   setVariants: Dispatch<SetStateAction<(VariantForm | null)[]>>;
@@ -76,7 +76,7 @@ type ContextType = {
 
 export const context = createContext<ContextType>({} as ContextType);
 
-type ProviderProps = {
+export type ProviderProps = {
   children: React.ReactNode;
 };
 export const AddProductProvider = ({ children }: ProviderProps) => {

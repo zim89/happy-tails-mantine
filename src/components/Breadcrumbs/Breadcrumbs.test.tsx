@@ -3,7 +3,6 @@ import { render } from '@testing-library/react';
 
 import { TestWrapper } from '../TestWrapper';
 import Breadcrumbs, { Props } from './Breadcrumbs';
-import { before } from 'node:test';
 
 const TestBreadcrumbs = (props: Props) => {
   return (
@@ -24,8 +23,6 @@ describe('Breadcrumbs', () => {
 
     expect(getByTestId('breadcrumbs')).toBeInTheDocument();
   });
-
-  before(() => {});
 
   test('should render all crumbs correctly', () => {
     const crumbs = [

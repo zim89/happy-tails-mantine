@@ -22,8 +22,8 @@ export default function DonutChart({ width, height, data, colors }: Props) {
         outerRadius={96}
         fill='#8884d8'
         dataKey='value'
-        cornerRadius={100}
-        paddingAngle={-15}
+        cornerRadius={0}
+        paddingAngle={0}
         strokeWidth={0}
       >
         {data.map(({ name }, index) => (

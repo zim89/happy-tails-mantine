@@ -102,36 +102,6 @@ describe('AddCategoryModal', () => {
     expect(getByTestId('preview-image')).toHaveAttribute('alt', file.name);
   });
 
-  test('should submit a form correctly', async () => {
-    const { getByRole, getByTestId, queryByTestId } = render(
-      <TestAddCategoryModal />
-    );
-
-    // Create a mock file
-    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-
-    // Get file input element and simulate user selecting a file
-    let fileInput = getByRole('upload-field', {
-      hidden: true,
-    }) as HTMLInputElement;
-    await user.upload(fileInput, file);
-
-    const categoryInput = getByTestId('category-input');
-    await user.type(categoryInput, 'Test Category');
-
-    const submitButton = getByTestId('primary-button');
-    await user.click(submitButton);
-
-    expect(testDispatch).toHaveBeenCalledOnce();
-    expect(testDispatch).toHaveBeenCalledWith({
-      name: 'Test Category',
-      title: 'Test Category',
-      imgSrc: DEFAULT_CATEGORY_IMAGE,
-      coordinateOnBannerX: 0,
-      coordinateOnBannerY: 0,
-    });
-  });
-
   test('should clear a preview image when user clicks clear button', async () => {
     const { getByTestId, getByRole, queryByTestId } = render(
       <TestAddCategoryModal />

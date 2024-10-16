@@ -4,6 +4,7 @@ export const COLORS = {
   NEW: '#4285F4',
   'IN PROGRESS': '#FBBC04',
   COMPLETED: '#161616',
+  CANCELLED: '#A52923',
 };
 
 export function summarizeOrderStatuses(orders: Order[]) {
