@@ -25,7 +25,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
             <Link
               className='flex h-full w-full items-center gap-3'
               shallow
-              href={`/admin/orders/${ctx.row.original.number.toLowerCase()}`}
+              href={`/admin/orders/${ctx.row.original.number.toLowerCase()}^${ctx.row.original.email}`}
             >
               <Eye />
               View

@@ -169,23 +169,6 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ['Orders'],
     }),
-    addComment: builder.mutation<void, CommentOrder>({
-      query: ({ orderNumber, comment }) => {
-        const params = new URLSearchParams({
-          comment,
-        });
-
-        return {
-          url: `/order/${orderNumber}/comment`,
-          method: 'put',
-          params,
-          headers: {
-            'Content-type': 'application/json',
-          },
-        };
-      },
-      invalidatesTags: ['Orders'],
-    }),
   }),
 });
 
@@ -195,7 +178,6 @@ export const {
   useDeleteOrderMutation,
   useChangeStatusMutation,
   useUpdateOrderMutation,
-  useAddCommentMutation,
   useFindOneQuery,
   useFindOneByEmailAndCodeQuery,
   useFindManyByEmailQuery,

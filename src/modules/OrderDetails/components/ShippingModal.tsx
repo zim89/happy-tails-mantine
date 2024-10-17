@@ -76,7 +76,7 @@ export const ShippingModal = ({ order }: Props) => {
         billingAddress,
         shippingMethodId: 1,
       };
-      await dispatch(request);
+      await dispatch(request).unwrap();
       close();
       brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {

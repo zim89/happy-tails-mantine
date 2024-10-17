@@ -9,6 +9,7 @@ import Overview from '@/components/Overview';
 
 import { categoriesDesc } from './lib/seo';
 import { getAllCategories } from '@/shared/lib/requests';
+import { isOverviewEmpty } from '@/shared/helpers/overview.helpers';
 
 type Props = {
   params: { category: string };
@@ -53,8 +54,6 @@ export default async function CatalogPage(props: Props) {
 
   if (!category) notFound();
 
-  console.log(category);
-
   return (
     <>
       <div className='pb-6 pt-2 md:pb-9 md:pt-4 lg:pb-12'>
@@ -75,7 +74,7 @@ export default async function CatalogPage(props: Props) {
             <Toolbar category={category} categories={categories} />
             <ProductList category={category} />
           </ProductCountContextProvider>
-          {category.overview.trim().length > 0 && (
+          {!isOverviewEmpty(category.overview) && (
             <Overview>
               <MDXRemote source={category.overview.replace(/\\n/g, '\n')} />
             </Overview>

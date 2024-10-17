@@ -10,7 +10,7 @@ import {
 import { ErrorResponse } from './constants';
 import { UNSUPPORTED_TYPE, TOO_LARGE_PAYLOAD } from '../constants/httpCodes';
 import { MAX_FILE_SIZE } from '../constants/sizes.const';
-import { ToastOptions, toast } from 'react-toastify';
+import { ToastOptions, toast, ToastTransition } from 'react-toastify';
 
 export const formatDateToClockTime = (date: string | number) => {
   return dayjs(date).format('HH:mm');
@@ -281,6 +281,7 @@ export const brandNotification = (
 ) => {
   const toastOpts: ToastOptions = {
     position: 'bottom-left',
+    autoClose: 7000,
     ...opts,
   };
 

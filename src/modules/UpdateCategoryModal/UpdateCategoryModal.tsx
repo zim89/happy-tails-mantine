@@ -1,7 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { UnstyledButton, InputLabel, TextInput, Tooltip } from '@mantine/core';
+import {
+  UnstyledButton,
+  InputLabel,
+  TextInput,
+  Tooltip,
+  Textarea,
+} from '@mantine/core';
 import { Info } from 'lucide-react';
 import { hasLength, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
@@ -41,6 +47,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
     initialValues: {
       categoryName: '',
       image: null as File | null,
+      description: categoryLine.description,
     },
 
     onValuesChange(values) {
@@ -55,6 +62,13 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         { min: 2, max: 50 },
         'Name should be between 2 and 50 characters long.'
       ),
+      description: (value) => {
+        if (!value.trim().length) {
+          return 'Description is required';
+        } else if (hasLength({ min: 0, max: 255 })(value)) {
+          return 'Description should not exceed 255 characters';
+        }
+      },
     },
   });
 
@@ -88,6 +102,7 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
   const handleSubmit = async ({
     categoryName,
     image,
+    description,
   }: (typeof form)['values']) => {
     try {
       const res = form.validate();
@@ -99,8 +114,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
       let requestBody = {
         ...category,
         name: categoryName,
+        description,
         title: categoryName,
-        description: `Category name: ${categoryName}`,
       };
 
       // Uploading an image
@@ -182,6 +197,23 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
                 {categoryLine.name}
               </button>
             }
+          />
+
+          <Textarea
+            withAsterisk
+            rows={10}
+            classNames={{
+              root: 'form-root w-full mt-4',
+              label: 'form-label',
+              wrapper: 'grid h-full',
+              input: cn(
+                'form-input textarea p-2',
+                form?.errors?.description && 'form-error--input'
+              ),
+              error: 'form-error -bottom-4',
+            }}
+            label='Description'
+            {...form.getInputProps('description')}
           />
 
           <InputLabel
