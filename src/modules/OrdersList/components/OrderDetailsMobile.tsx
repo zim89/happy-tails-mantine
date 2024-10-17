@@ -1,7 +1,7 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import Image from 'next/image';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 
@@ -14,6 +14,7 @@ import classes from '../classes.module.css';
 import { formatColor, formatSize } from '@/shared/lib/helpers';
 import { orderPalette } from '@/shared/lib/constants';
 import { formatOrderPriceSchema } from '@/shared/helpers/price.helpers';
+import { LoaderBackground } from '@/components/LoaderBackground';
 
 type Props = {
   order: Order;
@@ -28,6 +29,7 @@ export const OrderDetailsMobile = ({
   handleRepeatOrder,
 }: Props) => {
   const router = useRouter();
+  const [orderIsProceeding, setOrderIsProceeding] = useState(false);
 
   return (
     <div className='md:hidden'>
@@ -159,9 +161,21 @@ export const OrderDetailsMobile = ({
               >
                 Leave a review
               </LightButton>
-              <DarkButton handler={() => handleRepeatOrder(order)}>
-                Repeat the order
-              </DarkButton>
+              <LoaderBackground loading={orderIsProceeding}>
+                <DarkButton
+                  handler={async () => {
+                    try {
+                      setOrderIsProceeding(true);
+                      await handleRepeatOrder(order);
+                      setOrderIsProceeding(false);
+                    } catch {
+                      setOrderIsProceeding(false);
+                    }
+                  }}
+                >
+                  Repeat the order
+                </DarkButton>
+              </LoaderBackground>
             </div>
           </>
         )}

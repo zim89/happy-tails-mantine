@@ -1,42 +1,39 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { useLayoutEffect, useState } from 'react';
 
-import { useSelectOrders } from '@/shared/hooks/useSelectOrders';
 import { Header } from './components/Header';
 import { ProductTable } from './components/ProductTable';
 import { ShippingDetails } from './components/ShippingDetails';
 import { ClientDetails } from './components/ClientDetails';
 import { CommentSection } from './components/CommentSection';
+import { useFindOneByEmailAndCodeQuery } from '@/shared/api/ordersApi';
+import Loader from '@/components/Loader';
 
 export default function OrdersDetails() {
-  const [isRefetched, setIsRefetched] = useState(false);
   const { id } = useParams();
-  const order = useSelectOrders((state) =>
-    state.find((ord) => ord.number.toLowerCase() === id)
-  );
+  const [number, email] = decodeURIComponent(`${id}`).split('^');
 
-  // TODO: 404 page should be handled properly
+  const { data, error, isLoading } = useFindOneByEmailAndCodeQuery({
+    orderNumber: number,
+    email,
+  });
 
-  useLayoutEffect(() => {
-    !isRefetched && setIsRefetched(true);
-    if (!order && isRefetched) return notFound();
-  }, [order]);
+  if (error) return <p>Whoops, something went wrong..</p>;
+  if (isLoading) return <Loader />;
+
+  if (!data) notFound();
 
   return (
     <>
-      {order && (
+      {data && (
         <div className='mb-8'>
-          <Header order={order} />
-          <ProductTable order={order} />
+          <Header order={data} />
+          <ProductTable order={data} />
           <section className='mt-8 grid grid-cols-3 gap-6'>
-            <ShippingDetails order={order} />
-            <ClientDetails userEmail={order.email} />
-            <CommentSection
-              commentOfManager={order.commentOfManager || ''}
-              orderNumber={order.number}
-            />
+            <ShippingDetails order={data} />
+            <ClientDetails userEmail={data.email} />
+            <CommentSection order={data} />
           </section>
         </div>
       )}

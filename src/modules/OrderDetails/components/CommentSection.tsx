@@ -5,19 +5,19 @@ import { Textarea, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Edit2 } from 'lucide-react';
 
-import { useAddCommentMutation } from '@/shared/api/ordersApi';
+import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
 import { brandNotification } from '@/shared/lib/helpers';
+import { Order } from '@/shared/types/types';
 
 type Props = {
-  orderNumber: string;
-  commentOfManager: string;
+  order: Order;
 };
 
-export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
+export const CommentSection = ({ order }: Props) => {
   const [comment, setComment] = useState('');
   const [areCommentsOpened, { close: closeComments, toggle: toggleComments }] =
     useDisclosure(false);
-  const [dispatch] = useAddCommentMutation();
+  const [dispatch] = useUpdateOrderMutation();
 
   const closeSection = () => {
     setComment('');
@@ -26,7 +26,7 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
 
   const sendFeedback = async () => {
     try {
-      await dispatch({ comment, orderNumber }).unwrap();
+      await dispatch({ ...order, commentOfManager: comment }).unwrap();
       closeSection();
       brandNotification('SUCCESS', 'Comment posted!');
     } catch (err) {
@@ -77,7 +77,7 @@ export const CommentSection = ({ orderNumber, commentOfManager }: Props) => {
           </UnstyledButton>
         </div>
       ) : (
-        <div className='p-4'>{commentOfManager}</div>
+        <div className='p-4'>{order.commentOfManager}</div>
       )}
     </div>
   );

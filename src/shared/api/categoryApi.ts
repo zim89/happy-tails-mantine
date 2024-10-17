@@ -41,10 +41,10 @@ export const categoriesApi = createApi({
         return {
           url: '/category',
           method: 'POST',
-          data: JSON.stringify({
+          data: {
             ...payload,
-            overview: payload.description,
-          }),
+            overview: 'EMPTY',
+          },
 
           headers: {
             'Content-type': 'application/json',
@@ -67,7 +67,7 @@ export const categoriesApi = createApi({
       query: (payload) => ({
         url: '/category',
         method: 'put',
-        data: payload.req,
+        data: { ...payload.req, overview: payload.req.overview || 'EMPTY' },
         headers: {
           'Content-type': 'application/json',
         },

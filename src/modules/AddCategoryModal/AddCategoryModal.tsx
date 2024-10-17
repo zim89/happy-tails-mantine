@@ -102,10 +102,10 @@ export default function AddCategoryModal() {
       }
 
       const newCategory = {
-        name: categoryName,
-        title: categoryName,
-        path: categoryName.toLowerCase(),
-        description,
+        name: categoryName.trim(),
+        title: categoryName.trim(),
+        path: categoryName.toLowerCase().trim(),
+        description: description.trim(),
         imgSrc,
         coordinateOnBannerX: 0,
         coordinateOnBannerY: 0,
