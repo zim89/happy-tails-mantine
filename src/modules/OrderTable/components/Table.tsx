@@ -257,7 +257,7 @@ export default function Table({ data }: { data: Order[] }) {
       </MantineTable>
 
       <EmptyRow
-        visible={data.length === 0}
+        visible={table.getRowModel().rows.length === 0}
         message='You have no any orders yet'
       />
 

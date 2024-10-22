@@ -7,7 +7,7 @@ import { calculateOrders } from '@/shared/lib/helpers';
 import styles from './styles.module.css';
 
 export default function OrderTable() {
-  const { data, error, isLoading, isFetching } = useFindManyQuery({
+  const { data, error, isLoading } = useFindManyQuery({
     page: 0,
     limit: 100000000,
   });
@@ -22,8 +22,6 @@ export default function OrderTable() {
     );
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <Table data={[]} />;
-
-  if (isFetching) return <p>Fetching...</p>;
 
   const calculated = calculateOrders(data.content);
 

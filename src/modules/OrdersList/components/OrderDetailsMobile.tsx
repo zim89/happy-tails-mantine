@@ -145,7 +145,6 @@ export const OrderDetailsMobile = ({
           ))}
         {revealedOrders.includes(order.number) && (
           <>
-            {console.log(order)}
             <div className='col-span-3'>
               <Tooltip label={formatOrderPriceSchema(order)}>
                 <p className='inline-flex items-center gap-1 pb-1 pt-2 font-bold'>

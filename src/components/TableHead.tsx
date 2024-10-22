@@ -54,6 +54,7 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
                           '?' +
                             createUrlString({
                               sort: `${header.column.id}_${target.id}`,
+                              page: '1',
                             })
                         );
                       handler(e);

@@ -128,12 +128,8 @@ export default function ProductsTable({ data }: Props) {
     res.map((cat) => ({ name: cat.name, title: cat.title, id: cat.id }))
   );
 
-  const tableData = useMemo(() => {
-    return data.slice(0);
-  }, [data, searchParams]);
-
   const table = useReactTable({
-    data: tableData,
+    data,
     columns,
     state: {
       globalFilter: search,
@@ -211,7 +207,7 @@ export default function ProductsTable({ data }: Props) {
               table.getState().pagination.pageSize +
             table.getRowModel().rows.length
           }
-          size={table.getRowModel().rows.length}
+          size={table.getCoreRowModel().rows.length}
         />
 
         <SearchEntry value={search} handleChange={setSearch} />

@@ -48,8 +48,6 @@ export const TablePagination = <T,>({ visible, table, segment }: Props<T>) => {
 
     if (segment) path = path.concat(segment);
 
-    console.log(path);
-
     router.replace(path);
   };
 

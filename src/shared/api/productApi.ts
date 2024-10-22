@@ -30,7 +30,6 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     findMany: builder.query<BackendResponse<Product[]>, ProductPostRequest>({
       query: ({ page, limit, categoryId, filter, sort, name }) => {
-        console.log('Param: ', filter);
         const params = new URLSearchParams({
           page: page.toString(),
           size: limit.toString(),
@@ -64,8 +63,6 @@ export const productApi = createApi({
           }
 
           params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
-
-          console.log('Request: ', params.toString());
 
           return {
             url: '/products/filter',

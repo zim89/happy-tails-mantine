@@ -35,13 +35,13 @@ export default function UpdatePasswordForm({
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const data = await resetPasswordVerify({
+      await resetPasswordVerify({
         email,
         code,
         newPassword: values.password,
         confirmPassword: values.confirmPassword,
       }).unwrap();
-      console.log('Reset Password Verification:', data);
+
       router.push(APP_PAGES.LOGIN);
     } catch (error) {
       console.log(error);
