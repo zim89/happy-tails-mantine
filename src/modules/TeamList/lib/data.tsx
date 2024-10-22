@@ -8,6 +8,7 @@ type TeamLink = {
 export type TeamMember = {
   avatar: string;
   avatarStyles?: CSSProperties;
+  cardStyles?: CSSProperties;
   name: string;
   occupation: string;
   desc: string;
@@ -155,6 +156,49 @@ export const team: TeamMember[] = [
       },
       {
         href: 'https://github.com/SalOne22',
+        icon: '/icons/additional/Github.svg',
+      },
+    ],
+  },
+  {
+    avatar: '/images/additional/about-us/kliuchka.jpg',
+    avatarStyles: {
+      border: '1px solid #C8C8C8',
+      borderRadius: '50%',
+      gridColumn: '2/3',
+    },
+    cardStyles: {
+      gridColumn: '2/3',
+    },
+    name: 'Olha Kliuchka',
+    occupation: 'Manual QA Engineer',
+    desc: 'I strive for innovation and continuous improvement, ensuring our products exceed expectations.',
+    links: [
+      {
+        href: 'https://www.linkedin.com/in/olha-kliuchka-21568b278',
+        icon: '/icons/additional/LinkedIn.svg',
+      },
+    ],
+  },
+  {
+    avatar: '/images/additional/about-us/sitarskiy.png',
+    name: 'Andrey Sitarskiy',
+    avatarStyles: {
+      objectPosition: '0 3px',
+      backgroundColor: '#c18383',
+    },
+    cardStyles: {
+      gridColumn: '3/4',
+    },
+    occupation: 'Backend Developer',
+    desc: 'I am a backend developer who is skillfully using Java tools to solve current problems.',
+    links: [
+      {
+        href: 'https://www.linkedin.com/in/andrey-sitarskiy-215787250',
+        icon: '/icons/additional/LinkedIn.svg',
+      },
+      {
+        href: 'https://github.com/adreysm09',
         icon: '/icons/additional/Github.svg',
       },
     ],

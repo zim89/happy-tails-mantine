@@ -15,6 +15,7 @@ import {
   isAxiosQueryError,
   isErrorDataString,
 } from '@/shared/lib/helpers';
+import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
 
 type Props = {
   order: Order;
@@ -22,6 +23,7 @@ type Props = {
 export const ShippingModal = ({ order }: Props) => {
   const [isOpened, { open, close }] = useDisclosure();
   const [dispatch] = useUpdateOrderMutation();
+  const { data, isLoading, error } = useGetShippingMethodsQuery();
 
   const form = useForm({
     initialValues: {
@@ -46,9 +48,24 @@ export const ShippingModal = ({ order }: Props) => {
         phoneNumber: order.shippingAddress.phoneNumber,
         company: order.shippingAddress.company,
       },
-      shippingMethod: order.shippingMethodDTO.name,
+      shippingMethod: `${order.shippingMethodDTO.id}`,
     },
   });
+
+  useEffect(() => {
+    form.values.billingAddress.sameAsDelivery
+      ? form.setFieldValue('billingAddress', {
+          ...form.values.shippingAddress,
+          sameAsDelivery: form.values.billingAddress.sameAsDelivery,
+        })
+      : form.setFieldValue('billingAddress', {
+          ...form.values.billingAddress,
+          sameAsDelivery: form.values.billingAddress.sameAsDelivery,
+        });
+  }, [form.values.billingAddress.sameAsDelivery]);
+
+  if (error) return <p>Whoops, something went wrong!</p>;
+  if (isLoading || !data) return null;
 
   const handleUpdate = async (values: typeof form.values) => {
     try {
@@ -74,7 +91,7 @@ export const ShippingModal = ({ order }: Props) => {
         commentOfManager: order.commentOfManager || '',
         shippingAddress,
         billingAddress,
-        shippingMethodId: 1,
+        shippingMethodId: values.shippingMethod,
       };
       await dispatch(request).unwrap();
       close();
@@ -90,18 +107,6 @@ export const ShippingModal = ({ order }: Props) => {
       }
     }
   };
-
-  useEffect(() => {
-    form.values.billingAddress.sameAsDelivery
-      ? form.setFieldValue('billingAddress', {
-          ...form.values.shippingAddress,
-          sameAsDelivery: form.values.billingAddress.sameAsDelivery,
-        })
-      : form.setFieldValue('billingAddress', {
-          ...form.values.billingAddress,
-          sameAsDelivery: form.values.billingAddress.sameAsDelivery,
-        });
-  }, [form.values.billingAddress.sameAsDelivery]);
 
   return (
     <>
@@ -151,6 +156,24 @@ export const ShippingModal = ({ order }: Props) => {
                 />
               </div>
 
+              {/*Input State*/}
+              <div>
+                <TextInput
+                  label='State'
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('shippingAddress.state').error &&
+                        'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('shippingAddress.state')}
+                />
+              </div>
+
               {/*Input City*/}
               <div>
                 <TextInput
@@ -187,21 +210,57 @@ export const ShippingModal = ({ order }: Props) => {
                 />
               </div>
 
-              {/*Input Apartment*/}
+              {/*Input ZIP*/}
               <div>
                 <TextInput
-                  label='Apartment'
+                  label='Postal Code'
                   classNames={{
                     input: cn(
                       'form-input h-full',
-                      form.getInputProps('shippingAddress.apartment').error &&
+                      form.getInputProps('shippingAddress.zip').error &&
                         'form-error--input'
                     ),
                     root: 'form-root',
                     label: 'form-label',
                     error: 'form-error',
                   }}
-                  {...form.getInputProps('shippingAddress.apartment')}
+                  {...form.getInputProps('shippingAddress.zip')}
+                />
+              </div>
+
+              {/*Input Address 2*/}
+              <div>
+                <TextInput
+                  label='Address 2'
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('shippingAddress.addressLine2')
+                        .error && 'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('shippingAddress.addressLine2')}
+                />
+              </div>
+
+              {/*Input Company*/}
+              <div>
+                <TextInput
+                  label='Company'
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('shippingAddress.company').error &&
+                        'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('shippingAddress.company')}
                 />
               </div>
             </div>
@@ -226,6 +285,25 @@ export const ShippingModal = ({ order }: Props) => {
                     error: 'form-error',
                   }}
                   {...form.getInputProps('billingAddress.country')}
+                />
+              </div>
+
+              {/*Input State*/}
+              <div>
+                <TextInput
+                  label='State'
+                  disabled={form.values.billingAddress.sameAsDelivery}
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('billingAddress.state').error &&
+                        'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('billingAddress.state')}
                 />
               </div>
 
@@ -267,22 +345,60 @@ export const ShippingModal = ({ order }: Props) => {
                 />
               </div>
 
-              {/*Input Apartment*/}
+              {/*Input ZIP*/}
               <div>
                 <TextInput
-                  label='Apartment'
+                  label='Postal Code'
                   disabled={form.values.billingAddress.sameAsDelivery}
                   classNames={{
                     input: cn(
                       'form-input h-full',
-                      form.getInputProps('billingAddress.apartment').error &&
+                      form.getInputProps('billingAddress.zip').error &&
                         'form-error--input'
                     ),
                     root: 'form-root',
                     label: 'form-label',
                     error: 'form-error',
                   }}
-                  {...form.getInputProps('billingAddress.apartment')}
+                  {...form.getInputProps('billingAddress.zip')}
+                />
+              </div>
+
+              {/*Input Address 2*/}
+              <div>
+                <TextInput
+                  label='Address 2'
+                  disabled={form.values.billingAddress.sameAsDelivery}
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('billingAddress.addressLine2').error &&
+                        'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('billingAddress.addressLine2')}
+                />
+              </div>
+
+              {/*Input Company*/}
+              <div>
+                <TextInput
+                  label='Company'
+                  disabled={form.values.billingAddress.sameAsDelivery}
+                  classNames={{
+                    input: cn(
+                      'form-input h-full',
+                      form.getInputProps('billingAddress.company').error &&
+                        'form-error--input'
+                    ),
+                    root: 'form-root',
+                    label: 'form-label',
+                    error: 'form-error',
+                  }}
+                  {...form.getInputProps('billingAddress.company')}
                 />
               </div>
             </div>
@@ -309,29 +425,21 @@ export const ShippingModal = ({ order }: Props) => {
             label='Shipment Method'
             classNames={{ label: 'text-xl/6 font-bold py-8' }}
           >
-            <Radio
-              color='white'
-              iconColor='black'
-              icon={Dot}
-              classNames={{
-                root: 'mb-3',
-                radio: 'border border-black p-0 cursor-pointer ',
-                icon: 'scale-[10] sm:-translate-x-[3%]',
-              }}
-              value='standard'
-              label='Standard Shipping'
-            />
-            <Radio
-              color='white'
-              iconColor='black'
-              icon={Dot}
-              classNames={{
-                radio: 'border border-black p-0 cursor-pointer',
-                icon: 'scale-[10] sm:-translate-x-[3%]',
-              }}
-              value='express'
-              label='Fast Shipping'
-            />
+            {data.content.map((item, index) => (
+              <Radio
+                key={index}
+                color='white'
+                iconColor='black'
+                icon={Dot}
+                classNames={{
+                  root: 'mb-3',
+                  radio: '!border !border-black p-0 cursor-pointer',
+                  icon: 'scale-[10]',
+                }}
+                value={`${item.id}`}
+                label={item.name}
+              />
+            ))}
           </Radio.Group>
         </form>
 

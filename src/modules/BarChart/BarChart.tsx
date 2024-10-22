@@ -52,7 +52,9 @@ export default function BarChart() {
             <Select
               value={monthMap[selectedMonth]}
               onChange={(value) => {
-                return value && setSelectedMonth(reversedMonthMap[value]);
+                return (
+                  value != null && setSelectedMonth(reversedMonthMap[value])
+                );
               }}
               data={[
                 'Jan',

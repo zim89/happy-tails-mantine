@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 
 import SearchField from '@/components/SearchField';
+import { useSearchString } from '@/shared/helpers/searchParams.helpers';
 
 const menu = [
   { label: 'For all time', value: 'all' },
@@ -22,17 +23,7 @@ export default function OrderToolbar() {
   const [selected, setSelected] = useState(menu[0]);
   const [opened, { open, close }] = useDisclosure();
 
-  const createQueryString = useCallback(
-    (values: Record<string, string | null>) => {
-      const params = new URLSearchParams(searchParams.toString());
-      Object.entries(values).forEach(([key, value]) =>
-        value ? params.set(key, value) : params.delete(key)
-      );
-
-      return params.toString();
-    },
-    [searchParams]
-  );
+  const [createQueryString] = useSearchString(searchParams);
 
   useEffect(() => {
     if (selected.value === 'all') {

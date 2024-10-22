@@ -17,20 +17,17 @@ type DeleteOrderProps = {
 
 type UpdateOrderProps = Partial<Order>;
 
-type CommentOrder = {
-  orderNumber: string;
-  comment: string;
-};
+export type OrderParams = { page: number; limit: number; sort?: Sort };
+export type OrderParamsWithStatus = {
+  status: Order['orderStatus'];
+} & OrderParams;
 
 export const ordersApi = createApi({
   reducerPath: 'ordersApi',
   tagTypes: ['Orders'],
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    findManyByEmail: builder.query<
-      BackendResponse<Order[]>,
-      { page: number; limit: number; sort?: Sort }
-    >({
+    findManyByEmail: builder.query<BackendResponse<Order[]>, OrderParams>({
       query: ({ page, limit, sort }) => {
         const params = new URLSearchParams({
           page: page.toString(),
@@ -169,6 +166,35 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ['Orders'],
     }),
+    findManyByStatus: builder.query<
+      BackendResponse<Order[]>,
+      OrderParamsWithStatus
+    >({
+      query: ({ status, limit, page, sort }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          size: limit.toString(),
+        });
+
+        if (sort) params.append('sort', sort.join(','));
+        return {
+          url: `/orders/status?orderStatus=${status}`,
+          headers: {
+            'Content-type': 'application/json',
+          },
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ number: id }) => ({
+                type: 'Orders' as const,
+                id,
+              })),
+              { type: 'Orders', id: 'LIST' },
+            ]
+          : [{ type: 'Orders', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -182,6 +208,7 @@ export const {
   useFindOneByEmailAndCodeQuery,
   useFindManyByEmailQuery,
   useFindUserOrdersQuery,
+  useFindManyByStatusQuery,
 } = ordersApi;
 
 export const getDiscount = async (code: string) => {

@@ -3,14 +3,15 @@ import UserDetails from '@/modules/UserDetails';
 
 type Props = {
   params: { id: string };
+  searchParams: { fromPage: string };
 };
-export default function Page({ params: { id } }: Props) {
+export default function Page({ params: { id }, searchParams }: Props) {
   return (
     <>
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { text: 'Users', href: '/admin/users/' },
+          { text: 'Users', href: `/admin/users?page=${searchParams.fromPage}` },
           { text: 'Profile' },
         ]}
         classNames={{

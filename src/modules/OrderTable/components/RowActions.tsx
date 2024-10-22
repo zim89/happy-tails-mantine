@@ -7,9 +7,12 @@ import Link from 'next/link';
 
 import { Order } from '@/shared/types/types';
 import DeleteOrderModal from '@/modules/DeleteOrderModal';
+import { useSearchParams } from 'next/navigation';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
   const order = ctx.row.original;
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
 
   return (
     <>
@@ -25,7 +28,7 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
             <Link
               className='flex h-full w-full items-center gap-3'
               shallow
-              href={`/admin/orders/${ctx.row.original.number.toLowerCase()}^${ctx.row.original.email}`}
+              href={`/admin/orders/${ctx.row.original.number}?fromPage=${page}`}
             >
               <Eye />
               View

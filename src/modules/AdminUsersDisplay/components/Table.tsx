@@ -21,6 +21,7 @@ import { TableHead } from '@/components/TableHead';
 import { TableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   data: User[];
@@ -54,13 +55,7 @@ const columns = [
     header: 'Email',
     enableSorting: false,
   }),
-  // columnHelper.accessor('attributes', {
-  //   cell: (info) => (
-  //     <span>{info.row.original.attributes?.phone || 'None'}</span>
-  //   ),
-  //   header: 'Phone',
-  //   enableSorting: false,
-  // }),
+
   columnHelper.accessor('registerDate', {
     cell: (info) => {
       // Apr 26, 2024 (22:18) => ['Apr 26,', '2024', '(22:18)']
@@ -91,12 +86,19 @@ const columns = [
 
 export const Table = ({ data }: Props) => {
   const [search, setSearch] = useDebouncedState('', 200);
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
 
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter: search,
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),

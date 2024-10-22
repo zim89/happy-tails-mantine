@@ -25,14 +25,15 @@ export const generateMetadata = async ({
 
 type Props = {
   params: { id: string };
+  searchParams: { fromPage: string };
 };
-export default function Page({ params: { id } }: Props) {
+export default function Page({ params: { id }, searchParams }: Props) {
   return (
     <>
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { text: 'Blogs', href: '/admin/blogs/' },
+          { text: 'Blogs', href: `/admin/blogs?page=${searchParams.fromPage}` },
           { text: 'Blog post' },
         ]}
         classNames={{

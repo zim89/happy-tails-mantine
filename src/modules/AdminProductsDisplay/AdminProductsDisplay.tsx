@@ -2,21 +2,26 @@
 
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
 import ProductsTable from '@/modules/ProductsTable';
 
 import PageHeader from '@/components/PageHeader';
+import { ProductsDisplaySkeleton } from './ui/ProductsDisplaySkeleton';
 
 export default function AdminProductsDisplay() {
-  const { data, isError, isLoading } = useFindManyQuery({
-    limit: 1000000,
+  const searchParams = useSearchParams();
+
+  const { data, isError, isFetching } = useFindManyQuery({
+    limit: 100000000,
     page: 0,
   });
 
   if (isError) return <p>Oops, something went wrong</p>;
-  if (isLoading) return <p>Loading...</p>;
   if (!data) return <ProductsTable data={[]} />;
+
+  if (isFetching) return <ProductsDisplaySkeleton />;
 
   return (
     <>
@@ -37,7 +42,7 @@ export default function AdminProductsDisplay() {
           </>
         )}
       </PageHeader>
-      <ProductsTable data={data.content} />
+      <ProductsTable data={data.content.slice(0)} />
     </>
   );
 }
