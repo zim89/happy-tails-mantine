@@ -26,12 +26,17 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
   return (
     <Table.Thead>
       {headerGroup.map((group) => (
-        <Table.Tr key={group.id} classNames={{ tr: 'bg-brand-grey-300' }}>
-          {group.headers.map((header) => (
+        <Table.Tr key={group.id} classNames={{ tr: 'bg-brand-grey-300 tr' }}>
+          {group.headers.map((header, index) => (
             <Table.Th
               key={header.id}
               classNames={{
-                th: 'p-4 text-brand-grey-800 whitespace-nowrap uppercase',
+                th: 'p-4 text-brand-grey-800 whitespace-nowrap uppercase th',
+              }}
+              styles={{
+                th: {
+                  width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                },
               }}
             >
               {header.isPlaceholder
@@ -40,7 +45,22 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
                     header.column.columnDef.header,
                     header.getContext()
                   )}
-              {header.column.getCanSort() ? (
+              {group.headers.length > index + 1 && (
+                <div
+                  {...{
+                    onDoubleClick: () => {
+                      console.log('Resizing');
+                      header.column.resetSize();
+                    },
+                    onMouseDown: header.getResizeHandler(),
+                    onTouchStart: header.getResizeHandler(),
+                    className: `resizer ${
+                      header.column.getIsResizing() ? 'isResizing' : ''
+                    }`,
+                  }}
+                />
+              )}
+              {/* {header.column.getCanSort() ? (
                 <button
                   className='relative ml-2 -translate-y-1'
                   onClick={(e) => {
@@ -84,7 +104,7 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
                     )}
                   />
                 </button>
-              ) : null}
+              ) : null} */}
             </Table.Th>
           ))}
         </Table.Tr>

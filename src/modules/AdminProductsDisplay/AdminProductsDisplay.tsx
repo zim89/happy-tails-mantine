@@ -22,23 +22,6 @@ export default function AdminProductsDisplay() {
 
   return (
     <>
-      <PageHeader
-        rightSection={
-          <Link
-            className='flex items-center gap-2 rounded bg-secondary px-4 py-[10px] font-black text-primary'
-            href='/admin/products/new'
-          >
-            <PlusCircle width={20} />
-            Add product
-          </Link>
-        }
-      >
-        {(Group) => (
-          <>
-            <Group title='Products' additional='Manage your product catalog' />
-          </>
-        )}
-      </PageHeader>
       <ProductsTable data={data.content.slice(0)} />
     </>
   );
