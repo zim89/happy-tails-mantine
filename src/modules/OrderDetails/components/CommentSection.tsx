@@ -26,7 +26,16 @@ export const CommentSection = ({ order }: Props) => {
 
   const sendFeedback = async () => {
     try {
-      await dispatch({ ...order, commentOfManager: comment }).unwrap();
+      let request = {
+        orderNumber: order.number,
+        paymentMethod: order.paymentMethod,
+        shippingAddress: order.shippingAddress,
+        billingAddress: order.billingAddress,
+        shippingMethodId: order.shippingMethodDTO.id,
+        commentOfManager: comment,
+      };
+
+      await dispatch(request).unwrap();
       closeSection();
       brandNotification('SUCCESS', 'Comment posted!');
     } catch (err) {

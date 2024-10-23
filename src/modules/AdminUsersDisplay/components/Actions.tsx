@@ -5,11 +5,15 @@ import { User } from '@/shared/types/auth.types';
 import { ActionIcon, Menu } from '@mantine/core';
 import DeleteUserModal from '@/modules/DeleteUserModal';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   ctx: CellContext<User, unknown>;
 };
 export const Actions = ({ ctx }: Props) => {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get('page'));
+
   return (
     <div className='flex justify-end'>
       {/* "keepMounted" is used to prevent re-rendering its children which causes flickering */}
@@ -25,7 +29,7 @@ export const Actions = ({ ctx }: Props) => {
             <Link
               shallow
               className='flex h-full w-full items-center gap-3 px-3 py-2'
-              href={`/admin/users/${ctx.row.original.userId}`}
+              href={`/admin/users/${ctx.row.original.userId}?fromPage=${page}`}
             >
               <User2 size={16} />
               View

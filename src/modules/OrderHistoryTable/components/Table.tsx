@@ -26,6 +26,11 @@ import { TableHead } from '@/components/TableHead';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import dayjs from 'dayjs';
+import {
+  removeSearchParams,
+  useSearchString,
+} from '@/shared/helpers/searchParams.helpers';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -82,12 +87,23 @@ export const Table = ({ orders }: Props) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [search, setSearch] = useDebouncedState('', 200);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const [createQueryString] = useSearchString(searchParams);
+
   const table = useReactTable({
     columns,
     data: orders || [],
     state: {
       columnFilters,
       globalFilter: search,
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setSearch,
@@ -98,8 +114,8 @@ export const Table = ({ orders }: Props) => {
   });
 
   return (
-    <div className='mt-8 bg-white'>
-      <div className={classes.orderCategories}>
+    <div className='mt-8'>
+      <div className={cn('bg-white', classes.orderCategories)}>
         <h3 className='mr-3 flex-1 text-xl font-bold'>Order history</h3>
         <ul className='flex space-x-3'>
           <li>
@@ -109,9 +125,11 @@ export const Table = ({ orders }: Props) => {
                 !table.getColumn('orderStatus')?.getFilterValue() &&
                   'bg-brand-grey-300'
               )}
-              onClick={() =>
-                table.getColumn('orderStatus')?.setFilterValue(null)
-              }
+              onClick={() => {
+                const params = removeSearchParams(searchParams, ['status']);
+                table.getColumn('orderStatus')?.setFilterValue(null);
+                router.replace('?' + params.toString());
+              }}
             >
               All Orders
             </UnstyledButton>
@@ -129,9 +147,16 @@ export const Table = ({ orders }: Props) => {
                   table.getColumn('orderStatus')?.getFilterValue() === status &&
                     'bg-brand-grey-300'
                 )}
-                onClick={() =>
-                  table.getColumn('orderStatus')?.setFilterValue(status)
-                }
+                onClick={() => {
+                  table.getColumn('orderStatus')?.setFilterValue(status);
+                  router.replace(
+                    '?' +
+                      createQueryString({
+                        status: status.replaceAll(' ', '_'),
+                        page: '1',
+                      })
+                  );
+                }}
               >
                 {status.toLocaleLowerCase()}
               </UnstyledButton>
@@ -165,6 +190,7 @@ export const Table = ({ orders }: Props) => {
         border={1}
         borderColor='#EEE'
         withTableBorder
+        bg='white'
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
         {/* <TableBody rowModel={table.getRowModel()} /> */}
@@ -193,7 +219,7 @@ export const Table = ({ orders }: Props) => {
         className='min-h-full'
       />
 
-      {table.getPageCount() > 1 && <TablePagination visible table={table} />}
+      <TablePagination visible={table.getPageCount() > 1} table={table} />
     </div>
   );
 };

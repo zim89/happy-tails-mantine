@@ -1,50 +1,26 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Loader, UnstyledButton } from '@mantine/core';
-import { Mail } from 'lucide-react';
-import { useState } from 'react';
 
 import { CustomBadge } from '@/components/Badge/Badge';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
-import { brandNotification, mockLongRequest } from '@/shared/lib/helpers';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   order: Order;
 };
 
 export const Header = ({ order }: Props) => {
-  const [isResending, setIsResending] = useState(false);
-
-  const resend = async () => {
-    try {
-      setIsResending(true);
-      await mockLongRequest();
-      setIsResending(false);
-      brandNotification(
-        'SUCCESS',
-        'Order confirmation email has been successfully resent'
-      );
-    } catch (err) {
-      setIsResending(false);
-      if (isAxiosQueryError(err)) {
-        console.error(err);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
-    }
-  };
+  const params = useSearchParams();
+  const fromPage = params.get('fromPage');
 
   return (
     <>
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { href: '/admin/orders', text: 'Orders' },
+          { href: `/admin/orders?page=${fromPage}`, text: 'Orders' },
           { text: 'Details' },
         ]}
         classNames={{
@@ -66,25 +42,6 @@ export const Header = ({ order }: Props) => {
             />
           </div>
         </div>
-        <UnstyledButton
-          classNames={{
-            root: 'ml-auto text-black hover:text-primary hover:bg-secondary font-bold flex items-center gap-2 px-4 py-3 rounded-sm ',
-          }}
-          styles={{ root: { border: '1px solid #C8C8C8' } }}
-          onClick={resend}
-        >
-          {isResending ? (
-            <>
-              <Loader size={15} classNames={{ root: 'px-1 mr-3' }} />
-              <span>Resending email</span>
-            </>
-          ) : (
-            <>
-              <Mail size={20} />
-              Resend order confirmation email
-            </>
-          )}
-        </UnstyledButton>
       </div>
     </>
   );

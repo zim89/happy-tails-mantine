@@ -45,7 +45,6 @@ export const OrderHistoryDisplay = () => {
 
   useEffect(() => {
     if (filterParam?.trim()) {
-      console.log(filtered);
       setFiltered((prev) =>
         prev.filter((item) => item.createdDate >= mapFilterToDate(filterParam!))
       );

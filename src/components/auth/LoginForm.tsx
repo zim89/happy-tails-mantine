@@ -33,7 +33,6 @@ export default function LoginForm() {
   const onSubmit = async (values: FormValues) => {
     try {
       const data = await login(values).unwrap();
-      console.log('Login: ', data);
       dispatch(setAuthData(data));
       router.push(APP_PAGES.HOME);
     } catch (error) {

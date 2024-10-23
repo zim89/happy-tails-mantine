@@ -8,7 +8,7 @@ import { Header } from './components/Header';
 export default function AdminBlogsDisplay() {
   const { data, isLoading, error } = useFindManyQuery({});
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading || !data) return <p>Loading...</p>;
 
   if (error)
     return (
@@ -22,7 +22,7 @@ export default function AdminBlogsDisplay() {
   return (
     <>
       <Header />
-      <Table data={data?.content || []} />
+      <Table data={data.content} />
     </>
   );
 }

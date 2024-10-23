@@ -9,6 +9,7 @@ type Props = TTeamMember;
 export const TeamMember = ({
   avatar,
   avatarStyles,
+  cardStyles,
   desc,
   name,
   occupation,
@@ -20,6 +21,7 @@ export const TeamMember = ({
         'flex flex-col items-center bg-brand-grey-100 px-4 py-6 text-center',
         classes.boxShadow
       )}
+      style={cardStyles || {}}
     >
       <div className='relative h-[136px] w-[136px] overflow-hidden rounded-full'>
         <Image

@@ -17,23 +17,19 @@ export const Sizes = () => {
           <h3 className='text-xl font-bold'>Sizes</h3>
           <UnstyledButton
             classNames={{ root: 'ml-auto flex gap-2 items-center' }}
+            onClick={() =>
+              setSizes((prev) =>
+                prev.concat({
+                  id: 'init',
+                  description: '',
+                  size: 'ONE SIZE',
+                  quantity: 0,
+                })
+              )
+            }
           >
             <PlusCircle size={20} color='black' />
-            <span
-              className='text-sm font-bold'
-              onClick={() =>
-                setSizes((prev) =>
-                  prev.concat({
-                    id: 'init',
-                    description: '',
-                    size: 'ONE SIZE',
-                    quantity: 0,
-                  })
-                )
-              }
-            >
-              Add another size
-            </span>
+            <span className='text-sm font-bold'>Add another size</span>
           </UnstyledButton>
         </div>
 

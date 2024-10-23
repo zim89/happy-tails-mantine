@@ -111,7 +111,7 @@ export const EditableCategoriesPresentation = () => {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <Droppable
-        id={'droppable'}
+        id='droppable'
         className='relative mx-auto h-[721px] w-full max-w-screen-lg'
       >
         <div className='absolute -top-7 z-20 inline-flex w-full justify-between rounded-t-md bg-brand-yellow px-2 py-3 text-sm font-semibold text-yellow-600'>

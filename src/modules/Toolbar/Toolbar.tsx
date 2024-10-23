@@ -10,6 +10,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductCountContext } from '../CatalogProductList/ProductCountContext';
 import { useDisclosure } from '@mantine/hooks';
 import { Category } from '@/shared/types/types';
+import { useSearchString } from '@/shared/helpers/searchParams.helpers';
 
 const sortOptions: Option[] = [
   { title: 'Featured', value: 'none' },
@@ -33,17 +34,7 @@ export default function Toolbar({ category, categories }: ToolbarProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = useCallback(
-    (values: Record<string, string | null>) => {
-      const params = new URLSearchParams(searchParams.toString());
-      Object.entries(values).forEach(([key, value]) =>
-        value ? params.set(key, value) : params.delete(key)
-      );
-
-      return params.toString();
-    },
-    [searchParams]
-  );
+  const [createQueryString] = useSearchString(searchParams);
 
   const form = useForm<FilterFormValues>({
     initialValues: {

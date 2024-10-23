@@ -27,6 +27,11 @@ import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { TableHead } from '@/components/TableHead';
+import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  removeSearchParams,
+  useSearchString,
+} from '@/shared/helpers/searchParams.helpers';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -84,6 +89,7 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Payment',
     enableSorting: false,
+    enableResizing: true,
   }),
   columnHelper.display({
     id: 'actions',
@@ -99,6 +105,13 @@ export default function Table({ data }: { data: Order[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useDebouncedState('', 200);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const [createQueryString] = useSearchString(searchParams);
+
   const table = useReactTable({
     columns,
     data,
@@ -113,6 +126,10 @@ export default function Table({ data }: { data: Order[] }) {
     state: {
       columnFilters,
       globalFilter,
+      pagination: {
+        pageSize: Number(limit) || 10,
+        pageIndex: page ? Number(page) - 1 : 0,
+      },
     },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
@@ -130,7 +147,7 @@ export default function Table({ data }: { data: Order[] }) {
     };
 
     const afterPrintHandler = () => {
-      table.setPageSize(10);
+      table.setPageSize(Number(page) - 1);
     };
 
     window.addEventListener('beforeprint', beforePrintHandler);
@@ -154,9 +171,11 @@ export default function Table({ data }: { data: Order[] }) {
                 !table.getColumn('orderStatus')?.getFilterValue() &&
                   'bg-brand-grey-300'
               )}
-              onClick={() =>
-                table.getColumn('orderStatus')?.setFilterValue(null)
-              }
+              onClick={() => {
+                const params = removeSearchParams(searchParams, ['status']);
+                table.getColumn('orderStatus')?.setFilterValue(null);
+                router.replace('?' + params.toString());
+              }}
             >
               All Orders
             </UnstyledButton>
@@ -174,9 +193,16 @@ export default function Table({ data }: { data: Order[] }) {
                   table.getColumn('orderStatus')?.getFilterValue() === status &&
                     'bg-brand-grey-300'
                 )}
-                onClick={() =>
-                  table.getColumn('orderStatus')?.setFilterValue(status)
-                }
+                onClick={() => {
+                  table.getColumn('orderStatus')?.setFilterValue(status);
+                  router.replace(
+                    '?' +
+                      createQueryString({
+                        status: status.replaceAll(' ', '_'),
+                        page: '1',
+                      })
+                  );
+                }}
               >
                 {status.toLocaleLowerCase()}
               </UnstyledButton>

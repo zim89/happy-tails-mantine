@@ -25,8 +25,7 @@ export default function ForgotPasswordForm() {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      const data = await resetPassword(values).unwrap();
-      console.log('Reset Password:', data);
+      await resetPassword(values).unwrap();
       router.push(`${APP_PAGES.UPDATE_PASSWORD}?email=${values.email}`);
     } catch (error) {
       console.log(error);

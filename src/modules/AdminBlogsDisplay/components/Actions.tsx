@@ -5,14 +5,18 @@ import Link from 'next/link';
 import { Post } from '@/shared/api/postApi';
 import DeletePostModal from '@/modules/DeletePostModal';
 import ArchivePostModal from '@/modules/ArchivePostModal';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   post: Post;
 };
 export const Actions = ({ post }: Props) => {
+  const params = useSearchParams();
+  const page = params.get('page');
+
   return (
     <div className='flex justify-end gap-4'>
-      <Link href={`/admin/blogs/${post.id}/preview`}>
+      <Link href={`/admin/blogs/${post.id}/preview?fromPage=${page}`}>
         <UnstyledButton
           classNames={{
             root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
@@ -21,7 +25,7 @@ export const Actions = ({ post }: Props) => {
           <Eye size={16} color='black' />
         </UnstyledButton>
       </Link>
-      <Link href={`/admin/blogs/${post.id}`}>
+      <Link href={`/admin/blogs/${post.id}?fromPage=${page}`}>
         <UnstyledButton
           classNames={{
             root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',

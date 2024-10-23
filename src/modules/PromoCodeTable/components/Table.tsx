@@ -18,6 +18,7 @@ import { CustomBadge } from '@/components/Badge';
 import AddCodeModal from '@/modules/AddCodeModal';
 import { Discount } from '@/shared/api/discountApi';
 import { Actions } from './Actions';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const columnHelper = createColumnHelper<Discount>();
 
@@ -84,9 +85,19 @@ const columns = [
 ];
 
 export default function Table({ data }: { data: Discount[] }) {
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
   const table = useReactTable({
     columns,
     data,
+    state: {
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     enableSorting: false,
@@ -152,7 +163,11 @@ export default function Table({ data }: { data: Discount[] }) {
         message='You have not added any promo code yet'
       />
 
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
+      <TablePagination
+        visible={table.getPageCount() > 1}
+        table={table}
+        segment='#promo'
+      />
     </>
   );
 }

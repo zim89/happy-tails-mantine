@@ -19,6 +19,8 @@ import React from 'react';
 import { ChevronDown } from 'lucide-react';
 
 import { CustomTableRow } from './CustomTableRow';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchString } from '@/shared/helpers/searchParams.helpers';
 
 const sortingFieldsMap: {
   [P in string]: { field: string; order: 'desc' | 'asc' };
@@ -55,13 +57,23 @@ const columns = [
 ];
 
 export const Table = ({ data }: Props) => {
-  const [search, setSearch] = useDebouncedState('', 200);
+  const router = useRouter();
+  const params = useSearchParams();
+  const limit = params.get('limit');
+  const page = params.get('page');
+  const searchParam = params.get('search');
+  const [createQueryString] = useSearchString(params);
+  const [search, setSearch] = useDebouncedState(searchParam || '', 200);
 
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter: search,
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
@@ -79,7 +91,15 @@ export const Table = ({ data }: Props) => {
         <div className='flex gap-6'>
           <Button
             variant='transparent'
-            onClick={() => table.getColumn('postStatus')?.setFilterValue(null)}
+            onClick={() => {
+              table.getColumn('postStatus')?.setFilterValue(null);
+              router.replace(
+                '?' +
+                  createQueryString({
+                    page: '1',
+                  })
+              );
+            }}
             classNames={{
               root: cn(
                 'rounded-sm px-2 py-1 text-sm text-secondary hover:bg-brand-grey-300 hover:text-secondary',
@@ -104,9 +124,15 @@ export const Table = ({ data }: Props) => {
                 table.getColumn('postStatus')?.getFilterValue() === status &&
                   'bg-brand-grey-300'
               )}
-              onClick={() =>
-                table.getColumn('postStatus')?.setFilterValue(status)
-              }
+              onClick={() => {
+                table.getColumn('postStatus')?.setFilterValue(status);
+                router.replace(
+                  '?' +
+                    createQueryString({
+                      page: '1',
+                    })
+                );
+              }}
             >
               {status}
             </Button>

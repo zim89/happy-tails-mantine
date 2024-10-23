@@ -4,7 +4,7 @@ import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
 import { axiosBaseQuery } from '@/shared/api/authApi';
 
-type ProductPostRequest = {
+export type ProductPostRequest = {
   page: number;
   limit: number;
   categoryId?: number;

@@ -1,13 +1,15 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Button, Table, Badge } from '@mantine/core';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
@@ -23,6 +25,10 @@ import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import classes from './classes.module.css';
 import { Actions } from './ui/Actions';
+import {
+  removeSearchParams,
+  useSearchString,
+} from '@/shared/helpers/searchParams.helpers';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -97,7 +103,6 @@ const columns = [
     ),
     header: 'Status',
     size: 89,
-    enableSorting: false,
   }),
   columnHelper.display({
     id: 'actions',
@@ -111,8 +116,16 @@ type Props = {
 };
 export default function ProductsTable({ data }: Props) {
   const [search, setSearch] = useDebouncedState('', 200);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const [createQueryString] = useSearchString(searchParams);
+
   const categories = useSelectCategories((res) =>
-    res.map((cat) => ({ name: cat.name, title: cat.title }))
+    res.map((cat) => ({ name: cat.name, title: cat.title, id: cat.id }))
   );
 
   const table = useReactTable({
@@ -120,6 +133,10 @@ export default function ProductsTable({ data }: Props) {
     columns,
     state: {
       globalFilter: search,
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
@@ -135,9 +152,11 @@ export default function ProductsTable({ data }: Props) {
         <div className='flex gap-6'>
           <Button
             variant='transparent'
-            onClick={() =>
-              table.getColumn('categoryName')?.setFilterValue(null)
-            }
+            onClick={() => {
+              const params = removeSearchParams(searchParams, ['filter']);
+              table.getColumn('categoryName')?.setFilterValue(null);
+              router.replace('?' + params.toString());
+            }}
             classNames={{
               root: cn(
                 'rounded-sm px-2 py-1 text-sm text-secondary hover:bg-brand-grey-200 hover:text-secondary',
@@ -149,12 +168,18 @@ export default function ProductsTable({ data }: Props) {
             All Products
           </Button>
           {categories.length > 0 &&
-            categories.map(({ name, title }, index) => (
+            categories.map(({ title, id }, index) => (
               <Button
                 variant='transparent'
-                onClick={() =>
-                  table.getColumn('categoryName')?.setFilterValue(name)
-                }
+                onClick={() => {
+                  table.getColumn('categoryName')?.setFilterValue(name);
+                  router.replace(
+                    '?' +
+                      createQueryString({
+                        filter: `${id}`,
+                      })
+                  );
+                }}
                 key={index}
                 classNames={{
                   root: cn(

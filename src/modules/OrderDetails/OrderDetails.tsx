@@ -7,16 +7,14 @@ import { ProductTable } from './components/ProductTable';
 import { ShippingDetails } from './components/ShippingDetails';
 import { ClientDetails } from './components/ClientDetails';
 import { CommentSection } from './components/CommentSection';
-import { useFindOneByEmailAndCodeQuery } from '@/shared/api/ordersApi';
+import { useFindOneQuery } from '@/shared/api/ordersApi';
 import Loader from '@/components/Loader';
 
 export default function OrdersDetails() {
   const { id } = useParams();
-  const [number, email] = decodeURIComponent(`${id}`).split('^');
 
-  const { data, error, isLoading } = useFindOneByEmailAndCodeQuery({
-    orderNumber: number,
-    email,
+  const { data, error, isLoading } = useFindOneQuery({
+    orderNumber: `${id}`,
   });
 
   if (error) return <p>Whoops, something went wrong..</p>;

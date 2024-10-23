@@ -7,8 +7,12 @@ import { MoreHorizontal, Trash2, Edit2 } from 'lucide-react';
 import DeleteProductModal from '@/modules/DeleteProductModal';
 import { Product } from '@/shared/types/types';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get('page')) || 1;
+
   const productLine = ctx.row.original;
 
   return (
@@ -25,7 +29,7 @@ export const Actions = ({ ctx }: { ctx: CellContext<Product, unknown> }) => {
           <Menu.Item className='rounded-none hover:bg-brand-grey-200'>
             <Link
               className='flex h-full w-full items-center gap-3'
-              href={`/admin/products/${productLine.id}`}
+              href={`/admin/products/${productLine.id}?fromPage=${page}`}
               shallow
             >
               <Edit2 size={16} />

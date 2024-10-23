@@ -6,9 +6,10 @@ import { Table } from './components/Table';
 import Loader from '@/components/Loader/Loader';
 
 export default function AdminUsersDisplay() {
-  const { data, error, isLoading } = useFindManyQuery({});
-
-  console.log(data);
+  const { data, error, isLoading } = useFindManyQuery({
+    page: 0,
+    size: 10000000,
+  });
 
   if (isLoading || !data)
     return (

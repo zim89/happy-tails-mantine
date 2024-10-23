@@ -40,8 +40,7 @@ export default function EnterCodeForm({ email }: { email: string }) {
     handlers.reset();
 
     try {
-      const data = await resetPassword({ email }).unwrap();
-      console.log('Reset Password:', data);
+      await resetPassword({ email }).unwrap();
     } catch (error) {
       console.log(error);
       toast.error('Oops! Something went wrong! Try again later.');

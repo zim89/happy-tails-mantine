@@ -1,11 +1,39 @@
 import { TextInput } from '@mantine/core';
 import { Search } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { useSearchString } from '@/shared/helpers/searchParams.helpers';
 
 export type Props = {
   value: string;
   handleChange: (value: string) => void;
 };
 export const SearchEntry = ({ value, handleChange }: Props) => {
+  const router = useRouter();
+
+  const params = useSearchParams();
+  const [createQueryString] = useSearchString(params);
+
+  useEffect(() => {
+    if (value) {
+      router.replace(
+        '?' +
+          createQueryString({
+            search: value,
+            page: '1',
+          })
+      );
+    } else {
+      router.replace(
+        '?' +
+          createQueryString({
+            search: '',
+          })
+      );
+    }
+  }, [value]);
+
   return (
     <TextInput
       defaultValue={value}

@@ -15,15 +15,21 @@ type Props = {
   params: {
     id: string;
   };
+  searchParams: {
+    fromPage: string;
+  };
 };
 
-export default function Page({ params }: Props) {
+export default function Page({ params, searchParams }: Props) {
   return (
     <>
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { text: 'Products', href: '/admin/products/' },
+          {
+            text: 'Products',
+            href: `/admin/products?page=${searchParams.fromPage}`,
+          },
           { text: 'Edit product' },
         ]}
         classNames={{

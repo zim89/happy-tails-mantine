@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 export default function OrderTable() {
   const { data, error, isLoading } = useFindManyQuery({
     page: 0,
-    limit: 1000000,
+    limit: 100000000,
   });
 
   if (error)

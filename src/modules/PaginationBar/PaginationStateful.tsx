@@ -26,8 +26,6 @@ export default function PaginationStateful<T>({
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
 
-    console.log(page);
-
     replace(`${path}?${params.toString()}`);
 
     if (page === 1) {

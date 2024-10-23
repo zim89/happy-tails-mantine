@@ -3,9 +3,11 @@
 import { useDeviceSize } from '@/shared/lib/hooks';
 import CategoriesSlider from './components/CategoriesSlider';
 import { CategoriesPresentationWrapper } from './components/CategoriesPresentationWrapper';
+import { usePathname } from 'next/navigation';
 
 export default function Categories() {
   const { isDesktop } = useDeviceSize();
+  const pathname = usePathname();
 
   return (
     <section className='pt-16 md:pt-[88px] lg:pt-[104px]'>
