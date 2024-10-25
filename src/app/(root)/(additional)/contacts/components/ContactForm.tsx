@@ -52,7 +52,7 @@ export const ContactForm = () => {
 
         return min || max;
       },
-      userName: matches(/^[a-zA-Z]+$/, 'Name should contain only letters'),
+      userName: matches(/^[a-zA-Z ]+$/, 'Name should contain only letters'),
       termsOfService: (value) =>
         !value && 'You must agree to the Terms of Service',
     },
@@ -83,7 +83,7 @@ export const ContactForm = () => {
       let request = {
         userEmail: email,
         userName,
-        imageSrc: '',
+        imageSrc: [''],
         content,
       };
 
@@ -103,7 +103,7 @@ export const ContactForm = () => {
             },
           }
         );
-        request.imageSrc = res.data.data.link;
+        request.imageSrc = [res.data.data.link];
       }
 
       // Make a request to feedback-controller
