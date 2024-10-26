@@ -56,15 +56,14 @@ export default function ProblemReport() {
       let request = {
         userEmail: email,
         userName,
-        imageSrc: '',
+        imageSrc: [''],
         content,
       };
 
       if (file) {
-        request.imageSrc = await publishImage(
-          file,
-          `PROBLEM REPORT by ${email}`
-        );
+        request.imageSrc = [
+          await publishImage(file, `PROBLEM REPORT by ${email}`),
+        ];
       }
 
       setIsLoading(true);

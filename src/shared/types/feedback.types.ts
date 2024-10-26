@@ -16,5 +16,5 @@ export type CreateFeedbackPayload = {
   userEmail: string;
   userName: string;
   content: string;
-  imageSrc?: string;
+  imageSrc?: string[];
 };

@@ -16,6 +16,7 @@ export const OrderHistoryDisplay = () => {
   const { data } = useFindManyByEmailQuery({
     page: currentPage - 1,
     limit: 1000000000000,
+    sort: ['createdDate', 'desc'],
   });
 
   const [filtered, setFiltered] = useState(data?.content || []);
