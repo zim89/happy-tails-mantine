@@ -1,10 +1,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import ChatRoom from '@/modules/ChatRoom';
 
-type Props = {
-  params: { id: string };
-};
-export default function Page({ params }: Props) {
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <Breadcrumbs
