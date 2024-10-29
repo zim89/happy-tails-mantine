@@ -15,7 +15,7 @@ import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import classes from './ProblemReport.module.css';
 import { ThankYouModal } from '@/app/(root)/profile/components/ThankYouModal';
-import { useAddFeedbackMutation } from '@/shared/api/feedbackApi';
+import { useCreateMutation } from '@/shared/api/feedbackApi';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Loader from '@/components/Loader/Loader';
@@ -24,7 +24,7 @@ import { publishImage } from '@/shared/lib/requests';
 
 export default function ProblemReport() {
   const [formVisible, { open: openForm, close: closeForm }] = useDisclosure();
-  const [dispatch] = useAddFeedbackMutation();
+  const [dispatch] = useCreateMutation();
   const [isSent, { open, close }] = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
