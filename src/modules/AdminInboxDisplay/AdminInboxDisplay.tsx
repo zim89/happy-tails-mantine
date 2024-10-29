@@ -1,25 +1,29 @@
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
-
+'use client';
+import { useEffect } from 'react';
+import { InboxTable } from './ui/InboxTable';
+import { useFindManyQuery } from '@/shared/api/feedbackApi';
 import classes from './classes.module.css';
-import { Table } from './components/Table';
-import { messages } from './lib/mock';
 
 export default function AdminInboxDisplay() {
+  const { data, isError, isLoading } = useFindManyQuery({
+    limit: 1000000,
+    page: 0,
+  });
+
+  if (isError) return <p>Oops, something went wrong</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <InboxTable data={[]} />;
+
   return (
     <>
-      <Breadcrumbs
-        crumbs={[{ text: 'Dashboard', href: '/admin/' }, { text: 'Inbox' }]}
-        classNames={{
-          root: 'p-0 m-0 mb-8',
-        }}
-      />
       <div className={classes.header}>
         <hgroup className={classes.pageHeading}>
           <h2>Inbox</h2>
           <p>Manage user messages and requests</p>
         </hgroup>
       </div>
-      <Table data={messages} />
+
+      <InboxTable data={data.content} />
     </>
   );
 }

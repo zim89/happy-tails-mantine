@@ -15,162 +15,82 @@ import {
   Checkbox,
   Menu,
   UnstyledButton,
+  Badge,
+  LoadingOverlay,
 } from '@mantine/core';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, type ChangeEvent } from 'react';
 import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
-import { Message } from '../lib/mock';
 import { Star } from './Star';
-import { formatDateToClockTime } from '@/shared/lib/helpers';
-import { Actions } from './Actions';
-import { CustomBadge } from '@/components/Badge';
+import {
+  formatDateToClockTime,
+  isAxiosQueryError,
+  isErrorDataString,
+} from '@/shared/lib/helpers';
+import { InboxActions } from './InboxActions';
 import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import { filterOptions } from '../lib/data';
+import { BADGE_PALETTE, FILTER_OPTIONS } from '../lib/inbox.const';
+import type { Feedback } from '@/shared/types/feedback.types';
+import { useBulkEditMutation } from '@/shared/api/feedbackApi';
+import { toast } from 'react-toastify';
 
-type Props = {
-  data: Message[];
-};
-
-const columnHelper = createColumnHelper<Message & { checked: boolean }>();
+const columnHelper = createColumnHelper<Feedback>();
 
 const columns = [
-  columnHelper.accessor('sender', {
+  columnHelper.accessor('userName', {
     header: '',
     enableSorting: false,
+    size: 150,
     cell: (info) => (
-      <p className='mx-4 max-w-[150px] overflow-hidden text-ellipsis whitespace-pre text-sm font-bold'>
+      <p className='mx-4 overflow-hidden text-ellipsis whitespace-pre text-sm font-bold'>
         {info.getValue()}
       </p>
     ),
   }),
-  columnHelper.accessor('title', {
+  columnHelper.accessor('content', {
     header: '',
     enableSorting: false,
+    size: 458,
     cell: (info) => (
       <p className='max-w-[458px] overflow-hidden text-ellipsis whitespace-pre font-bold'>
         {info.getValue()}
       </p>
     ),
-    maxSize: 460,
   }),
-  columnHelper.accessor('status', {
+  columnHelper.accessor('feedbackStatus', {
     header: '',
     enableSorting: false,
-    cell: (info) => (
-      <span className='mx-3'>
-        {info.getValue() === 'unread' && (
-          <CustomBadge
-            name='NEW'
-            palette={{ unread: '#4285F4' }}
-            color={info.getValue()}
-          />
-        )}
-      </span>
-    ),
     // Instead of { width: auto }
     size: 100000,
+    cell: (info) => (
+      <span className='mx-3'>
+        <Badge color={BADGE_PALETTE[info.getValue()]}>{info.getValue()}</Badge>
+      </span>
+    ),
   }),
   columnHelper.accessor('sentAt', {
     header: '',
     enableSorting: false,
-    cell: (info) => <span>{formatDateToClockTime(info.getValue())}</span>,
     size: 30,
+    cell: (info) => <span>{formatDateToClockTime(info.getValue())}</span>,
   }),
 ];
 
-export const Table = ({ data }: Props) => {
+export const InboxTable = ({ data }: { data: Feedback[] }) => {
   const [search, setSearch] = useDebouncedState('', 200);
   const [checked, setChecked] = useState(false);
-  const [filter, setFilter] = useState<string>('ALL');
+  const [filter, setFilter] = useState<string>('');
   const [selected, setSelected] = useState<number[]>([]);
-  const [starred, setStarred] = useState<number[]>([]);
-  const [statuses, setStatuses] = useState<
-    { id: number; value: (typeof data)[number]['status'] }[]
-  >([...data.map((item) => ({ id: item.id, value: item.status }))]);
   const [opened, setOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [bulkEdit] = useBulkEditMutation();
 
-  let tableData = useMemo(() => {
-    let copy = data.map((msg) => {
-      return {
-        ...msg,
-        checked: selected.includes(msg.id) ? true : false,
-        starred: starred.includes(msg.id) ? true : false,
-        status: statuses.find(({ id }) => id === msg.id)?.value || msg.status,
-      };
-    });
-
-    if (!checked) {
-      return copy;
-    }
-
-    let selectedMsgs: number[] = [];
-    switch (filter) {
-      case 'ALL':
-        copy.forEach((msg) => {
-          selectedMsgs.push(msg.id);
-          msg.checked = true;
-        });
-
-        setSelected(selectedMsgs);
-        break;
-      case 'NONE':
-        // Change the table
-        copy.forEach((msg) => {
-          msg.checked = false;
-        });
-        // If the checkbox is unchecked, still preserve all messages unselected
-        setSelected([]);
-        break;
-      case 'STARRED':
-        copy.forEach((msg) => {
-          if (msg.starred) {
-            selectedMsgs.push(msg.id);
-            msg.checked = true;
-          } else msg.checked = false;
-        });
-
-        setSelected(selectedMsgs);
-        break;
-      case 'UNSTARRED':
-        copy.forEach((msg) => {
-          if (!msg.starred) {
-            msg.checked = true;
-            selectedMsgs.push(msg.id);
-          } else msg.checked = false;
-        });
-
-        setSelected(selectedMsgs);
-        break;
-      case 'READ':
-        copy.forEach((msg) => {
-          if (msg.status === 'read') {
-            msg.checked = true;
-            selectedMsgs.push(msg.id);
-          } else msg.checked = false;
-        });
-
-        setSelected(selectedMsgs);
-        break;
-      case 'UNREAD':
-        copy.forEach((msg) => {
-          if (msg.status === 'unread') {
-            msg.checked = true;
-          } else msg.checked = false;
-        });
-
-        setSelected(selectedMsgs);
-        break;
-      default:
-        break;
-    }
-
-    return copy;
-  }, [filter, data, selected.length, checked, starred.length, statuses]);
+  let tableData = useMemo(() => data, [data]);
 
   const table = useReactTable({
     data: tableData,
@@ -193,28 +113,100 @@ export const Table = ({ data }: Props) => {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const handleMarkAsRead = () => {
-    setMarkedStatus(selected);
+  const handleMarkAsRead = async () => {
+    const data = table.getRowModel().rows.reduce((acc, row) => {
+      if (selected.includes(row.original.id)) {
+        acc.push({ ...row.original, feedbackStatus: 'REVIEWING' });
+      }
+      return acc;
+    }, [] as Feedback[]);
+    try {
+      setLoading(true);
+      await bulkEdit(data).unwrap();
+      toast.success('Feedbacks marked as read!');
+    } catch (err) {
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAddStar = () => {
-    setStarred((prev) =>
-      selected.filter((item) => {
-        if (!prev.includes(item)) return true;
-        else false;
-      })
-    );
+  const handleMarkAsStarred = async () => {
+    const data = table.getRowModel().rows.reduce((acc, row) => {
+      if (selected.includes(row.original.id)) {
+        acc.push({ ...row.original, starred: !row.original.starred });
+      }
+      return acc;
+    }, [] as Feedback[]);
+    try {
+      setLoading(true);
+      await bulkEdit(data).unwrap();
+      toast.success('Feedbacks starred!');
+    } catch (err) {
+      if (isAxiosQueryError(err)) {
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const setMarkedStatus = (msgs: number[]) => {
-    setStatuses((prev) =>
-      prev.map((msg) =>
-        msgs.includes(msg.id) && msg.value === 'unread'
-          ? { id: msg.id, value: 'read' }
-          : msg
-      )
-    );
+  const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.checked;
+    if (!value) {
+      setSelected([]);
+      setFilter('');
+    }
+    if (value && selected.length === 0) {
+      setFilter(FILTER_OPTIONS[0].value);
+    }
   };
+
+  useEffect(() => {
+    const selected = table.getRowModel().rows.reduce((acc, row) => {
+      switch (filter) {
+        case 'All':
+          acc.push(row.original.id);
+          break;
+        case 'Read':
+          if (row.original.feedbackStatus === 'REVIEWING') {
+            acc.push(row.original.id);
+          }
+          break;
+        case 'Unread':
+          if (row.original.feedbackStatus === 'NEW') {
+            acc.push(row.original.id);
+          }
+          break;
+        case 'Starred':
+          if (row.original.starred) {
+            acc.push(row.original.id);
+          }
+          break;
+        case 'Unstarred':
+          if (!row.original.starred) {
+            acc.push(row.original.id);
+          }
+          break;
+        default:
+          break;
+      }
+      return acc;
+    }, [] as number[]);
+
+    setSelected(selected);
+    if (selected.length > 0) setChecked(true);
+  }, [filter, table]);
+
+  useEffect(() => {
+    if (selected.length === 0) {
+      setChecked(false);
+      setFilter('');
+    }
+    if (selected.length > 0) setChecked(true);
+  }, [selected]);
 
   return (
     <>
@@ -243,9 +235,19 @@ export const Table = ({ data }: Props) => {
       <MantineTable
         withTableBorder
         borderColor='#EEE'
-        className='bg-primary'
+        className='relative bg-primary'
         styles={{ td: { padding: '16px 0px' }, tr: { verticalAlign: 'sub' } }}
       >
+        <LoadingOverlay
+          visible={loading}
+          zIndex={1000}
+          overlayProps={{
+            radius: 'sm',
+            blur: 2,
+          }}
+          loaderProps={{ color: '#161616' }}
+          classNames={{ loader: 'absolute top-1/3 left-1/2' }}
+        />
         {/* Table header */}
         <MantineTable.Thead classNames={{ thead: 'bg-brand-grey-300' }}>
           <MantineTable.Tr>
@@ -259,10 +261,8 @@ export const Table = ({ data }: Props) => {
                 <div className='flex items-center gap-4'>
                   <Checkbox
                     size='xs'
-                    checked={checked}
-                    onChange={(e) => {
-                      setChecked(e.target.checked);
-                    }}
+                    checked={selected.length > 0 || checked}
+                    onChange={handleChecked}
                     color='black'
                     styles={{ icon: { stroke: 'black' } }}
                   />
@@ -285,19 +285,22 @@ export const Table = ({ data }: Props) => {
                       </UnstyledButton>
                       <UnstyledButton
                         className='flex items-center gap-2 text-sm'
-                        onClick={handleAddStar}
+                        onClick={handleMarkAsStarred}
                       >
                         <StarIcon size={16} />
                         Add star
                       </UnstyledButton>
-                      <DeleteMessagesModal messages={selected} />
+                      <DeleteMessagesModal
+                        messages={selected}
+                        setSelected={setSelected}
+                      />
                     </div>
                   )}
                 </div>
                 <Menu.Dropdown
                   classNames={{ dropdown: 'flex flex-col text-sm' }}
                 >
-                  {filterOptions.map((fil) => (
+                  {FILTER_OPTIONS.map((fil) => (
                     <UnstyledButton
                       key={fil.id}
                       onClick={() => {
@@ -323,15 +326,16 @@ export const Table = ({ data }: Props) => {
           {table.getRowModel().rows.length > 0 &&
             table.getRowModel().rows.map((row) => (
               <MantineTable.Tr key={row.id}>
+                {/* Checkbox */}
                 <MantineTable.Td>
                   <Checkbox
                     size='xs'
                     disabled={checked && filter === 'ALL'}
-                    checked={row.original.checked}
+                    checked={selected.includes(row.original.id)}
                     onChange={() => {
-                      !row.original.checked &&
+                      !selected.includes(row.original.id) &&
                         setSelected((prev) => [...prev, row.original.id]);
-                      row.original.checked &&
+                      selected.includes(row.original.id) &&
                         setSelected((prev) =>
                           prev.filter((id) => id !== row.original.id)
                         );
@@ -341,13 +345,11 @@ export const Table = ({ data }: Props) => {
                     styles={{ icon: { stroke: 'black' } }}
                   />
                 </MantineTable.Td>
+                {/* Starred */}
                 <MantineTable.Td>
-                  <Star
-                    id={row.original.id}
-                    starred={row.original.starred}
-                    setStarred={setStarred}
-                  />
+                  <Star id={row.original.id} starred={row.original.starred} />
                 </MantineTable.Td>
+                {/* Other columns */}
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <MantineTable.Td
@@ -362,8 +364,9 @@ export const Table = ({ data }: Props) => {
                     </MantineTable.Td>
                   );
                 })}
+                {/* Actions */}
                 <MantineTable.Td>
-                  <Actions message={row.original} setMarked={setMarkedStatus} />
+                  <InboxActions message={row.original} />
                 </MantineTable.Td>
               </MantineTable.Tr>
             ))}

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 import AdminInboxDisplay from '@/modules/AdminInboxDisplay';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const generateMetadata = (): Metadata => {
   // TODO: Track incoming messages
@@ -17,6 +18,12 @@ export const generateMetadata = (): Metadata => {
 export default function Page() {
   return (
     <>
+      <Breadcrumbs
+        crumbs={[{ text: 'Dashboard', href: '/admin/' }, { text: 'Inbox' }]}
+        classNames={{
+          root: 'p-0 m-0 mb-8',
+        }}
+      />
       <AdminInboxDisplay />
     </>
   );

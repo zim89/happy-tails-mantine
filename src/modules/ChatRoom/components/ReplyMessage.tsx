@@ -1,38 +1,37 @@
-import { Paperclip } from 'lucide-react';
-import {
-  FileInput,
-  TextInput,
-  Textarea,
-  Tooltip,
-  UnstyledButton,
-} from '@mantine/core';
-import { isInRange, isNotEmpty, useForm } from '@mantine/form';
+import { Textarea, UnstyledButton } from '@mantine/core';
+import { useForm, hasLength } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';
 import { Container } from './Container';
 import classes from '../classes.module.css';
+import { useReplyMutation } from '@/shared/api/feedbackApi';
+import { toast } from 'react-toastify';
+import type { Feedback } from '@/shared/types/feedback.types';
 
-type Props = {
-  threadId: number;
-};
+export const ReplyMessage = ({ message }: { message: Feedback }) => {
+  const [sendReply, isLoading] = useReplyMutation();
 
-export const ReplyMessage = ({ threadId }: Props) => {
   const form = useForm({
     initialValues: {
-      title: '',
       content: '',
-      file: null as File | null,
     },
     validate: {
-      title: isInRange({ min: 6 }, 'Please enter a bigger title'),
-      content: isInRange(
+      content: hasLength(
         { min: 30 },
         'Minimum message length is 30 characters. Please extend your message.'
       ),
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => {};
+  const handleSubmit = async (values: typeof form.values) => {
+    try {
+      await sendReply({ id: message.id, ...values }).unwrap();
+      toast.success('Reply sent successfully!');
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
@@ -40,21 +39,6 @@ export const ReplyMessage = ({ threadId }: Props) => {
         <h3 className='text-xl font-bold'>New Message</h3>
       </div>
       <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>
-        <TextInput
-          {...form.getInputProps('title')}
-          type='text'
-          label='Subject'
-          classNames={{
-            root: 'form-root mb-7',
-            label: 'form-label',
-            input: cn(
-              'form-input',
-              form?.errors?.title && 'border-brand-red-400 text-secondary'
-            ),
-            error: 'form-error',
-          }}
-        />
-
         <div className={classes.message}>
           <Textarea
             classNames={{
@@ -70,23 +54,12 @@ export const ReplyMessage = ({ threadId }: Props) => {
             label='Enter your answer or message here'
             rows={12}
           />
-
-          <div className='absolute bottom-0'>
-            <FileInput
-              variant='unstyled'
-              className='w-6 opacity-0'
-              {...form.getInputProps('file')}
-              accept='.jpeg,.jpg,.png,.gif,.apng,.tiff'
-            />
-            <Tooltip label='Attach file' className='pointer-events-none'>
-              <Paperclip color={form.values.file ? 'black' : '#999'} />
-            </Tooltip>
-          </div>
         </div>
         <UnstyledButton
+          disabled={message.replyOfManager ? true : false}
           type='submit'
           classNames={{
-            root: 'py-[10px] px-[54px] bg-black text-white rounded-sm mt-6 font-bold',
+            root: 'py-[10px] px-[54px] bg-black text-white rounded-sm mt-6 font-bold disabled:opacity-40',
           }}
         >
           Send
