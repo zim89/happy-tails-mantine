@@ -15,11 +15,19 @@ import {
   incrementCartItem,
   removeFromCart,
 } from '@/shared/redux/cart/cartSlice';
-import noImage from '@/assets/images/no-img.png';
-import { BG_COLORS, COLORS } from '@/shared/constants/colors.const';
+import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 
 export default function CartItem({ product }: { product: CartItem }) {
+  const totalQuantity = product.productSizes
+    ? product.productSizes.reduce((acc, item) => {
+        if (product.size === item.size) {
+          return (acc = item.quantity);
+        }
+        return acc;
+      }, product.totalQuantity)
+    : product.totalQuantity;
+
   const handlersRef = useRef<NumberInputHandlers>(null);
   const dispatch = useAppDispatch();
 
@@ -33,6 +41,7 @@ export default function CartItem({ product }: { product: CartItem }) {
   const handleDecrement = (product: CartItem) => {
     dispatch(decrementCartItem(product));
   };
+
   return (
     <>
       <div className={'relative h-16 w-16'}>
@@ -118,7 +127,7 @@ export default function CartItem({ product }: { product: CartItem }) {
                 allowDecimal={false}
                 step={1}
                 min={1}
-                max={product.totalQuantity}
+                max={totalQuantity}
                 value={product.count}
                 readOnly
                 classNames={{
@@ -137,10 +146,9 @@ export default function CartItem({ product }: { product: CartItem }) {
                 onClick={() => handleIncrement(product)}
                 className={clsx(
                   'p-2',
-                  product.count === product.totalQuantity &&
-                    'text-brand-grey-400'
+                  product.count === totalQuantity && 'text-brand-grey-400'
                 )}
-                disabled={product.count === product.totalQuantity}
+                disabled={product.count === totalQuantity}
               >
                 <Plus className='h-4 w-4 stroke-2' />
               </button>

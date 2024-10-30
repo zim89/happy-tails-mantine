@@ -91,6 +91,10 @@
     @apply rounded-0.5 px-4 py-2.5 text-center text-base font-bold;
   }
 
+  .btn-icon {
+    @apply flex size-10 items-center justify-center text-brand-grey-800 transition-colors duration-300 hover:text-secondary;
+  }
+
   .btn-text {
     @apply text-secondary transition-colors hover:text-brand-orange-400;
   }

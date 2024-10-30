@@ -6,7 +6,7 @@ export type Credentials = {
   content: string;
   userName: string;
   userEmail: string;
-  imageSrc: string;
+  imageSrc: string[];
 };
 
 enum FeedStatus {

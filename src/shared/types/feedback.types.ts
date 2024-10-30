@@ -5,16 +5,18 @@ export type Feedback = {
   userEmail: string;
   userName: string;
   content: string;
-  imageSrc?: string;
+  imageSrc?: string[];
   feedbackStatus: FeedbackStatus;
-  replyOfManager?: string;
-  sentAt: string;
-  resolvedAt: string | null;
+  starred: boolean;
+  replyOfManager?: string | null;
+  managerRepliedAt?: number | null;
+  sentAt: number;
+  resolvedAt: number | null;
 };
 
 export type CreateFeedbackPayload = {
   userEmail: string;
   userName: string;
   content: string;
-  imageSrc?: string;
+  imageSrc?: string[];
 };
