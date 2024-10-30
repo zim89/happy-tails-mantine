@@ -40,7 +40,7 @@ export const Menu = ({ links }: Props) => {
         ) : (
           <UnstyledButton
             className={cn(
-              'w-full py-2 text-brand-grey-400 md:px-10',
+              'w-full p-2 text-brand-grey-400 md:pl-12',
               openedLink === item.label && 'bg-brand-orange-400 text-primary'
             )}
             onClick={() => setOpened(item.label)}

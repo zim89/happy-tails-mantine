@@ -1,12 +1,8 @@
 'use client';
 
-import { PlusCircle } from 'lucide-react';
-import Link from 'next/link';
-
 import { useFindManyQuery } from '@/shared/api/productApi';
 import ProductsTable from '@/modules/ProductsTable';
 
-import PageHeader from '@/components/PageHeader';
 import { ProductsDisplaySkeleton } from './ui/ProductsDisplaySkeleton';
 
 export default function AdminProductsDisplay() {

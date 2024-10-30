@@ -110,7 +110,7 @@ export default function ProductsTable({ data }: Props) {
         }}
       >
         <TableHead headerGroup={table.getHeaderGroups()} />
-        <TableBody rowModel={table.getRowModel()} />
+        <TableBody rowModel={table.getRowModel()} table={table} />
       </Table>
 
       <EmptyRow

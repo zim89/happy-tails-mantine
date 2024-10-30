@@ -7,7 +7,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Table as MantineTable } from '@mantine/core';
 
 import { User } from '@/shared/types/auth.types';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
@@ -17,11 +16,16 @@ import { formatDateFromArray } from '@/shared/lib/helpers';
 
 import classes from '../classes.module.css';
 import { Actions } from './Actions';
-import { TableHead } from '@/components/TableHead';
-import { TableBody } from '@/components/TableBody';
+import { MemoizedTableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { useSearchParams } from 'next/navigation';
+import { ResizableTable } from '@/components/ResizableTable';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 type Props = {
   data: User[];
@@ -39,6 +43,7 @@ const columns = [
       );
     },
     header: 'User id',
+    minSize: 90,
   }),
   columnHelper.accessor('firstName', {
     cell: (info) => {
@@ -49,11 +54,13 @@ const columns = [
       );
     },
     header: 'Name',
+    minSize: 80,
   }),
   columnHelper.accessor('email', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Email',
     enableSorting: false,
+    minSize: 90,
   }),
 
   columnHelper.accessor('registerDate', {
@@ -74,13 +81,15 @@ const columns = [
       );
     },
     header: 'Date',
+    minSize: 80,
   }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info} />,
-    size: 50,
+    size: 80,
     header: 'Action',
     enableSorting: false,
+    enableResizing: false,
   }),
 ];
 
@@ -93,6 +102,10 @@ export const Table = ({ data }: Props) => {
   const table = useReactTable({
     data,
     columns,
+    defaultColumn: {
+      size: DEFAULT_TABLE_SIZE / 5,
+      maxSize: MAX_TABLE_SIZE / 4,
+    },
     state: {
       globalFilter: search,
       pagination: {
@@ -100,6 +113,7 @@ export const Table = ({ data }: Props) => {
         pageSize: Number(limit) || 10,
       },
     },
+    columnResizeMode: 'onChange',
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -109,44 +123,53 @@ export const Table = ({ data }: Props) => {
 
   return (
     <>
-      <div className='mt-10 flex items-center justify-between border border-b-0 bg-white p-4'>
-        <h2 className='mr-6 text-xl/[24px] font-bold'>Users</h2>
+      <div style={{ width: table.getTotalSize() + 2 }}>
+        <div className='mt-10 flex items-center justify-between border border-b-0 bg-white p-4'>
+          <h2 className='mr-6 text-xl/[24px] font-bold'>Users</h2>
+        </div>
+
+        <div className='flex items-center justify-between border border-b-0 bg-white p-4'>
+          <EntriesCount
+            current={
+              table.getState().pagination.pageIndex *
+                table.getState().pagination.pageSize +
+              1
+            }
+            pageSize={
+              table.getState().pagination.pageIndex *
+                table.getState().pagination.pageSize +
+              table.getRowModel().rows.length
+            }
+            size={table.getCoreRowModel().rows.length}
+          />
+
+          <SearchEntry value={search} handleChange={setSearch} />
+        </div>
       </div>
 
-      <div className='flex items-center justify-between border border-b-0 bg-white p-4'>
-        <EntriesCount
-          current={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            1
-          }
-          pageSize={
-            table.getState().pagination.pageIndex *
-              table.getState().pagination.pageSize +
-            table.getRowModel().rows.length
-          }
-          size={table.getCoreRowModel().rows.length}
-        />
-
-        <SearchEntry value={search} handleChange={setSearch} />
-      </div>
-
-      <MantineTable
-        highlightOnHover
-        bgcolor='white'
-        withTableBorder
-        borderColor='#EEE'
+      <ResizableTable
+        table={table}
+        tableProps={{
+          bgcolor: 'white',
+          withTableBorder: true,
+          borderColor: '#EEE',
+        }}
       >
-        <TableHead headerGroup={table.getHeaderGroups()} />
-        <TableBody rowModel={table.getRowModel()} />
-      </MantineTable>
+        <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+        <MemoizedTableBody
+          table={table}
+          rowModel={table.getRowModel()}
+          classNames={{ tr: 'tr items-center' }}
+        />
+      </ResizableTable>
 
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}
         message='You have no any users yet'
       />
-
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
+      <div style={{ width: table.getTotalSize() }}>
+        <TablePagination visible={table.getPageCount() > 1} table={table} />
+      </div>
     </>
   );
 };

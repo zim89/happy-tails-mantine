@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Table, Badge } from '@mantine/core';
+import { Button, Badge } from '@mantine/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createColumnHelper,
@@ -12,13 +12,15 @@ import {
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
+import Link from 'next/link';
+import { PlusCircle } from 'lucide-react';
+import { useState } from 'react';
 
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { TableHead } from '@/components/TableHead';
 import { MemoizedTableBody } from '@/components/TableBody';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
@@ -28,10 +30,13 @@ import {
   removeSearchParams,
   useSearchString,
 } from '@/shared/helpers/searchParams.helpers';
-import { useMemo, useState } from 'react';
 import PageHeader from '@/components/PageHeader';
-import Link from 'next/link';
-import { PlusCircle } from 'lucide-react';
+import { ResizableTable } from '@/components/ResizableTable';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -48,21 +53,22 @@ const columns = [
       <Image width={50} height={50} src={info.getValue() || ''} alt='' />
     ),
     header: 'Image',
+    minSize: 60,
+    enableResizing: false,
     enableSorting: false,
-    size: 112,
   }),
   columnHelper.accessor('name', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
-    size: 317,
+    minSize: 80,
   }),
   columnHelper.accessor('id', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Code',
-    size: 89,
+    minSize: 50,
     enableSorting: false,
   }),
   columnHelper.accessor('categoryName', {
@@ -70,7 +76,7 @@ const columns = [
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Category',
-    size: 89,
+    minSize: 80,
     enableSorting: false,
   }),
   columnHelper.accessor('price', {
@@ -79,15 +85,15 @@ const columns = [
         $ {info.getValue()}
       </span>
     ),
+    minSize: 70,
     header: 'Price',
-    size: 89,
   }),
   columnHelper.accessor('totalQuantity', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
+    minSize: 100,
     header: 'Quantity',
-    size: 89,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
@@ -104,13 +110,15 @@ const columns = [
         {info.getValue()}
       </Badge>
     ),
+    minSize: 80,
     header: 'Status',
-    size: 89,
   }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info} />,
-    size: 50,
+    minSize: 60,
+    enableResizing: false,
+    enableSorting: false,
   }),
 ];
 
@@ -137,8 +145,8 @@ export default function ProductsTable({ data }: Props) {
     data,
     columns: cols,
     defaultColumn: {
-      minSize: 150,
-      maxSize: 400,
+      size: DEFAULT_TABLE_SIZE / 8,
+      maxSize: MAX_TABLE_SIZE / 6,
     },
     columnResizeMode: 'onChange',
     state: {
@@ -155,16 +163,7 @@ export default function ProductsTable({ data }: Props) {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const columnSizeVars = useMemo(() => {
-    const headers = table.getFlatHeaders();
-    const colSizes: { [key: string]: number } = {};
-    for (let i = 0; i < headers.length; i++) {
-      const header = headers[i]!;
-      colSizes[`--header-${header.id}-size`] = header.getSize();
-      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
-    }
-    return colSizes;
-  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+  console.log('Resizing...');
 
   return (
     <>
@@ -192,7 +191,7 @@ export default function ProductsTable({ data }: Props) {
         style={{ width: table.getTotalSize() + 1.5 }}
       >
         <h2 className='mr-6 text-base/[24px] font-bold'>Products Catalog</h2>
-        <div className='flex gap-6'>
+        <div className='flex flex-wrap gap-x-6'>
           <Button
             variant='transparent'
             onClick={() => {
@@ -211,7 +210,7 @@ export default function ProductsTable({ data }: Props) {
             All Products
           </Button>
           {categories.length > 0 &&
-            categories.map(({ title, id }, index) => (
+            categories.map(({ title, id, name }, index) => (
               <Button
                 variant='transparent'
                 onClick={() => {
@@ -259,22 +258,21 @@ export default function ProductsTable({ data }: Props) {
         <SearchEntry value={search} handleChange={setSearch} />
       </div>
 
-      <Table
-        bgcolor='white'
-        withTableBorder
-        borderColor='#EEE'
-        style={{
-          ...columnSizeVars, //Define column sizes on the <table> element
-          width: table.getTotalSize(),
+      <ResizableTable
+        table={table}
+        tableProps={{
+          bgcolor: 'white',
+          withTableBorder: true,
+          borderColor: '#EEE',
         }}
       >
-        <TableHead headerGroup={table.getHeaderGroups()} />
+        <ResizableTableHead headerGroup={table.getHeaderGroups()} />
         <MemoizedTableBody
           table={table}
           rowModel={table.getRowModel()}
-          classNames={{ tr: 'tr' }}
+          classNames={{ tr: 'tr items-center' }}
         />
-      </Table>
+      </ResizableTable>
 
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}

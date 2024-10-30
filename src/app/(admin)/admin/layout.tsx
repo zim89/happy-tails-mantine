@@ -23,10 +23,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <AdminPanelProvider>
       <UnsavedChangesProvider>
         {!isPreviewed ? (
-          <div className={classes.layoutWrapper}>
+          <div className='flex h-full'>
             <AdminSidebar />
-            <AdminHeader user={currentUser} />
-            <div className={classes.content}>{children}</div>
+            <div className='flex flex-1 flex-col'>
+              <AdminHeader user={currentUser} />
+              <div className={classes.content}>{children}</div>
+            </div>
           </div>
         ) : (
           <div>{children}</div>

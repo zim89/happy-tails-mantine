@@ -1,10 +1,9 @@
 'use client';
 
-import { Table as MantineTable, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 import {
   ColumnFiltersState,
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -13,7 +12,6 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 
-import { formatDateTimeWithBrackets } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
 
@@ -22,7 +20,6 @@ import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { useDebouncedState } from '@mantine/hooks';
 import { CustomBadge } from '@/components/Badge';
-import { TableHead } from '@/components/TableHead';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import dayjs from 'dayjs';
@@ -31,6 +28,13 @@ import {
   useSearchString,
 } from '@/shared/helpers/searchParams.helpers';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { ResizableTable } from '@/components/ResizableTable';
+import { MemoizedTableBody } from '@/components/TableBody';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -38,6 +42,7 @@ const columns = [
   columnHelper.accessor('number', {
     cell: (info) => <span className={classes.cell}>{info.getValue()}</span>,
     header: () => 'Order id',
+    minSize: 90,
   }),
   columnHelper.accessor('orderProductDTOList', {
     cell: (info) => (
@@ -57,6 +62,7 @@ const columns = [
       <span>{dayjs.unix(info.getValue()).format('MMM DD, YYYY (HH:mm)')}</span>
     ),
     header: 'Date',
+    minSize: 80,
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
@@ -67,16 +73,19 @@ const columns = [
     ),
     header: 'Status',
     enableSorting: false,
+    minSize: 110,
   }),
   columnHelper.accessor('totalPrice', {
     cell: (info) => <span>$ {info.getValue()}</span>,
     header: 'Total paid',
     enableSorting: false,
+    minSize: 90,
   }),
   columnHelper.accessor('paymentMethod', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Payment',
     enableSorting: false,
+    minSize: 100,
   }),
 ];
 
@@ -97,6 +106,11 @@ export const Table = ({ orders }: Props) => {
   const table = useReactTable({
     columns,
     data: orders || [],
+    defaultColumn: {
+      size: DEFAULT_TABLE_SIZE / 6,
+      maxSize: MAX_TABLE_SIZE / 6,
+    },
+    columnResizeMode: 'onChange',
     state: {
       columnFilters,
       globalFilter: search,
@@ -115,7 +129,10 @@ export const Table = ({ orders }: Props) => {
 
   return (
     <div className='mt-8'>
-      <div className={cn('bg-white', classes.orderCategories)}>
+      <div
+        className={cn('bg-white', classes.orderCategories)}
+        style={{ width: table.getTotalSize() }}
+      >
         <h3 className='mr-3 flex-1 text-xl font-bold'>Order history</h3>
         <ul className='flex space-x-3'>
           <li>
@@ -165,7 +182,10 @@ export const Table = ({ orders }: Props) => {
         </ul>
       </div>
 
-      <div className='flex items-center justify-between border border-b-0 bg-white px-4 py-6'>
+      <div
+        className='flex items-center justify-between border border-b-0 bg-white px-4 py-6'
+        style={{ width: table.getTotalSize() }}
+      >
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *
@@ -183,35 +203,25 @@ export const Table = ({ orders }: Props) => {
         <SearchEntry value={search} handleChange={setSearch} />
       </div>
 
-      <MantineTable
-        highlightOnHover
-        horizontalSpacing={16}
-        width={'100%'}
-        border={1}
-        borderColor='#EEE'
-        withTableBorder
-        bg='white'
+      <ResizableTable
+        tableProps={{
+          highlightOnHover: true,
+          horizontalSpacing: 16,
+          width: '100%',
+          border: 1,
+          borderColor: '#EEE',
+          withTableBorder: true,
+          bg: 'white',
+        }}
+        table={table}
       >
-        <TableHead headerGroup={table.getHeaderGroups()} />
-        {/* <TableBody rowModel={table.getRowModel()} /> */}
-        <MantineTable.Tbody>
-          {table.getRowModel().rows.length > 0 &&
-            table.getRowModel().rows.map((row) => (
-              <MantineTable.Tr key={row.id} className={classes.printText}>
-                {row.getVisibleCells().map((cell) => (
-                  <MantineTable.Td key={cell.id}>
-                    <span className='line-clamp-1'>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </span>
-                  </MantineTable.Td>
-                ))}
-              </MantineTable.Tr>
-            ))}
-        </MantineTable.Tbody>
-      </MantineTable>
+        <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+        <MemoizedTableBody
+          rowModel={table.getRowModel()}
+          table={table}
+          classNames={{ tr: 'tr items-center' }}
+        />
+      </ResizableTable>
 
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}
@@ -219,7 +229,9 @@ export const Table = ({ orders }: Props) => {
         className='min-h-full'
       />
 
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
+      <div style={{ width: table.getTotalSize() }}>
+        <TablePagination visible={table.getPageCount() > 1} table={table} />
+      </div>
     </div>
   );
 };

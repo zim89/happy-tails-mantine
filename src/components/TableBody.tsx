@@ -1,12 +1,13 @@
-import { Product } from '@/shared/types/types';
 import { Table } from '@mantine/core';
 import { flexRender, RowModel, Table as TTable } from '@tanstack/react-table';
 import { memo } from 'react';
 
+import { ResizableCell } from './ResizableCell';
+
 type Props<T> = {
   rowModel: RowModel<T>;
   classNames?: Partial<Record<'tr', string>>;
-  table?: TTable<Product>;
+  table: TTable<T>;
 };
 export const TableBody = <T,>({ rowModel, classNames }: Props<T>) => {
   return (
@@ -14,22 +15,11 @@ export const TableBody = <T,>({ rowModel, classNames }: Props<T>) => {
       {rowModel.rows.length > 0 &&
         rowModel.rows.map((row) => (
           <Table.Tr key={row.id} classNames={classNames}>
-            {row.getVisibleCells().map((cell) => {
+            {row.getVisibleCells().map((cell, index) => {
               return (
-                <Table.Td
-                  key={cell.id}
-                  styles={{
-                    td: {
-                      width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    },
-                  }}
-                  classNames={{ td: 'p-4 td' }}
-                >
+                <ResizableCell cell={cell} key={index}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Td>
+                </ResizableCell>
               );
             })}
           </Table.Tr>
@@ -38,7 +28,6 @@ export const TableBody = <T,>({ rowModel, classNames }: Props<T>) => {
   );
 };
 
-export const MemoizedTableBody = memo(
-  TableBody,
-  (prev, next) => prev.table!.options.data === next.table!.options.data
-) as typeof TableBody;
+export const MemoizedTableBody = memo(TableBody, (prev, next) => {
+  return prev.table.options.data !== next.table.options.data;
+}) as typeof TableBody;

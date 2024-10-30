@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Table } from '@mantine/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { flexRender, HeaderGroup } from '@tanstack/react-table';
@@ -9,8 +9,9 @@ import { useSearchString } from '@/shared/helpers/searchParams.helpers';
 
 type Props<T> = {
   headerGroup: HeaderGroup<T>[];
+  tableWidth?: number;
 };
-export const TableHead = <T,>({ headerGroup }: Props<T>) => {
+export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sortParam = searchParams.get('sort');
@@ -26,12 +27,17 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
   return (
     <Table.Thead>
       {headerGroup.map((group) => (
-        <Table.Tr key={group.id} classNames={{ tr: 'bg-brand-grey-300' }}>
+        <Table.Tr key={group.id} classNames={{ tr: 'bg-brand-grey-300 tr' }}>
           {group.headers.map((header) => (
             <Table.Th
               key={header.id}
               classNames={{
-                th: 'p-4 text-brand-grey-800 whitespace-nowrap uppercase',
+                th: 'p-4 text-brand-grey-800 whitespace-nowrap uppercase th',
+              }}
+              styles={{
+                th: {
+                  width: `calc(var(--header-${header?.id}-size) * 1px)`,
+                },
               }}
             >
               {header.isPlaceholder
@@ -40,6 +46,24 @@ export const TableHead = <T,>({ headerGroup }: Props<T>) => {
                     header.column.columnDef.header,
                     header.getContext()
                   )}
+
+              {header.column.getCanResize() && (
+                <div
+                  {...{
+                    onDoubleClick: () => {
+                      header.column.resetSize();
+                    },
+                    onMouseDown: (e) => {
+                      header.getResizeHandler()(e);
+                    },
+                    onTouchStart: header.getResizeHandler(),
+                    className: `resizer ${
+                      header.column.getIsResizing() ? 'isResizing' : ''
+                    }`,
+                  }}
+                />
+              )}
+
               {header.column.getCanSort() ? (
                 <button
                   className='relative ml-2 -translate-y-1'
