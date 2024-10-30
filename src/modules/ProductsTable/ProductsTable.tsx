@@ -163,8 +163,6 @@ export default function ProductsTable({ data }: Props) {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  console.log('Resizing...');
-
   return (
     <>
       <PageHeader
