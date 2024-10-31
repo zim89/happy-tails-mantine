@@ -1,6 +1,5 @@
 'use client';
 
-import { Table as MantineTable } from '@mantine/core';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -9,12 +8,17 @@ import {
 import { useContext, useMemo } from 'react';
 
 import { cn } from '@/shared/lib/utils';
-import { TableHead } from '@/components/TableHead';
-import { TableBody } from '@/components/TableBody';
+import { MemoizedTableBody } from '@/components/TableBody';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
 import { Actions } from './Actions';
 import { ProductSizeValues } from '@/shared/types/types';
+import { ResizableTable } from '@/components/ResizableTable';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<{
   size: ProductSizeValues;
@@ -28,7 +32,7 @@ const columns = [
     },
     header: 'Size',
     enableSorting: false,
-    size: 100,
+    minSize: 100,
   }),
   columnHelper.accessor('quantity', {
     cell: (info) => (
@@ -38,7 +42,7 @@ const columns = [
     ),
     header: 'Quantity',
     enableSorting: false,
-    size: 500,
+    minSize: 200,
   }),
   columnHelper.display({
     id: 'actions',
@@ -51,8 +55,9 @@ const columns = [
         </div>
       );
     },
-    size: 0,
     header: 'Action',
+    enableSorting: false,
+    minSize: 100,
   }),
 ];
 
@@ -68,6 +73,11 @@ export default function Table() {
 
   const table = useReactTable({
     data,
+    defaultColumn: {
+      size: DEFAULT_TABLE_SIZE / 3,
+      maxSize: MAX_TABLE_SIZE / 3,
+    },
+    columnResizeMode: 'onChange',
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -75,15 +85,22 @@ export default function Table() {
   if (!data.length) return null;
 
   return (
-    <MantineTable
-      bgcolor='white'
-      withTableBorder
-      borderColor='#EEE'
-      mt={48}
-      w={685}
+    <ResizableTable
+      tableProps={{
+        bgcolor: 'white',
+        withTableBorder: true,
+        borderColor: '#EEE',
+        mt: 48,
+        w: 685,
+      }}
+      table={table}
     >
-      <TableHead headerGroup={table.getHeaderGroups()} />
-      <TableBody rowModel={table.getRowModel()} />
-    </MantineTable>
+      <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+      <MemoizedTableBody
+        classNames={{ tr: 'tr items-center' }}
+        table={table}
+        rowModel={table.getRowModel()}
+      />
+    </ResizableTable>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Button, Table, Badge } from '@mantine/core';
+import { Button, Badge } from '@mantine/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createColumnHelper,
@@ -13,14 +12,16 @@ import {
 } from '@tanstack/react-table';
 import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
+import Link from 'next/link';
+import { PlusCircle } from 'lucide-react';
+import { useState } from 'react';
 
 import { Product } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { TableHead } from '@/components/TableHead';
-import { TableBody } from '@/components/TableBody';
+import { MemoizedTableBody } from '@/components/TableBody';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import classes from './classes.module.css';
@@ -29,6 +30,13 @@ import {
   removeSearchParams,
   useSearchString,
 } from '@/shared/helpers/searchParams.helpers';
+import PageHeader from '@/components/PageHeader';
+import { ResizableTable } from '@/components/ResizableTable';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -45,21 +53,22 @@ const columns = [
       <Image width={50} height={50} src={info.getValue() || ''} alt='' />
     ),
     header: 'Image',
+    minSize: 60,
+    enableResizing: false,
     enableSorting: false,
-    size: 112,
   }),
   columnHelper.accessor('name', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
-    size: 317,
+    minSize: 80,
   }),
   columnHelper.accessor('id', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Code',
-    size: 89,
+    minSize: 50,
     enableSorting: false,
   }),
   columnHelper.accessor('categoryName', {
@@ -67,7 +76,7 @@ const columns = [
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Category',
-    size: 89,
+    minSize: 80,
     enableSorting: false,
   }),
   columnHelper.accessor('price', {
@@ -76,15 +85,15 @@ const columns = [
         $ {info.getValue()}
       </span>
     ),
+    minSize: 70,
     header: 'Price',
-    size: 89,
   }),
   columnHelper.accessor('totalQuantity', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
+    minSize: 100,
     header: 'Quantity',
-    size: 89,
   }),
   columnHelper.accessor('productStatus', {
     cell: (info) => (
@@ -101,13 +110,15 @@ const columns = [
         {info.getValue()}
       </Badge>
     ),
+    minSize: 80,
     header: 'Status',
-    size: 89,
   }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions ctx={info} />,
-    size: 50,
+    minSize: 60,
+    enableResizing: false,
+    enableSorting: false,
   }),
 ];
 
@@ -124,13 +135,20 @@ export default function ProductsTable({ data }: Props) {
 
   const [createQueryString] = useSearchString(searchParams);
 
+  const [cols] = useState<typeof columns>(() => [...columns]);
+
   const categories = useSelectCategories((res) =>
     res.map((cat) => ({ name: cat.name, title: cat.title, id: cat.id }))
   );
 
   const table = useReactTable({
     data,
-    columns,
+    columns: cols,
+    defaultColumn: {
+      size: DEFAULT_TABLE_SIZE / 8,
+      maxSize: MAX_TABLE_SIZE / 6,
+    },
+    columnResizeMode: 'onChange',
     state: {
       globalFilter: search,
       pagination: {
@@ -147,9 +165,31 @@ export default function ProductsTable({ data }: Props) {
 
   return (
     <>
-      <div className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'>
+      <PageHeader
+        style={{ width: table.getTotalSize() + 1.5 }}
+        rightSection={
+          <Link
+            className='flex items-center gap-2 rounded bg-secondary px-4 py-[10px] font-black text-primary'
+            href='/admin/products/new'
+          >
+            <PlusCircle width={20} />
+            Add product
+          </Link>
+        }
+      >
+        {(Group) => (
+          <>
+            <Group title='Products' additional='Manage your product catalog' />
+          </>
+        )}
+      </PageHeader>
+
+      <div
+        className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'
+        style={{ width: table.getTotalSize() + 1.5 }}
+      >
         <h2 className='mr-6 text-base/[24px] font-bold'>Products Catalog</h2>
-        <div className='flex gap-6'>
+        <div className='flex flex-wrap gap-x-6'>
           <Button
             variant='transparent'
             onClick={() => {
@@ -168,7 +208,7 @@ export default function ProductsTable({ data }: Props) {
             All Products
           </Button>
           {categories.length > 0 &&
-            categories.map(({ title, id }, index) => (
+            categories.map(({ title, id, name }, index) => (
               <Button
                 variant='transparent'
                 onClick={() => {
@@ -195,7 +235,10 @@ export default function ProductsTable({ data }: Props) {
         </div>
       </div>
 
-      <div className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'>
+      <div
+        className='flex items-center justify-between border border-b-0 bg-primary px-4 py-6'
+        style={{ width: table.getTotalSize() + 1.5 }}
+      >
         <EntriesCount
           current={
             table.getState().pagination.pageIndex *
@@ -213,17 +256,29 @@ export default function ProductsTable({ data }: Props) {
         <SearchEntry value={search} handleChange={setSearch} />
       </div>
 
-      <Table bgcolor='white' withTableBorder borderColor='#EEE'>
-        <TableHead headerGroup={table.getHeaderGroups()} />
-        <TableBody rowModel={table.getRowModel()} />
-      </Table>
+      <ResizableTable
+        table={table}
+        tableProps={{
+          bgcolor: 'white',
+          withTableBorder: true,
+          borderColor: '#EEE',
+        }}
+      >
+        <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+        <MemoizedTableBody
+          table={table}
+          rowModel={table.getRowModel()}
+          classNames={{ tr: 'tr items-center' }}
+        />
+      </ResizableTable>
 
       <EmptyRow
         visible={table.getRowModel().rows.length === 0}
         message='You have no any product yet'
       />
-
-      <TablePagination visible={table.getPageCount() > 1} table={table} />
+      <div style={{ width: table.getTotalSize() }}>
+        <TablePagination visible={table.getPageCount() > 1} table={table} />
+      </div>
     </>
   );
 }

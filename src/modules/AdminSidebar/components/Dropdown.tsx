@@ -43,7 +43,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
       <UnstyledButton
         // It's highlighted when it's clicked or when the page to which child link forwards is opened
         className={cn(
-          'w-full py-2 text-brand-grey-400 md:pl-10',
+          'w-full py-2 text-brand-grey-400 md:pl-12',
           isOpened &&
             areThereLinksSelected &&
             'bg-brand-orange-400 text-primary'
@@ -56,7 +56,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
       >
         <Group>
           <Box className='flex items-center'>
-            <Box className='ml-3 inline-flex items-center gap-3 pr-3 text-xl font-bold leading-6 md:ml-4'>
+            <Box className='inline-flex items-center gap-3 pr-6 text-xl font-bold leading-6 md:ml-4'>
               <linksGroup.icon size={20} />
               <span className='hidden md:inline'>{linksGroup.label}</span>
             </Box>
@@ -77,7 +77,7 @@ export const Dropdown = ({ linksGroup }: Props) => {
             onClick={() => {
               setOpened(link.label);
             }}
-            classNames={{ root: 'pl-4 md:pl-14 pr-4' }}
+            classNames={{ root: 'pl-4 md:pl-16 pr-4' }}
             key={linkKey}
             title={link.label}
           >

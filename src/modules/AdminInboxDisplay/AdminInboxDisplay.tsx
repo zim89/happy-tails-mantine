@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+
 import { InboxTable } from './ui/InboxTable';
 import { useFindManyQuery } from '@/shared/api/feedbackApi';
 import classes from './classes.module.css';

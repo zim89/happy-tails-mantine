@@ -22,11 +22,13 @@ const columns = [
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Order Id',
     enableSorting: false,
+    enableResizing: false,
   }),
   columnHelper.accessor('email', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: () => 'Customers',
     enableSorting: false,
+    enableResizing: false,
   }),
   columnHelper.accessor('createdDate', {
     cell: (info) => (
@@ -34,6 +36,7 @@ const columns = [
     ),
     header: () => 'Date',
     enableSorting: false,
+    enableResizing: false,
   }),
   columnHelper.accessor('orderStatus', {
     cell: (info) => (
@@ -45,11 +48,13 @@ const columns = [
     header: () => 'Status',
     filterFn: 'equalsString',
     enableSorting: false,
+    enableResizing: false,
   }),
   columnHelper.accessor('totalPrice', {
     cell: (info) => <span>$ {info.getValue()}</span>,
     header: () => 'Total Paid',
     enableSorting: false,
+    enableResizing: false,
   }),
 ];
 

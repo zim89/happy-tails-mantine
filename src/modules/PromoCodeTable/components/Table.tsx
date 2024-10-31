@@ -2,23 +2,27 @@
 
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { Clock3 } from 'lucide-react';
-import { Table as MantineTable } from '@mantine/core';
 
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
-import { TableHead } from '@/components/TableHead';
 import { CustomBadge } from '@/components/Badge';
 import AddCodeModal from '@/modules/AddCodeModal';
 import { Discount } from '@/shared/api/discountApi';
 import { Actions } from './Actions';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { ResizableTable } from '@/components/ResizableTable';
+import { MemoizedTableBody } from '@/components/TableBody';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<Discount>();
 
@@ -50,37 +54,43 @@ const columns = [
         />
       );
     },
+    minSize: 85,
     header: 'Status',
   }),
   columnHelper.accessor('discount', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Discount, %',
+    minSize: 100,
   }),
   columnHelper.accessor('minPrice', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Min order amount, $',
-    minSize: 200,
+    minSize: 170,
   }),
   columnHelper.accessor('beginningDate', {
     cell: (info) => {
       return <span>{dayjs(info.getValue()).format('MMM DD, YYYY')}</span>;
     },
     header: 'Start date',
+    minSize: 100,
   }),
   columnHelper.accessor('expirationDate', {
     cell: (info) => (
       <span>{dayjs(info.getValue()).format('MMM DD, YYYY')}</span>
     ),
     header: 'Expiration date',
+    minSize: 140,
   }),
   columnHelper.accessor('code', {
     cell: (info) => <span>{info.getValue()}</span>,
     header: 'Promo code',
+    minSize: 100,
   }),
   columnHelper.display({
     id: 'actions',
     cell: (info) => <Actions {...info.row.original} />,
     header: 'Action',
+    enableResizing: false,
   }),
 ];
 
@@ -92,12 +102,19 @@ export default function Table({ data }: { data: Discount[] }) {
   const table = useReactTable({
     columns,
     data,
+    defaultColumn: {
+      // Default column size
+      size: DEFAULT_TABLE_SIZE / 7,
+      // Maximum column size
+      maxSize: MAX_TABLE_SIZE / 6,
+    },
     state: {
       pagination: {
         pageIndex: page ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
       },
     },
+    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     enableSorting: false,
@@ -110,52 +127,48 @@ export default function Table({ data }: { data: Discount[] }) {
 
   return (
     <>
-      <div className='flex border-x border-x-brand-grey-300 bg-white px-4 py-6'>
-        {activeCodes > 0 ? (
-          <h3 className='inline-flex items-center gap-2 text-sm font-normal text-brand-green-500'>
-            <Clock3 size={24} />
-            Active {activeCodes} Promo Codes
-          </h3>
-        ) : (
-          <h3 className='inline-flex items-center gap-2 text-brand-grey-600'>
-            <Clock3 size={24} />
-            No active Promo Codes
-          </h3>
-        )}
-        <AddCodeModal />
+      <div style={{ width: table.getTotalSize() + 2 }}>
+        <h2 className='rounded-t bg-brand-grey-300 p-4 text-xl/6 font-bold text-black'>
+          Promo code
+        </h2>
+        <div className='flex border-x border-x-brand-grey-300 bg-white px-4 py-6'>
+          {activeCodes > 0 ? (
+            <h3 className='inline-flex items-center gap-2 text-sm font-normal text-brand-green-500'>
+              <Clock3 size={24} />
+              Active {activeCodes} Promo Codes
+            </h3>
+          ) : (
+            <h3 className='inline-flex items-center gap-2 text-brand-grey-600'>
+              <Clock3 size={24} />
+              No active Promo Codes
+            </h3>
+          )}
+          <AddCodeModal />
+        </div>
       </div>
 
-      <MantineTable
-        highlightOnHover
-        horizontalSpacing={16}
-        width={'100%'}
-        border={1}
-        borderColor='#EEE'
-        withTableBorder
-        classNames={{
-          td: 'py-6',
-          tr: 'bg-brand-grey-200',
+      <ResizableTable
+        tableProps={{
+          highlightOnHover: true,
+          horizontalSpacing: 16,
+          width: '100%',
+          border: 1,
+          borderColor: '#EEE',
+          withTableBorder: true,
+          classNames: {
+            td: 'py-6',
+            tr: 'bg-brand-grey-200',
+          },
         }}
+        table={table}
       >
-        <TableHead headerGroup={table.getHeaderGroups()} />
-        <MantineTable.Tbody>
-          {table.getRowModel().rows.length > 0 &&
-            table.getRowModel().rows.map((row) => (
-              <MantineTable.Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <MantineTable.Td key={cell.id}>
-                    <span className='line-clamp-1'>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </span>
-                  </MantineTable.Td>
-                ))}
-              </MantineTable.Tr>
-            ))}
-        </MantineTable.Tbody>
-      </MantineTable>
+        <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+        <MemoizedTableBody
+          rowModel={table.getRowModel()}
+          table={table}
+          classNames={{ tr: 'tr items-center' }}
+        />
+      </ResizableTable>
 
       <EmptyRow
         className='bg-brand-grey-200'
@@ -163,11 +176,13 @@ export default function Table({ data }: { data: Discount[] }) {
         message='You have not added any promo code yet'
       />
 
-      <TablePagination
-        visible={table.getPageCount() > 1}
-        table={table}
-        segment='#promo'
-      />
+      <div style={{ width: table.getTotalSize() }}>
+        <TablePagination
+          visible={table.getPageCount() > 1}
+          table={table}
+          segment='#promo'
+        />
+      </div>
     </>
   );
 }

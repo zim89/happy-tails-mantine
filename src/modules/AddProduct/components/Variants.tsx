@@ -1,6 +1,3 @@
-import { PlusCircle } from 'lucide-react';
-import { UnstyledButton } from '@mantine/core';
-
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
 import { SingleVariant } from './SingleVariant';

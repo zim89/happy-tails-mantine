@@ -20,9 +20,6 @@ export const PromoCodeTable = () => {
 
   return (
     <div className='mt-8'>
-      <h2 className='rounded-t bg-brand-grey-300 p-4 text-xl/6 font-bold text-black'>
-        Promo code
-      </h2>
       <Table data={data?.content || []} />
     </div>
   );

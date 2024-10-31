@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
-import OrderHeader from '@/modules/AdminOrderHeader';
 import OrderTable from '@/modules/OrderTable';
 import classes from './styles.module.css';
 
@@ -23,7 +22,6 @@ export default function Page() {
         />
       </div>
       <section>
-        <OrderHeader />
         <OrderTable />
       </section>
     </>

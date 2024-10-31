@@ -1,23 +1,18 @@
 .navbar {
-    grid-area: nav;
-    background-color: #161616;
-    min-height: 100vh;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-right: rem(1px) solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+
+  @apply z-50 flex h-auto min-h-screen w-fit flex-col bg-secondary md:min-w-[257px] print:hidden;
 }
 
 .navbarMain {
-    flex: 1;
+  @apply flex-1;
 }
 
 .header {
-    @apply py-12 px-14;
+  @apply px-14 py-12;
 }
 
-@media print {
-    .navbar {
-        display: none !important;
-    }
+.logo {
+  @apply justify-center pb-[60px] pt-12;
 }

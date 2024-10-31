@@ -1,21 +1,24 @@
 'use client';
 
-import { Table as MantineTable } from '@mantine/core';
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useDebouncedState } from '@mantine/hooks';
 import Image from 'next/image';
 import { useContext, useMemo } from 'react';
 
 import { cn } from '@/shared/lib/utils';
-import { TableHead } from '@/components/TableHead';
-import { TableBody } from '@/components/TableBody';
+import { MemoizedTableBody } from '@/components/TableBody';
 import classes from '../classes.module.css';
 import { VariantForm, context } from '../lib/utils';
 import { Actions } from './Actions';
+import {
+  DEFAULT_TABLE_SIZE,
+  MAX_TABLE_SIZE,
+} from '@/shared/constants/sizes.const';
+import { ResizableTable } from '@/components/ResizableTable';
+import { ResizableTableHead } from '@/components/ResizableTableHead';
 
 const columnHelper = createColumnHelper<VariantForm>();
 
@@ -32,7 +35,8 @@ const columns = [
     },
     header: 'Image',
     enableSorting: false,
-    size: 200,
+    minSize: 100,
+    enableResizing: false,
   }),
   columnHelper.accessor('values.color', {
     cell: (info) => (
@@ -40,14 +44,14 @@ const columns = [
     ),
     header: 'Color',
     enableSorting: false,
-    size: 200,
+    minSize: 100,
   }),
   columnHelper.accessor('values.size', {
     cell: (info) => (
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     header: 'Size',
-    size: 200,
+    minSize: 100,
     enableSorting: false,
   }),
   columnHelper.accessor('values.price', {
@@ -55,7 +59,7 @@ const columns = [
       <span className={classes.columnCell}>$ {info.getValue()}</span>
     ),
     header: 'Price',
-    size: 200,
+    minSize: 100,
     enableSorting: false,
   }),
   columnHelper.accessor('values.quantity', {
@@ -66,7 +70,7 @@ const columns = [
     ),
     header: 'Quantity',
     enableSorting: false,
-    size: 10,
+    minSize: 100,
   }),
   columnHelper.display({
     id: 'actions',
@@ -84,12 +88,11 @@ const columns = [
         </div>
       );
     },
-    size: 20,
+    minSize: 30,
   }),
 ];
 
 export default function Table() {
-  const [search, setSearch] = useDebouncedState('', 200);
   const { variants } = useContext(context);
 
   const data = useMemo(
@@ -103,15 +106,32 @@ export default function Table() {
   const table = useReactTable({
     data,
     columns,
+    defaultColumn: {
+      size: DEFAULT_TABLE_SIZE / 6,
+      maxSize: MAX_TABLE_SIZE / 5,
+    },
+    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
   });
 
   if (!data.length) return null;
 
   return (
-    <MantineTable bgcolor='white' withTableBorder borderColor='#EEE' mt={48}>
-      <TableHead headerGroup={table.getHeaderGroups()} />
-      <TableBody rowModel={table.getRowModel()} />
-    </MantineTable>
+    <ResizableTable
+      tableProps={{
+        bgcolor: 'white',
+        withTableBorder: true,
+        borderColor: '#EEE',
+        mt: 48,
+      }}
+      table={table}
+    >
+      <ResizableTableHead headerGroup={table.getHeaderGroups()} />
+      <MemoizedTableBody
+        classNames={{ tr: 'tr items-center' }}
+        rowModel={table.getRowModel()}
+        table={table}
+      />
+    </ResizableTable>
   );
 }

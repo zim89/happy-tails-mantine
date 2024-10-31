@@ -1,12 +1,12 @@
-import ModalFooter from '@/components/ModalFooter';
-import ModalHeader from '@/components/ModalHeader';
-import Modal from '@/components/ModalWindow';
 import { UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PlusCircle } from 'lucide-react';
-import { useContext } from 'react';
-import { context } from '../AddProduct/lib/utils';
 import Image from 'next/image';
+import { useContext } from 'react';
+
+import ModalFooter from '@/components/ModalFooter';
+import Modal from '@/components/ModalWindow';
+import { context } from '../AddProduct/lib/utils';
 
 export const AddVariantModal = () => {
   const { variants, setVariants } = useContext(context);

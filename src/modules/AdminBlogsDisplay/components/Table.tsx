@@ -173,7 +173,7 @@ export const Table = ({ data }: Props) => {
       <MantineTable
         highlightOnHover
         classNames={{
-          tr: 'bg-primary shadow-[0px_0px_1px_1px_#EEE] hover:shadow-[0px_8px_4px_#EEE] cursor-pointer',
+          tr: 'bg-primary shadow-[0px_0px_1px_1px_#EEE] hover:shadow-[0px_8px_4px_#EEE] cursor-pointer w-full',
           td: classes.td,
           table: 'border-spacing-y-4 border-separate',
         }}
