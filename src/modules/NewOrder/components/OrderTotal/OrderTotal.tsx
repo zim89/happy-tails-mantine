@@ -1,4 +1,4 @@
-import { Card, Divider, TextInput } from '@mantine/core';
+import { Card, Divider, NumberFormatter, TextInput } from '@mantine/core';
 import { useDebouncedState } from '@mantine/hooks';
 import { UseFormReturnType } from '@mantine/form';
 import { ChevronDown, ChevronUp } from 'lucide-react';
@@ -72,19 +72,47 @@ export default function OrderTotal({ form, taxRate }: Props) {
       <div className='flex max-w-[653px] flex-col gap-2'>
         <div className='flex justify-between'>
           <p>Subtotal:</p>
-          <span>${subTotal.toFixed(2)}</span>
+          <span>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={subTotal}
+            />
+          </span>
         </div>
         <div className='flex justify-between'>
           <p>Discount:</p>
-          <span>${discount}</span>
+          <span>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={discount}
+            />
+          </span>
         </div>
         <div className='flex justify-between'>
           <p>Tax:</p>
-          <span>${tax.toFixed(2)}</span>
+          <span>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={tax}
+            />
+          </span>
         </div>
         <div className='flex justify-between'>
           <p>Shipping:</p>
-          <span>${shipping.toFixed(2)}</span>
+          <span>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={shipping}
+            />
+          </span>
         </div>
       </div>
 
@@ -129,10 +157,16 @@ export default function OrderTotal({ form, taxRate }: Props) {
       <div className='flex max-w-[653px] justify-between font-bold uppercase'>
         <p>Total:</p>
         <span>
-          $
-          {subTotal === 0
-            ? 0
-            : (subTotal + tax + shipping - discount).toFixed(2)}
+          {subTotal === 0 ? (
+            0
+          ) : (
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={subTotal + tax + shipping - discount}
+            />
+          )}
         </span>
       </div>
     </Card>

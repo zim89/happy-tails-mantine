@@ -1,6 +1,6 @@
 'use client';
 
-import { Table, Badge } from '@mantine/core';
+import { Table, Badge, NumberFormatter } from '@mantine/core';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -62,7 +62,14 @@ const columns = [
   columnHelper.accessor('totalPaid', {
     cell: (info) => (
       <div className='flex justify-end'>
-        <span className='whitespace-pre'>$ {info.getValue().toFixed(2)}</span>
+        <span className='whitespace-pre'>
+          <NumberFormatter
+            prefix='$'
+            decimalScale={2}
+            className='whitespace-nowrap pl-2'
+            value={info.getValue()}
+          />
+        </span>
       </div>
     ),
     header: 'Total paid',
