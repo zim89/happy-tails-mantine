@@ -1,4 +1,4 @@
-import { Combobox } from '@mantine/core';
+import { Combobox, NumberFormatter } from '@mantine/core';
 import Image from 'next/image';
 
 import { Product, ProductColor, ProductSizeValues } from '@/shared/types/types';
@@ -23,7 +23,14 @@ export const Option = ({ product }: Props) => {
       />
       <div>
         <p className='mb-1 font-bold'>{product.name}</p>
-        <span>$ {product.price.toFixed(2)}</span>
+        <span>
+          <NumberFormatter
+            prefix='$'
+            decimalScale={2}
+            className='whitespace-nowrap pl-2'
+            value={product.price}
+          />
+        </span>
       </div>
     </Combobox.Option>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { Radio, RadioGroup } from '@mantine/core';
+import { NumberFormatter, Radio, RadioGroup } from '@mantine/core';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
@@ -195,7 +195,12 @@ export default function SelectedProduct({
         </button>
         {product.productStatus === 'IN STOCK' && (
           <span className='whitespace-pre text-xl font-bold'>
-            $ {(product.price * product.totalQuantity).toFixed(2)}
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={product.price * product.totalQuantity}
+            />
           </span>
         )}
       </div>

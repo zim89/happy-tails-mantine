@@ -1,4 +1,4 @@
-import { Table } from '@mantine/core';
+import { NumberFormatter, Table } from '@mantine/core';
 import Image from 'next/image';
 
 import type { Order } from '@/shared/types/types';
@@ -58,23 +58,48 @@ export const ProductTable = ({ order }: Props) => {
                 />
               </Table.Td>
               <Table.Td>{product.productName}</Table.Td>
-              <Table.Td>${product.productPrice}</Table.Td>
               <Table.Td>
-                {order.discountAmount ? `$ ${order.discountAmount}` : 'None'}
+                <NumberFormatter
+                  prefix='$'
+                  decimalScale={2}
+                  className='whitespace-nowrap pl-2'
+                  value={product.productPrice}
+                />
+              </Table.Td>
+              <Table.Td>
+                {order.discountAmount ? (
+                  <NumberFormatter
+                    prefix='$'
+                    decimalScale={2}
+                    className='whitespace-nowrap pl-2'
+                    value={order.discountAmount}
+                  />
+                ) : (
+                  'None'
+                )}
               </Table.Td>
               <Table.Td>{product.count}</Table.Td>
               <Table.Td>
-                ${(product.productPrice * product.count).toFixed(2)}
+                <NumberFormatter
+                  prefix='$'
+                  decimalScale={2}
+                  className='whitespace-nowrap pl-2'
+                  value={product.productPrice * product.count}
+                />
               </Table.Td>
               <Table.Td>${order.taxAmount}</Table.Td>
               {/* If there is a discount code, cut off subtotal by 10 percent */}
               <Table.Td>
-                $
-                {(
-                  product.productPrice * product.count -
-                  (order.discountAmount ? order.discountAmount : 0) +
-                  order.taxAmount
-                ).toFixed(2)}
+                <NumberFormatter
+                  prefix='$'
+                  decimalScale={2}
+                  className='whitespace-nowrap pl-2'
+                  value={
+                    product.productPrice * product.count -
+                    (order.discountAmount ? order.discountAmount : 0) +
+                    order.taxAmount
+                  }
+                />
               </Table.Td>
             </Table.Tr>
           ))}
@@ -82,17 +107,36 @@ export const ProductTable = ({ order }: Props) => {
       </Table>
       <div className='flex'>
         <div className='flex-1 p-3 text-center'>
-          <span className='text-xl font-bold'>$ {shipping}</span>
+          <span className='text-xl font-bold'>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={shipping}
+            />
+          </span>
           <p className='text-sm/[21px] font-normal'>Shipping</p>
         </div>
         <div className='flex-1 border-x-[1px] border-brand-grey-300 p-3 text-center'>
           <span className='text-xl font-bold'>
-            $ {discount * order.orderProductDTOList.length}
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={discount * order.orderProductDTOList.length}
+            />
           </span>
           <p className='text-sm/[21px] font-normal'>Discount Total</p>
         </div>
         <div className='flex-1 bg-black p-3 text-center text-white '>
-          <span className='text-xl font-bold'>$ {total.toFixed(2)}</span>
+          <span className='text-xl font-bold'>
+            <NumberFormatter
+              prefix='$'
+              decimalScale={2}
+              className='whitespace-nowrap pl-2'
+              value={total}
+            />
+          </span>
           <p className='text-sm/[21px] font-normal'>Order Total</p>
         </div>
       </div>
