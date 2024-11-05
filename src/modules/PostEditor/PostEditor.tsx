@@ -4,7 +4,6 @@ import { useCallback, useContext } from 'react';
 import { Editor } from '@tiptap/react';
 import { TextInput } from '@mantine/core';
 
-import classes from './classes.module.css';
 import { cn } from '@/shared/lib/utils';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { publishImage } from '@/shared/lib/requests';
@@ -14,32 +13,6 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { EditorTemplate } from '../EditorTemplate';
-
-export const sharedProps = {
-  toolbarBtn: {
-    styles: {
-      control: {
-        height: '36px',
-        backgroundColor: 'transparent',
-        border: 0,
-        padding: 0,
-        color: 'black',
-        strokeWidth: '2px',
-      },
-    },
-    classNames: { control: classes.controlIcon },
-  },
-  controlGroup: {
-    bg: 'transparent',
-    styles: {
-      controlsGroup: {
-        borderRight: '1px solid #b2b2b2',
-        height: '100%',
-        padding: '0em .5rem',
-      },
-    },
-  },
-};
 
 type Props = {
   editor: Editor;
