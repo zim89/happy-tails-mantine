@@ -21,9 +21,7 @@ export default function Page() {
           }}
         />
       </div>
-      <section>
-        <OrderTable />
-      </section>
+      <OrderTable />
     </>
   );
 }

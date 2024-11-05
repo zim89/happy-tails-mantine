@@ -5,6 +5,7 @@ export const tabs = [
   { label: 'Delivery details', value: 'delivery' },
   { label: 'Promo code', value: 'promo' },
   { label: 'Tax', value: 'tax' },
+  { label: 'Profile', value: 'profile' },
 ];
 
 export const pathMap: { [P in string]: string } = {
@@ -12,6 +13,7 @@ export const pathMap: { [P in string]: string } = {
   delivery: 'Delivery',
   promo: 'Promo Code',
   tax: 'Tax',
+  profile: 'Profile',
 };
 
 export const bannerNames = ['banner_1', 'banner_2', 'banner_3', 'banner_4'];

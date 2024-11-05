@@ -10,6 +10,7 @@ import { AdminPanelContext } from '@/shared/context/panel.context';
 import { PromoCodeDisplay } from './components/PromoCodeDisplay';
 import { DeliverySetting } from './components/DeliverySetting';
 import { TaxSettingDisplay } from './components/TaxSettingDisplay';
+import { ProfileSettingDisplay } from './components/ProfileSettingDisplay';
 
 export const SettingsDisplay = () => {
   const [currentTab, setCurrentTab] = useState('homePage');
@@ -59,6 +60,9 @@ export const SettingsDisplay = () => {
         </Tabs.Panel>
         <Tabs.Panel value='tax'>
           <TaxSettingDisplay />
+        </Tabs.Panel>
+        <Tabs.Panel value='profile'>
+          <ProfileSettingDisplay />
         </Tabs.Panel>
       </Tabs>
     </>

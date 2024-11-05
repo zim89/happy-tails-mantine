@@ -1,6 +1,7 @@
 import { useFindManyQuery } from '@/shared/api/discountApi';
 import Table from './components/Table';
 import Loader from '@/components/Loader/Loader';
+import { PromoCodeSkeleton } from '../SettingsDisplay/components/skeletons/PromoCodeSkeleton';
 
 export const PromoCodeTable = () => {
   const { data, error, isLoading } = useFindManyQuery();
@@ -15,7 +16,7 @@ export const PromoCodeTable = () => {
     );
 
   if (isLoading) {
-    return <Loader size={128} />;
+    return <PromoCodeSkeleton />;
   }
 
   return (

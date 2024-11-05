@@ -36,11 +36,7 @@ const columnHelper = createColumnHelper<User>();
 const columns = [
   columnHelper.accessor('userId', {
     cell: (info) => {
-      return (
-        <span className={cn(classes.cell, 'max-w-[94px]')}>
-          {info.getValue()}
-        </span>
-      );
+      return <span>{info.getValue()}</span>;
     },
     header: 'User id',
     minSize: 90,

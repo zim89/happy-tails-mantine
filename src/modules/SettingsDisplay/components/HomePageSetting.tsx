@@ -38,6 +38,8 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { HomePageSettingSkeleton } from './skeletons/HomePageSettingSkeleton';
+import BrandBox from '@/components/BrandBox';
 
 type PreviewImage = {
   id: number | null;
@@ -190,7 +192,7 @@ export const HomePageSetting = () => {
       </p>
     );
 
-  if (isLoading) return <Loader size={128} />;
+  if (isLoading) return <HomePageSettingSkeleton />;
 
   const clearFile = async (
     ref: MutableRefObject<PreviewImage>,
@@ -295,9 +297,8 @@ export const HomePageSetting = () => {
 
   return (
     <>
-      <form className='mt-8 overflow-clip rounded-t border border-brand-grey-300 bg-white'>
-        <h3 className='bg-brand-grey-300 p-4 text-xl font-bold'>Banners</h3>
-        <div className='p-4'>
+      <BrandBox title='Banners'>
+        <form>
           {[bannerPreview1, bannerPreview2, bannerPreview3, bannerPreview4].map(
             (banner, index) => (
               <div
@@ -402,7 +403,7 @@ export const HomePageSetting = () => {
 
                 <Select
                   {...form.getInputProps(`product_link_${index + 1}`)}
-                  label='Link to the product page'
+                  label='Link to a page'
                   data={productsPages
                     .concat(postsPages)
                     .concat(categoriesPages)}
@@ -458,8 +459,8 @@ export const HomePageSetting = () => {
               </div>
             )
           )}
-        </div>
-      </form>
+        </form>
+      </BrandBox>
     </>
   );
 };

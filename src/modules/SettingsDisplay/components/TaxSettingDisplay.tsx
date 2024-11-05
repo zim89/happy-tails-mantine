@@ -1,8 +1,9 @@
 'use client';
 
 import { useGetTaxQuery } from '@/shared/api/taxApi';
-import Loader from '@/components/Loader/Loader';
+
 import { TaxForm } from './TaxForm';
+import { TaxSettingSkeleton } from './skeletons/TaxSettingSkeleton';
 
 export const TaxSettingDisplay = () => {
   const { data, isError, isLoading } = useGetTaxQuery();
@@ -14,7 +15,7 @@ export const TaxSettingDisplay = () => {
       </p>
     );
 
-  if (isLoading || !data) return <Loader size={64} />;
+  if (isLoading || !data) return <TaxSettingSkeleton />;
 
   return (
     <>
