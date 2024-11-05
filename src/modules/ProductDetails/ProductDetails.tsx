@@ -22,6 +22,7 @@ import { generateColorList } from '@/shared/helpers/colors.helpers';
 import Link from 'next/link';
 import { generateSizes } from '@/shared/helpers/size.helpers';
 import { BG_COLORS } from '@/shared/constants/colors.const';
+import { PostContent } from '@/app/(root)/(additional)/blog/[id]/ui/PostContent';
 
 const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
 
@@ -112,7 +113,7 @@ export default function ProductDetails({ product }: Props) {
               </div>
 
               {/*  ProductDetails description*/}
-              <p className='mb-6'>{product.description}</p>
+              <PostContent content={product.description} className='mb-6' />
 
               {colorList.length > 0 && (
                 <div className='mb-6 space-y-6'>

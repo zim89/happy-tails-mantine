@@ -9,12 +9,15 @@ import { Header } from './components/Header';
 import ImageBox from '@/modules/ImageBox';
 import { useFindOneQuery } from '@/shared/api/postApi';
 import Loader from '@/components/Loader/Loader';
+import { useContext } from 'react';
+import { PostFormContext } from '@/shared/context/postform.context';
 
 type Props = {
   postId: string;
 };
 export default function PostDetails({ postId }: Props) {
   const { data, isLoading, error } = useFindOneQuery({ id: postId });
+  const { form } = useContext(PostFormContext);
 
   if (isLoading) return <Loader size={164} />;
   if (!data) notFound();
@@ -29,7 +32,12 @@ export default function PostDetails({ postId }: Props) {
 
   return (
     <>
-      <EditorWrapper>
+      <EditorWrapper
+        content={form.values.content}
+        handleChange={(value) => {
+          form.setFieldValue('content', value);
+        }}
+      >
         {(editor) => (
           <>
             <Header editor={editor} post={data} />

@@ -33,7 +33,10 @@ export default function Page({ params: { id }, searchParams }: Props) {
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { text: 'Blogs', href: `/admin/blogs?page=${searchParams.fromPage}` },
+          {
+            text: 'Blogs',
+            href: `/admin/blogs?page=${searchParams.fromPage || 1}`,
+          },
           { text: 'Blog post' },
         ]}
         classNames={{

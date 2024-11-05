@@ -4,14 +4,8 @@ import { useCallback, useContext } from 'react';
 import { Editor } from '@tiptap/react';
 import { TextInput } from '@mantine/core';
 
-// Rich text editor libraries
-import { RichTextEditor } from '@mantine/tiptap';
-import ImageControl from '@/components/ImageControl';
-
 import classes from './classes.module.css';
 import { cn } from '@/shared/lib/utils';
-import FontSizeControl from '@/components/FontSizeControl';
-import FontFamilyControl from '@/components/FontFamilyControl';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { publishImage } from '@/shared/lib/requests';
 import {
@@ -19,6 +13,7 @@ import {
   isAxiosQueryError,
   isErrorDataString,
 } from '@/shared/lib/helpers';
+import { EditorTemplate } from '../EditorTemplate';
 
 export const sharedProps = {
   toolbarBtn: {
@@ -97,72 +92,11 @@ export default function PostEditor({ editor }: Props) {
             borderTopRightRadius: 5,
           }}
         >
-          <RichTextEditor
+          <EditorTemplate
+            kind='multi'
             editor={editor}
-            classNames={{
-              root: classes.editorContent,
-            }}
-          >
-            <RichTextEditor.Toolbar
-              styles={{
-                toolbar: {
-                  backgroundColor: '#C8C8C8',
-                  gap: 0,
-                  padding: '0 0.5em',
-                },
-              }}
-            >
-              <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-                <FontSizeControl />
-              </RichTextEditor.ControlsGroup>
-              <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-                <FontFamilyControl />
-                <RichTextEditor.ColorPicker
-                  colors={[
-                    '#25262b',
-                    '#868e96',
-                    '#fa5252',
-                    '#e64980',
-                    '#be4bdb',
-                    '#7950f2',
-                    '#4c6ef5',
-                    '#228be6',
-                    '#15aabf',
-                    '#12b886',
-                    '#40c057',
-                    '#82c91e',
-                    '#fab005',
-                    '#fd7e14',
-                  ]}
-                  style={sharedProps.toolbarBtn.styles.control}
-                />
-
-                <RichTextEditor.Bold {...sharedProps.toolbarBtn} />
-                <RichTextEditor.Italic {...sharedProps.toolbarBtn} />
-                <RichTextEditor.Underline {...sharedProps.toolbarBtn} />
-                <RichTextEditor.Strikethrough {...sharedProps.toolbarBtn} />
-              </RichTextEditor.ControlsGroup>
-
-              <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-                <RichTextEditor.AlignLeft {...sharedProps.toolbarBtn} />
-                <RichTextEditor.AlignCenter {...sharedProps.toolbarBtn} />
-                <RichTextEditor.AlignJustify {...sharedProps.toolbarBtn} />
-                <RichTextEditor.AlignRight {...sharedProps.toolbarBtn} />
-              </RichTextEditor.ControlsGroup>
-
-              <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-                <RichTextEditor.OrderedList {...sharedProps.toolbarBtn} />
-                <RichTextEditor.BulletList {...sharedProps.toolbarBtn} />
-                <RichTextEditor.ControlsGroup />
-              </RichTextEditor.ControlsGroup>
-
-              <RichTextEditor.ControlsGroup {...sharedProps.controlGroup}>
-                <ImageControl handleImageUpload={handleImageUpload} />
-                <RichTextEditor.Link {...sharedProps.toolbarBtn} />
-              </RichTextEditor.ControlsGroup>
-            </RichTextEditor.Toolbar>
-            <RichTextEditor.Content />
-          </RichTextEditor>
+            handleImageUpload={handleImageUpload}
+          />
         </div>
         {form.errors?.content && (
           <p className='py-1 text-[0.675rem] text-brand-red-400'>

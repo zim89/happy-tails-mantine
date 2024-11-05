@@ -1,10 +1,10 @@
 'use client';
 
+import PageHeader from '@/components/PageHeader';
 import { Form } from './components/Form';
 import { Variants } from './components/Variants';
 import { AddProductProvider } from './lib/utils';
 import { Controls } from './components/Controls';
-import PageHeader from '@/components/PageHeader';
 
 export default function AddProduct() {
   return (

@@ -12,14 +12,13 @@ import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 
 import { FontFamily, FontSize, Image } from '@/shared/lib/utils';
-import { PostFormContext } from '@/shared/context/postform.context';
 
 type Props = {
   children(editor: Editor): React.ReactNode;
+  content: string
+  handleChange: (value: string) => void;
 };
-export default function EditorWrapper({ children }: Props) {
-  const { form } = useContext(PostFormContext);
-
+export default function EditorWrapper({ children, content, handleChange }: Props) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -32,8 +31,8 @@ export default function EditorWrapper({ children }: Props) {
       FontFamily,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-    content: form.values.content,
-    onUpdate: ({ editor }) => form.setFieldValue('content', editor.getHTML()),
+    content,
+    onUpdate: ({ editor }) => handleChange(editor.getHTML()),
   });
 
   if (!editor) return null;
