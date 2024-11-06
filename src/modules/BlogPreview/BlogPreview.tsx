@@ -42,7 +42,7 @@ export default function BlogPreview() {
         <Breadcrumbs
           crumbs={[
             { href: '/admin/', text: 'Dashboard' },
-            { href: `/admin/blogs?page=${page}`, text: 'Blogs' },
+            { href: `/admin/blogs?page=${page || 1}`, text: 'Blogs' },
             {
               href: `/admin/blogs/${form.values.id}?fromPage=${page || 1}`,
               text: 'Blog',

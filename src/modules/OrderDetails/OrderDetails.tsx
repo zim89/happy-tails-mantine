@@ -8,7 +8,7 @@ import { ShippingDetails } from './components/ShippingDetails';
 import { ClientDetails } from './components/ClientDetails';
 import { CommentSection } from './components/CommentSection';
 import { useFindOneQuery } from '@/shared/api/ordersApi';
-import Loader from '@/components/Loader';
+import { OrderDetailsSkeleton } from './components/Skeleton';
 
 export default function OrdersDetails() {
   const { id } = useParams();
@@ -18,7 +18,7 @@ export default function OrdersDetails() {
   });
 
   if (error) return <p>Whoops, something went wrong..</p>;
-  if (isLoading) return <Loader />;
+  if (isLoading) return <OrderDetailsSkeleton />;
 
   if (!data) notFound();
 

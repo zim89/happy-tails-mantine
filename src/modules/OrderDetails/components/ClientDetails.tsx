@@ -44,7 +44,7 @@ export const ClientDetails = ({ userEmail }: Props) => {
 
   if (user.kind === 'guest')
     return (
-      <div className='rounded border border-brand-grey-300 bg-white'>
+      <div className='col-span-2 rounded border border-brand-grey-300 bg-white lg:col-span-1'>
         <div className='flex items-center justify-between px-4'>
           <h2 className='py-[22px] text-xl font-bold'>Client details</h2>
           <p className='whitespace-nowrap text-xs text-brand-grey-800'>
@@ -62,7 +62,7 @@ export const ClientDetails = ({ userEmail }: Props) => {
     );
 
   return (
-    <div className='rounded border border-brand-grey-300 bg-white'>
+    <div className='col-span-2 rounded border border-brand-grey-300 bg-white lg:col-span-1'>
       <div className='flex flex-col items-center justify-between px-4 py-[10px] md:flex-row md:py-[26px]'>
         <h2 className='text-xl font-bold'>Client details</h2>
         <p className='whitespace-nowrap text-xs text-brand-grey-800'>

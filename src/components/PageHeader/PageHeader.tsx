@@ -22,7 +22,7 @@ export default function PageHeader({
   );
 }
 
-const Group = (props: { title: string; additional?: string }) => (
+const Group = (props: { title: string; additional?: React.ReactNode }) => (
   <hgroup role='group'>
     <h2>{props.title}</h2>
     {props.additional && (

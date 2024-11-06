@@ -3,6 +3,7 @@
 import { InboxTable } from './ui/InboxTable';
 import { useFindManyQuery } from '@/shared/api/feedbackApi';
 import classes from './classes.module.css';
+import { InboxTableSkeleton } from './ui/InboxTableSkeleton';
 
 export default function AdminInboxDisplay() {
   const { data, isError, isLoading } = useFindManyQuery({
@@ -11,7 +12,7 @@ export default function AdminInboxDisplay() {
   });
 
   if (isError) return <p>Oops, something went wrong</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <InboxTableSkeleton />;
   if (!data) return <InboxTable data={[]} />;
 
   return (

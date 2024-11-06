@@ -15,9 +15,10 @@ import {
 import { ReplyMessage } from './components/ReplyMessage';
 import { Download } from 'lucide-react';
 import { ImageModal } from './components/ImageModal';
+import { ChatRoomSkeleton } from './components/Skeleton';
 
 export default function ChatRoom({ id }: { id: string }) {
-  const { data, isError, isLoading, error } = useFindOneQuery(id);
+  const { data, isError, isLoading } = useFindOneQuery(id);
 
   useEffect(() => {
     if (isError) {
@@ -25,9 +26,11 @@ export default function ChatRoom({ id }: { id: string }) {
     }
   }, [isError]);
 
+  if (isLoading) return <ChatRoomSkeleton />;
+
   return (
     <>
-      {!isLoading && data && (
+      {data && (
         <>
           <div className='space-y-2'>
             {data.replyOfManager && (

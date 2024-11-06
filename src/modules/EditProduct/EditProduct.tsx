@@ -7,6 +7,7 @@ import { useFindOneQuery } from '@/shared/api/productApi';
 import Loader from '@/components/Loader/Loader';
 import { Sizes } from './components/Sizes';
 import { Controls } from './components/Controls';
+import { EditProductSkeleton } from './components/EditProductSkeleton';
 
 type Props = {
   id: string;
@@ -16,7 +17,7 @@ export default function EditProduct({ id }: Props) {
   const { data, error, isLoading } = useFindOneQuery(id);
 
   if (error) return null;
-  if (isLoading || !data) return <Loader />;
+  if (isLoading || !data) return <EditProductSkeleton />;
 
   return (
     <UpdateProductProvider product={data}>

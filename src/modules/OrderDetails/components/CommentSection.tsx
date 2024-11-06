@@ -44,7 +44,7 @@ export const CommentSection = ({ order }: Props) => {
   };
 
   return (
-    <div className='col-span-2 rounded-[4px] border border-brand-grey-300 bg-white'>
+    <div className='col-span-1 rounded-[4px] border border-brand-grey-300 bg-white lg:col-span-2'>
       <div className='flex items-center justify-between border-b border-brand-grey-300 p-4'>
         <h2 className='text-xl font-bold'>Comments</h2>
         <UnstyledButton
@@ -69,7 +69,7 @@ export const CommentSection = ({ order }: Props) => {
           <UnstyledButton
             mr={42}
             classNames={{
-              root: 'rounded-sm text-black py-[10px] px-[47px] font-bold',
+              root: 'rounded-sm w-full text-center lg:w-auto text-black py-[10px] px-[47px] font-bold',
             }}
             styles={{ root: { border: '1px solid #C8C8C8' } }}
             onClick={closeComments}
@@ -78,7 +78,7 @@ export const CommentSection = ({ order }: Props) => {
           </UnstyledButton>
           <UnstyledButton
             classNames={{
-              root: 'bg-black text-white rounded-sm py-[10px] px-[55px] font-bold',
+              root: 'bg-black text-white w-full text-center lg:w-auto rounded-sm py-[10px] px-[55px] font-bold',
             }}
             onClick={sendFeedback}
           >

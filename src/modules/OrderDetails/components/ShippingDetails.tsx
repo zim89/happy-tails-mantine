@@ -13,7 +13,7 @@ export const ShippingDetails = ({ order }: Props) => {
   const shippingAddress = cutOffArbitraryDeliveryFields(order.shippingAddress);
 
   return (
-    <div className='col-span-2 max-h-max rounded-[4px] border border-brand-grey-300 bg-white'>
+    <div className='col-span-3 max-h-max rounded-[4px] border border-brand-grey-300 bg-white lg:col-span-2'>
       <div className='flex items-center justify-between px-4 py-[22px]'>
         <h2 className='text-xl font-bold'>Shipping details</h2>
         <ShippingModal order={order} />
