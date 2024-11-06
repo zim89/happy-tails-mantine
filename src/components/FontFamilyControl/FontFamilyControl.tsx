@@ -2,7 +2,7 @@ import { useRichTextEditorContext } from '@mantine/tiptap';
 import { Menu, UnstyledButton } from '@mantine/core';
 import { Type } from 'lucide-react';
 
-import { sharedProps } from '@/modules/PostEditor';
+import { sharedProps } from '@/modules/EditorTemplate/lib/shared-props';
 import { fonts } from './lib/fonts';
 
 export default function FontFamilyControl() {

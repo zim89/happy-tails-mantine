@@ -6,12 +6,20 @@ import PostEditor from '@/modules/PostEditor';
 import ImageBox from '@/modules/ImageBox';
 import { Details } from './components/Details';
 import { Header } from './components/Header';
-import { PostFormProvider } from '@/shared/context/postform.context';
+import { PostFormContext } from '@/shared/context/postform.context';
+import { useContext } from 'react';
 
 export default function NewBlog() {
+  const { form } = useContext(PostFormContext);
+
   return (
-    <PostFormProvider>
-      <EditorContext>
+    <>
+      <EditorContext
+        content={form.values.content}
+        handleChange={(value) => {
+          form.setFieldValue('content', value);
+        }}
+      >
         {(editor) => (
           <form>
             <Header editor={editor} />
@@ -26,6 +34,6 @@ export default function NewBlog() {
           </form>
         )}
       </EditorContext>
-    </PostFormProvider>
+    </>
   );
 }

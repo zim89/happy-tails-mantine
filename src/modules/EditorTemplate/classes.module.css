@@ -1,32 +1,32 @@
 .editorContent {
-	@apply border-0;
+  @apply border-0;
 }
 
 .editorContent ul {
-	list-style: initial !important;
+  list-style: initial !important;
 }
 
 .editorContent ol {
-	list-style: decimal !important;
+  list-style: decimal !important;
 }
 
 /* When a text fragment's font size is changed, it'll wrap the text in <span> and text-decoration will be applied to its parent: <s>, thus incorrect display of the line-through, cause you need to apply it to that <span> directly */
 .editorContent s:has(span) {
-	text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .editorContent s > span {
-	text-decoration: line-through !important;
+  text-decoration: line-through !important;
 }
 
 .editorContent u:has(span) {
-	text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .editorContent u > span {
-	text-decoration: underline !important;
+  text-decoration: underline !important;
 }
 
 .controlIcon svg {
-	@apply stroke-2;
+  @apply stroke-2;
 }

@@ -16,6 +16,9 @@ import { cn } from '@/shared/lib/utils';
 import { ProductColor } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
+import EditorWrapper from '@/modules/EditorWrapper';
+import PostEditor from '@/modules/PostEditor';
+import { EditorTemplate } from '@/modules/EditorTemplate';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -201,21 +204,26 @@ export const Form = () => {
             </div>
           )}
         </div>
-        <Textarea
-          rows={5}
-          classNames={{
-            root: 'form-root w-full mb-6',
-            label: 'form-label',
-            wrapper: 'grid h-full',
-            input: cn(
-              'form-input textarea p-2',
-              productForm?.errors?.description && 'form-error--input'
-            ),
-            error: 'form-error -bottom-11',
+        <EditorWrapper
+          content={productForm.values.description}
+          handleChange={(value) => {
+            productForm.setFieldValue('description', value);
           }}
-          label='Description'
-          {...productForm.getInputProps('description')}
-        />
+        >
+          {(editor) => (
+            <div className='mb-10 mt-6 flex-1 flex-wrap'>
+              <EditorTemplate
+                kind='text'
+                editor={editor}
+                classNames={{
+                  root: 'h-full max-w-[430px]',
+                  content: 'h-full',
+                  typographyStylesProvider: 'h-full',
+                }}
+              />
+            </div>
+          )}
+        </EditorWrapper>
       </div>
     </div>
   );

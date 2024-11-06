@@ -1,1 +1,1 @@
-export { default, sharedProps } from "./PostEditor";
+export { default } from './PostEditor';

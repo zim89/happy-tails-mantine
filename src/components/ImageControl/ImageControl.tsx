@@ -7,7 +7,7 @@ import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 import { Image } from 'lucide-react';
 import { useEffect } from 'react';
 
-import { sharedProps } from '@/modules/PostEditor';
+import { sharedProps } from '@/modules/EditorTemplate/lib/shared-props';
 
 interface Props {
   handleImageUpload: (file: File) => Promise<string | null>;
