@@ -23,6 +23,7 @@ import {
   MAX_TABLE_SIZE,
 } from '@/shared/constants/sizes.const';
 import { ResizableTableHead } from '@/components/ResizableTableHead';
+import BrandBox from '@/components/BrandBox';
 
 const columnHelper = createColumnHelper<Discount>();
 
@@ -126,27 +127,21 @@ export default function Table({ data }: { data: Discount[] }) {
   );
 
   return (
-    <>
-      <div style={{ width: table.getTotalSize() + 2 }}>
-        <h2 className='rounded-t bg-brand-grey-300 p-4 text-xl/6 font-bold text-black'>
-          Promo code
-        </h2>
-        <div className='flex border-x border-x-brand-grey-300 bg-white px-4 py-6'>
-          {activeCodes > 0 ? (
-            <h3 className='inline-flex items-center gap-2 text-sm font-normal text-brand-green-500'>
-              <Clock3 size={24} />
-              Active {activeCodes} Promo Codes
-            </h3>
-          ) : (
-            <h3 className='inline-flex items-center gap-2 text-brand-grey-600'>
-              <Clock3 size={24} />
-              No active Promo Codes
-            </h3>
-          )}
-          <AddCodeModal />
-        </div>
+    <BrandBox title='Promo code' contentClassname='p-0'>
+      <div className='flex border-x border-x-brand-grey-300 bg-white px-4 py-6'>
+        {activeCodes > 0 ? (
+          <h3 className='inline-flex items-center gap-2 text-sm font-normal text-brand-green-500'>
+            <Clock3 size={24} />
+            Active {activeCodes} Promo Codes
+          </h3>
+        ) : (
+          <h3 className='inline-flex items-center gap-2 text-brand-grey-600'>
+            <Clock3 size={24} />
+            No active Promo Codes
+          </h3>
+        )}
+        <AddCodeModal />
       </div>
-
       <ResizableTable
         tableProps={{
           highlightOnHover: true,
@@ -176,13 +171,15 @@ export default function Table({ data }: { data: Discount[] }) {
         message='You have not added any promo code yet'
       />
 
-      <div style={{ width: table.getTotalSize() }}>
+      <div
+        style={{ width: table.getTotalSize(), padding: '0px 16px 16px 16px' }}
+      >
         <TablePagination
           visible={table.getPageCount() > 1}
           table={table}
           segment='#promo'
         />
       </div>
-    </>
+    </BrandBox>
   );
 }

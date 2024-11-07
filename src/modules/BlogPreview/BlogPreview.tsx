@@ -42,14 +42,14 @@ export default function BlogPreview() {
         <Breadcrumbs
           crumbs={[
             { href: '/admin/', text: 'Dashboard' },
-            { href: `/admin/blogs?page=${page}`, text: 'Blogs' },
+            { href: `/admin/blogs?page=${page || 1}`, text: 'Blogs' },
             {
-              href: `/admin/blogs/${form.values.id}?fromPage=${page}`,
+              href: `/admin/blogs/${form.values.id}?fromPage=${page || 1}`,
               text: 'Blog',
             },
             { text: 'Preview' },
           ]}
-          classNames={{ root: 'p-0 pt-[90px] lg:pt-24' }}
+          classNames={{ root: 'p-0 pt-[90px] lg:pt-28' }}
         />
       </Container>
 

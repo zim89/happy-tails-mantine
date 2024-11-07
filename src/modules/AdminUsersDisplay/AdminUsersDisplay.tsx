@@ -3,7 +3,7 @@
 import { useFindManyQuery } from '@/shared/api/usersApi';
 import { Table } from './components/Table';
 
-import Loader from '@/components/Loader/Loader';
+import { AdminUsersSkeleton } from './components/Skeleton';
 
 export default function AdminUsersDisplay() {
   const { data, error, isLoading } = useFindManyQuery({
@@ -11,12 +11,7 @@ export default function AdminUsersDisplay() {
     size: 10000000,
   });
 
-  if (isLoading || !data)
-    return (
-      <div className='flex justify-center pt-16'>
-        <Loader size={100} />
-      </div>
-    );
+  if (isLoading || !data) return <AdminUsersSkeleton />;
 
   if (error)
     return (

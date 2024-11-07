@@ -9,9 +9,12 @@ import { useUpdateStatusMutation } from '@/shared/api/feedbackApi';
 import { toast } from 'react-toastify';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
+import { useSearchParams } from 'next/navigation';
 
 export const InboxActions = ({ message }: { message: Feedback }) => {
   const [markAsRead] = useUpdateStatusMutation();
+  const params = useSearchParams();
+  const page = params.get('page');
 
   const [loading, setLoading] = useState(false);
 
@@ -63,7 +66,9 @@ export const InboxActions = ({ message }: { message: Feedback }) => {
             leftSection={<Eye size={16} />}
             className='mb-1 rounded-none hover:bg-brand-grey-200'
           >
-            <Link href={`/admin/inbox/${message.id}`}>View</Link>
+            <Link href={`/admin/inbox/${message.id}?fromPage=${page}`}>
+              View
+            </Link>
           </Menu.Item>
           <Menu.Item
             leftSection={<MessageSquareDot size={16} />}

@@ -11,6 +11,7 @@ import {
 } from './Controllers';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
+import PageHeader from '@/components/PageHeader';
 
 type Props = {
   editor: Editor;
@@ -40,23 +41,28 @@ export const Header = ({ editor, post }: Props) => {
   return (
     <>
       <div className='mb-8 items-center justify-between md:flex'>
-        <hgroup>
-          <h2 className={`mr-1 text-[2rem]/[2.4rem] font-black`}>Blog post</h2>
-          <div className='flex items-baseline gap-3'>
-            <p>
-              {formatDate(post.createdAt, 'MMM DD, YYYY, HH:mm:ss A', true)}
-            </p>
-            <CustomBadge
-              color={post.postStatus.toLowerCase()}
-              name={post.postStatus}
-              palette={{
-                published: '#389B48',
-                draft: '#FBBC04',
-                archived: '#B4B4B4',
-              }}
+        <PageHeader>
+          {(Group) => (
+            <Group
+              title='Blog post'
+              additional={
+                <div className='flex items-baseline gap-3'>
+                  {formatDate(post.createdAt, 'MMM DD, YYYY, HH:mm:ss A', true)}
+                  <CustomBadge
+                    color={post.postStatus.toLowerCase()}
+                    name={post.postStatus}
+                    palette={{
+                      published: '#389B48',
+                      draft: '#FBBC04',
+                      archived: '#B4B4B4',
+                    }}
+                  />
+                </div>
+              }
             />
-          </div>
-        </hgroup>
+          )}
+        </PageHeader>
+
         <div className='mt-4 flex gap-3 md:mt-0'>
           {isEdited && post.postStatus === 'PUBLISHED' && (
             <PublishedController

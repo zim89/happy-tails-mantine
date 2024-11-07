@@ -5,12 +5,14 @@ export type Props = {
   children: React.ReactNode;
   title: string;
   rightSection?: React.ReactNode;
+  contentClassname?: string;
 } & CustomComponentProps;
 
 export default function BrandBox({
   children,
   title,
   className = '',
+  contentClassname = '',
   rightSection,
 }: Props) {
   return (
@@ -25,7 +27,7 @@ export default function BrandBox({
         {title}
         {rightSection}
       </h3>
-      <div className='p-4'>{children}</div>
+      <div className={cn('p-4', contentClassname)}>{children}</div>
     </div>
   );
 }

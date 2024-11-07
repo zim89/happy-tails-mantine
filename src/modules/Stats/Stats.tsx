@@ -6,6 +6,7 @@ import { data } from './lib/data';
 import { useStatsQuery } from '@/shared/api/dashboardApi';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { SkeletonError } from './components/SkeletonError';
+import { NumberFormatter } from '@mantine/core';
 
 export default function Stats() {
   const { data: values, isLoading, error } = useStatsQuery();
@@ -26,9 +27,17 @@ export default function Stats() {
                 {stat.name}
               </p>
               <p className='mt-1 text-[1.75rem] font-bold'>
-                {stat.type === 'currency' && '$'}
-                {/* Comma separated numbers */}
-                {values[stat.property].toLocaleString('en-IN')}
+                {stat.type === 'currency' ? (
+                  <NumberFormatter
+                    prefix='$'
+                    decimalScale={2}
+                    className='whitespace-nowrap pl-2'
+                    value={values[stat.property]}
+                    thousandSeparator=','
+                  />
+                ) : (
+                  values[stat.property]
+                )}
               </p>
             </div>
             <span className='flex h-12 w-12 items-center justify-center rounded-full bg-primary'>

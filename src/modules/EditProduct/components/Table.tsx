@@ -6,9 +6,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useContext, useMemo } from 'react';
+import { Table as MantineTable } from '@mantine/core';
 
 import { cn } from '@/shared/lib/utils';
-import { MemoizedTableBody } from '@/components/TableBody';
+import { TableBody } from '@/components/TableBody';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
 import { Actions } from './Actions';
@@ -19,6 +20,7 @@ import {
   MAX_TABLE_SIZE,
 } from '@/shared/constants/sizes.const';
 import { ResizableTableHead } from '@/components/ResizableTableHead';
+import { TableHead } from '@/components/TableHead';
 
 const columnHelper = createColumnHelper<{
   size: ProductSizeValues;
@@ -85,22 +87,14 @@ export default function Table() {
   if (!data.length) return null;
 
   return (
-    <ResizableTable
-      tableProps={{
-        bgcolor: 'white',
-        withTableBorder: true,
-        borderColor: '#EEE',
-        mt: 48,
-        w: 685,
-      }}
-      table={table}
+    <MantineTable
+      bgcolor='white'
+      withTableBorder={true}
+      borderColor='#EEE'
+      mt={48}
     >
-      <ResizableTableHead headerGroup={table.getHeaderGroups()} />
-      <MemoizedTableBody
-        classNames={{ tr: 'tr items-center' }}
-        table={table}
-        rowModel={table.getRowModel()}
-      />
-    </ResizableTable>
+      <TableHead headerGroup={table.getHeaderGroups()} />
+      <TableBody table={table} rowModel={table.getRowModel()} />
+    </MantineTable>
   );
 }

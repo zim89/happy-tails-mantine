@@ -9,6 +9,7 @@ import { ShippingForm } from './ShippingForm';
 import { AddShippingMethodForm } from './AddShippingMethodForm';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
 import Loader from '@/components/Loader/Loader';
+import { DeliverySttingSkeleton } from './skeletons/DeliverySettingSkeleton';
 
 export const DeliverySetting = () => {
   const [isAdding, setIsAdding] = useState(false);
@@ -21,7 +22,7 @@ export const DeliverySetting = () => {
       </p>
     );
 
-  if (isLoading) return <Loader size={128} />;
+  if (isLoading) return <DeliverySttingSkeleton />;
 
   return (
     <div>

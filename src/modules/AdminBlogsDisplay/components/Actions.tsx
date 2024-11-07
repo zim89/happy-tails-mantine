@@ -16,7 +16,7 @@ export const Actions = ({ post }: Props) => {
 
   return (
     <div className='flex justify-end gap-4'>
-      <Link href={`/admin/blogs/${post.id}/preview?fromPage=${page}`}>
+      <Link href={`/admin/blogs/${post.id}/preview?fromPage=${page || 1}`}>
         <UnstyledButton
           classNames={{
             root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',
@@ -25,7 +25,7 @@ export const Actions = ({ post }: Props) => {
           <Eye size={16} color='black' />
         </UnstyledButton>
       </Link>
-      <Link href={`/admin/blogs/${post.id}?fromPage=${page}`}>
+      <Link href={`/admin/blogs/${post.id}?fromPage=${page || 1}`}>
         <UnstyledButton
           classNames={{
             root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-400 p-2 rounded-sm',

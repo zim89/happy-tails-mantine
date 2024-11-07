@@ -38,8 +38,8 @@ export const Form = () => {
         Product Options
       </h3>
 
-      <div className='flex flex-col justify-between gap-6 md:flex-row lg:gap-[42px]'>
-        <div className='w-full md:max-w-[60%]'>
+      <div className='flex flex-col justify-between gap-6 lg:flex-row lg:gap-[42px]'>
+        <div className='w-full lg:max-w-[60%]'>
           <div className={classes.inputRow}>
             <TextInput
               {...productForm.getInputProps('name')}
@@ -216,8 +216,9 @@ export const Form = () => {
                 kind='text'
                 editor={editor}
                 classNames={{
-                  root: 'h-full max-w-[430px]',
-                  content: 'h-full',
+                  // Max width: screen - sidebar length - paddings
+                  root: 'h-full max-w-[calc(100vw-124px)] md:max-w-[500px]',
+                  content: 'h-full max-w-[calc(100vw-124px)] md:max-w-[500px]',
                   typographyStylesProvider: 'h-full',
                 }}
               />

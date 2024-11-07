@@ -4,11 +4,12 @@ import { useFindManyQuery } from '@/shared/api/postApi';
 
 import { Table } from './components/Table';
 import { Header } from './components/Header';
+import { TableSkeleton } from './components/TableSkeleton';
 
 export default function AdminBlogsDisplay() {
   const { data, isLoading, error } = useFindManyQuery({});
 
-  if (isLoading || !data) return <p>Loading...</p>;
+  if (isLoading || !data) return <TableSkeleton />;
 
   if (error)
     return (

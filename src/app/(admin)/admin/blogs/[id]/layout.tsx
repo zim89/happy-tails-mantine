@@ -1,6 +1,6 @@
 'use client';
 
-import Loader from '@/components/Loader/Loader';
+import { PostDetailsSkeleton } from '@/modules/PostDetails/components/Skeleton';
 import { useFindOneQuery } from '@/shared/api/postApi';
 import { NOT_FOUND } from '@/shared/constants/httpCodes';
 import { PostFormProvider } from '@/shared/context/postform.context';
@@ -13,10 +13,9 @@ type Props = {
 };
 
 export default function Layout({ children, params }: Props) {
-  const { data, isLoading, error } = useFindOneQuery({ id: params.id });
+  const { data, error, isLoading } = useFindOneQuery({ id: params.id });
 
-  if (isLoading) return <Loader />;
-
+  if (isLoading) return <PostDetailsSkeleton />;
   if (isAxiosQueryError(error) && error.status === NOT_FOUND) notFound();
 
   if (error)
