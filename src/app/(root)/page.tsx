@@ -1,6 +1,7 @@
 import BestSellers from '@/modules/BestSellers';
 import Blog from '@/modules/Blog';
 import Categories from '@/modules/Categories';
+import { ChatBot } from '@/modules/ChatBot';
 import Featured from '@/modules/Featured';
 import HeroCarousel from '@/modules/HeroCarousel';
 import WhyUs from '@/modules/WhyUs';
@@ -14,6 +15,7 @@ export default async function HomePage() {
       <Categories />
       <Blog />
       <WhyUs />
+      <ChatBot />
     </>
   );
 }

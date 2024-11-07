@@ -82,8 +82,6 @@ export default function ChatRoom({ id }: { id: string }) {
                           | undefined;
 
                         if (fileExtension && FileTypeIcons[fileExtension]) {
-                          console.log(fileExtension);
-                          console.log(FileTypeIcons[fileExtension]);
                           return (
                             <li
                               key={i}

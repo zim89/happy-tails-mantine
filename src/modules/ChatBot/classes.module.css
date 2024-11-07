@@ -1,0 +1,3 @@
+.chat a {
+  @apply relative z-[100] text-brand-blue underline;
+}
