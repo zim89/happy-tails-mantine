@@ -13,7 +13,7 @@ export const ChatBot = () => {
   const call_chat_service = async (params: any) => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/assistance?message=${params.userInput}`
+        `${process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_DOMAIN}/api/assistance?message=${params.userInput}`
       );
 
       await params.injectMessage(res.data);
