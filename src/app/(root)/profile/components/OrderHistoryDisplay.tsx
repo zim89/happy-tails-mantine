@@ -9,7 +9,7 @@ import { OrderTabs } from '@/app/(root)/profile/components/OrderTabs';
 import { useFindManyByEmailQuery } from '@/shared/api/ordersApi';
 import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
-import { mapFilterToDate } from '@/shared/helpers/date.helpers';
+import { filterByDate } from '@/shared/helpers/date.helpers';
 
 export const OrderHistoryDisplay = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,40 +29,36 @@ export const OrderHistoryDisplay = () => {
   const filterParam = params.get('filter');
 
   useEffect(() => {
-    if (searchParam?.trim() && data) {
+    if (data) {
       setFiltered(
-        data.content.filter(
-          (order) =>
-            order.orderStatus
-              .toLowerCase()
-              .includes(searchParam.toLowerCase()) ||
-            order.number.toLowerCase().includes(searchParam.toLowerCase())
-        )
-      );
-    } else if (data) {
-      setFiltered(data.content);
-    }
-  }, [searchParam]);
-
-  useEffect(() => {
-    if (filterParam?.trim()) {
-      setFiltered((prev) =>
-        prev.filter((item) => item.createdDate >= mapFilterToDate(filterParam!))
+        data.content
+          .filter((order) =>
+            searchParam
+              ? order.orderStatus
+                  .toLowerCase()
+                  .includes(searchParam.toLowerCase()) ||
+                order.number.toLowerCase().includes(searchParam.toLowerCase())
+              : true
+          )
+          .filter((item) => {
+            return filterParam
+              ? filterByDate(filterParam, item.createdDate)
+              : true;
+          })
       );
     }
-  }, [filterParam]);
+  }, [data, filterParam, searchParam]);
 
   useEffect(() => {
     pageParam ? setCurrentPage(Number(pageParam)) : router.replace('?page=1');
-  }, [pageParam]);
+  }, [pageParam, router]);
 
   useEffect(() => {
     if (data) {
       setCurrentPage(1); // Reset page when new data is received
-      setFiltered(data!.content); // Reset filtered orders when new data is received
       router.replace('?page=1'); // Reset search query when new data is received
     }
-  }, [data]);
+  }, [data, router]);
 
   if (!data) return;
 

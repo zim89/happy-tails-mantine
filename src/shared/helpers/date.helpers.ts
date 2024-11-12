@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(isBetween);
 
 export const getDeliveryDate = (
   daysOfDelivery: number,
@@ -13,17 +16,27 @@ export const getDeliveryDate = (
     : result.format('D MMMM');
 };
 
-export const mapFilterToDate = (filter: string) => {
+export const filterByDate = (filter: string, date: Date | number) => {
   switch (filter) {
     case '2YPAST':
-      return dayjs().subtract(2, 'years').unix();
+      return dayjs
+        .unix(date)
+        .isBetween(
+          dayjs().subtract(2, 'year').startOf('year'),
+          dayjs().subtract(2, 'year').endOf('year')
+        );
     case 'YPAST':
-      return dayjs().subtract(1, 'year').unix();
+      return dayjs
+        .unix(date)
+        .isBetween(
+          dayjs().subtract(1, 'year').startOf('year'),
+          dayjs().subtract(1, 'year').endOf('year')
+        );
     case 'L6M':
-      return dayjs().subtract(6, 'months').unix();
+      return dayjs.unix(date).isAfter(dayjs().subtract(6, 'month'));
     case 'L30D':
-      return dayjs().subtract(30, 'days').unix();
+      return dayjs.unix(date).isAfter(dayjs().subtract(30, 'day'));
     default:
-      return dayjs(filter).unix();
+      return true;
   }
 };
