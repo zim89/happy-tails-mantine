@@ -16,7 +16,7 @@ export const getDeliveryDate = (
     : result.format('D MMMM');
 };
 
-export const filterByDate = (filter: string, date: Date | number) => {
+export const filterByDate = (filter: string, date: number) => {
   switch (filter) {
     case '2YPAST':
       return dayjs
