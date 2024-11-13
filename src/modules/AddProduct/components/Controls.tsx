@@ -49,7 +49,6 @@ export const Controls = () => {
     productForm.reset();
     setVariants([]);
     clearFile();
-    productForm.setFieldValue('description', '');
   };
 
   const handleSubmit = async ({

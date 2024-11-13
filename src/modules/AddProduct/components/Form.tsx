@@ -24,18 +24,11 @@ export const Form = () => {
     productForm.setFieldValue('image', null);
   };
 
-  const handleClear = () => {
-    productForm.reset();
-    productForm.setFieldValue('description', () => '', { forceUpdate: true });
-  };
-
   return (
     <div className={classes.form}>
       <h3 className='mb-6 border-b border-b-brand-grey-400 py-2 text-xl font-bold'>
         Product Options
       </h3>
-
-      <button onClick={handleClear}>Clear</button>
 
       <div className='flex flex-col justify-between gap-6 md:flex-row lg:gap-[42px]'>
         <div className='w-full md:max-w-[60%]'>
