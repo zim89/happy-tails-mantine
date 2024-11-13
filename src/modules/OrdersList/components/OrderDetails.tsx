@@ -106,9 +106,9 @@ export const OrderDetails = ({
           className='col-span-1 justify-self-end rounded-sm border border-solid border-brand-grey-400 p-[10px]'
         >
           {revealedOrders.includes(order.number) ? (
-            <ChevronDown color='black' size={16} strokeWidth={3} />
-          ) : (
             <ChevronUp color='black' size={16} strokeWidth={3} />
+          ) : (
+            <ChevronDown color='black' size={16} strokeWidth={3} />
           )}
         </UnstyledButton>
       </div>
