@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import Bot from 'react-chatbotify';
-import { BotIcon } from 'lucide-react';
 
 import classes from './classes.module.css';
 import Image from 'next/image';
@@ -12,8 +11,19 @@ export const ChatBot = () => {
 
   const call_chat_service = async (params: any) => {
     try {
-      const res = await axios.get(
-        `${process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_DOMAIN}/api/assistance?message=${params.userInput}`
+      const messages: { sender: string; content: string }[] = JSON.parse(
+        globalThis.localStorage.getItem('chat_bot') || ''
+      );
+
+      const res = await axios.post(
+        `${process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_DOMAIN}/api/assistance`,
+        {
+          message: params.userInput,
+          messages: messages.map((message) => ({
+            role: message.sender === 'user' ? 'user' : 'assistant',
+            content: message.content,
+          })),
+        }
       );
 
       await params.injectMessage(res.data);

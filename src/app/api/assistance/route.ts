@@ -6,16 +6,19 @@ const agentId = process.env.NEXT_PUBLIC_MISTRAL_AGENT!;
 
 const client = new Mistral({ apiKey: apiKey });
 
-export const GET = async (params: NextRequest) => {
-  const message = params.url.match(/message=([^&]*)/);
+export const POST = async (params: NextRequest) => {
+  const res = (await params.json()) as unknown as {
+    messages: { sender: string; content: string }[];
+    message: string;
+  };
 
   const chatResponse = await client.agents.complete({
     agentId,
     messages: [
       {
         role: 'user',
-        content: message
-          ? message[1]
+        content: res.message
+          ? res.message
           : 'Show me a list of all categories available.',
       },
     ],
