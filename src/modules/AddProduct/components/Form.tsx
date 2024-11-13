@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FileInput, Select, TextInput, Textarea, Tooltip } from '@mantine/core';
+import { FileInput, Select, TextInput, Tooltip } from '@mantine/core';
 import Image from 'next/image';
 import { ChevronDown, Info, UploadCloud, X } from 'lucide-react';
 
@@ -10,8 +10,7 @@ import classes from '../classes.module.css';
 import { context } from '../lib/utils';
 import { ProductStatus } from '@/shared/types/types';
 import EditorWrapper from '@/modules/EditorWrapper';
-import PostEditor from '@/modules/PostEditor';
-import { EditorTemplate } from '@/modules/EditorTemplate';
+import { AddProductEditor } from './AddProductEditor';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -204,19 +203,7 @@ export const Form = () => {
             productForm.setFieldValue('description', value);
           }}
         >
-          {(editor) => (
-            <div className='mb-10 mt-6 flex-1 flex-wrap'>
-              <EditorTemplate
-                kind='text'
-                editor={editor}
-                classNames={{
-                  root: 'h-full max-w-[430px]',
-                  content: 'h-full',
-                  typographyStylesProvider: 'h-full',
-                }}
-              />
-            </div>
-          )}
+          {(editor) => <AddProductEditor editor={editor} />}
         </EditorWrapper>
       </div>
     </div>
