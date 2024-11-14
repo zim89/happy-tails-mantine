@@ -21,12 +21,12 @@ export default function CallbackPage() {
   useEffect(() => {
     const fn = async () => {
       if (params.get('code')) {
+        console.log(params.get('code'));
         try {
-          await login(params.get('code')!).unwrap();
-          const { data } = await axiosInstance.get('/user/info');
-
-          dispatch(setAuthData(data));
-          router.push('/');
+          // await login(params.get('code')!).unwrap();
+          // const { data } = await axiosInstance.get('/user/info');
+          // dispatch(setAuthData(data));
+          // router.push('/');
         } catch (err) {
           console.log(err);
         }
