@@ -62,6 +62,7 @@ const columns = [
       <span className={classes.columnCell}>{info.getValue()}</span>
     ),
     minSize: 80,
+    sortingFn: 'text',
   }),
   columnHelper.accessor('id', {
     cell: (info) => (

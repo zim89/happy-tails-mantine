@@ -27,6 +27,8 @@ import {
 } from '@/shared/constants/sizes.const';
 import { ResizableTableHead } from '@/components/ResizableTableHead';
 
+type DateTimeArray = [number, number, number, number, number, number, number];
+
 type Props = {
   data: User[];
 };
@@ -45,11 +47,12 @@ const columns = [
     cell: (info) => {
       return (
         <span className='whitespace-pre'>
-          {info.row.original.firstName} {info.row.original.lastName}
+          {info.getValue()} {info.row.original.lastName}
         </span>
       );
     },
     header: 'Name',
+    sortingFn: 'text',
     minSize: 80,
   }),
   columnHelper.accessor('email', {
@@ -77,6 +80,18 @@ const columns = [
       );
     },
     header: 'Date',
+    sortingFn: (rowA, rowB) => {
+      // We have from server this format of dates: [year, month, day, hour, minute, second, millisecond]
+      // So we need to convert them to the Date format, and then sort them
+
+      const valueA = rowA.original.registerDate as DateTimeArray;
+      const valueB = rowB.original.registerDate as DateTimeArray;
+
+      const dateA = new Date(...valueA);
+      const dateB = new Date(...valueB);
+      return dateA.getTime() - dateB.getTime();
+    },
+
     minSize: 80,
   }),
   columnHelper.display({
@@ -109,9 +124,9 @@ export const Table = ({ data }: Props) => {
         pageSize: Number(limit) || 10,
       },
     },
-    columnResizeMode: 'onChange',
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: 'onChange',
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
