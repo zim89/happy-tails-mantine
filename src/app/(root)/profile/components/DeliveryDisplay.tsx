@@ -7,12 +7,13 @@ import classes from '../styles.module.css';
 
 import { useAuth } from '@/shared/hooks/useAuth';
 import { VerifyEmailForm } from './VerifyEmailForm';
+import { cn } from '@/shared/lib/utils';
 
 export default function DeliveryDisplay() {
   const { currentUser } = useAuth();
 
   return (
-    <div className={classes.box}>
+    <div className={cn('px-4', classes.box)}>
       <LoadingOverlay
         visible={!currentUser?.emailVerified}
         zIndex={10}

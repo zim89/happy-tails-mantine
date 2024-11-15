@@ -44,7 +44,7 @@
 }
 
 .profileContent {
-  @apply mx-auto mt-[56px] flex min-h-[70vh] flex-col text-center md:mt-[72px] md:min-h-[50vh] md:max-w-[572px] lg:mt-[56px];
+  @apply mx-auto mt-[56px] flex min-h-[70vh] flex-col px-4 text-center md:mt-[72px] md:min-h-[50vh] md:max-w-[572px] lg:mt-[56px];
 }
 
 /* Shared */

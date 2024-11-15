@@ -22,7 +22,7 @@ export default function Header() {
     <HeaderTemplate>
       {({ Logo }) => (
         <>
-          <Container>
+          <div className='container'>
             <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
               <div className='flex gap-4'>
                 <BurgerMenu categories={data.content} />
@@ -46,7 +46,7 @@ export default function Header() {
                 <CartButton />
               </div>
             </div>
-          </Container>
+          </div>
           <Navbar categories={data.content} />
         </>
       )}

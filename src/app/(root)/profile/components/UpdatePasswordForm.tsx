@@ -23,7 +23,7 @@ export default function UpdatePasswordForm() {
     setStep((current) => (current < 2 ? current + 1 : current));
 
   return (
-    <div className='relative'>
+    <div className='relative px-4'>
       <LoadingOverlay
         visible={!currentUser.emailVerified}
         zIndex={20}
