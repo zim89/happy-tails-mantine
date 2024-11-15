@@ -195,7 +195,7 @@ export const SingleVariant = ({ index, setVariants }: Props) => {
               classNames={{
                 root: 'form-root',
                 wrapper: classes.fileWrapper,
-                error: 'form-error -left-[155px]',
+                error: 'form-error -left-[140px] -bottom-4',
                 input: cn(
                   'form-input',
                   classes.fileInput,

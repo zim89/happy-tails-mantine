@@ -165,11 +165,8 @@ export const team: TeamMember[] = [
     avatarStyles: {
       border: '1px solid #C8C8C8',
       borderRadius: '50%',
-      gridColumn: '2/3',
     },
-    cardStyles: {
-      gridColumn: '2/3',
-    },
+
     name: 'Olha Kliuchka',
     occupation: 'Manual QA Engineer',
     desc: 'I strive for innovation and continuous improvement, ensuring our products exceed expectations.',
@@ -187,9 +184,7 @@ export const team: TeamMember[] = [
       objectPosition: '0 3px',
       backgroundColor: '#c18383',
     },
-    cardStyles: {
-      gridColumn: '3/4',
-    },
+
     occupation: 'Backend Developer',
     desc: 'I am a backend developer who is skillfully using Java tools to solve current problems.',
     links: [

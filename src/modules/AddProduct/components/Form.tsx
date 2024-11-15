@@ -96,7 +96,6 @@ export const Form = () => {
           <div className={classes.inputRow}>
             <Select
               {...productForm.getInputProps('categoryName')}
-              defaultValue={null}
               withAsterisk
               classNames={{
                 root: 'form-root w-full',
@@ -114,7 +113,7 @@ export const Form = () => {
               rightSection={<ChevronDown color='black' size={16} />}
               type='text'
               label='Category'
-              data={categoryList.map((cat) => cat.name)}
+              data={[...categoryList.map((cat) => cat.name), 'None']}
             />
 
             <Select
@@ -170,7 +169,7 @@ export const Form = () => {
                     classNames={{
                       root: 'form-root',
                       wrapper: classes.fileWrapper,
-                      error: 'form-error -left-[155px]',
+                      error: 'form-error -left-[138px] -bottom-4',
                       input: cn(
                         'form-input',
                         classes.fileInput,

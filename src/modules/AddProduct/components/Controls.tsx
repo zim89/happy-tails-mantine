@@ -47,6 +47,7 @@ export const Controls = () => {
 
   const clearAndClose = () => {
     productForm.reset();
+    productForm.setFieldValue('categoryName', 'None');
     setVariants([]);
     clearFile();
   };

@@ -12,7 +12,7 @@ export default function TeamList() {
           brought it to life.
         </p>
       </hgroup>
-      <div className='mb-10 grid-cols-[1fr] gap-4 px-5 md:mb-12 md:grid md:grid-cols-2 md:gap-y-6 lg:md:gap-x-6 lg:grid-cols-4'>
+      <div className='mb-10 flex flex-col gap-4 px-5 md:mb-12 md:grid md:grid-cols-2 md:gap-y-6 lg:md:gap-x-6 lg:grid-cols-4'>
         {team.map((tm, index) => (
           <TeamMember key={index} {...tm} />
         ))}
