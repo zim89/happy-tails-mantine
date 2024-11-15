@@ -16,17 +16,16 @@ export default function CallbackPage() {
   const params = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [login, { isLoading, error }] = useLoginOauthMutation();
+  const [login, { error }] = useLoginOauthMutation();
 
   useEffect(() => {
     const fn = async () => {
       if (params.get('code')) {
-        console.log(params.get('code'));
         try {
-          // await login(params.get('code')!).unwrap();
-          // const { data } = await axiosInstance.get('/user/info');
-          // dispatch(setAuthData(data));
-          // router.push('/');
+          await login(params.get('code')!).unwrap();
+          const { data } = await axiosInstance.get('/user/info');
+          dispatch(setAuthData(data));
+          router.push('/');
         } catch (err) {
           console.log(err);
         }

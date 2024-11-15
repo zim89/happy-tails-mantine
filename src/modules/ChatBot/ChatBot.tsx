@@ -2,9 +2,9 @@
 
 import axios from 'axios';
 import Bot from 'react-chatbotify';
+import Image from 'next/image';
 
 import classes from './classes.module.css';
-import Image from 'next/image';
 
 export const ChatBot = () => {
   let hasError = false;

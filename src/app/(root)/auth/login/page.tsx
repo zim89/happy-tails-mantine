@@ -36,7 +36,7 @@ export default function Page() {
         </p>
         <div>
           <Link
-            href={`${GOOGLE_AUTH_URL}`}
+            href={decodeURIComponent(GOOGLE_AUTH_URL!)}
             className='flex items-center justify-center gap-2 rounded-0.5 border border-brand-grey-400 py-[14px] text-base font-bold md:py-2.5'
           >
             <GoogleIcon />

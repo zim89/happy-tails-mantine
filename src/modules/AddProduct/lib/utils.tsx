@@ -86,7 +86,7 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
   const form = useForm({
     initialValues: {
       name: '',
-      categoryName: '' as Product['categoryName'],
+      categoryName: 'None' as Product['categoryName'],
       price: 0,
       productType: 'INDOORS' as Product['productType'],
       description: '',
@@ -103,7 +103,13 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
 
     validate: {
       name: isNotEmpty('Entered an invalid product name'),
-      categoryName: isNotEmpty('Pick a category for the product'),
+      categoryName: (val) => {
+        const candidate = val.trim();
+
+        if (!candidate || candidate === 'None') {
+          return 'Pick a category for the product';
+        }
+      },
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       image: isNotEmpty('Please select a product image'),
       description: isNotEmpty('Enter a description'),
