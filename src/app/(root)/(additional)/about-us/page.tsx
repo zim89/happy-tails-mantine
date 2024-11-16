@@ -1,7 +1,6 @@
 import { Container } from '@mantine/core';
 
 import classes from './classes.module.css';
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import Introduction from '@/modules/Introduction';
 import TeamList from '@/modules/TeamList';
 import Technologies from '@/modules/Technologies';
@@ -9,11 +8,7 @@ import Technologies from '@/modules/Technologies';
 export default function Page() {
   return (
     <>
-      <Container>
-        <Breadcrumbs
-          crumbs={[{ text: 'Home', href: '/' }, { text: 'About Us' }]}
-          classNames={{ root: 'p-0 pt-4' }}
-        />
+      <div className='container px-0'>
         <hgroup className={classes.heading}>
           <h1>About us</h1>
           <p>
@@ -25,7 +20,7 @@ export default function Page() {
         <Introduction />
         <TeamList />
         <Technologies />
-      </Container>
+      </div>
     </>
   );
 }

@@ -12,7 +12,7 @@ export const UpdateUserDisplay = () => {
   const { currentUser } = useAuth();
 
   return (
-    <div className={cn('relative', classes.box)}>
+    <div className={cn('relative px-4', classes.box)}>
       <h1 className={cn(classes.boxHeading, 'mb-8 hidden lg:block')}>
         Update your details
       </h1>

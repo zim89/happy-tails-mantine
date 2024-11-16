@@ -45,12 +45,8 @@ export default function Introduction() {
         </div>
       </div>
 
-      <div className='mt-12 bg-[#F39324] px-5 py-8 text-white md:px-9 md:py-12 lg:p-14'>
-        <Container
-          classNames={{
-            root: 'flex flex-col gap-6 md:flex-row justify-between md:items-center',
-          }}
-        >
+      <div className='mt-12 bg-brand-orange-400 px-5 py-8 text-white md:px-9 md:py-12 lg:p-14'>
+        <div className='container mx-0 flex flex-col justify-between gap-6 !px-0 md:flex-row md:items-center lg:!pl-[100px]'>
           <h2 className='text-xl leading-8 md:max-w-[253px] md:text-[28px]'>
             Who are we and what do we do?
           </h2>
@@ -61,9 +57,9 @@ export default function Introduction() {
             collaborative spirit and passion for innovation drive us to create
             exceptional digital solutions tailored to our clients' needs.`}
           </p>
-        </Container>
+        </div>
       </div>
-      <Container>
+      <div className='container lg:pl-[156px]'>
         <div className='mb-32 mt-[40px] md:my-12 md:mb-[136px] md:flex md:flex-row md:justify-between'>
           <hgroup className=' lg:py-[45px]'>
             <h2 className='mb-4 text-xl leading-8 md:max-w-[253px] md:text-[28px]'>
@@ -87,7 +83,7 @@ export default function Introduction() {
             />
           </div>
         </div>
-      </Container>
+      </div>
     </>
   );
 }

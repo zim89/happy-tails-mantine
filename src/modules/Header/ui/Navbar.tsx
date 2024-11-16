@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Container } from '@mantine/core';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/shared/lib/utils';
@@ -12,7 +11,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
 
   return (
     <div className='hidden bg-brand-grey-300 lg:block'>
-      <Container>
+      <div className='container'>
         <ul className='flex justify-between py-2'>
           <li>
             <Link
@@ -39,7 +38,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
             </li>
           ))}
         </ul>
-      </Container>
+      </div>
     </div>
   );
 }

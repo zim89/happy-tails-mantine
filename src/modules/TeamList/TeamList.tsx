@@ -4,7 +4,7 @@ import { team } from './lib/data';
 
 export default function TeamList() {
   return (
-    <Container>
+    <div className='container'>
       <hgroup className='mx-5 mb-14 text-center'>
         <h3 className='mb-4 text-[2rem]/[2.375rem] uppercase'>Meet our team</h3>
         <p className='font-light leading-6'>
@@ -17,6 +17,6 @@ export default function TeamList() {
           <TeamMember key={index} {...tm} />
         ))}
       </div>
-    </Container>
+    </div>
   );
 }

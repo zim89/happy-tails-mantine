@@ -39,7 +39,10 @@ export default function Technologies() {
         withControls={false}
         speed={2}
         getEmblaApi={(inst) => setEmbla(inst)}
-        classNames={{ container: 'gap-12 select-none', viewport: 'mb-24' }}
+        classNames={{
+          container: 'container gap-12 select-none',
+          viewport: 'mb-24',
+        }}
         initialSlide={3}
       >
         {technologies.map((tech) => (
