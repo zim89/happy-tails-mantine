@@ -82,7 +82,7 @@ export const PostFormProvider = ({ children, post }: FormProviderProps) => {
   // It's used for rolling back changes after pre-viewing a post
   const [_, handlers, history] = useStateHistory(defaultValues);
 
-  const titlePattern = /^[a-zA-Z0-9 _,.'-]+$/;
+  const titlePattern = /^[A-Za-z0-9\s\-_,\.;:()]+$/;
 
   const form = useForm({
     initialValues: defaultValues,
