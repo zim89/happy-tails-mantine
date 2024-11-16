@@ -28,7 +28,7 @@ export default function RegisterForm() {
       firstName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       lastName: hasLength({ min: 2 }, 'Field must have 2 or more characters'),
       email: isEmail('Invalid email'),
-      password: hasLength({ min: 5 }, 'Password must have 5 or more symbols'),
+      password: hasLength({ min: 6 }, 'Password must have 6 or more symbols'),
       confirmPassword: matchesField('password', 'Passwords did not match'),
     },
   });
