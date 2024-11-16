@@ -1,5 +1,5 @@
 'use client';
-import { Paperclip } from 'lucide-react';
+import { Download, Paperclip } from 'lucide-react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -21,6 +21,9 @@ import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useEffect } from 'react';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { FileType, FileTypeIcons } from '@/shared/constants/file-types.const';
+import Image from 'next/image';
+import { ImageModal } from '@/modules/ChatRoom/components/ImageModal';
 
 export const ContactForm = () => {
   const { isAuth, currentUser } = useAuth();
@@ -116,6 +119,10 @@ export const ContactForm = () => {
     }
   };
 
+  const fileExtension = form.values.file?.name.split('.').pop() as
+    | FileType
+    | undefined;
+
   return (
     <form
       className={styles.form}
@@ -179,6 +186,36 @@ export const ContactForm = () => {
           </Tooltip>
         </div>
       </div>
+
+      {form.values.file && fileExtension && (
+        <div className='mb-6'>
+          <h3 className='py-4 text-base font-bold'>Attachment</h3>
+
+          <div className='flex items-center justify-between rounded-sm border border-brand-grey-400 p-4'>
+            <div className='flex flex-1 items-center gap-3'>
+              <Image
+                src={FileTypeIcons[fileExtension]}
+                alt='File icon'
+                width={24}
+                height={24}
+              />
+              <p className='text-sm/[16.8px] font-bold'>
+                {form.values.file?.name}
+              </p>
+            </div>
+            <div className='flex items-center'>
+              <ImageModal src={URL.createObjectURL(form.values.file)} />
+              <a
+                href={URL.createObjectURL(form.values.file)}
+                download
+                className='btn-icon'
+              >
+                <Download className='size-5' />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       <UnstyledButton className={styles.terms}>
         <Checkbox
