@@ -6,7 +6,7 @@ import { ContactForm } from './components/ContactForm';
 
 export default function ContactsPage() {
   return (
-    <Container>
+    <div>
       <Breadcrumbs
         crumbs={[{ href: '/', text: 'Home' }, { text: 'Contacts' }]}
         classNames={{ root: 'p-0 pt-4' }}
@@ -30,6 +30,6 @@ export default function ContactsPage() {
           to new and exciting ventures.
         </p>
       </div>
-    </Container>
+    </div>
   );
 }

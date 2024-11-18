@@ -10,7 +10,7 @@ export default async function BlogPage() {
 
   return (
     <>
-      <Container>
+      <div className='container'>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'Blog' }]}
           classNames={{
@@ -26,7 +26,7 @@ export default async function BlogPage() {
           <HeroBlog />
           <PostList posts={posts} />
         </div>
-      </Container>
+      </div>
     </>
   );
 }

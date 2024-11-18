@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <>
-        <Container>
+        <div className='container'>
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             ]}
             classNames={{ root: 'p-0 pt-4' }}
           />
-        </Container>
+        </div>
 
         {post && (
           <>
@@ -62,7 +62,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               />
             </div>
 
-            <Container>
+            <div className='container'>
               <div className='flex flex-col gap-8 py-12 lg:flex-row lg:gap-[65px] lg:pb-[72px] lg:pt-16'>
                 <div className='lg:w-[731px] lg:flex-none'>
                   <h1 className='mb-4 text-[32px]/[1.2] font-bold uppercase lg:text-4xl/normal'>
@@ -88,7 +88,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                   </Suspense>
                 </div>
               </div>
-            </Container>
+            </div>
           </>
         )}
       </>

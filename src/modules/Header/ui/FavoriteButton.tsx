@@ -2,21 +2,20 @@
 import { Indicator } from '@mantine/core';
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
-import { useAppSelector } from '@/shared/redux/store';
-import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
+import { useSelectFavourites } from '@/shared/hooks/useSelectFavourites';
 
 export default function FavoriteButton() {
-  const favorites = useAppSelector(selectFavorites);
-  const hasFavorites = favorites.length > 0;
+  const favourites = useSelectFavourites((state) => state.length);
+  const hasFavorites = favourites > 0;
 
   return (
     <Link
       href={'/wishlist'}
       className='group flex lg:items-center lg:justify-center'
-      aria-label="Go to Wishlist"
+      aria-label='Go to Wishlist'
     >
       <Indicator
-        label={favorites.length}
+        label={favourites}
         disabled={!hasFavorites}
         position='bottom-end'
         color='#F39324'

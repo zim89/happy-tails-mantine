@@ -59,7 +59,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <>
       <section className='pb-16 lg:pb-28'>
-        <Container>
+        <div className='container'>
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
@@ -276,7 +276,7 @@ export default function ProductDetails({ product }: Props) {
               targetCategory={product.categoryName}
             />
           )}
-        </Container>
+        </div>
       </section>
     </>
   );

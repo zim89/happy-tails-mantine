@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { Container } from '@mantine/core';
 import Link from 'next/link';
 
 import CartButton from '@/modules/CartButton';

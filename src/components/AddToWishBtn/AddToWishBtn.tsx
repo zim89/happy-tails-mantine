@@ -4,6 +4,7 @@ import React from 'react';
 import { Heart, Trash2 } from 'lucide-react';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
+import { createSelector } from '@reduxjs/toolkit';
 
 import {
   addToFavorites,
@@ -12,14 +13,22 @@ import {
 } from '@/shared/redux/favorites/favoritesSlice';
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import { Product } from '@/shared/types/types';
-import { createSelector } from '@reduxjs/toolkit';
+import { useAddFavouriteMutation } from '@/shared/api/favouriteApi';
 
 export interface Props {
   product: Product;
   withText?: boolean;
   disabled?: boolean;
+  size?: string;
 }
-export default function AddToWishBtn({ withText, disabled, product }: Props) {
+export default function AddToWishBtn({
+  withText,
+  disabled,
+  product,
+  size,
+}: Props) {
+  const [add, { isError, isLoading }] = useAddFavouriteMutation();
+
   const dispatch = useAppDispatch();
   const isFavourite = useAppSelector(
     createSelector([selectFavorites], (items) =>
@@ -29,12 +38,20 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
 
   const isWishlist = usePathname() === '/wishlist';
 
-  const toggleFavorite = () => {
+  const toggleFavorite = async () => {
     if (isFavourite) {
       dispatch(removeFromFavorites(product.id));
       return;
     }
-    dispatch(addToFavorites(product));
+    // dispatch(addToFavorites(product));
+    await add({
+      productId: product.id,
+      size: (size
+        ? size
+        : product.productSizes
+          ? product.productSizes[0].size
+          : 'ONE SIZE') as NonNullable<Product['productSizes']>[number]['size'],
+    }).unwrap();
   };
 
   return (

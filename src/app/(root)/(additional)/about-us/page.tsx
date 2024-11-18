@@ -1,5 +1,3 @@
-import { Container } from '@mantine/core';
-
 import classes from './classes.module.css';
 import Introduction from '@/modules/Introduction';
 import TeamList from '@/modules/TeamList';
