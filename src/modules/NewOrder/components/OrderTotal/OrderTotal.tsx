@@ -140,7 +140,7 @@ export default function OrderTotal({ form, taxRate }: Props) {
               input: 'form-input',
               root: 'form-root mt-2',
               label: 'form-label',
-              error: 'form-error',
+              error: 'form-error -bottom-4',
             }}
             error={
               isAxiosQueryError(error) &&

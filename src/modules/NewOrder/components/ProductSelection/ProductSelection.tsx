@@ -169,7 +169,10 @@ export default function ProductSelection({ form }: Props) {
           </div>
         </Combobox.Target>
 
-        <Combobox.Dropdown>
+        <Combobox.Dropdown
+          mah={400}
+          classNames={{ dropdown: 'overflow-y-auto' }}
+        >
           <Combobox.Options>
             {options.length > 0 ? (
               options
