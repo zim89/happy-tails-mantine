@@ -1,4 +1,5 @@
 export const SIZES = {
+  XS: 'XS',
   S: 'S',
   M: 'M',
   L: 'L',
