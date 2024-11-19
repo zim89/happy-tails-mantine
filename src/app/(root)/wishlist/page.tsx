@@ -1,23 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Breadcrumbs, Container, Group, Pagination } from '@mantine/core';
+import { Breadcrumbs, Group, Pagination } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 
 import PaginationNextBtn from '@/components/PaginationNextBtn/PaginationNextBtn';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn/PaginationPrevBtn';
-import ProductList from '@/modules/ProductList';
-import { useAppSelector } from '@/shared/redux/store';
-import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 import { useFindManyQuery } from '@/shared/api/favouriteApi';
 import { FavouriteList } from '@/modules/FavouriteList';
 
 export default function Page() {
   const { data, isLoading } = useFindManyQuery({ page: 0, limit: 10000000000 });
 
-  // const favorites = useAppSelector(selectFavorites);
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 10,
     duration: 500,
@@ -107,12 +103,6 @@ export default function Page() {
           )}
 
           <div className='container' ref={targetRef}>
-            {/* <ProductList
-              data={data.content.slice(
-                (activePage - 1) * limit,
-                activePage * limit
-              )}
-            /> */}
             <FavouriteList favourites={data.content} />
             {data.content.length > limit && (
               <Pagination.Root

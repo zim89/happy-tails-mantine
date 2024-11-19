@@ -11,9 +11,8 @@ import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.share
 import AddToCartBtn from '@/components/AddToCartBtn/AddToCartBtn';
 import { useDeleteFavouriteMutation } from '@/shared/api/favouriteApi';
 import { Favourite } from '@/shared/types/favourite.types';
-import { Product } from '@/shared/types/types';
-import { useAppSelector } from '@/shared/redux/store';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
+import Loader from '@/components/Loader';
 
 type Props = {
   favourite: Favourite;
@@ -25,7 +24,8 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     state.find((p) => p.id === favourite.productId)
   );
 
-  const [deleteItem] = useDeleteFavouriteMutation();
+  const [deleteItem, { isLoading: deletionIsOnProgress }] =
+    useDeleteFavouriteMutation();
 
   const isAvailable = favourite.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
@@ -40,7 +40,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
 
   return (
     <div
-      className='group/card h-[465px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:w-[373px]'
+      className='group/card h-[400px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:h-[465px] lg:w-[373px]'
       onClick={() => router?.push(`/products/${favourite.productId}`)}
     >
       <div
@@ -89,26 +89,32 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
                 decimalScale={2}
               />
             </p>
-            <div className='flex h-8 w-12 items-center justify-center rounded-3xl border-2 border-black text-base text-black disabled:text-brand-grey-400'>
-              {favourite.productSize}
-            </div>
+            {favourite.productSize !== 'ONE SIZE' && (
+              <div className='flex h-8 w-12 items-center justify-center rounded-3xl border-2 border-black text-base text-black disabled:text-brand-grey-400'>
+                {favourite.productSize}
+              </div>
+            )}
           </div>
-          <UnstyledButton
-            classNames={{
-              root: 'bg-transparent flex items-center gap-1 text-brand-red-400 hover:text-brand-red-500',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(favourite.productId);
-            }}
-          >
-            <Trash2 size={16} />
-            Remove
-          </UnstyledButton>
+          {!deletionIsOnProgress ? (
+            <UnstyledButton
+              classNames={{
+                root: 'bg-transparent flex items-center gap-1 text-brand-red-400 hover:text-brand-red-500',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(favourite.productId);
+              }}
+            >
+              <Trash2 size={16} />
+              Remove
+            </UnstyledButton>
+          ) : (
+            <Loader className='mr-6 mt-2' size={16} />
+          )}
         </div>
 
         {sourceProduct && (
-          <div className='mt-14'>
+          <div className='mt-2 lg:mt-14'>
             <AddToCartBtn
               product={sourceProduct}
               count={1}

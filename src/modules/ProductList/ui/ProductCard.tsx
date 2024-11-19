@@ -109,7 +109,7 @@ export default function ProductCard({ product, router }: Props) {
             >
               <AddToWishBtn
                 product={product}
-                size={selectedSize?.size || 'ONE SIZE'}
+                size={selectedSize?.size || 'ONE_SIZE'}
               />
             </span>
           </p>

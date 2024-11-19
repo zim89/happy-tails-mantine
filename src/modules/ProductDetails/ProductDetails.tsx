@@ -248,7 +248,11 @@ export default function ProductDetails({ product }: Props) {
                     />
                   </div>
 
-                  <AddToWishBtn withText product={product} />
+                  <AddToWishBtn
+                    withText
+                    product={product}
+                    size={selectedSize?.size || 'ONE_SIZE'}
+                  />
                 </div>
               </div>
 
