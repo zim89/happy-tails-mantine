@@ -33,7 +33,7 @@ export default function ProductCard({ product, router }: Props) {
   return (
     <Link href={`/products/${product.id}`}>
       <div
-        className='group/card h-[479px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:w-[373px]'
+        className='group/card h-[479px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:h-[460px] lg:w-[373px]'
         onClick={() => router?.push(`/products/${product.id}`)}
       >
         <div
