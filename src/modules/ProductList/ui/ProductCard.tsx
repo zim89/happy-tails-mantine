@@ -1,25 +1,27 @@
 'use client';
 
-import { NumberFormatter } from '@mantine/core';
+import { NumberFormatter, UnstyledButton } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useState } from 'react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
 import { Product } from '@/shared/types/types';
 import AddToCartBtn from '@/components/AddToCartBtn/AddToCartBtn';
 import AddToWishBtn from '@/components/AddToWishBtn/AddToWishBtn';
 import { cn } from '@/shared/lib/utils';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
-import { useState } from 'react';
 import { generateSizes } from '@/shared/helpers/size.helpers';
-import { BG_COLORS } from '@/shared/constants/colors.const';
 
 interface Props {
   product: Product;
   router?: AppRouterInstance;
 }
 export default function ProductCard({ product, router }: Props) {
+  const [viewedColors, setViewedColors] = useState<[number, number]>([0, 3]);
+
   const isAvailable = product.productStatus === 'IN STOCK';
   const desktop = useMediaQuery(`(min-width: 1280px)`);
   const colorList = generateColorList(product);
@@ -70,21 +72,42 @@ export default function ProductCard({ product, router }: Props) {
             </p>
             <ul className='hidden lg:flex lg:gap-2'>
               {colorList.length > 0 &&
-                colorList
-                  .filter((item) => item.colorName !== product.color)
-                  .map((item) => {
-                    return (
-                      <li key={item.productId}>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            `inline-block size-[18px] rounded-full border border-brand-grey-400`,
-                            BG_COLORS[item.colorName]
-                          )}
-                        />
-                      </li>
-                    );
-                  })}
+                colorList.slice(...viewedColors).map((item) => {
+                  return (
+                    <li key={item.productId}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'inline-block size-[18px] rounded-full border border-brand-grey-400',
+                          item.colorName === product.color && 'border-2'
+                        )}
+                        style={{
+                          backgroundColor: item.colorHex,
+                        }}
+                      />
+                    </li>
+                  );
+                })}
+              {colorList.length > 3 && (
+                <li className='-mt-[2px] text-sm/[21px] text-brand-grey-800'>
+                  <UnstyledButton
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      if (colorList.length === viewedColors[1]) {
+                        return setViewedColors([0, 3]);
+                      }
+
+                      setViewedColors([
+                        viewedColors[0] + 3,
+                        Math.min(viewedColors[1] + 3, colorList.length),
+                      ]);
+                    }}
+                  >
+                    + {colorList.slice(3).length}
+                  </UnstyledButton>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -109,7 +132,7 @@ export default function ProductCard({ product, router }: Props) {
             >
               <AddToWishBtn
                 product={product}
-                size={selectedSize?.size || 'ONE_SIZE'}
+                size={selectedSize?.size || 'ONE SIZE'}
               />
             </span>
           </p>

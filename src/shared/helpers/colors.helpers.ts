@@ -12,7 +12,7 @@ export const generateColorList = (product: Product) => {
 
   COLORS.forEach((color) => {
     if (color.name === product.color) {
-      colors.push({
+      colors.unshift({
         productId: product.id,
         productImage: product.imagePath ?? '/images/no-img.png',
         colorName: color.name,

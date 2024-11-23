@@ -1,10 +1,8 @@
 'use client';
 
 import { NumberFormatter, UnstyledButton } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import Image from 'next/image';
 import Link from 'next/link';
-import clsx from 'clsx';
 import { Trash2 } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
@@ -13,6 +11,8 @@ import { useDeleteFavouriteMutation } from '@/shared/api/favouriteApi';
 import { Favourite } from '@/shared/types/favourite.types';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import Loader from '@/components/Loader';
+import { cn } from '@/shared/lib/utils';
+import { BG_COLORS } from '@/shared/constants/colors.const';
 
 type Props = {
   favourite: Favourite;
@@ -28,7 +28,6 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     useDeleteFavouriteMutation();
 
   const isAvailable = favourite.productStatus === 'IN STOCK';
-  const desktop = useMediaQuery(`(min-width: 1280px)`);
 
   const handleDelete = async (id: number) => {
     try {
@@ -40,21 +39,18 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
 
   return (
     <div
-      className='group/card h-[400px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:h-[465px] lg:w-[373px]'
+      className='group/card h-[400px] max-w-[382px] cursor-pointer rounded-0.5 border border-brand-grey-400 p-7 hover:shadow-card md:w-[340px] lg:h-[430px] lg:w-[373px]'
       onClick={() => router?.push(`/products/${favourite.productId}`)}
     >
       <div
-        className={clsx(
+        className={cn(
           'h-full overflow-hidden',
           !isAvailable && 'text-secondary/40'
         )}
       >
         <div
-          className={clsx(
-            'relative mb-5 transition-all duration-500',
-            desktop ? 'h-[287px]' : 'h-[223px]',
-            'group-hover/card:h-[170px]',
-
+          className={cn(
+            'relative mb-5 h-[170px] transition-all duration-500 group-hover/card:h-[170px] md:h-[255px] lg:h-[250px]',
             !isAvailable ? 'grayscale' : 'grayscale-0'
           )}
         >
@@ -81,8 +77,8 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
           </p>
         </Link>
         <div className='flex justify-between'>
-          <div className='flex items-baseline gap-4'>
-            <p className={clsx('relative text-start text-base', 'mb-5')}>
+          <div className='flex items-center gap-4'>
+            <p className='relative text-start text-base'>
               <NumberFormatter
                 prefix='$ '
                 value={favourite.productPrice}
@@ -93,6 +89,16 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
               <div className='flex h-8 w-12 items-center justify-center rounded-3xl border-2 border-black text-base text-black disabled:text-brand-grey-400'>
                 {favourite.productSize}
               </div>
+            )}
+            {sourceProduct?.color && sourceProduct.color !== 'ONE COLOR' && (
+              <span
+                className={
+                  'inline-block size-6 rounded-full border-2 border-brand-grey-400'
+                }
+                style={{
+                  backgroundColor: BG_COLORS[sourceProduct.color],
+                }}
+              />
             )}
           </div>
           {!deletionIsOnProgress ? (
@@ -114,7 +120,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
         </div>
 
         {sourceProduct && (
-          <div className='mt-2 lg:mt-14'>
+          <div className='mt-4 lg:mt-14'>
             <AddToCartBtn
               product={sourceProduct}
               count={1}

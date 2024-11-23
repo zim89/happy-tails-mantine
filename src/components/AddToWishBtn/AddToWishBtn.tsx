@@ -1,6 +1,6 @@
 'use client';
 
-import { Heart, Loader } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import clsx from 'clsx';
 import { createSelector } from '@reduxjs/toolkit';
 
@@ -13,6 +13,7 @@ import {
 } from '@/shared/api/favouriteApi';
 import { toast } from 'react-toastify';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import Loader from '../Loader';
 
 export interface Props {
   product: Product;
@@ -47,6 +48,8 @@ export default function AddToWishBtn({
           Product['productSizes']
         >[number]['size'],
       }).unwrap();
+
+      toast.success('Successfully added to wishlist');
     } catch (err) {
       if (isAxiosQueryError(err)) {
         console.log(err);
@@ -99,7 +102,7 @@ export default function AddToWishBtn({
               )}
             />
           ) : (
-            <Loader size={24} className='animate-spin ease-in-out' />
+            <Loader size={24} className='mr-2' />
           )}
         </button>
       )}

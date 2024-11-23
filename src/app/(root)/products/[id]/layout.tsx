@@ -1,7 +1,8 @@
-import ProductAdditionalInfo from '@/components/ProductAdditionalInfo/ProductAdditionalInfo';
-import { getProductById } from '@/shared/lib/requests';
 import { AxiosError } from 'axios';
 import { notFound } from 'next/navigation';
+
+import ProductAdditionalInfo from '@/components/ProductAdditionalInfo/ProductAdditionalInfo';
+import { getProductById } from '@/shared/lib/requests';
 
 const getProduct = async (id: string) => {
   return await getProductById(id);

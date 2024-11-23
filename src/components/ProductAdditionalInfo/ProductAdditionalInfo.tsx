@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import { Container } from '@mantine/core';
 import { additionalList } from '@/modules/ProductDetails/lib/data';
 
 export default function ProductAdditionalInfo() {
