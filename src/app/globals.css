@@ -50,6 +50,7 @@
     font-weight: bold;
   }
 
+  /* It's used for resizing columns in Admin panel's tables */
   .resizer {
     position: absolute;
     top: 0;
@@ -179,14 +180,6 @@
 
   .badge-muted {
     @apply bg-brand-grey-500;
-  }
-
-  .pagination-root {
-    @apply flex items-center justify-center;
-  }
-
-  .pagination-root div {
-    @apply flex flex-nowrap items-center justify-center gap-0 rounded-0.5 border border-brand-grey-400;
   }
 
   .pagination-control {

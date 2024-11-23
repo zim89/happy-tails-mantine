@@ -31,8 +31,6 @@ export default function ProductSlider({
   targetCategory,
   ...props
 }: ProductSliderProps) {
-  const { width } = useViewportSize();
-
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [hasPrevSlide, setHasPrevSlide] = useState(false);
   const [hasNextSlide, setHasNextSlide] = useState(true);
@@ -138,6 +136,7 @@ export default function ProductSlider({
                       alt={item.name}
                       width={304}
                       height={287}
+                      loading='lazy'
                       className='h-[287px] w-[284px] lg:w-[304px]'
                     />
                     <Box>

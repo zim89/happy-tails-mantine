@@ -1,12 +1,23 @@
-'use client';
+import dynamic from 'next/dynamic';
 
-import { useFindBestSellersQuery } from '@/shared/api/productApi';
-import ProductSlider from '../ProductDetails/ui/ProductSlider';
+const ProductSlider = dynamic(
+  () => import('../ProductDetails/ui/ProductSlider'),
+  { ssr: false }
+);
 
-export default function BestSellers() {
-  const { data } = useFindBestSellersQuery();
+async function fetchBestSellers() {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + '/products/best-sellers'
+  ); // Adjust the URL to your API endpoint
+  if (!res.ok) {
+    throw new Error('Failed to fetch best sellers');
+  }
+  const data = await res.json();
+  return data.content || [];
+}
 
-  if (!data) return null;
+export default async function BestSellers() {
+  const bestSellers = await fetchBestSellers();
 
   return (
     <section className='pt-12 md:pt-16 lg:pt-[5.5rem]'>
@@ -16,7 +27,7 @@ export default function BestSellers() {
 
       <ProductSlider
         alt
-        data={data.content}
+        data={bestSellers}
         className='relative max-md:left-1/2 max-md:right-1/2 max-md:-ml-[50vw] max-md:-mr-[50vw] max-md:!w-screen max-md:!max-w-full max-md:!p-0'
       />
     </section>
