@@ -50,7 +50,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
       >
         <div
           className={cn(
-            'relative mb-5 h-[170px] transition-all duration-500 group-hover/card:h-[170px] md:h-[255px] lg:h-[250px]',
+            'relative mb-5 h-[170px] transition-all duration-500 group-hover/card:h-[170px] lg:h-[250px]',
             !isAvailable ? 'grayscale' : 'grayscale-0'
           )}
         >
