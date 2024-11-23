@@ -1,40 +1,58 @@
 'use client';
 
-import React from 'react';
-import { Heart, Trash2 } from 'lucide-react';
+import { Heart, Loader } from 'lucide-react';
 import clsx from 'clsx';
-import { usePathname } from 'next/navigation';
-
-import {
-  addToFavorites,
-  removeFromFavorites,
-  selectFavorites,
-} from '@/shared/redux/favorites/favoritesSlice';
-import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
-import { Product } from '@/shared/types/types';
 import { createSelector } from '@reduxjs/toolkit';
+
+import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
+import { useAppSelector } from '@/shared/redux/store';
+import { Product } from '@/shared/types/types';
+import {
+  useAddFavouriteMutation,
+  useDeleteFavouriteMutation,
+} from '@/shared/api/favouriteApi';
+import { toast } from 'react-toastify';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 
 export interface Props {
   product: Product;
   withText?: boolean;
   disabled?: boolean;
+  size: string;
 }
-export default function AddToWishBtn({ withText, disabled, product }: Props) {
-  const dispatch = useAppDispatch();
+export default function AddToWishBtn({
+  withText,
+  disabled,
+  product,
+  size,
+}: Props) {
+  const [add, { isLoading }] = useAddFavouriteMutation();
+  const [deleteItem] = useDeleteFavouriteMutation();
   const isFavourite = useAppSelector(
     createSelector([selectFavorites], (items) =>
       items.some(({ id }) => id === product.id)
     )
   );
 
-  const isWishlist = usePathname() === '/wishlist';
+  const toggleFavorite = async () => {
+    try {
+      if (isFavourite) {
+        await deleteItem({ id: product.id }).unwrap();
+        return;
+      }
 
-  const toggleFavorite = () => {
-    if (isFavourite) {
-      dispatch(removeFromFavorites(product.id));
-      return;
+      await add({
+        productId: product.id,
+        size: size.replaceAll(' ', '_') as NonNullable<
+          Product['productSizes']
+        >[number]['size'],
+      }).unwrap();
+    } catch (err) {
+      if (isAxiosQueryError(err)) {
+        console.log(err);
+        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
+      }
     }
-    dispatch(addToFavorites(product));
   };
 
   return (
@@ -73,15 +91,15 @@ export default function AddToWishBtn({ withText, disabled, product }: Props) {
             disabled && 'text-secondary/40 hover:bg-primary'
           )}
         >
-          {isWishlist ? (
-            <Trash2 className={'h-6 w-6 stroke-2'} />
-          ) : (
+          {!isLoading ? (
             <Heart
               className={clsx(
                 'h-6 w-6 stroke-2',
                 isFavourite && 'fill-secondary'
               )}
             />
+          ) : (
+            <Loader size={24} className='animate-spin ease-in-out' />
           )}
         </button>
       )}

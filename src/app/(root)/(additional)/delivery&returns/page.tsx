@@ -10,7 +10,7 @@ export default function DeliveryAndReturnsPage() {
 
   return (
     <div className={styles.section}>
-      <Container>
+      <div className='container'>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'Shipping & Returns' }]}
           classNames={{ root: 'p-0 pt-4' }}
@@ -186,7 +186,7 @@ export default function DeliveryAndReturnsPage() {
             </Tabs.Panel>
           </div>
         </Tabs>
-      </Container>
+      </div>
     </div>
   );
 }

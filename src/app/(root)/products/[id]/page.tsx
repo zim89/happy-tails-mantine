@@ -32,12 +32,12 @@ export default function ProductPage({ params }: Props) {
   if (isError)
     return (
       <section className='section'>
-        <Container>
+        <div className='container'>
           <h2 className='text-center text-2xl font-bold text-brand-red-700'>
             Something went wrong!
           </h2>
           <p>Need to type error.data</p>
-        </Container>
+        </div>
       </section>
     );
 

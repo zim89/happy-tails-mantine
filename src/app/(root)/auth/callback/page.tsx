@@ -25,6 +25,7 @@ export default function CallbackPage() {
           await login(params.get('code')!).unwrap();
           const { data } = await axiosInstance.get('/user/info');
           dispatch(setAuthData(data));
+
           router.push('/');
         } catch (err) {
           console.log(err);

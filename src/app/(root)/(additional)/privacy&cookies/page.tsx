@@ -7,7 +7,7 @@ import { cn } from '@/shared/lib/utils';
 
 export default function PrivacyAndCookiesPage() {
   return (
-    <Container>
+    <div className='container'>
       <Breadcrumbs
         crumbs={[
           { href: '/', text: 'Home' },
@@ -213,6 +213,6 @@ export default function PrivacyAndCookiesPage() {
         </Anchor>
       </div>
       <p className='my-8'>Last Updated: 24/03/2024</p>
-    </Container>
+    </div>
   );
 }

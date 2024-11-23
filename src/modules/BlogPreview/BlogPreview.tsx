@@ -1,6 +1,5 @@
 'use client';
 
-import { Container } from '@mantine/core';
 import Image from 'next/image';
 import { useContext, useEffect } from 'react';
 import { AlignLeft, Heart, Search, ShoppingBag, UserRound } from 'lucide-react';
@@ -38,7 +37,7 @@ export default function BlogPreview() {
 
   return (
     <>
-      <Container>
+      <div className='container'>
         <Breadcrumbs
           crumbs={[
             { href: '/admin/', text: 'Dashboard' },
@@ -51,12 +50,12 @@ export default function BlogPreview() {
           ]}
           classNames={{ root: 'p-0 pt-[90px] lg:pt-28' }}
         />
-      </Container>
+      </div>
 
       <HeaderTemplate>
         {({ Logo }) => (
           <>
-            <Container>
+            <div className='container'>
               <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
                 <div className='flex gap-4'>
                   <AlignLeft className='iconBtn' />
@@ -78,7 +77,7 @@ export default function BlogPreview() {
                   <ShoppingBag className='iconBtn' />
                 </div>
               </div>
-            </Container>
+            </div>
           </>
         )}
       </HeaderTemplate>
@@ -95,7 +94,7 @@ export default function BlogPreview() {
         )}
       </div>
 
-      <Container>
+      <div className='container'>
         <div className='flex flex-col gap-8 py-12 lg:flex-row lg:gap-[65px] lg:pb-[72px] lg:pt-16'>
           <div className='lg:w-[731px] lg:flex-none'>
             <h1 className='mb-4 text-[2rem]/[1.2] font-bold uppercase lg:text-4xl/normal'>
@@ -126,7 +125,7 @@ export default function BlogPreview() {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
 
       <div className='pointer-events-none'>
         <Footer />

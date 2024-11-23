@@ -25,6 +25,7 @@ export default function ProductCard({ product, router }: Props) {
   const colorList = generateColorList(product);
 
   const sizes = generateSizes(product.productSizes);
+
   const [selectedSize, setSelectedSize] = useState(
     sizes.length > 0 ? sizes.find((item) => item.isAvailable) : null
   );
@@ -106,7 +107,10 @@ export default function ProductCard({ product, router }: Props) {
               onClick={(e) => e.preventDefault()}
               className='absolute right-0 top-1/2 z-10 -translate-y-1/2 transition-all duration-300 lg:opacity-0 lg:group-hover/card:opacity-100'
             >
-              <AddToWishBtn product={product} />
+              <AddToWishBtn
+                product={product}
+                size={selectedSize?.size || 'ONE_SIZE'}
+              />
             </span>
           </p>
 

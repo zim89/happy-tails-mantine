@@ -59,7 +59,7 @@ export default function ProductDetails({ product }: Props) {
   return (
     <>
       <section className='pb-16 lg:pb-28'>
-        <Container>
+        <div className='container'>
           <Breadcrumbs
             crumbs={[
               { href: '/', text: 'Home' },
@@ -248,7 +248,11 @@ export default function ProductDetails({ product }: Props) {
                     />
                   </div>
 
-                  <AddToWishBtn withText product={product} />
+                  <AddToWishBtn
+                    withText
+                    product={product}
+                    size={selectedSize?.size || 'ONE_SIZE'}
+                  />
                 </div>
               </div>
 
@@ -276,7 +280,7 @@ export default function ProductDetails({ product }: Props) {
               targetCategory={product.categoryName}
             />
           )}
-        </Container>
+        </div>
       </section>
     </>
   );

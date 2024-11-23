@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { Container } from '@mantine/core';
 import Link from 'next/link';
 
 import CartButton from '@/modules/CartButton';
@@ -14,9 +13,9 @@ import UserMenu from '@/modules/Header/ui/UserMenu';
 import HeaderTemplate from '@/components/HeaderTemplate';
 
 export default function Header() {
-  const { data, isLoading } = useCategoriesQuery({});
+  const { data: categories, isLoading } = useCategoriesQuery({});
 
-  if (!data || isLoading) return null;
+  if (!categories || isLoading) return null;
 
   return (
     <HeaderTemplate>
@@ -25,7 +24,7 @@ export default function Header() {
           <div className='container'>
             <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
               <div className='flex gap-4'>
-                <BurgerMenu categories={data.content} />
+                <BurgerMenu categories={categories.content} />
                 <span className='md:hidden'>
                   <SearchMenu />
                 </span>
@@ -47,7 +46,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Navbar categories={data.content} />
+          <Navbar categories={categories.content} />
         </>
       )}
     </HeaderTemplate>

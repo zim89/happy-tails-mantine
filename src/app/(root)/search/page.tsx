@@ -23,7 +23,7 @@ export default function Page() {
   }, []);
 
   return (
-    <Container>
+    <div className='container'>
       <div className='pb-12 pt-2 md:pb-16 md:pt-4 lg:pb-[72px]'>
         <Breadcrumbs
           crumbs={[{ href: '/', text: 'Home' }, { text: 'Search' }]}
@@ -36,6 +36,6 @@ export default function Page() {
           <CatalogProductList />
         </ProductCountContextProvider>
       </div>
-    </Container>
+    </div>
   );
 }

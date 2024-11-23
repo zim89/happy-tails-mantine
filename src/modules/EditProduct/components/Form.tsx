@@ -4,7 +4,6 @@ import {
   NumberInput,
   Select,
   TextInput,
-  Textarea,
   Tooltip,
 } from '@mantine/core';
 import Image from 'next/image';
@@ -17,8 +16,7 @@ import { ProductColor } from '@/shared/types/types';
 import classes from '../classes.module.css';
 import { context } from '../lib/utils';
 import EditorWrapper from '@/modules/EditorWrapper';
-import PostEditor from '@/modules/PostEditor';
-import { EditorTemplate } from '@/modules/EditorTemplate';
+import { EditProductEditor } from './EditProductEditor';
 
 export const Form = () => {
   const { previewImage, productForm } = useContext(context);
@@ -210,20 +208,7 @@ export const Form = () => {
             productForm.setFieldValue('description', value);
           }}
         >
-          {(editor) => (
-            <div className='mb-10 mt-6 flex-1 flex-wrap'>
-              <EditorTemplate
-                kind='text'
-                editor={editor}
-                classNames={{
-                  // Max width: screen - sidebar length - paddings
-                  root: 'h-full max-w-[calc(100vw-124px)] md:max-w-[500px]',
-                  content: 'h-full max-w-[calc(100vw-124px)] md:max-w-[500px]',
-                  typographyStylesProvider: 'h-full',
-                }}
-              />
-            </div>
-          )}
+          {(editor) => <EditProductEditor editor={editor} />}
         </EditorWrapper>
       </div>
     </div>

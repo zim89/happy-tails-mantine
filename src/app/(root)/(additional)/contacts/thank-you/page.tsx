@@ -6,7 +6,7 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 export default function Page() {
   return (
-    <Container>
+    <div>
       <Breadcrumbs
         crumbs={[
           { text: 'Home', href: '/' },
@@ -38,6 +38,6 @@ export default function Page() {
           <Link href='/'>Back to homepage</Link>
         </UnstyledButton>
       </Group>
-    </Container>
+    </div>
   );
 }

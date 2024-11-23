@@ -1,6 +1,5 @@
 import PostList from '@/app/(root)/(additional)/blog/ui/PostList';
 import { fetchAllPosts } from '@/shared/lib/requests';
-import { Container } from '@mantine/core';
 
 export default async function Blog() {
   const posts = await fetchAllPosts(0, 2);
@@ -11,9 +10,9 @@ export default async function Blog() {
         Blog
       </h2>
 
-      <Container>
+      <div className='container'>
         <PostList posts={posts} external />
-      </Container>
+      </div>
     </section>
   );
 }

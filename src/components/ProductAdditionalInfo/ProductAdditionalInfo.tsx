@@ -7,7 +7,7 @@ export default function ProductAdditionalInfo() {
   return (
     <section>
       <div className='bg-brand-grey-200 py-8' data-testid='info-wrapper'>
-        <Container>
+        <div className='container'>
           <h2 className='mb-9 text-center text-[1.75rem]/[normal] font-bold'>
             Why Shop With Us?
           </h2>
@@ -42,7 +42,7 @@ export default function ProductAdditionalInfo() {
               </li>
             ))}
           </ul>
-        </Container>
+        </div>
       </div>
     </section>
   );

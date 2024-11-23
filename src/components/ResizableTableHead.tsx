@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table } from '@mantine/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { flexRender, HeaderGroup } from '@tanstack/react-table';
@@ -18,10 +18,14 @@ export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
 
   const [createUrlString] = useSearchString(searchParams);
 
-  const sort = useMemo(() => {
+  const [sort, setSort] = useState<[string, string] | null>(null);
+
+  useEffect(() => {
     if (sortParam) {
-      return sortParam.split('_');
-    } else return null;
+      setSort(sortParam.split('_') as [string, string]);
+    } else {
+      setSort(null);
+    }
   }, [sortParam]);
 
   return (
@@ -68,9 +72,7 @@ export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
                 <button
                   className='relative ml-2 -translate-y-1'
                   onClick={(e) => {
-                    const handler = header.column.getToggleSortingHandler();
-
-                    if (handler && e) {
+                    if (e) {
                       const target = e.target as HTMLElement;
 
                       target.id &&
@@ -81,12 +83,12 @@ export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
                               page: '1',
                             })
                         );
-                      handler(e);
+
+                      header.column.toggleSorting(target.id === 'desc');
                     }
                   }}
                 >
-                  <ChevronUp
-                    size={12}
+                  <span
                     id='desc'
                     className={cn(
                       'absolute bottom-0',
@@ -95,9 +97,10 @@ export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
                         sort[1] === 'desc' &&
                         'hidden'
                     )}
-                  />
-                  <ChevronDown
-                    size={12}
+                  >
+                    <ChevronUp className='pointer-events-none' size={12} />
+                  </span>
+                  <span
                     id='asc'
                     className={cn(
                       'absolute top-0',
@@ -106,7 +109,9 @@ export const ResizableTableHead = <T,>({ headerGroup }: Props<T>) => {
                         sort[1] === 'asc' &&
                         'hidden'
                     )}
-                  />
+                  >
+                    <ChevronDown className='pointer-events-none' size={12} />
+                  </span>
                 </button>
               ) : null}
             </Table.Th>

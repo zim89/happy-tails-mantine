@@ -21,14 +21,12 @@ export const UpdateUserForm = () => {
     initialValues: {
       firstName: currentUser?.firstName ?? '',
       lastName: currentUser?.lastName ?? '',
-      email: currentUser?.email ?? '',
       sendOffersAndNews: currentUser?.emailVerified ?? false,
     },
 
     validate: {
       firstName: isNotEmpty('Please enter your first name'),
       lastName: isNotEmpty('Please enter your last name'),
-      email: isEmail('Please enter a valid email address'),
     },
   });
 
@@ -36,11 +34,9 @@ export const UpdateUserForm = () => {
     form.setValues({
       firstName: currentUser?.firstName,
       lastName: currentUser?.lastName,
-      email: currentUser?.email,
       sendOffersAndNews: currentUser?.emailVerified,
     });
   }, [
-    currentUser?.email,
     currentUser?.firstName,
     currentUser?.lastName,
     currentUser?.emailVerified,
@@ -105,7 +101,6 @@ export const UpdateUserForm = () => {
               ...currentUser,
               firstName: formFields.firstName,
               lastName: formFields.lastName,
-              email: formFields.email,
             })
           );
 
@@ -155,21 +150,7 @@ export const UpdateUserForm = () => {
         }}
         {...form.getInputProps('lastName')}
       />
-      <TextInput
-        withAsterisk
-        label='Email Address'
-        classNames={{
-          root: 'form-root',
-          label: 'form-label block text-left',
-          input: cn(
-            'form-input',
-            classes.inputSizing,
-            form?.errors?.email && 'form-error--input'
-          ),
-          error: 'form-error',
-        }}
-        {...form.getInputProps('email')}
-      />
+
       <LoaderBackground loading={isLoading} className='mt-9'>
         <UnstyledButton
           type='submit'
