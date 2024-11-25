@@ -13,10 +13,9 @@ import PaginationPrevBtn from '@/components/PaginationPrevBtn/PaginationPrevBtn'
 import { ProductCountContext } from './ProductCountContext';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import type { Category, Sort } from '@/shared/types/types';
+import { ITEMS_LIMIT_PER_PAGE } from '@/shared/config/appVariables';
 
 const RawProductList = dynamic(() => import('@/modules/ProductList'));
-
-const limit = 12;
 
 export type CatalogProductListProps = {
   category?: Category;
@@ -62,7 +61,7 @@ export default function CatalogProductList({
   const { data, error, isLoading } = useFindManyQuery({
     categoryId: category?.id,
     page: page - 1,
-    limit,
+    limit: ITEMS_LIMIT_PER_PAGE,
     filter,
     name: searchParams.has('name') ? searchParams.get('name')! : '',
     sort: searchParams.get('sort')?.split('-') as Sort | undefined,
@@ -111,7 +110,7 @@ export default function CatalogProductList({
         <div className='mb-12 mt-4 md:mb-16 md:max-lg:mt-6 lg:mb-[4.5rem]'>
           <RawProductList data={data.content} />
 
-          {data.totalElements > limit && (
+          {data.totalElements > ITEMS_LIMIT_PER_PAGE && (
             <Pagination.Root
               mt={{ base: 24, md: 48, lg: 72 }}
               value={page}

@@ -74,10 +74,14 @@ export default function CartItem({ product }: { product: CartItem }) {
         {product.color && product.color !== 'ONE COLOR' && (
           <div className='flex items-center gap-2 py-1.5'>
             <span
-              className={cn(
-                'inline-block size-4 rounded-full border border-brand-grey-400',
-                product.color && BG_COLORS[product.color]
-              )}
+              className={
+                'inline-block size-4 rounded-full border border-brand-grey-400'
+              }
+              style={
+                product.color && {
+                  backgroundColor: BG_COLORS[product.color],
+                }
+              }
             />
             <p className='text-sm/[21px] text-black'>
               {product.color ? product.color : ''}{' '}

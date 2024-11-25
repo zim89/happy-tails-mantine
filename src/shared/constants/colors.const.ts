@@ -13,15 +13,15 @@ export const COLORS = [
 ] as const;
 
 export const BG_COLORS: Record<string, string> = {
-  White: 'bg-[#ffffff]',
-  Gray: 'bg-[#969696]',
-  Brown: 'bg-[#8D5118]',
-  Black: 'bg-[#000000]',
-  Pink: 'bg-[#F4C1BE]',
-  Yellow: 'bg-[#FFE605]',
-  Green: 'bg-[#389B48]',
-  Red: 'bg-[#DC362E]',
-  Orange: 'bg-[#F39324]',
-  Purple: 'bg-[#9747FF]',
-  Blue: 'bg-[#4285F4]',
+  White: '#ffffff',
+  Gray: '#969696',
+  Brown: '#8D5118',
+  Black: '#000000',
+  Pink: '#F4C1BE',
+  Yellow: '#FFE605',
+  Green: '#389B48',
+  Red: '#DC362E',
+  Orange: '#F39324',
+  Purple: '#9747FF',
+  Blue: '#4285F4',
 };

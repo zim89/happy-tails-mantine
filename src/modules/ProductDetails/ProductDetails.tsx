@@ -2,14 +2,11 @@
 
 import React, { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import {
-  Anchor,
-  Container,
-  NumberInput,
-  NumberInputHandlers,
-} from '@mantine/core';
+import { Anchor, NumberInput, NumberInputHandlers } from '@mantine/core';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Info, Minus, Plus } from 'lucide-react';
+
 import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn/AddToWishBtn';
 import AddToCartBtn from '@/components/AddToCartBtn/AddToCartBtn';
@@ -19,9 +16,7 @@ import { SizeGuide } from './components/SizeGuide';
 import { useDisclosure } from '@mantine/hooks';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { generateColorList } from '@/shared/helpers/colors.helpers';
-import Link from 'next/link';
 import { generateSizes } from '@/shared/helpers/size.helpers';
-import { BG_COLORS } from '@/shared/constants/colors.const';
 import { PostContent } from '@/app/(root)/(additional)/blog/[id]/ui/PostContent';
 
 const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
@@ -115,6 +110,7 @@ export default function ProductDetails({ product }: Props) {
               {/*  ProductDetails description*/}
               <PostContent content={product.description} className='mb-6' />
 
+              {/* ProductDetails colors */}
               {colorList.length > 0 && (
                 <div className='mb-6 space-y-6'>
                   {product.color && (
@@ -133,9 +129,11 @@ export default function ProductDetails({ product }: Props) {
                             href={item.href}
                             className={cn(
                               `inline-block size-[30px] rounded-full border-[2px] border-brand-grey-400`,
-                              BG_COLORS[item.colorName],
-                              isActive && ' border-black'
+                              isActive && 'border-black'
                             )}
+                            style={{
+                              backgroundColor: item.colorHex,
+                            }}
                           />
                         </li>
                       );
@@ -144,6 +142,7 @@ export default function ProductDetails({ product }: Props) {
                 </div>
               )}
 
+              {/* ProductDetails sizes */}
               {sizes.length > 0 && (
                 <ul className='mb-8 flex gap-4'>
                   {sizes.map((item) => (
