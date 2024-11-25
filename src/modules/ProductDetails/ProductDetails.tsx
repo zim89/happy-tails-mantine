@@ -262,14 +262,6 @@ export default function ProductDetails({ product }: Props) {
                   size={selectedSize?.size}
                 />
               </div>
-
-              <div className='mt-8 flex items-center gap-3 bg-brand-green-200 px-4 py-6'>
-                <Info className='h-8 w-8 flex-none stroke-2 text-brand-green-500' />
-                <p className='text-base font-bold'>
-                  Save 15% on selected Accessories when you spend £50 or more
-                  with code PETS24*
-                </p>
-              </div>
             </div>
           </div>
 
