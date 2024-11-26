@@ -67,7 +67,7 @@ export const feedbackApi = createApi({
         url: `/feedback/${id}/starred`,
         method: 'put',
       }),
-      invalidatesTags: ['Feedback'],
+      invalidatesTags: ['Feedbacks', 'Feedback'],
     }),
     bulkEdit: builder.mutation({
       query: (data: Feedback[]) => ({
