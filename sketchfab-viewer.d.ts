@@ -39,6 +39,6 @@ interface Window {
   sketchfabAPIinstances?: Sketchfab[];
 }
 
-declare module 'sketchfab-viewer' {
+declare module './src/app/test/sketchfab-viewer.ts' {
   export = Sketchfab;
 }

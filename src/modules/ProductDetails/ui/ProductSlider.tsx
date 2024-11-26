@@ -1,5 +1,6 @@
 'use client';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -10,7 +11,6 @@ import {
   useMatches,
 } from '@mantine/core';
 import { Carousel, Embla } from '@mantine/carousel';
-import { useViewportSize } from '@mantine/hooks';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -136,7 +136,6 @@ export default function ProductSlider({
                       alt={item.name}
                       width={304}
                       height={287}
-                      loading='lazy'
                       className='h-[287px] w-[284px] lg:w-[304px]'
                     />
                     <Box>
