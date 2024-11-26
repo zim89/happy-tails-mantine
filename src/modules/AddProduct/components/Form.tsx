@@ -200,6 +200,9 @@ export const Form = () => {
           content={productForm.values.description}
           handleChange={(value) => {
             productForm.setFieldValue('description', value);
+            if (value === '<p></p>') {
+              productForm.resetDirty();
+            }
           }}
         >
           {(editor) => <AddProductEditor editor={editor} />}

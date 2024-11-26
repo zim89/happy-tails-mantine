@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo } from 'react';
+import { memo } from 'react';
 
 // @tiptap editor's libs and components
 import { Editor, useEditor } from '@tiptap/react';
@@ -19,8 +19,6 @@ type Props = {
   handleChange: (value: string) => void;
 };
 function EditorWrapper({ children, content, handleChange }: Props) {
-  const editorContent = useMemo(() => content, [content]);
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -33,10 +31,9 @@ function EditorWrapper({ children, content, handleChange }: Props) {
       FontFamily,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-
+    content,
     onUpdate: ({ editor }) => {
       const content = editor.getHTML();
-
       handleChange(content);
     },
 

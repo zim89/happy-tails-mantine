@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { Editor } from '@tiptap/react';
 import { TextInput } from '@mantine/core';
 
@@ -13,6 +13,7 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { EditorTemplate } from '../EditorTemplate';
+import EditorWrapper from '../EditorWrapper';
 
 type Props = {
   editor: Editor;
@@ -65,11 +66,20 @@ export default function PostEditor({ editor }: Props) {
             borderTopRightRadius: 5,
           }}
         >
-          <EditorTemplate
-            kind='multi'
-            editor={editor}
-            handleImageUpload={handleImageUpload}
-          />
+          <EditorWrapper
+            content={form.values.content}
+            handleChange={(value) => {
+              form.setFieldValue('content', value);
+            }}
+          >
+            {(editor) => (
+              <EditorTemplate
+                kind='multi'
+                editor={editor}
+                handleImageUpload={handleImageUpload}
+              />
+            )}
+          </EditorWrapper>
         </div>
         {form.errors?.content && (
           <p className='py-1 text-[0.675rem] text-brand-red-400'>
