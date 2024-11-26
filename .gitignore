@@ -48,3 +48,6 @@ server.ts
 /.env.production
 /.env.development
 /key.json
+
+# Experimental
+./sketchfab-viewer.d.ts
