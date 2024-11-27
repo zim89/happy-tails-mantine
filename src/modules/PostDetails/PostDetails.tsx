@@ -16,7 +16,7 @@ type Props = {
   postId: string;
 };
 export default function PostDetails({ postId }: Props) {
-  const { data, isLoading, error } = useFindOneQuery({ id: postId });
+  const { data, error, isLoading } = useFindOneQuery({ id: postId });
   const { form } = useContext(PostFormContext);
 
   if (!data) notFound();
@@ -28,6 +28,8 @@ export default function PostDetails({ postId }: Props) {
         }
       </p>
     );
+
+  if (isLoading) return <PostDetailsSkeleton />;
 
   return (
     <>

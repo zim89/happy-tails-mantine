@@ -7,7 +7,7 @@ export default function Featured() {
       <div className='container space-y-6 md:space-y-0'>
         <div className='flex-row-reverse md:flex'>
           <Image
-            src='/images/featured/dog-1.png'
+            src='/images/featured/dog-1.jpg'
             height={2376}
             width={1900}
             alt='A dog wearing clothes'
@@ -28,7 +28,7 @@ export default function Featured() {
         </div>
         <div className='md:flex'>
           <Image
-            src='/images/featured/dog-2.png'
+            src='/images/featured/dog-2.jpg'
             height={2554}
             width={3826}
             alt='Old man with a dog on a leash'

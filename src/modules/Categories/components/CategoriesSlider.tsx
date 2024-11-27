@@ -1,8 +1,11 @@
 'use client';
 
-import { useCategoriesQuery } from '@/shared/api/categoryApi';
+import dynamic from 'next/dynamic';
 import { Carousel } from '@mantine/carousel';
-import Link from 'next/link';
+
+import { useCategoriesQuery } from '@/shared/api/categoryApi';
+
+const Slide = dynamic(() => import('./Slide'));
 
 export default function CategoriesSlider() {
   const { data } = useCategoriesQuery({});
@@ -19,24 +22,7 @@ export default function CategoriesSlider() {
         withControls={false}
       >
         {data.content.map((category) => (
-          <Carousel.Slide key={category.id} w='12.5rem'>
-            <Link
-              href={'/' + category.name.toLowerCase()}
-              className='flex size-full cursor-pointer flex-col items-center justify-center gap-2 border border-brand-grey-400 shadow-[0_2px_8px_0_#00000029]'
-            >
-              <div
-                style={
-                  {
-                    '--img':
-                      `url(${category.imgSrc})` ??
-                      'url(https://i.imgur.com/4FsWarQ.png)',
-                  } as React.CSSProperties
-                }
-                className='size-12 bg-brand-orange-400 [mask-image:--img] [mask-size:contain]'
-              ></div>
-              <p className='text-xl'>{category.name}</p>
-            </Link>
-          </Carousel.Slide>
+          <Slide key={category.id} category={category} />
         ))}
       </Carousel>
     </div>

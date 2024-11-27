@@ -68,11 +68,22 @@ export const postApi = createApi({
       query: () => ({
         url: `/posts/hero`,
       }),
+      providesTags: ['Posts'],
     }),
     findOne: builder.query<Post, { id: string }>({
       query: ({ id }) => ({
         url: `/posts/${id}`,
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              {
+                type: 'Posts' as const,
+                id: result.id,
+              },
+              { type: 'Posts', id: 'LIST' },
+            ]
+          : [{ type: 'Posts', id: 'LIST' }],
     }),
     updatePost: builder.mutation<Post, PutRequest>({
       query: ({ id, title, authorName, posterImgSrc, content, hero }) => ({
