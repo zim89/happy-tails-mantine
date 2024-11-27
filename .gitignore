@@ -51,3 +51,5 @@ server.ts
 
 # Experimental
 ./sketchfab-viewer.d.ts
+./src/app/test
+./src/app/(root)/auth/sketchfab
