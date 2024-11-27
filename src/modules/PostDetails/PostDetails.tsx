@@ -43,7 +43,7 @@ export default function PostDetails({ postId }: Props) {
           <>
             <Header editor={editor} post={data} />
             <div className='flex flex-col gap-16 lg:flex-row'>
-              <PostEditor editor={editor} />
+              <PostEditor />
               <div className='flex-1'>
                 <Details status={data.postStatus} />
                 <ImageBox />

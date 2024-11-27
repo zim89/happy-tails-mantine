@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 // @tiptap editor's libs and components
 import { Editor, useEditor } from '@tiptap/react';
