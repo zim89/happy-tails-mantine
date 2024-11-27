@@ -18,26 +18,23 @@ import {
   Badge,
   LoadingOverlay,
 } from '@mantine/core';
-import { useState, useMemo, useEffect, type ChangeEvent } from 'react';
-import { ChevronDown, Mail, Star as StarIcon } from 'lucide-react';
+import { useState, useMemo, type ChangeEvent } from 'react';
+import { Mail } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { Star } from './Star';
-import {
-  formatDateToClockTime,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { InboxActions } from './InboxActions';
-import { cn } from '@/shared/lib/utils';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
-import { BADGE_PALETTE, FILTER_OPTIONS } from '../lib/inbox.const';
+import { BADGE_PALETTE } from '../lib/inbox.const';
 import type { Feedback } from '@/shared/types/feedback.types';
 import { useBulkEditMutation } from '@/shared/api/feedbackApi';
 import { toast } from 'react-toastify';
+import { useSearchParams } from 'next/navigation';
+import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Feedback>();
 
@@ -76,21 +73,33 @@ const columns = [
   columnHelper.accessor('sentAt', {
     header: '',
     enableSorting: false,
-    size: 30,
-    cell: (info) => <span>{formatDateToClockTime(info.getValue())}</span>,
+    size: 25000,
+    cell: (info) => (
+      <span className=''>
+        {dayjs.unix(info.getValue()).format('DD MMM, YYYY (HH:mm)')}
+      </span>
+    ),
   }),
 ];
 
 export const InboxTable = ({ data }: { data: Feedback[] }) => {
   const [search, setSearch] = useDebouncedState('', 200);
-  const [checked, setChecked] = useState(false);
-  const [filter, setFilter] = useState<string>('');
+  const [checked, _] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [bulkEdit] = useBulkEditMutation();
 
-  let tableData = useMemo(() => data, [data]);
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  let tableData = useMemo(() => {
+    if (data.length === 0) return [];
+
+    return [...data].sort((a, b) => b.id - a.id);
+  }, [data]);
 
   const table = useReactTable({
     data: tableData,
@@ -105,6 +114,10 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
     },
     state: {
       globalFilter: search,
+      pagination: {
+        pageIndex: page ? Number(page) - 1 : 0,
+        pageSize: Number(limit) || 10,
+      },
     },
     onGlobalFilterChange: setSearch,
     getCoreRowModel: getCoreRowModel(),
@@ -120,6 +133,7 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
       }
       return acc;
     }, [] as Feedback[]);
+
     try {
       setLoading(true);
       await bulkEdit(data).unwrap();
@@ -133,80 +147,19 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
     }
   };
 
-  const handleMarkAsStarred = async () => {
-    const data = table.getRowModel().rows.reduce((acc, row) => {
-      if (selected.includes(row.original.id)) {
-        acc.push({ ...row.original, starred: !row.original.starred });
-      }
-      return acc;
-    }, [] as Feedback[]);
-    try {
-      setLoading(true);
-      await bulkEdit(data).unwrap();
-      toast.success('Feedbacks starred!');
-    } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.checked;
+
     if (!value) {
       setSelected([]);
-      setFilter('');
-    }
-    if (value && selected.length === 0) {
-      setFilter(FILTER_OPTIONS[0].value);
+    } else {
+      const selected = table.getRowModel().rows.reduce((acc, row) => {
+        acc.push(row.original.id);
+        return acc;
+      }, [] as number[]);
+      setSelected(selected);
     }
   };
-
-  useEffect(() => {
-    const selected = table.getRowModel().rows.reduce((acc, row) => {
-      switch (filter) {
-        case 'All':
-          acc.push(row.original.id);
-          break;
-        case 'Read':
-          if (row.original.feedbackStatus === 'REVIEWING') {
-            acc.push(row.original.id);
-          }
-          break;
-        case 'Unread':
-          if (row.original.feedbackStatus === 'NEW') {
-            acc.push(row.original.id);
-          }
-          break;
-        case 'Starred':
-          if (row.original.starred) {
-            acc.push(row.original.id);
-          }
-          break;
-        case 'Unstarred':
-          if (!row.original.starred) {
-            acc.push(row.original.id);
-          }
-          break;
-        default:
-          break;
-      }
-      return acc;
-    }, [] as number[]);
-
-    setSelected(selected);
-    if (selected.length > 0) setChecked(true);
-  }, [filter, table]);
-
-  useEffect(() => {
-    if (selected.length === 0) {
-      setChecked(false);
-      setFilter('');
-    }
-    if (selected.length > 0) setChecked(true);
-  }, [selected]);
 
   return (
     <>
@@ -258,24 +211,18 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
                 position='bottom-start'
                 classNames={{ dropdown: '-ml-[46px] px-0 py-2' }}
               >
-                <div className='flex items-center gap-4'>
+                <span className='flex items-center gap-4'>
                   <Checkbox
                     size='xs'
                     checked={selected.length > 0 || checked}
                     onChange={handleChecked}
                     color='black'
                     styles={{ icon: { stroke: 'black' } }}
+                    classNames={{ input: 'cursor-pointer' }}
                   />
-                  <Menu.Target>
-                    <ChevronDown
-                      onClick={() => setOpened(true)}
-                      size={16}
-                      className='cursor-pointer'
-                    />
-                  </Menu.Target>
                   {(selected.length > 0 ||
                     (checked && selected.length > 0)) && (
-                    <div className='flex gap-12'>
+                    <span className='flex gap-12'>
                       <UnstyledButton
                         className='flex items-center gap-2 text-sm'
                         onClick={handleMarkAsRead}
@@ -283,39 +230,13 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
                         <Mail size={16} />
                         Mark as read
                       </UnstyledButton>
-                      <UnstyledButton
-                        className='flex items-center gap-2 text-sm'
-                        onClick={handleMarkAsStarred}
-                      >
-                        <StarIcon size={16} />
-                        Add star
-                      </UnstyledButton>
                       <DeleteMessagesModal
                         messages={selected}
                         setSelected={setSelected}
                       />
-                    </div>
+                    </span>
                   )}
-                </div>
-                <Menu.Dropdown
-                  classNames={{ dropdown: 'flex flex-col text-sm' }}
-                >
-                  {FILTER_OPTIONS.map((fil) => (
-                    <UnstyledButton
-                      key={fil.id}
-                      onClick={() => {
-                        setFilter(fil.value);
-                        setOpened(false);
-                      }}
-                      className={cn(
-                        'px-4 py-2 hover:bg-brand-grey-200',
-                        fil.value === filter && 'bg-brand-grey-300'
-                      )}
-                    >
-                      {fil.title}
-                    </UnstyledButton>
-                  ))}
-                </Menu.Dropdown>
+                </span>
               </Menu>
             </MantineTable.Th>
           </MantineTable.Tr>
@@ -330,7 +251,7 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
                 <MantineTable.Td>
                   <Checkbox
                     size='xs'
-                    disabled={checked && filter === 'ALL'}
+                    disabled={checked && !selected.includes(row.original.id)}
                     checked={selected.includes(row.original.id)}
                     onChange={() => {
                       !selected.includes(row.original.id) &&
@@ -340,7 +261,7 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
                           prev.filter((id) => id !== row.original.id)
                         );
                     }}
-                    classNames={{ root: 'mx-4' }}
+                    classNames={{ root: 'mx-4', input: 'cursor-pointer' }}
                     color='black'
                     styles={{ icon: { stroke: 'black' } }}
                   />

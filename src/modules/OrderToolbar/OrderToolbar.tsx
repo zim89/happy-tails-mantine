@@ -7,13 +7,14 @@ import { useDisclosure } from '@mantine/hooks';
 
 import SearchField from '@/components/SearchField';
 import { useSearchString } from '@/shared/helpers/searchParams.helpers';
+import dayjs from 'dayjs';
 
 const menu = [
   { label: 'For all time', value: 'all' },
   { label: 'For the last 30 days', value: 'L30D' },
   { label: 'For the last 6 months', value: 'L6M' },
-  { label: '2023', value: 'YPAST' },
-  { label: '2022', value: '2YPAST' },
+  { label: dayjs().subtract(1, 'year').format('YYYY'), value: 'YPAST' },
+  { label: dayjs().subtract(2, 'year').format('YYYY'), value: '2YPAST' },
 ];
 
 export default function OrderToolbar() {

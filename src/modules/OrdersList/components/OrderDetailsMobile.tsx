@@ -160,21 +160,7 @@ export const OrderDetailsMobile = ({
               >
                 Leave a review
               </LightButton>
-              <LoaderBackground loading={orderIsProceeding}>
-                <DarkButton
-                  handler={async () => {
-                    try {
-                      setOrderIsProceeding(true);
-                      await handleRepeatOrder(order);
-                      setOrderIsProceeding(false);
-                    } catch {
-                      setOrderIsProceeding(false);
-                    }
-                  }}
-                >
-                  Repeat the order
-                </DarkButton>
-              </LoaderBackground>
+              
             </div>
           </>
         )}
