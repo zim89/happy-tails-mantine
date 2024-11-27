@@ -15,11 +15,7 @@ import {
 import { EditorTemplate } from '../EditorTemplate';
 import EditorWrapper from '../EditorWrapper';
 
-type Props = {
-  editor: Editor;
-};
-
-export default function PostEditor({ editor }: Props) {
+export default function PostEditor() {
   const { form } = useContext(PostFormContext);
 
   const handleImageUpload = useCallback(async (file: File) => {

@@ -24,7 +24,7 @@ export default function NewBlog() {
           <form>
             <Header editor={editor} />
             <div className='flex flex-col gap-16 lg:flex-row'>
-              <PostEditor editor={editor} />
+              <PostEditor />
 
               <div className='flex-1'>
                 <Details />
