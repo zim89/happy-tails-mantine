@@ -13,7 +13,10 @@ export const AddProductEditor = ({ editor }: Props) => {
 
   // This is used to clear the editor when the product is created (cleared description field)
   useEffect(() => {
-    if (!productForm.values.description.trim()) {
+    if (
+      !productForm.values.description.trim() ||
+      productForm.values.description.trim() === '<p></p>'
+    ) {
       editor.commands.deleteNode('paragraph');
     }
   }, [productForm.values.description]);
