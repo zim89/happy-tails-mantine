@@ -156,6 +156,7 @@ export const {
   useFindManyQuery,
   useFindOneQuery,
   useFindBestSellersQuery,
+  useLazyFindBestSellersQuery,
   useCreateMutation,
   useUpdateMutation,
   useRemoveMutation,

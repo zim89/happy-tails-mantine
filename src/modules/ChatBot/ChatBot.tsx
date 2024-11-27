@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import classes from './classes.module.css';
 
-export const ChatBot = () => {
+const ChatBot = () => {
   let hasError = false;
 
   const call_chat_service = async (params: any) => {
@@ -108,3 +108,5 @@ export const ChatBot = () => {
     </div>
   );
 };
+
+export default ChatBot;

@@ -1,5 +1,6 @@
 'use client';
-import { useRef } from 'react';
+
+import { useMemo, useRef } from 'react';
 import { Carousel } from '@mantine/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -13,6 +14,11 @@ export default function HeroCarousel() {
   const autoplay = useRef(Autoplay({ delay: 10000 }));
   const { data, error, isLoading } = useFindManyQuery({});
 
+  const slides: Banner[] = data?.content || [];
+  const banners = useMemo(() => {
+    return slides.filter((banner) => bannerNames.includes(banner.name));
+  }, [slides]);
+
   if (error)
     return (
       <p>
@@ -23,9 +29,6 @@ export default function HeroCarousel() {
     );
 
   if (isLoading) return <SkeletonLoader />;
-
-  const slides: Banner[] = data?.content || [];
-  const banners = slides.filter((banner) => bannerNames.includes(banner.name));
 
   return (
     <div className='flex h-full max-h-[200px] w-full md:max-h-[360px] lg:min-h-[560px]'>

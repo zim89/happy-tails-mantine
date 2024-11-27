@@ -68,4 +68,5 @@ export const {
   useCreateBannerMutation,
   useDeleteBannerMutation,
   useUpdateBannerMutation,
+  useLazyFindManyQuery,
 } = bannerApi;

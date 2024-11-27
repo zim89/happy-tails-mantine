@@ -26,7 +26,9 @@ import {
 export const Controls = () => {
   const { productForm, previewImage, variants, setVariants } =
     useContext(context);
-  const { update: setUnsavedState } = useContext(UnsavedChangesContext);
+  const { update: setUnsavedState, unsavedChanges } = useContext(
+    UnsavedChangesContext
+  );
 
   const [dispatch] = useCreateMutation();
   const categoryList = useSelectCategories((cats) => cats);
@@ -35,7 +37,7 @@ export const Controls = () => {
   useEffect(() => {
     const res = !!variants.length || productForm.isDirty();
     setUnsavedState((prev) => ({ ...prev, unsavedChanges: res }));
-  }, [productForm.values, variants]);
+  }, [productForm.values, variants.length]);
 
   const clearFile = () => {
     previewImage.current = {
@@ -145,6 +147,7 @@ export const Controls = () => {
       await dispatch({ req: newProduct }).unwrap();
 
       clearAndClose();
+      productForm.resetDirty();
       brandNotification('SUCCESS', 'Product created successfully!');
     } catch (err) {
       console.error(err);
