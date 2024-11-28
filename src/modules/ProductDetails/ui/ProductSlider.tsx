@@ -121,7 +121,7 @@ export default function ProductSlider({
         {data.length > 0 &&
           data.map((item) => (
             <Carousel.Slide key={item.id}>
-              <Link href={`/products/${item.id}`}>
+              <Link href={`/products/${item.id}`} shallow>
                 <Card
                   withBorder
                   padding={28}

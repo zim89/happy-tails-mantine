@@ -37,7 +37,7 @@ export const Form = () => {
       </h3>
 
       <div className='flex flex-col justify-between gap-6 lg:flex-row lg:gap-[42px]'>
-        <div className='w-full lg:max-w-[60%]'>
+        <div className='w-full lg:max-w-[59%]'>
           <div className={classes.inputRow}>
             <TextInput
               {...productForm.getInputProps('name')}
@@ -206,6 +206,9 @@ export const Form = () => {
           content={productForm.values.description}
           handleChange={(value) => {
             productForm.setFieldValue('description', value);
+            if (value === '<p></p>') {
+              productForm.resetDirty();
+            }
           }}
         >
           {(editor) => <EditProductEditor editor={editor} />}

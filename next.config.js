@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   // Strict mode forces components render twice, it breaks some functionality
   reactStrictMode: false,

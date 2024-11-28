@@ -22,10 +22,6 @@ const config: Config = {
       },
     },
     extend: {
-      filter: {
-        'orange-filter':
-          'brightness(0) saturate(50%) invert(57%) sepia(57%) saturate(5588%) hue-rotate(15deg)',
-      },
       keyframes: {
         progress: {
           '0%': {
@@ -49,7 +45,6 @@ const config: Config = {
       },
       fontFamily: {
         lato: ['var(--font-lato)', 'sans-serif'],
-        madi: ['var(--font-madi)', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {

@@ -1,21 +1,37 @@
-'use client';
-
 import * as React from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
-import CartButton from '@/modules/CartButton';
 import BurgerMenu from './ui/BurgerMenu';
 import SearchMenu from './ui/Search';
 import Navbar from './ui/Navbar';
-import { useCategoriesQuery } from '@/shared/api/categoryApi';
-import FavoriteButton from '@/modules/Header/ui/FavoriteButton';
-import UserMenu from '@/modules/Header/ui/UserMenu';
 import HeaderTemplate from '@/components/HeaderTemplate';
+import { API_URL } from '@/shared/constants/env.const';
 
-export default function Header() {
-  const { data: categories, isLoading } = useCategoriesQuery({});
+const FavoriteButton = dynamic(
+  () => import('@/modules/Header/ui/FavoriteButton'),
+  { ssr: false }
+);
 
-  if (!categories || isLoading) return null;
+const UserMenu = dynamic(() => import('@/modules/Header/ui/UserMenu'), {
+  ssr: false,
+});
+
+const CartButton = dynamic(() => import('@/modules/CartButton'), {
+  ssr: false,
+});
+
+async function fetchCategories() {
+  const res = await fetch(API_URL + '/category');
+  if (!res.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+  const data = await res.json();
+  return data.content || [];
+}
+
+export default async function Header() {
+  const categories = await fetchCategories();
 
   return (
     <HeaderTemplate>
@@ -24,7 +40,7 @@ export default function Header() {
           <div className='container'>
             <div className='flex h-[73px] items-center justify-between lg:h-[83px]'>
               <div className='flex gap-4'>
-                <BurgerMenu categories={categories.content} />
+                <BurgerMenu categories={categories} />
                 <span className='md:hidden'>
                   <SearchMenu />
                 </span>
@@ -39,14 +55,16 @@ export default function Header() {
                   <SearchMenu />
                 </span>
 
-                <UserMenu />
+                <span className='hidden lg:block'>
+                  <UserMenu />
+                </span>
 
                 <FavoriteButton />
                 <CartButton />
               </div>
             </div>
           </div>
-          <Navbar categories={categories.content} />
+          <Navbar categories={categories} />
         </>
       )}
     </HeaderTemplate>

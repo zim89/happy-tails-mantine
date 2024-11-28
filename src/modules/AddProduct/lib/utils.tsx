@@ -112,7 +112,16 @@ export const AddProductProvider = ({ children }: ProviderProps) => {
       },
       price: (val) => (val < 1 ? 'Entered an invalid price' : null),
       image: isNotEmpty('Please select a product image'),
-      description: isNotEmpty('Enter a description'),
+      description: (val) => {
+        const candidate = val.trim();
+
+        if (!candidate || candidate === '<p></p>') {
+          return 'Enter a description';
+        }
+
+        return null;
+      },
+
       productStatus: isNotEmpty('Enter a product status'),
       productType: isNotEmpty('Enter a product type'),
     },

@@ -1,7 +1,9 @@
 'use client';
+
 import React, { useCallback } from 'react';
 import { Indicator, UnstyledButton } from '@mantine/core';
 import { ShoppingBag } from 'lucide-react';
+
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
 import {
   closeCartDrawer,

@@ -1,5 +1,5 @@
-import { Lato, Ms_Madi, Inter } from 'next/font/google';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { Lato, Inter } from 'next/font/google';
+import { MantineProvider } from '@mantine/core';
 import { ToastContainer } from 'react-toastify';
 
 import theme from '@/shared/config/theme';
@@ -24,14 +24,6 @@ const lato = Lato({
   display: 'swap',
 });
 
-const msMadi = Ms_Madi({
-  weight: ['400'],
-  subsets: ['latin'],
-  style: ['normal'],
-  variable: '--font-madi',
-  display: 'swap',
-});
-
 const inter = Inter({
   weight: ['400', '600'],
   subsets: ['latin'],
@@ -49,11 +41,8 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <Sitelinks />
-        <ColorSchemeScript defer />
       </head>
-      <body
-        className={`${lato.variable} ${msMadi.variable} ${inter.variable} antialiased`}
-      >
+      <body className={`${lato.variable} ${inter.variable} antialiased`}>
         <AppProviders>
           <MantineProvider theme={theme}>
             {children}

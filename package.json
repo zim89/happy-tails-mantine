@@ -44,7 +44,7 @@
     "googleapis": "^144.0.0",
     "json-2-csv": "^5.5.1",
     "lucide-react": "^0.302.0",
-    "next": "14.0.4",
+    "next": "^14.0.4",
     "next-mdx-remote": "^4.4.1",
     "react": "^18",
     "react-chatbotify": "^2.0.0-beta.22",

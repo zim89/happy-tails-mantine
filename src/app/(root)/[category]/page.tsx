@@ -16,11 +16,13 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props) {
+  const { category: categoryParam } = await params;
+
   try {
     const categories = await getAllCategories();
 
     const found = categories.find(
-      (cat) => cat.name.toLowerCase() === decodeURIComponent(params.category)
+      (cat) => cat.name.toLowerCase() === decodeURIComponent(categoryParam)
     );
 
     const category = found && categoriesDesc[found.name];

@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useContext, useEffect } from 'react';
-import { Editor } from '@tiptap/react';
+import { useCallback, useContext } from 'react';
 import { TextInput } from '@mantine/core';
+import { Editor } from '@tiptap/react';
 
 import { cn } from '@/shared/lib/utils';
 import { PostFormContext } from '@/shared/context/postform.context';
@@ -13,9 +13,12 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { EditorTemplate } from '../EditorTemplate';
-import EditorWrapper from '../EditorWrapper';
 
-export default function PostEditor() {
+type Props = {
+  editor: Editor;
+};
+
+export default function PostEditor({ editor }: Props) {
   const { form } = useContext(PostFormContext);
 
   const handleImageUpload = useCallback(async (file: File) => {
@@ -45,7 +48,7 @@ export default function PostEditor() {
             input: cn('form-input', form?.errors?.title && 'form-error--input'),
             root: 'form-root',
             label: 'form-label',
-            error: 'form-error',
+            error: 'form-error -bottom-4',
           }}
           {...form.getInputProps('title')}
         />
@@ -54,7 +57,7 @@ export default function PostEditor() {
         <label className='mb-1'>Content</label>
         <div
           style={{
-            height: '95%',
+            height: '99%',
             border: form.errors?.content
               ? '1px solid red'
               : '1px solid #C8C8C8',
@@ -62,20 +65,22 @@ export default function PostEditor() {
             borderTopRightRadius: 5,
           }}
         >
-          <EditorWrapper
-            content={form.values.content}
-            handleChange={(value) => {
-              form.setFieldValue('content', value);
+          <EditorTemplate
+            kind='multi'
+            editor={editor}
+            handleImageUpload={handleImageUpload}
+            additionalProps={{
+              fancyOption: {
+                input: `Write me a blog post on topic without a title, just plain content but in HTML <p> tag, and use also anchors or lists if you need: ${form.values.title}`,
+                validate: () => {
+                  return !form.validateField('title').hasError;
+                },
+                onFinish: (content) => {
+                  form.setFieldValue('content', content);
+                },
+              },
             }}
-          >
-            {(editor) => (
-              <EditorTemplate
-                kind='multi'
-                editor={editor}
-                handleImageUpload={handleImageUpload}
-              />
-            )}
-          </EditorWrapper>
+          />
         </div>
         {form.errors?.content && (
           <p className='py-1 text-[0.675rem] text-brand-red-400'>

@@ -1,4 +1,4 @@
-import Script from "next/script";
+import Script from 'next/script';
 
 const sitelinksBox = {
   '@context': 'https://schema.org/',
@@ -15,12 +15,11 @@ const sitelinksBox = {
 
 export default function Sitelinks() {
   return (
-      <Script
-        id="sitelinks"
-        strategy="beforeInteractive"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(sitelinksBox) }}
-      />
-
+    <Script
+      id='sitelinks'
+      strategy='beforeInteractive'
+      type='application/ld+json'
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(sitelinksBox) }}
+    />
   );
 }

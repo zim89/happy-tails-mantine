@@ -1,5 +1,5 @@
-import PostList from '@/app/(root)/(additional)/blog/ui/PostList';
 import { fetchAllPosts } from '@/shared/lib/requests';
+import { PostList } from './components/PostList';
 
 export default async function Blog() {
   const posts = await fetchAllPosts(0, 2);
@@ -11,7 +11,7 @@ export default async function Blog() {
       </h2>
 
       <div className='container'>
-        <PostList posts={posts} external />
+        <PostList posts={posts.content} />
       </div>
     </section>
   );

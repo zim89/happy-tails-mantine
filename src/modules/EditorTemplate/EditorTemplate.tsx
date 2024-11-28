@@ -7,12 +7,20 @@ import FontSizeControl from '@/components/FontSizeControl';
 import FontFamilyControl from '@/components/FontFamilyControl';
 import ImageControl from '@/components/ImageControl';
 import { cn } from '@/shared/lib/utils';
+import { FancyControl } from '@/components/FancyControl';
 
 type TextEditor = {
   kind: 'text';
   editor: Editor;
   classNames?: Partial<{
     [P in RichTextEditorStylesNames]: string;
+  }>;
+  additionalProps?: Partial<{
+    fancyOption: {
+      input: string;
+      validate: () => boolean;
+      onFinish?: (res: string) => void;
+    };
   }>;
 };
 
@@ -22,6 +30,13 @@ type MultiModalEditor = {
   handleImageUpload: (file: File) => Promise<string | null>;
   classNames?: Partial<{
     [P in RichTextEditorStylesNames]: string;
+  }>;
+  additionalProps?: Partial<{
+    fancyOption: {
+      input: string;
+      validate: () => boolean;
+      onFinish?: (res: string) => void;
+    };
   }>;
 };
 
@@ -95,6 +110,18 @@ export const EditorTemplate = (props: Props) => {
           )}
           <RichTextEditor.Link {...sharedProps.toolbarBtn} />
         </RichTextEditor.ControlsGroup>
+        {props?.additionalProps?.fancyOption && (
+          <RichTextEditor.ControlsGroup
+            {...sharedProps.controlGroup}
+            style={{
+              ...sharedProps.controlGroup.styles,
+              paddingLeft: 4,
+              paddingRight: 4,
+            }}
+          >
+            <FancyControl options={props?.additionalProps?.fancyOption} />
+          </RichTextEditor.ControlsGroup>
+        )}
       </RichTextEditor.Toolbar>
       <RichTextEditor.Content />
     </RichTextEditor>

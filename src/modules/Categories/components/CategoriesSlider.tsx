@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 
 import { useCategoriesQuery } from '@/shared/api/categoryApi';
 
-const Slide = dynamic(() => import('./Slide'));
+const Slide = dynamic(() => import('./Slide'), { ssr: false });
 
 export default function CategoriesSlider() {
   const { data } = useCategoriesQuery({});

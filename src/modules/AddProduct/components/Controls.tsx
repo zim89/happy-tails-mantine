@@ -26,9 +26,7 @@ import {
 export const Controls = () => {
   const { productForm, previewImage, variants, setVariants } =
     useContext(context);
-  const { update: setUnsavedState, unsavedChanges } = useContext(
-    UnsavedChangesContext
-  );
+  const { update: setUnsavedState } = useContext(UnsavedChangesContext);
 
   const [dispatch] = useCreateMutation();
   const categoryList = useSelectCategories((cats) => cats);
