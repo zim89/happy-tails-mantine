@@ -8,7 +8,7 @@ export default function WhyUs() {
           Why Shop With Us?
         </h2>
         <ul className='mx-auto flex h-full flex-col justify-between gap-10 space-y-5 lg:max-w-screen-lg lg:flex-row lg:space-y-0 lg:px-10'>
-          <li className='mx-auto max-w-[454px] px-3 py-4'>
+          <li className='mx-auto max-w-[454px] px-3 py-5'>
             <Image
               src='/icons/additional/noun-delivery.svg'
               width={64}
@@ -24,7 +24,7 @@ export default function WhyUs() {
               will be calculated at the checkout.
             </p>
           </li>
-          <li className='mx-auto max-w-[454px] px-3 py-4'>
+          <li className='mx-auto max-w-[454px] px-3 py-5'>
             <Image
               src='/icons/additional/noun-delivery-2.svg'
               width={64}
@@ -40,7 +40,7 @@ export default function WhyUs() {
               range of products spanning various categories
             </p>
           </li>
-          <li className='mx-auto max-w-[454px] px-3 py-4'>
+          <li className='mx-auto max-w-[454px] px-3 py-5'>
             <Image
               src='/icons/additional/noun-delivery-3.svg'
               width={64}

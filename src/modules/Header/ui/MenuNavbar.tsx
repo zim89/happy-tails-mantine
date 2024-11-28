@@ -1,15 +1,16 @@
 'use client';
+
+import { ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
 import { useDeviceSize } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { additionalLinks } from '../lib/data';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { Category } from '@/shared/types/types';
-import { ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
 import Logout from '@/components/Logout';
-import { useState } from 'react';
 import { profileMenu } from '@/modules/ProfileMenu/lib/data';
 
 type MenuNavbarProps = {

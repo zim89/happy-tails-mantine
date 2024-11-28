@@ -34,18 +34,15 @@ export default function UserMenu() {
           shadow='md'
           width={173}
           classNames={{
-            dropdown: 'px-0 hidden lg:block',
-            item: 'hover:bg-[#F7F7F7]',
+            dropdown: 'px-0',
+            item: 'hover:bg-brand-grey-200',
           }}
         >
           <Menu.Target>
             <button
               type='button'
               aria-label={"Open profile's menu"}
-              className={cn(
-                'hidden rounded-full p-1 lg:block',
-                opened && 'bg-[#EEE]'
-              )}
+              className={cn('rounded-full p-1', opened && 'bg-brand-grey-300')}
             >
               <UserRound className='iconBtn' />
             </button>

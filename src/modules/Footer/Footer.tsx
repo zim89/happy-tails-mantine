@@ -10,7 +10,7 @@ import { formatYearFromDate } from '@/shared/lib/helpers';
 export default function Footer(): React.JSX.Element {
   return (
     <footer className='bg-secondary py-6 text-primary md:py-9'>
-      <Container>
+      <div className='container'>
         <div className='flex flex-col gap-6 md:flex-row md:items-start md:justify-between'>
           <Link href='/'>
             <Image
@@ -32,13 +32,12 @@ export default function Footer(): React.JSX.Element {
               Don&apos;t hesitate to get in touch with us, we&apos;ll be glad to
               assist you!
             </p>
-            <Anchor
+            <Link
               href='mailto:onlinestore.teamch2023@gmail.com'
-              underline='never'
               className='relative self-start text-xs leading-normal text-primary after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-500 after:hover:w-full lg:text-base'
             >
               onlinestore.teamch2023@gmail.com
-            </Anchor>
+            </Link>
 
             <SocialLinks />
           </div>
@@ -68,7 +67,7 @@ export default function Footer(): React.JSX.Element {
             </Link>
           </div>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }

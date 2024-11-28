@@ -45,7 +45,6 @@ const config: Config = {
       },
       fontFamily: {
         lato: ['var(--font-lato)', 'sans-serif'],
-        madi: ['var(--font-madi)', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {

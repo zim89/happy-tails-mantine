@@ -58,15 +58,20 @@ export const Header = ({ editor }: Props) => {
   useEffect(() => {
     // I forced to compare editor's text to the default value because whenever I put something or clear in the editor, it wraps the text in <p> tag, so it's always dirty
     const res = checkIsFormDirty();
+
     setIsEdited(res);
     setUnsavedState((prev) => ({ ...prev, unsavedChanges: res }));
   }, [editorContent, form, defaultValues.content]);
 
-  const handleCancel = () => {
+  const reset = () => {
     // Roll back to the initial state
-    editor.commands.setContent(defaultValues.content);
     form.reset();
+    editor.commands.setContent(defaultValues.content);
     setIsEdited(false);
+  };
+
+  const handleCancel = () => {
+    reset();
   };
 
   const handleSave = async () => {
@@ -94,7 +99,7 @@ export const Header = ({ editor }: Props) => {
           hero: isHero,
         }).unwrap();
         router.push(`/admin/blogs/${id}`);
-        setIsEdited(false);
+        reset();
         brandNotification('SUCCESS', 'Post creation succeeded!');
       } catch (err) {
         if (err instanceof AxiosError) {

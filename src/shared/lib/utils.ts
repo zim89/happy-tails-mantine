@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Extension } from '@tiptap/react';
 import { Node, mergeAttributes } from '@tiptap/core';
+import { SITE_DOMAIN } from '../constants/env.const';
+import axios from 'axios';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

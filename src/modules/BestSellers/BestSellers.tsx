@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic';
 
 const ProductSlider = dynamic(
-  () => import('../ProductDetails/ui/ProductSlider'),
-  { ssr: false }
+  () => import('../ProductDetails/ui/ProductSlider')
 );
 
 async function fetchBestSellers() {

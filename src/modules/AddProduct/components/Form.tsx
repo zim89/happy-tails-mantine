@@ -31,7 +31,7 @@ export const Form = () => {
       </h3>
 
       <div className='flex flex-col justify-between gap-6 md:flex-row lg:gap-[42px]'>
-        <div className='w-full md:max-w-[60%]'>
+        <div className='w-full md:max-w-[59%]'>
           <div className={classes.inputRow}>
             <TextInput
               {...productForm.getInputProps('name')}
@@ -196,17 +196,30 @@ export const Form = () => {
             </div>
           )}
         </div>
-        <EditorWrapper
-          content={productForm.values.description}
-          handleChange={(value) => {
-            productForm.setFieldValue('description', value);
-            if (value === '<p></p>') {
-              productForm.resetDirty();
-            }
-          }}
+        <div
+          className={cn(
+            'relative mt-6',
+            productForm.errors.description &&
+              'rounded-[4px] border border-red-500'
+          )}
         >
-          {(editor) => <AddProductEditor editor={editor} />}
-        </EditorWrapper>
+          <EditorWrapper
+            content={productForm.values.description}
+            handleChange={(value) => {
+              productForm.setFieldValue('description', value);
+              if (value === '<p></p>') {
+                productForm.resetDirty();
+              }
+            }}
+          >
+            {(editor) => <AddProductEditor editor={editor} />}
+          </EditorWrapper>
+          {productForm.errors.description && (
+            <p className='form-error -bottom-4'>
+              {productForm.errors.description}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
