@@ -62,7 +62,7 @@ export const productApi = createApi({
             params.append('color', filter.color);
           }
 
-          params.append('productStatus', filter.onlyInStock ? 'IN STOCK' : '');
+          params.append('status', filter.onlyInStock ? 'IN STOCK' : '');
 
           return {
             url: '/products/filter',
