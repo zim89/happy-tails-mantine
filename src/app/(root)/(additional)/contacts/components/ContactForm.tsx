@@ -1,5 +1,5 @@
 'use client';
-import { Download, Paperclip } from 'lucide-react';
+import { Download, Paperclip, Trash } from 'lucide-react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -119,6 +119,10 @@ export const ContactForm = () => {
     }
   };
 
+  const handleRemoveFile = () => {
+    form.setFieldValue('file', null);
+  };
+
   const fileExtension = form.values.file?.name.split('.').pop() as
     | FileType
     | undefined;
@@ -205,13 +209,9 @@ export const ContactForm = () => {
             </div>
             <div className='flex items-center'>
               <ImageModal src={URL.createObjectURL(form.values.file)} />
-              <a
-                href={URL.createObjectURL(form.values.file)}
-                download
-                className='btn-icon'
-              >
-                <Download className='size-5' />
-              </a>
+              <button className='btn-icon' onClick={handleRemoveFile}>
+                <Trash className='size-5' />
+              </button>
             </div>
           </div>
         </div>
