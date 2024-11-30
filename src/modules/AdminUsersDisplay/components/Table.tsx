@@ -11,10 +11,8 @@ import {
 import { User } from '@/shared/types/auth.types';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { cn } from '@/shared/lib/utils';
 import { formatDateFromArray } from '@/shared/lib/helpers';
 
-import classes from '../classes.module.css';
 import { Actions } from './Actions';
 import { MemoizedTableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';

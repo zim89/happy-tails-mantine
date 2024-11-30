@@ -8,7 +8,11 @@ import DeleteCategory from '@/modules/DeleteCategoryModal/DeleteCategoryModal';
 
 import { Category } from '@/shared/types/types';
 
-export default function CategoryRow(category: Category) {
+type Props = {
+  category: Category;
+};
+
+export default function CategoryRow({ category }: Props) {
   return (
     <Table.Tr className={styles.categoryRow}>
       <Table.Td>

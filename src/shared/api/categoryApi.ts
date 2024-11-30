@@ -1,7 +1,8 @@
 import { axiosBaseQuery } from '@/shared/api/authApi';
 import { BackendResponse, Category, ID, Sort } from '../types/types';
-
 import { createApi } from '@reduxjs/toolkit/query/react';
+
+import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 export const categoriesApi = createApi({
   reducerPath: 'categoriesApi',
@@ -45,11 +46,35 @@ export const categoriesApi = createApi({
             ...payload,
             overview: 'EMPTY',
           },
-
           headers: {
             'Content-type': 'application/json',
           },
         };
+      },
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          categoriesApi.util.updateQueryData('categories', {}, (draft) => {
+            draft.content.unshift({
+              id: Date.now(),
+              name: `${payload.name}`,
+              title: `${payload.title}`,
+              productCount: 0,
+              imgSrc: DEFAULT_CATEGORY_IMAGE,
+              updatedAt: null,
+              createdAt: Date.now(),
+              path: '/',
+              coordinateOnBannerY: 0,
+              coordinateOnBannerX: 0,
+              description: '',
+              overview: 'EMPTY',
+            });
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
       invalidatesTags: ['Categories'],
     }),
@@ -61,6 +86,20 @@ export const categoriesApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          categoriesApi.util.updateQueryData('categories', {}, (draft) => {
+            draft.content = draft.content.filter(
+              (category) => category.id !== payload.id
+            );
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Categories'],
     }),
     updateCategory: builder.mutation<Category, { req: Partial<Category> }>({
@@ -72,6 +111,23 @@ export const categoriesApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          categoriesApi.util.updateQueryData('categories', {}, (draft) => {
+            const category = draft.content.find(
+              (cat) => cat.id === payload.req.id
+            );
+            if (category) {
+              Object.assign(category, payload.req);
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Categories'],
     }),
   }),

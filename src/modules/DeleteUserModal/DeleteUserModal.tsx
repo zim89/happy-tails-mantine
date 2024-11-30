@@ -4,11 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 
 import DeleteModal from '@/components/DeleteModal';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { User } from '@/shared/types/auth.types';
 import { useDeleteUserMutation } from '@/shared/api/usersApi';
 
@@ -19,41 +15,36 @@ type Props = {
 export default function DeleteUserModal({ user }: Props) {
   const [dispatch] = useDeleteUserMutation();
 
+  const [openedMain, { open, close }] = useDisclosure(false);
+
   const handleDelete = async () => {
     try {
-      await dispatch({ userId: user.userId }).unwrap();
-      closeMain();
+      close();
       brandNotification('SUCCESS', 'User deleted successfully!');
+
+      await dispatch({ userId: user.userId }).unwrap();
     } catch (err) {
-      closeMain();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      close();
+      handleDispatchError(err);
       console.error(err);
     }
   };
-
-  const [openedMain, { open: openMain, close: closeMain }] =
-    useDisclosure(false);
 
   return (
     <DeleteModal>
       {(Modal) => (
         <>
           {/* Opens a modal window */}
-          <span onClick={openMain} className='block p-0 text-black'>
+          <span onClick={open} className='block p-0 text-black'>
             Delete
           </span>
 
           <Modal
-            onClose={closeMain}
+            onClose={close}
             opened={openedMain}
             footerProps={{
               singleBtn: false,
-              secondaryBtnOnClick: closeMain,
+              secondaryBtnOnClick: close,
               secondaryBtnText: 'Cancel',
               primaryBtnOnClick: handleDelete,
               primaryBtnText: 'Delete',

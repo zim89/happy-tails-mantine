@@ -7,10 +7,11 @@ import {
   ProductColor,
   ProductSizeValues,
 } from '../types/types';
-import { ErrorResponse } from './constants';
+import { DEFAULT_CATEGORY_IMAGE, ErrorResponse } from './constants';
 import { UNSUPPORTED_TYPE, TOO_LARGE_PAYLOAD } from '../constants/httpCodes';
 import { MAX_FILE_SIZE } from '../constants/sizes.const';
 import { ToastOptions, toast } from 'react-toastify';
+import { publishImage } from './requests';
 
 export const formatDateToClockTime = (date: string | number) => {
   return dayjs(date).format('HH:mm');
@@ -182,7 +183,7 @@ export const mockLongRequest = (value?: boolean) =>
           })
         );
       }
-    }, 5000);
+    }, 10000);
   });
 
 export const wait = (value = 5000) =>
@@ -288,4 +289,23 @@ export const brandNotification = (
   return op === 'SUCCESS'
     ? toast.success(message, toastOpts)
     : toast.error(message, toastOpts);
+};
+
+export const getImageSource = async (
+  image: any,
+  categoryName: string
+): Promise<string> => {
+  if (image) {
+    return await publishImage(image, `Category: ${categoryName}`);
+  }
+  return DEFAULT_CATEGORY_IMAGE;
+};
+
+export const handleDispatchError = (err: any) => {
+  if (isAxiosQueryError(err)) {
+    brandNotification(
+      'ERROR',
+      isErrorDataString(err.data) ? err.data : err.data.message
+    );
+  }
 };

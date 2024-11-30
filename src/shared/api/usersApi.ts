@@ -38,10 +38,25 @@ export const userApi = createApi({
     deleteUser: builder.mutation<void, DeleteUserParams>({
       query: ({ userId }) => {
         return {
-          url: `/users/${userId}`,
+          url: `/userds/${userId}`,
           method: 'delete',
         };
       },
+      async onQueryStarted({ userId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          userApi.util.updateQueryData('findMany', {}, (draft) => {
+            draft.content = draft.content.filter(
+              (user) => user.userId !== userId
+            );
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+
       invalidatesTags: ['User'],
     }),
   }),

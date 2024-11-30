@@ -6,6 +6,7 @@ import CategoriesTable from './ui/CategoriesTable';
 import { useCategoriesQuery } from '@/shared/api/categoryApi';
 import { AdminPanelContext } from '@/shared/context/panel.context';
 import { CategoriesTableSkeleton } from './ui/CategoriesTableSkeleton';
+import AddCategoryModal from '../AddCategoryModal';
 
 export default function CategoriesDisplay() {
   const { data, isError, isLoading } = useCategoriesQuery({});
@@ -20,6 +21,7 @@ export default function CategoriesDisplay() {
 
   return (
     <>
+      <AddCategoryModal />
       <CategoriesTable categories={data?.content || []} />
     </>
   );

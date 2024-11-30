@@ -91,6 +91,7 @@ export const Header = ({ editor }: Props) => {
           );
         }
 
+        brandNotification('SUCCESS', 'Post creation succeeded!');
         const { id } = await dispatch({
           authorName: author || 'Happy Tails Admin',
           content,
@@ -98,9 +99,8 @@ export const Header = ({ editor }: Props) => {
           posterImgSrc,
           hero: isHero,
         }).unwrap();
-        router.push(`/admin/blogs/${id}`);
         reset();
-        brandNotification('SUCCESS', 'Post creation succeeded!');
+        router.push(`/admin/blogs/${id}`);
       } catch (err) {
         if (err instanceof AxiosError) {
           form.setFieldError('image', err.message);
