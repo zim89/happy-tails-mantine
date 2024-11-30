@@ -21,7 +21,7 @@ export default function SortBy({
   defaultOption,
   onSelect,
 }: SortByProps) {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close, toggle }] = useDisclosure(false);
   const [selected, setSelected] = useState<Option>(defaultOption ?? options[0]);
 
   return (
@@ -31,20 +31,24 @@ export default function SortBy({
       offset={1}
       radius={2}
       opened={opened}
-      onClose={close}
+      onChange={(opened) => (opened ? open() : close())}
     >
       <Popover.Target>
         <button
-          onClick={open}
+          onClick={toggle}
           className='flex h-[2.375rem] w-full flex-col flex-nowrap items-center justify-center rounded-sm border border-brand-grey-300 bg-transparent px-[1.125rem] md:ml-auto md:w-fit md:flex-row md:border-none md:p-0'
         >
-          <span className='text-center md:text-left flex flex-col md:flex-row items-center'>
+          <span className='flex flex-col items-center text-center md:flex-row md:text-left'>
             Sort by
             <span className='text-[0.625rem] md:ml-2 md:text-[length:inherit] md:font-bold'>
               {selected.title}
             </span>
           </span>
-          <ChevronDown width={16} height={16} className='hidden md:inline-block ml-2' />
+          <ChevronDown
+            width={16}
+            height={16}
+            className='ml-2 hidden md:inline-block'
+          />
         </button>
       </Popover.Target>
 
