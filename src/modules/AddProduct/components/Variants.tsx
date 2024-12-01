@@ -15,8 +15,13 @@ export const Variants = () => {
           <h3 className='text-xl font-bold'>Variants</h3>
           <AddVariantModal />
         </div>
-        {variants.map((_, index) => (
-          <SingleVariant key={index} index={index} setVariants={setVariants} />
+        {variants.map((variant, index) => (
+          <SingleVariant
+            key={index}
+            index={index}
+            variant={variant}
+            setVariants={setVariants}
+          />
         ))}
       </div>
       <Table />

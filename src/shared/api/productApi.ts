@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { BackendResponse, Product, Sort, ID } from '../types/types';
 import { FilterFormValues } from '@/modules/Toolbar/components/FilterForm/FilterForm';
 import { axiosBaseQuery } from '@/shared/api/authApi';
@@ -125,6 +124,42 @@ export const productApi = createApi({
           },
         };
       },
+      async onQueryStarted({ req }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          productApi.util.updateQueryData(
+            'findMany',
+            { limit: 100000000, page: 0 },
+            (draft) => {
+              draft.content.unshift({
+                id: Date.now(),
+                article: `${req.article}`,
+                categoryId: req.categoryId || 1,
+                categoryName: `${req.categoryName}`,
+                description: `${req.description}`,
+                color: req.color || 'ONE COLOR',
+                createdAt: Date.now(),
+                imagePath: `${req.imagePath}`,
+                name: `${req.name}`,
+                onSale: req.onSale || false,
+                price: req.price || 0,
+                productStatus: req.productStatus || 'IN STOCK',
+                productType: req.productType || 'OUTDOORS',
+                relatedProducts: req.relatedProducts || null,
+                salePrice: req.salePrice || null,
+                productSizes: req.productSizes || [],
+                totalQuantity: req.totalQuantity || 0,
+                unitsSold: req.unitsSold || 0,
+                updatedAt: null,
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
     update: builder.mutation<Product, { req: ProductPutRequest }>({
@@ -138,6 +173,25 @@ export const productApi = createApi({
           },
         };
       },
+      async onQueryStarted({ req }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          productApi.util.updateQueryData(
+            'findMany',
+            { limit: 100000000, page: 0 },
+            (draft) => {
+              const product = draft.content.find((p) => p.id === req.id);
+              if (product) {
+                Object.assign(product, req);
+              }
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
     remove: builder.mutation<void, { id: ID }>({
@@ -146,6 +200,24 @@ export const productApi = createApi({
           url: `/products/${id}`,
           method: 'delete',
         };
+      },
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          productApi.util.updateQueryData(
+            'findMany',
+            { limit: 100000000, page: 0 },
+            (draft) => {
+              draft.content = draft.content.filter(
+                (product) => product.id !== id
+              );
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),

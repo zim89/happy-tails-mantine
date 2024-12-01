@@ -5,10 +5,15 @@ import { useContext, useEffect } from 'react';
 
 import {
   brandNotification,
+  getImageSource,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
 } from '@/shared/lib/helpers';
-import { AxiosQueryError, CreateProductBody } from '@/shared/types/types';
+import {
+  AxiosQueryError,
+  Category,
+  CreateProductBody,
+} from '@/shared/types/types';
 import { ProductForm, context } from '../lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
 import { useSelectCategories } from '@/shared/hooks/useSelectCategories';
@@ -52,6 +57,109 @@ export const Controls = () => {
     clearFile();
   };
 
+  const createProductObject = (
+    rest: any,
+    productColorSizes: CreateProductBody['productColorSizes'],
+    imagePath: string,
+    totalQuantity: number,
+    categoryName: string,
+    categoryList: Category[]
+  ) => {
+    const newProduct: Partial<CreateProductBody> = {
+      ...rest,
+      productColorSizes,
+      imagePath,
+      totalQuantity,
+      onSale: true,
+      salePrice: 0,
+    };
+
+    const candidate = categoryList.find((cat) => cat.name === categoryName);
+    if (candidate) {
+      newProduct.categoryId = candidate.id;
+    }
+
+    return newProduct;
+  };
+
+  const processVariants = async (variants: any[], rest: any) => {
+    let totalQuantity = 0;
+    let productColorSizes: CreateProductBody['productColorSizes'] = [];
+
+    for await (const variant of variants) {
+      if (!variant) continue;
+
+      totalQuantity += Number(variant.values.quantity);
+
+      let candidateIndex = productColorSizes.findIndex(
+        (v) => v.color === variant.values.color
+      );
+
+      if (candidateIndex !== -1) {
+        productColorSizes[candidateIndex].productSizes.push({
+          size: variant.values.size,
+          productStatus:
+            variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+          quantity: variant.values.quantity,
+          description: `${rest.description} (${variant.values.color})`,
+        });
+      } else {
+        let variantImagePath = DEFAULT_CATEGORY_IMAGE;
+
+        if (variant.values.variantImage) {
+          variantImagePath = await publishImage(
+            variant.values.variantImage,
+            `${rest.name} in ${variant.values.color}`
+          );
+        }
+
+        productColorSizes.push({
+          color: variant.values.color,
+          imagePath: variantImagePath,
+          productSizes: [
+            {
+              size: variant.values.size,
+              quantity: variant.values.quantity,
+              productStatus:
+                variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
+              description: `${rest.description} (${variant.values.color})`,
+            },
+          ],
+        });
+      }
+    }
+
+    return { totalQuantity, productColorSizes };
+  };
+
+  const processProductCreation = async (req: Partial<CreateProductBody>) => {
+    const formCopy = {
+      categoryName: productForm.values.categoryName,
+      description: productForm.values.description,
+      image: productForm.values.image,
+      name: productForm.values.name,
+      price: productForm.values.price,
+      productStatus: productForm.values.productStatus,
+      productType: productForm.values.productType,
+    };
+
+    const variantsCopy = variants.slice(0);
+
+    console.log('Variants copy: ', variantsCopy);
+
+    try {
+      clearAndClose();
+      productForm.resetDirty();
+      brandNotification('SUCCESS', 'Product created successfully!');
+
+      await dispatch({ req }).unwrap();
+    } catch (err) {
+      productForm.setValues(formCopy);
+      setVariants(variantsCopy);
+      throw err;
+    }
+  };
+
   const handleSubmit = async ({
     image,
     categoryName,
@@ -75,94 +183,37 @@ export const Controls = () => {
 
       if (variantErrors) return;
 
-      let imagePath = DEFAULT_CATEGORY_IMAGE;
+      const imagePath = await getImageSource(image, rest.name);
 
-      if (image) {
-        imagePath = await publishImage(image, rest.name);
-      }
+      const { totalQuantity, productColorSizes } = await processVariants(
+        variants,
+        rest
+      );
 
-      let totalQuantity = 0;
-
-      let productColorSizes: CreateProductBody['productColorSizes'] = [];
-
-      for await (const variant of variants) {
-        if (!variant) return;
-
-        // Update total quantity of the product
-        totalQuantity += Number(variant.values.quantity);
-
-        // Add size for each color
-        let candidateIndex = productColorSizes.findIndex(
-          (v) => v.color === variant.values.color
-        );
-
-        if (candidateIndex !== -1) {
-          productColorSizes[candidateIndex].productSizes.push({
-            size: variant.values.size,
-            productStatus:
-              variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-            quantity: variant.values.quantity,
-            description: `${rest.description} (${variant.values.color})`,
-          });
-        } else {
-          let variantImagePath = DEFAULT_CATEGORY_IMAGE;
-
-          if (variant.values.variantImage) {
-            variantImagePath = await publishImage(
-              variant.values.variantImage,
-              `${rest.name} in ${variant.values.color}`
-            );
-          }
-
-          productColorSizes.push({
-            color: variant.values.color,
-            imagePath: variantImagePath,
-            productSizes: [
-              {
-                size: variant.values.size,
-                quantity: variant.values.quantity,
-                productStatus:
-                  variant.values.quantity > 0 ? 'IN STOCK' : 'OUT OF STOCK',
-                description: `${rest.description} (${variant.values.color})`,
-              },
-            ],
-          });
-        }
-      }
-
-      const newProduct: Partial<CreateProductBody> = {
-        ...rest,
+      const newProduct = createProductObject(
+        rest,
         productColorSizes,
         imagePath,
         totalQuantity,
-        onSale: true,
-        salePrice: 0,
-      };
+        categoryName,
+        categoryList
+      );
 
-      const candidate = categoryList.find((cat) => cat.name === categoryName);
-
-      candidate && (newProduct.categoryId = candidate.id);
-      await dispatch({ req: newProduct }).unwrap();
-
-      clearAndClose();
-      productForm.resetDirty();
-      brandNotification('SUCCESS', 'Product created successfully!');
+      await processProductCreation(newProduct);
     } catch (err) {
       console.error(err);
 
-      if (isAxiosQueryError(err)) {
-        if (
-          err.status === UNSUPPORTED_TYPE ||
-          err.status === TOO_LARGE_PAYLOAD
-        ) {
-          productForm.setFieldValue('image', null);
-          productForm.setFieldError('image', `${err.data}`);
-        } else {
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
+      handleError(err);
+    }
+  };
+
+  const handleError = (err: unknown) => {
+    if (isAxiosQueryError(err)) {
+      if (err.status === UNSUPPORTED_TYPE || err.status === TOO_LARGE_PAYLOAD) {
+        productForm.setFieldValue('image', null);
+        productForm.setFieldError('image', `${err.data}`);
+      } else {
+        handleDispatchError(err);
       }
     }
   };

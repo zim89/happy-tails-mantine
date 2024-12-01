@@ -11,6 +11,7 @@ import { PromoCodeDisplay } from './components/PromoCodeDisplay';
 import { DeliverySetting } from './components/DeliverySetting';
 import { TaxSettingDisplay } from './components/TaxSettingDisplay';
 import { ProfileSettingDisplay } from './components/ProfileSettingDisplay';
+import { cn } from '@/shared/lib/utils';
 
 export const SettingsDisplay = () => {
   const [currentTab, setCurrentTab] = useState('homePage');
@@ -41,9 +42,9 @@ export const SettingsDisplay = () => {
                 router.replace(`#${tab.value}`);
               }}
               value={tab.value}
-              className={
-                tab.value === currentTab ? 'text-brand-orange-400' : undefined
-              }
+              className={cn(
+                tab.value === currentTab && 'text-brand-orange-400'
+              )}
             >
               {tab.label}
             </Tabs.Tab>

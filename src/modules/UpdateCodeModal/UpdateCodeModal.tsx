@@ -8,11 +8,7 @@ import { Calendar, X } from 'lucide-react';
 
 import ModalFooter from '@/components/ModalFooter';
 import ModalHeader from '@/components/ModalHeader';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 
 import classes from './classes.module.css';
@@ -69,18 +65,13 @@ export default function UpdateCodeModal({ promoCode }: Props) {
         expirationDate: body.expirationDate!.getTime(),
       };
 
-      await dispatch(requestBody).unwrap();
-
       clearAndClose();
       brandNotification('SUCCESS', 'Changes saved!');
+
+      await dispatch(requestBody).unwrap();
     } catch (err) {
       clearAndClose();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error(err);
     }
   };

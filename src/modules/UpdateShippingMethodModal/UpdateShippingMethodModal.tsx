@@ -4,11 +4,7 @@ import { Edit2 } from 'lucide-react';
 import Image from 'next/image';
 
 import ModalFooter from '@/components/ModalFooter';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 
 import classes from './classes.module.css';
 import ModalWindow from '@/components/ModalWindow/ModalWindow';
@@ -31,18 +27,12 @@ export default function UpdateShippingMethodModal({
 
   const handleSubmit = async () => {
     try {
-      await dispatch(shippingMethod).unwrap();
-
       close();
       brandNotification('SUCCESS', 'Changes saved!');
+      await dispatch(shippingMethod).unwrap();
     } catch (err) {
       close();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error(err);
     }
   };

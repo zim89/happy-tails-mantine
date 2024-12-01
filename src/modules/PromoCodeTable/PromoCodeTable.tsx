@@ -1,6 +1,5 @@
 import { useFindManyQuery } from '@/shared/api/discountApi';
 import Table from './components/Table';
-import Loader from '@/components/Loader/Loader';
 import { PromoCodeSkeleton } from '../SettingsDisplay/components/skeletons/PromoCodeSkeleton';
 
 export const PromoCodeTable = () => {

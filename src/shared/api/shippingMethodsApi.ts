@@ -30,6 +30,25 @@ export const shippingMethodsApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(shipment, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          shippingMethodsApi.util.updateQueryData(
+            'getShippingMethods',
+            undefined,
+            (draft) => {
+              const method = draft.content.find((m) => m.id === shipment.id);
+              if (method) {
+                Object.assign(method, shipment);
+              }
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [QUERY_TAGS.SHIPPING_METHODS],
     }),
     deleteShippingMethod: builder.mutation<void, number>({
@@ -40,6 +59,24 @@ export const shippingMethodsApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          shippingMethodsApi.util.updateQueryData(
+            'getShippingMethods',
+            undefined,
+            (draft) => {
+              draft.content = draft.content.filter(
+                (method) => method.id !== id
+              );
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [QUERY_TAGS.SHIPPING_METHODS],
     }),
     createShippingMethod: builder.mutation<
@@ -54,6 +91,22 @@ export const shippingMethodsApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(shipment, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          shippingMethodsApi.util.updateQueryData(
+            'getShippingMethods',
+            undefined,
+            (draft) => {
+              draft.content.unshift({ id: Date.now(), ...shipment });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: [QUERY_TAGS.SHIPPING_METHODS],
     }),
   }),
