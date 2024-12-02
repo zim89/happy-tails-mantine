@@ -21,7 +21,7 @@
 }
 
 .fieldSizing {
-  @apply w-full md:flex-1 lg:w-[275px] lg:flex-initial;
+  @apply w-full md:flex-1 lg:w-[315px] lg:flex-initial;
 }
 
 .submitAddress {
