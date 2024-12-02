@@ -5,11 +5,11 @@ import { cn } from '@/shared/lib/utils';
 import { Container } from './Container';
 import classes from '../classes.module.css';
 import { useReplyMutation } from '@/shared/api/feedbackApi';
-import { toast } from 'react-toastify';
 import type { Feedback } from '@/shared/types/feedback.types';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 
 export const ReplyMessage = ({ message }: { message: Feedback }) => {
-  const [sendReply, isLoading] = useReplyMutation();
+  const [sendReply] = useReplyMutation();
 
   const form = useForm({
     initialValues: {
@@ -23,19 +23,29 @@ export const ReplyMessage = ({ message }: { message: Feedback }) => {
     },
   });
 
+  const processReply = async (values: typeof form.values) => {
+    try {
+      brandNotification('SUCCESS', 'Reply sent successfully!');
+      form.reset();
+      await sendReply({ id: message.id, ...values }).unwrap();
+    } catch (err) {
+      form.setValues(values);
+      throw err;
+    }
+  };
+
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      await sendReply({ id: message.id, ...values }).unwrap();
-      toast.success('Reply sent successfully!');
-      form.reset();
+      await processReply(values);
     } catch (error) {
+      handleDispatchError(error);
       console.log(error);
     }
   };
 
   return (
     <Container>
-      <div className='mt-10 rounded-tl rounded-tr border border-[#EEE] bg-white px-4 py-[22px]'>
+      <div className='mt-10 rounded-tl rounded-tr border border-brand-grey-300 bg-white px-4 py-[22px]'>
         <h3 className='text-xl font-bold'>New Message</h3>
       </div>
       <form onSubmit={form.onSubmit(handleSubmit)} className={classes.form}>

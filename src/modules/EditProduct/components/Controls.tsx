@@ -33,9 +33,9 @@ export const Controls = () => {
 
   const handleSubmit = async () => {
     try {
-      await handlePutRequest();
       setUnsavedState((prev) => ({ ...prev, unsavedChanges: false }));
       brandNotification('SUCCESS', 'Product saved successfully!');
+      await handlePutRequest();
     } catch (err) {
       if (isAxiosQueryError(err)) {
         if (

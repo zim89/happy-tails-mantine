@@ -111,7 +111,7 @@ export default function Table({ data }: { data: Discount[] }) {
     },
     state: {
       pagination: {
-        pageIndex: page ? Number(page) - 1 : 0,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
       },
     },

@@ -1,11 +1,11 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 
 import { CustomBadge } from '@/components/Badge/Badge';
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import type { Order } from '@/shared/types/types';
-import { useSearchParams } from 'next/navigation';
 
 type Props = {
   order: Order;
@@ -20,7 +20,10 @@ export const Header = ({ order }: Props) => {
       <Breadcrumbs
         crumbs={[
           { href: '/admin/', text: 'Dashboard' },
-          { href: `/admin/orders?page=${fromPage}`, text: 'Orders' },
+          {
+            href: `/admin/orders?page=${fromPage && fromPage !== 'null' ? fromPage : 1}`,
+            text: 'Orders',
+          },
           { text: 'Details' },
         ]}
         classNames={{

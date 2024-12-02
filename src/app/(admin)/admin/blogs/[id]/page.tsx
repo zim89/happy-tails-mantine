@@ -35,7 +35,7 @@ export default function Page({ params: { id }, searchParams }: Props) {
           { href: '/admin/', text: 'Dashboard' },
           {
             text: 'Blogs',
-            href: `/admin/blogs?page=${searchParams.fromPage || 1}`,
+            href: `/admin/blogs?page=${searchParams.fromPage && searchParams.fromPage !== 'null' ? searchParams.fromPage : 1}`,
           },
           { text: 'Blog post' },
         ]}

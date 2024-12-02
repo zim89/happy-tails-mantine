@@ -1,14 +1,11 @@
 import { Mail, Trash2 } from 'lucide-react';
-
-import DeleteModal from '@/components/DeleteModal';
 import { useDisclosure } from '@mantine/hooks';
 
-import styles from './DeleteMessagesModal.module.css';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import DeleteModal from '@/components/DeleteModal';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { useBulkRemoveMutation } from '@/shared/api/feedbackApi';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import { LoadingOverlay } from '@mantine/core';
+
+import styles from './DeleteMessagesModal.module.css';
 
 type Props = {
   messages: number[];
@@ -17,23 +14,22 @@ type Props = {
 
 export default function DeleteMessagesModal({ messages, setSelected }: Props) {
   const [remove] = useBulkRemoveMutation();
-  const [loading, setLoading] = useState(false);
   const [openedMain, { open: openMain, close: closeMain }] =
     useDisclosure(false);
 
   const handleDelete = async () => {
     try {
-      await remove(messages).unwrap();
-      toast.success(
+      brandNotification(
+        'SUCCESS',
         `${messages.length === 1 ? 'Feedback' : 'Feedbacks'} successfully deleted!`
       );
+
       if (setSelected) setSelected([]);
-    } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
       closeMain();
+      await remove(messages).unwrap();
+    } catch (err) {
+      closeMain();
+      handleDispatchError(err);
     }
   };
 
@@ -64,15 +60,6 @@ export default function DeleteMessagesModal({ messages, setSelected }: Props) {
                 containerStyles: { display: 'flex', justifyContent: 'end' },
               }}
             >
-              <LoadingOverlay
-                visible={loading}
-                zIndex={1000}
-                overlayProps={{
-                  radius: 'sm',
-                  blur: 2,
-                }}
-                loaderProps={{ color: '#161616' }}
-              />
               <div className={styles.message}>
                 <Mail size={64} />
                 <hgroup>

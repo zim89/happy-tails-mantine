@@ -147,7 +147,7 @@ export default function Table({ data }: { data: Order[] }) {
       globalFilter,
       pagination: {
         pageSize: Number(limit) || 10,
-        pageIndex: page ? Number(page) - 1 : 0,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
       },
     },
     onGlobalFilterChange: setGlobalFilter,

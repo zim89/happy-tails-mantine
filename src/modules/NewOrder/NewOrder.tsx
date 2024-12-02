@@ -12,14 +12,8 @@ import OrderTotal from './components/OrderTotal';
 import AddComments from './components/AddComments';
 import { useCreateOrderMutation } from '@/shared/api/ordersApi';
 import { useAuth } from '@/shared/hooks/useAuth';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { ErrorResponse } from '@/shared/lib/constants';
-import { CreateOrderBody } from '@/shared/types/types';
-import { SelectedItem } from './lib/types';
 import BlockButton from '@/components/BlockButton';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
@@ -27,6 +21,8 @@ import Loader from '@/components/Loader/Loader';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
 import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
 import { UNAUTHORIZED } from '@/shared/constants/httpCodes';
+import { createOrderRequest, mapAddresses, parseItems } from './lib/util';
+import { CreateOrderBody } from '@/shared/types/types';
 
 export default function NewOrder() {
   const {
@@ -64,6 +60,21 @@ export default function NewOrder() {
   if (isLoadingDeliveries || isLoadingTax || !deliveries || !tax)
     return <Loader size={128} />;
 
+  const processOrderCreation = async (orderRequest: CreateOrderBody) => {
+    const formCopy = {
+      ...form.values,
+    };
+
+    try {
+      form.reset();
+      brandNotification('SUCCESS', 'Order creation succeeded!');
+      await dispatch(orderRequest).unwrap();
+    } catch (err) {
+      form.setValues(formCopy);
+      throw err;
+    }
+  };
+
   const handleSubmit = async (values: typeof form.values) => {
     try {
       const { hasErrors } = form.validate();
@@ -78,68 +89,22 @@ export default function NewOrder() {
           path: '/admin/orders/new',
         });
 
-      const parsed: CreateOrderBody['cartProducts'] = values.items.reduce<
-        CreateOrderBody['cartProducts']
-      >((acc, curr) => {
-        const item: SelectedItem = JSON.parse(curr);
+      const parsedItems = parseItems(values.items);
 
-        const cartItem: CreateOrderBody['cartProducts'][number] = {
-          count: item.totalQuantity,
-          productId: item.pickedAttributes.productId || item.id,
-          sizeEnum: item.pickedAttributes.size,
-        };
+      const { mappedBillingAddress, mappedShippingAddress } =
+        mapAddresses(values);
 
-        return acc.concat(cartItem);
-      }, []);
+      const orderRequest = createOrderRequest(
+        values,
+        parsedItems,
+        mappedBillingAddress,
+        mappedShippingAddress,
+        deliveryOpt
+      );
 
-      const {
-        sameAsDelivery,
-        street: billingAddr1,
-        apartment: billingAddr2,
-        ...billing
-      } = values.billingAddress;
-      const {
-        street: shippingAddr1,
-        apartment: shippingAddr2,
-        ...address
-      } = values.address;
-
-      const mappedShippingAddress = {
-        ...address,
-        addressLine1: shippingAddr1,
-        addressLine2: shippingAddr2,
-      };
-
-      const mappedBillingAddress = {
-        ...billing,
-        addressLine1: billingAddr1,
-        addressLine2: billingAddr2,
-      };
-
-      const orderRequest: CreateOrderBody = {
-        cartProducts: parsed,
-        billingAddress: sameAsDelivery
-          ? mappedShippingAddress
-          : mappedBillingAddress,
-        shippingAddress: mappedShippingAddress,
-        agreementToTerms: true,
-        email: values.email,
-        emailMeWithOffersAndNews: true,
-        commentOfManager: values.comment,
-        shippingMethodId: deliveryOpt?.id ?? 0,
-        paymentMethod: values.paymentMethod,
-      };
-
-      await dispatch(orderRequest).unwrap();
-      form.reset();
-      brandNotification('SUCCESS', 'Order creation succeeded!');
+      await processOrderCreation(orderRequest);
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
     }
   };
 

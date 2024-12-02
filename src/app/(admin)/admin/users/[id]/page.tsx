@@ -13,7 +13,7 @@ export default function Page({ params: { id }, searchParams }: Props) {
           { href: '/admin/', text: 'Dashboard' },
           {
             text: 'Users',
-            href: `/admin/users?page=${searchParams.fromPage || 1}`,
+            href: `/admin/users?page=${searchParams.fromPage && searchParams.fromPage !== 'null' ? searchParams.fromPage : 1}`,
           },
           { text: 'Profile' },
         ]}

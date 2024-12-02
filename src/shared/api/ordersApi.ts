@@ -15,7 +15,14 @@ type DeleteOrderProps = {
   number: string;
 };
 
-type UpdateOrderProps = Partial<Order>;
+type UpdateOrderProps = {
+  orderNumber: Order['number'];
+  paymentMethod: Order['paymentMethod'];
+  commentOfManager: Order['commentOfManager'];
+  shippingAddress: Partial<Order['shippingAddress']>;
+  billingAddress: Partial<Order['billingAddress']>;
+  shippingMethodId: string;
+};
 
 export type OrderParams = { page: number; limit: number; sort?: Sort };
 export type OrderParamsWithStatus = {
@@ -117,12 +124,87 @@ export const ordersApi = createApi({
       query: (params) => ({
         url: '/orders',
         method: 'post',
-
         data: params,
         headers: {
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(params, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          ordersApi.util.updateQueryData(
+            'findMany',
+            {
+              page: 0,
+              limit: 100000000,
+            },
+            (draft) => {
+              draft.content.unshift({
+                number: Date.now().toString(),
+                paymentMethod: params.paymentMethod,
+                email: params.email || '',
+                emailMeWithOffersAndNews: params.emailMeWithOffersAndNews,
+                commentOfManager: '',
+                shippingAddress: {
+                  addressLine1: params.shippingAddress.addressLine1 || '',
+                  addressLine2: params.shippingAddress.addressLine2 || '',
+                  city: params.shippingAddress.city || '',
+                  country: params.shippingAddress.country || '',
+                  company: params.shippingAddress.company || '',
+                  firstName: params.shippingAddress.firstName || '',
+                  lastName: params.shippingAddress.lastName || '',
+                  phoneNumber: params.shippingAddress.phoneNumber || '',
+                  state: params.shippingAddress.state || '',
+                  zip: params.shippingAddress.zip || '',
+                },
+                billingAddress: {
+                  addressLine1: params.billingAddress.addressLine1 || '',
+                  addressLine2: params.billingAddress.addressLine2 || '',
+                  city: params.billingAddress.city || '',
+                  country: params.billingAddress.country || '',
+                  company: params.billingAddress.company || '',
+                  firstName: params.billingAddress.firstName || '',
+                  lastName: params.billingAddress.lastName || '',
+                  phoneNumber: params.billingAddress.phoneNumber || '',
+                  state: params.billingAddress.state || '',
+                  zip: params.billingAddress.zip || '',
+                },
+                id: '999',
+                createdDate: Date.now(),
+                userId: '1',
+                discountAmount: 0,
+                discountDTO: {
+                  code: params.discountCode || '',
+                  beginningDate: '',
+                  discount: 0,
+                  expirationDate: '',
+                  id: 0x999,
+                  minPrice: 0,
+                },
+                orderStatus: 'NEW',
+                statusLastUpdatedAt: null,
+                orderProductDTOList: [],
+                shippingMethodDTO: {
+                  daysOfDelivery: 0,
+                  description: '',
+                  id: params.shippingMethodId,
+                  name: '',
+                  price: 0,
+                },
+                eta: '',
+                priceOfProducts: 0,
+                taxAmount: 0,
+                agreementToTerms: params.agreementToTerms,
+                totalPrice: 0,
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Orders'],
     }),
     changeStatus: builder.mutation<
@@ -143,6 +225,28 @@ export const ordersApi = createApi({
           },
         };
       },
+      async onQueryStarted({ number, status }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          ordersApi.util.updateQueryData(
+            'findMany',
+            {
+              page: 0,
+              limit: 100000000,
+            },
+            (draft) => {
+              const order = draft.content.find((o) => o.number === number);
+              if (order) {
+                order.orderStatus = status;
+              }
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Orders'],
     }),
     deleteOrder: builder.mutation<void, DeleteOrderProps>({
@@ -153,6 +257,27 @@ export const ordersApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted({ number }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          ordersApi.util.updateQueryData(
+            'findMany',
+            {
+              page: 0,
+              limit: 100000000,
+            },
+            (draft) => {
+              draft.content = draft.content.filter(
+                (order) => order.number !== number
+              );
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Orders'],
     }),
     updateOrder: builder.mutation<Order, UpdateOrderProps>({
@@ -164,6 +289,41 @@ export const ordersApi = createApi({
           'Content-type': 'application/json',
         },
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          ordersApi.util.updateQueryData(
+            'findMany',
+            {
+              page: 0,
+              limit: 100000000,
+            },
+            (draft) => {
+              const order = draft.content.find(
+                (o) => o.number === payload.orderNumber
+              );
+              if (order) {
+                Object.assign(order, payload);
+              }
+            }
+          )
+        );
+
+        const patchResultOne = dispatch(
+          ordersApi.util.updateQueryData(
+            'findOne',
+            { orderNumber: payload.orderNumber },
+            (draft) => {
+              Object.assign(draft, payload);
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+          patchResultOne.undo();
+        }
+      },
       invalidatesTags: ['Orders'],
     }),
     findManyByStatus: builder.query<

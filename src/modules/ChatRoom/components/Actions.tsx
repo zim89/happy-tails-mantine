@@ -1,74 +1,59 @@
 'use client';
 
+import { Menu, UnstyledButton } from '@mantine/core';
+import { MoreHorizontal, Mail, Trash2, Star } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 import {
   useRemoveMutation,
   useToggleStarredMutation,
   useUpdateStatusMutation,
 } from '@/shared/api/feedbackApi';
 import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import type { Feedback } from '@/shared/types/feedback.types';
-import { Menu, UnstyledButton, Loader } from '@mantine/core';
-import { MoreHorizontal, Mail, Trash2, Star } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 export const Actions = ({ message }: { message: Feedback }) => {
   const [remove] = useRemoveMutation();
   const [markAsRead] = useUpdateStatusMutation();
   const [toggleStarred] = useToggleStarredMutation();
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleStarred = async () => {
     try {
-      setLoading(true);
-      await toggleStarred(message.id).unwrap();
-      toast.success(
+      brandNotification(
+        'SUCCESS',
         message.starred ? 'Feedback unstarred!' : 'Feedback starred!'
       );
+      await toggleStarred(message.id).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
+      handleDispatchError(err);
     }
   };
 
   const handleMarkAsRead = async () => {
     const status = message.feedbackStatus === 'NEW' ? 'REVIEWING' : 'NEW';
     try {
-      setLoading(true);
-      await markAsRead({ id: message.id, status }).unwrap();
-      toast.success(
+      brandNotification(
+        'SUCCESS',
         status === FEEDBACK_STATUS.NEW
           ? 'Feedback marked as unread!'
           : 'Feedback marked as read!'
       );
+      await markAsRead({ id: message.id, status }).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
+      handleDispatchError(err);
     }
   };
 
   const handleDelete = async () => {
     try {
-      setLoading(true);
-      await remove({ id: message.id }).unwrap();
-      toast.success('Feedback successfully deleted!');
+      brandNotification('SUCCESS', 'Feedback successfully deleted!');
       router.push('/admin/inbox');
+      await remove({ id: message.id }).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
+      handleDispatchError(err);
     }
   };
 
@@ -77,16 +62,11 @@ export const Actions = ({ message }: { message: Feedback }) => {
       <Menu width={148} position='bottom-end' keepMounted>
         <Menu.Target>
           <UnstyledButton
-            disabled={loading}
             classNames={{
               root: 'flex items-center justify-center border border-solid border-black hover:bg-brand-grey-400 p-2 rounded-[2px]',
             }}
           >
-            {loading ? (
-              <Loader size={16} color='black' />
-            ) : (
-              <MoreHorizontal size={16} color='black' />
-            )}
+            <MoreHorizontal size={16} color='black' />
           </UnstyledButton>
         </Menu.Target>
 
