@@ -98,8 +98,6 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
     return [...data].sort((a, b) => b.id - a.id);
   }, [data]);
 
-  console.log(page);
-
   const table = useReactTable({
     data: tableData,
     columns,
