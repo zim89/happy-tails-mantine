@@ -13,6 +13,9 @@ import '@mantine/tiptap/styles.css';
 // Styles for dates
 import '@mantine/dates/styles.css';
 
+// Styles for phone input
+import 'react-international-phone/style.css';
+
 import { AppProviders } from '@/shared/config/AppProviders';
 import Sitelinks from './(root)/sitelinks';
 

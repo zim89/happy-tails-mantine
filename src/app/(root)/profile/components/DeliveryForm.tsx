@@ -3,23 +3,25 @@
 import { Group, TextInput, UnstyledButton } from '@mantine/core';
 import { hasLength, isNotEmpty, useForm } from '@mantine/form';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
-import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
 import { useUpdateDetailsMutation } from '@/shared/api/authApi';
 import {
   cleanPostcode,
-  dirtyFields,
   isAxiosQueryError,
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { useAuth } from '@/shared/hooks/useAuth';
-import { LocationFields } from './LocationFields';
-import { PostalCodeField } from './PostalCodeField';
 import { LoaderBackground } from '@/components/LoaderBackground';
 import { useAppDispatch } from '@/shared/redux/store';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
-import { useEffect } from 'react';
+
+import classes from '../styles.module.css';
+import { LocationFields } from './LocationFields';
+import { PostalCodeField } from './PostalCodeField';
+import { formatPhoneNumber } from '@/shared/helpers/phone.helpers';
+import { PhoneField } from './PhoneField';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -88,9 +90,11 @@ export const DeliveryForm = () => {
 
       if (!form.isDirty()) return;
 
+      const phoneNumber = formatPhoneNumber(values.contactNumber);
+
       const request = {
         ...prevUser,
-        phoneNumber: values.contactNumber.replace(/\"/g, ''),
+        phoneNumber,
         billingAddress: {
           firstName: prevUser.firstName,
           lastName: prevUser.lastName,
@@ -213,22 +217,9 @@ export const DeliveryForm = () => {
           placeholder='Enter Address Line 2'
         />
       </Group>
+
       <Group className={classes.fieldsGroup}>
-        <TextInput
-          withAsterisk
-          classNames={{
-            root: cn('form-root', classes.fieldSizing),
-            label: 'form-label block text-left',
-            input: cn(
-              'form-input',
-              form?.errors?.contactNumber && 'form-error--input'
-            ),
-            error: 'form-error',
-          }}
-          label='Contact Number'
-          {...form.getInputProps('contactNumber')}
-          placeholder='Enter Contact Number'
-        />
+        <PhoneField form={form} />
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),
