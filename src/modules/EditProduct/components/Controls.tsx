@@ -3,8 +3,8 @@ import { useContext, useEffect } from 'react';
 
 import {
   brandNotification,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
 } from '@/shared/lib/helpers';
 import { context } from '../lib/utils';
 
@@ -33,29 +33,24 @@ export const Controls = () => {
 
   const handleSubmit = async () => {
     try {
-      await handlePutRequest();
       setUnsavedState((prev) => ({ ...prev, unsavedChanges: false }));
       brandNotification('SUCCESS', 'Product saved successfully!');
+      await handlePutRequest();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        if (
-          err.status === UNSUPPORTED_TYPE ||
-          err.status === TOO_LARGE_PAYLOAD
-        ) {
-          productForm.setFieldValue('image', null);
-          productForm.setFieldError('image', `${err.data}`);
-        } else {
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
+      handleError(err);
+    }
+  };
+
+  const handleError = (err: unknown) => {
+    if (isAxiosQueryError(err)) {
+      if (err.status === UNSUPPORTED_TYPE || err.status === TOO_LARGE_PAYLOAD) {
+        productForm.setFieldValue('image', null);
+        productForm.setFieldError('image', `${err.data}`);
       } else {
-        brandNotification(
-          'ERROR',
-          'An error occurred while updating the product'
-        );
+        handleDispatchError(err);
       }
+    } else {
+      handleDispatchError(err);
     }
   };
 

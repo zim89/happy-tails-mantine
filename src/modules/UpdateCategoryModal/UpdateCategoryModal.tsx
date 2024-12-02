@@ -21,16 +21,17 @@ import { useUpdateCategoryMutation } from '@/shared/api/categoryApi';
 import { cn } from '@/shared/lib/utils';
 import {
   brandNotification,
+  getImageSource,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
 } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
-import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
 import { BrandFileInput } from '@/components/BrandFileInput';
+import { updateCategory } from './lib';
 
 type Props = {
   categoryLine: Category;
@@ -109,45 +110,37 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
 
       if (res.hasErrors) return;
 
-      const { updatedAt, productCount, ...category } = categoryLine;
-
-      let requestBody = {
-        ...category,
-        name: categoryName,
-        description,
-        title: categoryName,
-      };
-
       // Uploading an image
-      if (image) {
-        requestBody.imgSrc = await publishImage(
-          image,
-          `Category: ${categoryName}`
-        );
-      }
+      const updatedImage = await getImageSource(image, categoryName);
 
-      await dispatch({ req: requestBody }).unwrap();
+      // Updating the category
+      const updatedCategory = updateCategory(
+        categoryLine,
+        description,
+        categoryName,
+        updatedImage
+      );
 
       clearAndClose();
       brandNotification('SUCCESS', 'Changes saved!');
+
+      await dispatch({ req: updatedCategory }).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        // If a file doesn't match the criterias, then just notify the user, don't close the modal
-        if (
-          err.status === UNSUPPORTED_TYPE ||
-          err.status === TOO_LARGE_PAYLOAD
-        ) {
-          form.setFieldValue('image', null);
-          form.setFieldError('image', `${err.data}`);
-        } else {
-          clearAndClose();
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
-        console.error(err);
+      handleError(err);
+    }
+  };
+
+  const handleError = (err: unknown) => {
+    if (isAxiosQueryError(err)) {
+      // If a file doesn't match the criterias, then just notify the user, don't close the modal
+      if (err.status === UNSUPPORTED_TYPE || err.status === TOO_LARGE_PAYLOAD) {
+        form.setFieldValue('image', null);
+        form.setFieldError('image', `${err.data}`);
+      } else {
+        clearAndClose();
+        handleDispatchError(err);
       }
+      console.error(err);
     }
   };
 

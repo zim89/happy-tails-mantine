@@ -6,16 +6,13 @@ import { useEffect } from 'react';
 import ModalHeader from '@/components/ModalHeader';
 import ModalFooter from '@/components/ModalFooter';
 import { useForm } from '@mantine/form';
-import { Order } from '@/shared/types/types';
+import { Order, ShippingAddress } from '@/shared/types/types';
 import { cn } from '@/shared/lib/utils';
 import Checkbox from '@/components/Checkbox';
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
+import { createRequest, mapAddresses } from '../lib';
 
 type Props = {
   order: Order;
@@ -53,6 +50,10 @@ export const ShippingModal = ({ order }: Props) => {
   });
 
   useEffect(() => {
+    console.log('Cahnged order: ', order);
+  }, [order]);
+
+  useEffect(() => {
     form.values.billingAddress.sameAsDelivery
       ? form.setFieldValue('billingAddress', {
           ...form.values.shippingAddress,
@@ -67,44 +68,38 @@ export const ShippingModal = ({ order }: Props) => {
   if (error) return <p>Whoops, something went wrong!</p>;
   if (isLoading || !data) return null;
 
-  const handleUpdate = async (values: typeof form.values) => {
+  const processOrderUpdating = async (request: {
+    orderNumber: string;
+    paymentMethod: string;
+    commentOfManager: string;
+    shippingAddress: ShippingAddress;
+    billingAddress: ShippingAddress;
+    shippingMethodId: string;
+  }) => {
     try {
-      const { sameAsDelivery, ...billingAddressRest } = values.billingAddress;
-
-      const shippingAddress: Order['shippingAddress'] = {
-        ...values.shippingAddress,
-        firstName: order.shippingAddress.firstName,
-        lastName: order.shippingAddress.lastName,
-      };
-
-      const billingAddress: Order['billingAddress'] = sameAsDelivery
-        ? shippingAddress
-        : {
-            ...billingAddressRest,
-            firstName: order.billingAddress.firstName,
-            lastName: order.billingAddress.lastName,
-          };
-
-      let request = {
-        orderNumber: order.number,
-        paymentMethod: order.paymentMethod,
-        commentOfManager: order.commentOfManager || '',
-        shippingAddress,
-        billingAddress,
-        shippingMethodId: values.shippingMethod,
-      };
-      await dispatch(request).unwrap();
       close();
       brandNotification('SUCCESS', 'Changes saved!');
+      await dispatch(request).unwrap();
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handleUpdate = async (values: typeof form.values) => {
+    try {
+      const { shippingAddress, billingAddress } = mapAddresses(values, order);
+      const request = createRequest(
+        values,
+        order,
+        shippingAddress,
+        billingAddress
+      );
+
+      await processOrderUpdating(request);
     } catch (err) {
       console.error(err);
       close();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
     }
   };
 

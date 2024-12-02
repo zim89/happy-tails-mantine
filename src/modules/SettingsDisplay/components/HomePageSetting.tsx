@@ -20,7 +20,6 @@ import {
   useFindManyQuery,
   useUpdateBannerMutation,
 } from '@/shared/api/bannerApi';
-import Loader from '@/components/Loader/Loader';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import { publishImage } from '@/shared/lib/requests';
 import { CustomSelectDropdown } from './CustomSelectDropdown';
@@ -29,8 +28,9 @@ import { useSelectPosts } from '@/shared/hooks/useSelectPosts';
 import { findImageSource } from '../lib/helpers';
 import {
   brandNotification,
+  getImageSource,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
   validateFile,
 } from '@/shared/lib/helpers';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
@@ -68,6 +68,7 @@ export const HomePageSetting = () => {
   const bannerPreview3 = useRef<PreviewImage>({ name: '', path: '', id: null });
   const bannerPreview4 = useRef<PreviewImage>({ name: '', path: '', id: null });
 
+  // These are used to create select options
   const productsPages = useMemo(() => {
     return products.map((product) => {
       const prefix = SITE_DOMAIN;
@@ -194,40 +195,88 @@ export const HomePageSetting = () => {
 
   if (isLoading) return <HomePageSettingSkeleton />;
 
+  const processBannerDeletion = async (
+    ref: MutableRefObject<PreviewImage>,
+    index: number
+  ) => {
+    const refName = `banner_${index}`;
+    const linkProp = `product_link_${index}`;
+    const candidateId = ref.current.id;
+
+    if (candidateId) {
+      const copyRef = {
+        path: ref.current.path,
+        name: ref.current.name,
+        id: ref.current.id,
+      };
+
+      ref.current = {
+        path: null,
+        name: null,
+        id: null,
+      };
+
+      form.setValues((prev) => ({
+        ...prev,
+        [refName]: null,
+        [linkProp]: null,
+      }));
+
+      try {
+        await deleteBanner({ id: candidateId }).unwrap();
+      } catch (err) {
+        ref.current = copyRef;
+        handleDispatchError(err);
+      }
+    }
+  };
+
   const clearFile = async (
     ref: MutableRefObject<PreviewImage>,
     index: number
   ) => {
     try {
-      const refName = `banner_${index}`;
-      const linkProp = `product_link_${index}`;
-      const candidateId = ref.current.id;
+      brandNotification('SUCCESS', `Banner ${index} removed successfully`);
 
-      if (candidateId) {
-        await deleteBanner({ id: candidateId }).unwrap();
-
-        ref.current = {
-          path: null,
-          name: null,
-          id: null,
-        };
-
-        form.setValues((prev) => ({
-          ...prev,
-          [refName]: null,
-          [linkProp]: null,
-        }));
-        brandNotification('SUCCESS', `Banner ${index} removed successfully`);
-      }
+      await processBannerDeletion(ref, index);
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error('Deletion failed: ', err);
     }
+  };
+
+  const processBannerUploading = async (
+    id: number,
+    op: 'POST' | 'PUT',
+    imageLink: string
+  ) => {
+    const linkProp = `product_link_${id}` as const;
+    const productPath = form.getValues()[linkProp];
+    const bannerProp = `banner_${id}` as const;
+    const bannerId = bannerMap[bannerProp].current.id;
+
+    form.resetTouched();
+    brandNotification(
+      'SUCCESS',
+      op === 'POST'
+        ? `Banner #${id} added successfully`
+        : `Banner #${id} updated successfully`
+    );
+
+    if (op === 'POST') {
+      await createBanner({
+        name: bannerProp,
+        imagePath: imageLink,
+        productPath,
+      }).unwrap();
+    } else if (bannerId) {
+      await updateBanner({
+        id: bannerId,
+        name: bannerProp,
+        imagePath: imageLink,
+        productPath,
+      }).unwrap();
+    } else throw new Error('Id is missing!');
   };
 
   const handleUploadBanner = async (id: number, op: 'POST' | 'PUT') => {
@@ -243,55 +292,24 @@ export const HomePageSetting = () => {
         // As I'm calling form.onChange() imperatively in callback fn,
         // I have to call getValues() instead of accessing form.values prop
         const image = form.getValues()[bannerProp];
-        const productPath = form.getValues()[linkProp];
+        const imageLink = await getImageSource(image, bannerProp);
 
-        let imageLink = '';
-
-        if (image) {
-          imageLink = await publishImage(image, bannerProp);
-        }
-
-        const bannerId = bannerMap[bannerProp].current.id;
-
-        if (op === 'POST') {
-          await createBanner({
-            name: bannerProp,
-            imagePath: imageLink,
-            productPath,
-          }).unwrap();
-        } else if (bannerId) {
-          await updateBanner({
-            id: bannerId,
-            name: bannerProp,
-            imagePath: imageLink,
-            productPath,
-          }).unwrap();
-        } else throw new Error('Id is missing!');
-
-        form.resetTouched();
-        brandNotification(
-          'SUCCESS',
-          op === 'POST'
-            ? `Banner #${id} added successfully`
-            : `Banner #${id} updated successfully`
-        );
+        await processBannerUploading(id, op, imageLink);
       }
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        if (
-          err.status === UNSUPPORTED_TYPE ||
-          err.status === TOO_LARGE_PAYLOAD
-        ) {
-          form.setFieldValue(`banner_${id}`, null);
-          form.setFieldError(`banner_${id}`, `${err.data}`);
-        } else {
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
-      }
+      handleError(err, id);
       console.error('Failed: ', err);
+    }
+  };
+
+  const handleError = (err: unknown, id: number) => {
+    if (isAxiosQueryError(err)) {
+      if (err.status === UNSUPPORTED_TYPE || err.status === TOO_LARGE_PAYLOAD) {
+        form.setFieldValue(`banner_${id}`, null);
+        form.setFieldError(`banner_${id}`, `${err.data}`);
+      } else {
+        handleDispatchError(err);
+      }
     }
   };
 
@@ -392,7 +410,7 @@ export const HomePageSetting = () => {
                       </div>
                       {form?.errors[`banner_${index + 1}`] && (
                         <div className='relative'>
-                          <p className='form-error'>
+                          <p className='form-error -left-[128px]'>
                             {form.errors[`banner_${index + 1}`]}
                           </p>
                         </div>

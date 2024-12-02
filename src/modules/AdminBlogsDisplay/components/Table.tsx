@@ -8,19 +8,18 @@ import {
   getSortedRowModel,
 } from '@tanstack/react-table';
 import { Button, Table as MantineTable, Select } from '@mantine/core';
-
-import { Post } from '@/shared/api/postApi';
-import classes from '../classes.module.css';
-import { SearchEntry } from '@/components/SearchEntry';
-import { cn } from '@/shared/lib/utils';
-import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
-import { TablePagination } from '@/components/TablePagination/TablePagination';
-import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 
-import { CustomTableRow } from './CustomTableRow';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Post } from '@/shared/api/postApi';
+import { cn } from '@/shared/lib/utils';
+import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
+import { SearchEntry } from '@/components/SearchEntry';
+import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { useSearchString } from '@/shared/helpers/searchParams.helpers';
+
+import classes from '../classes.module.css';
+import { CustomTableRow } from './CustomTableRow';
 
 const sortingFieldsMap: {
   [P in string]: { field: string; order: 'desc' | 'asc' };
@@ -71,7 +70,7 @@ export const Table = ({ data }: Props) => {
     state: {
       globalFilter: search,
       pagination: {
-        pageIndex: page ? Number(page) - 1 : 0,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
       },
     },

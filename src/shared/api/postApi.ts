@@ -101,6 +101,23 @@ export const postApi = createApi({
           'Content-Type': 'application/json',
         },
       }),
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          postApi.util.updateQueryData('findMany', {}, (draft) => {
+            const post = draft.content.find(
+              (post) => post.id === parseInt(id, 10)
+            );
+            if (post) {
+              Object.assign(post, patch);
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Posts'],
     }),
     createPost: builder.mutation<Post, PostRequest>({
@@ -119,6 +136,26 @@ export const postApi = createApi({
           'Content-Type': 'application/json',
         },
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          postApi.util.updateQueryData('findMany', {}, (draft) => {
+            draft.content.unshift({
+              id: Date.now(),
+              ...payload,
+              slug: '',
+              createdAt: Date.now(),
+              publishedAt: Date.now(),
+              updatedAt: null,
+              postStatus: 'PUBLISHED',
+            });
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Posts'],
     }),
     deletePost: builder.mutation<void, DeleteRequest>({
@@ -126,6 +163,19 @@ export const postApi = createApi({
         url: `/posts/${id}`,
         method: 'delete',
       }),
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          postApi.util.updateQueryData('findMany', {}, (draft) => {
+            draft.content = draft.content.filter((post) => post.id !== id);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          console.log('ERROR', err);
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Posts'],
     }),
     changePostStatus: builder.mutation<Post, PostStatusRequest>({
@@ -140,6 +190,21 @@ export const postApi = createApi({
           method: 'put',
           params,
         };
+      },
+      async onQueryStarted({ id, status }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          postApi.util.updateQueryData('findMany', {}, (draft) => {
+            const post = draft.content.find((post) => post.id === id);
+            if (post) {
+              post.postStatus = status;
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
       invalidatesTags: ['Posts'],
     }),

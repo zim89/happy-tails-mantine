@@ -16,9 +16,10 @@ import {
   Menu,
   UnstyledButton,
   Badge,
-  LoadingOverlay,
 } from '@mantine/core';
 import { useState, useMemo, type ChangeEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
+import dayjs from 'dayjs';
 import { Mail } from 'lucide-react';
 
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
@@ -26,15 +27,12 @@ import { SearchEntry } from '@/components/SearchEntry';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
 import { TablePagination } from '@/components/TablePagination/TablePagination';
 import { Star } from './Star';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { InboxActions } from './InboxActions';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import { BADGE_PALETTE } from '../lib/inbox.const';
 import type { Feedback } from '@/shared/types/feedback.types';
 import { useBulkEditMutation } from '@/shared/api/feedbackApi';
-import { toast } from 'react-toastify';
-import { useSearchParams } from 'next/navigation';
-import dayjs from 'dayjs';
 
 const columnHelper = createColumnHelper<Feedback>();
 
@@ -87,7 +85,6 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
   const [checked, _] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
   const [opened, setOpened] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const [bulkEdit] = useBulkEditMutation();
 
@@ -115,8 +112,8 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
     state: {
       globalFilter: search,
       pagination: {
-        pageIndex: page ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
       },
     },
     onGlobalFilterChange: setSearch,
@@ -135,15 +132,10 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
     }, [] as Feedback[]);
 
     try {
-      setLoading(true);
+      brandNotification('SUCCESS', 'Feedbacks marked as read!');
       await bulkEdit(data).unwrap();
-      toast.success('Feedbacks marked as read!');
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
+      handleDispatchError(err);
     }
   };
 
@@ -191,16 +183,6 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
         className='relative bg-primary'
         styles={{ td: { padding: '16px 0px' }, tr: { verticalAlign: 'sub' } }}
       >
-        <LoadingOverlay
-          visible={loading}
-          zIndex={1000}
-          overlayProps={{
-            radius: 'sm',
-            blur: 2,
-          }}
-          loaderProps={{ color: '#161616' }}
-          classNames={{ loader: 'absolute top-1/3 left-1/2' }}
-        />
         {/* Table header */}
         <MantineTable.Thead classNames={{ thead: 'bg-brand-grey-300' }}>
           <MantineTable.Tr>

@@ -28,10 +28,10 @@ export default function DeletePostModal({
 
   const handleDelete = async () => {
     try {
-      await dispatch({ id }).unwrap();
-
       closeMain();
       brandNotification('SUCCESS', 'Article successfully deleted!');
+
+      await dispatch({ id }).unwrap();
       redirect && router.replace(redirect);
     } catch (err) {
       closeMain();

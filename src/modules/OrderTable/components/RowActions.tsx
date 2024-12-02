@@ -1,16 +1,14 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { ActionIcon, Menu } from '@mantine/core';
 import { CellContext } from '@tanstack/react-table';
-import { Eye, MoreHorizontal, Trash } from 'lucide-react';
+import { Eye, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 import { Order } from '@/shared/types/types';
-import DeleteOrderModal from '@/modules/DeleteOrderModal';
-import { useSearchParams } from 'next/navigation';
 
 export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
-  const order = ctx.row.original;
   const searchParams = useSearchParams();
   const page = searchParams.get('page');
 
@@ -33,12 +31,6 @@ export const RowActions = ({ ctx }: { ctx: CellContext<Order, unknown> }) => {
               <Eye />
               View
             </Link>
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<Trash />}
-            className='rounded-none hover:bg-brand-grey-200'
-          >
-            <DeleteOrderModal orderLine={order} />
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

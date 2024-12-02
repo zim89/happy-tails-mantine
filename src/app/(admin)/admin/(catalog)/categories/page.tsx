@@ -2,7 +2,6 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import styles from './categories.module.css';
 
 import CategoriesDisplay from '@/modules/CategoriesDisplay/CategoriesDisplay';
-import AddCategory from '@/modules/AddCategoryModal/AddCategoryModal';
 
 export default function CategoryPage() {
   return (
@@ -17,7 +16,6 @@ export default function CategoryPage() {
         }}
       />
       <div className={styles.pageWrapper} style={{ position: 'relative' }}>
-        <AddCategory />
         <CategoriesDisplay />
       </div>
     </>

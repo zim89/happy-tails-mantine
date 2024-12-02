@@ -6,11 +6,7 @@ import { Trash2 } from 'lucide-react';
 import DeleteModal from '@/components/DeleteModal';
 
 import classes from './classes.module.css';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import { useDeleteShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
 
@@ -23,18 +19,13 @@ export default function DeleteShippingMethodModal({ shippingMethod }: Props) {
 
   const handleDelete = async () => {
     try {
-      await deleteShippingMethod(shippingMethod.id).unwrap();
-
       closeMain();
       brandNotification('SUCCESS', 'Shipping method successfully deleted!');
+
+      await deleteShippingMethod(shippingMethod.id).unwrap();
     } catch (err) {
       closeMain();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error('Deleting failed: ', err);
     }
   };

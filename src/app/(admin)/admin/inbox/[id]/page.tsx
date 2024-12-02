@@ -14,7 +14,7 @@ export default function Page({ params, searchParams }: Props) {
           { text: 'Dashboard', href: '/admin/' },
           {
             text: 'Inbox',
-            href: `/admin/inbox?page=${searchParams.fromPage || 1}`,
+            href: `/admin/inbox?page=${searchParams.fromPage && searchParams.fromPage !== 'null' ? searchParams.fromPage : 1}`,
           },
           { text: 'Chat' },
         ]}

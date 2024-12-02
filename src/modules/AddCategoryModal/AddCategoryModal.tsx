@@ -14,7 +14,6 @@ import { useDisclosure } from '@mantine/hooks';
 
 import styles from './AddCategoryModal.module.css';
 import { useAddNewCategoryMutation } from '@/shared/api/categoryApi';
-import { DEFAULT_CATEGORY_IMAGE } from '@/shared/lib/constants';
 
 import Modal from '@/components/ModalWindow/ModalWindow';
 import ModalHeader from '@/components/ModalHeader';
@@ -22,15 +21,16 @@ import ModalFooter from '@/components/ModalFooter';
 import { cn } from '@/shared/lib/utils';
 import {
   brandNotification,
+  getImageSource,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
 } from '@/shared/lib/helpers';
-import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
 import { BrandFileInput } from '@/components/BrandFileInput';
+import { createNewCategory } from './lib';
 
 export default function AddCategoryModal() {
   const [dispatch] = useAddNewCategoryMutation();
@@ -85,6 +85,18 @@ export default function AddCategoryModal() {
     close();
   };
 
+  const handleError = (err: unknown) => {
+    if (isAxiosQueryError(err)) {
+      if (err.status === UNSUPPORTED_TYPE || err.status === TOO_LARGE_PAYLOAD) {
+        form.setFieldValue('image', null);
+        form.setFieldError('image', `${err.data}`);
+      } else {
+        clearAndClose();
+        handleDispatchError(err);
+      }
+    }
+  };
+
   const handleSubmit = async ({
     categoryName,
     image,
@@ -92,45 +104,17 @@ export default function AddCategoryModal() {
   }: (typeof form)['values']) => {
     try {
       const res = form.validate();
-
       if (res.hasErrors) return;
 
-      let imgSrc = DEFAULT_CATEGORY_IMAGE;
-
-      if (image) {
-        imgSrc = await publishImage(image, `Category: ${categoryName}`);
-      }
-
-      const newCategory = {
-        name: categoryName.trim(),
-        title: categoryName.trim(),
-        path: categoryName.toLowerCase().trim(),
-        description: description.trim(),
-        imgSrc,
-        coordinateOnBannerX: 0,
-        coordinateOnBannerY: 0,
-      };
-
-      await dispatch(newCategory).unwrap();
+      const imgSrc = await getImageSource(image, categoryName);
+      const newCategory = createNewCategory(categoryName, description, imgSrc);
 
       clearAndClose();
       brandNotification('SUCCESS', 'Category successfully created!');
+
+      await dispatch(newCategory).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        if (
-          err.status === UNSUPPORTED_TYPE ||
-          err.status === TOO_LARGE_PAYLOAD
-        ) {
-          form.setFieldValue('image', null);
-          form.setFieldError('image', `${err.data}`);
-        } else {
-          clearAndClose();
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
-        }
-      }
+      handleError(err);
     }
   };
 

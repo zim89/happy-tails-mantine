@@ -22,7 +22,7 @@ export default function CategoriesTable({ categories }: Props) {
 
   const tbs = useMemo(() => {
     return categories.map((item, index) => (
-      <CategoryLine key={index} {...item} />
+      <CategoryLine key={index} category={item} />
     ));
   }, [categories]);
 

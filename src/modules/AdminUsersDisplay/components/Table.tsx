@@ -11,10 +11,8 @@ import {
 import { User } from '@/shared/types/auth.types';
 import { EntriesCount } from '@/components/EntriesCount/EntriesCount';
 import { SearchEntry } from '@/components/SearchEntry';
-import { cn } from '@/shared/lib/utils';
 import { formatDateFromArray } from '@/shared/lib/helpers';
 
-import classes from '../classes.module.css';
 import { Actions } from './Actions';
 import { MemoizedTableBody } from '@/components/TableBody';
 import { EmptyRow } from '@/components/EmptyRow/EmptyRow';
@@ -120,7 +118,7 @@ export const Table = ({ data }: Props) => {
     state: {
       globalFilter: search,
       pagination: {
-        pageIndex: page ? Number(page) - 1 : 0,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
       },
     },

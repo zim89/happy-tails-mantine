@@ -16,18 +16,19 @@ type PreviewImage = {
 type Props = {
   index: number;
   setVariants: Dispatch<SetStateAction<(VariantForm | null)[]>>;
+  variant: VariantForm | null;
 };
 
-export const SingleVariant = ({ index, setVariants }: Props) => {
+export const SingleVariant = ({ index, setVariants, variant }: Props) => {
   const variantImage = useRef<PreviewImage>({ name: '', path: '' });
 
   const form = useForm({
     initialValues: {
-      size: 'ONE SIZE',
-      color: 'ONE COLOR',
-      quantity: 0,
-      price: 0,
-      variantImage: null as File | null,
+      size: variant?.values?.size || 'ONE SIZE',
+      color: variant?.values?.color || 'ONE COLOR',
+      quantity: variant?.values?.quantity || 0,
+      price: variant?.values?.price || 0,
+      variantImage: variant?.values?.variantImage || (null as File | null),
     },
 
     onValuesChange(values) {

@@ -1,22 +1,18 @@
-import { Loader, Menu, UnstyledButton } from '@mantine/core';
+import { Menu, UnstyledButton } from '@mantine/core';
 import { Eye, MoreHorizontal, MessageSquareDot } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
 import type { Feedback, FeedbackStatus } from '@/shared/types/feedback.types';
-import { useState } from 'react';
 import { useUpdateStatusMutation } from '@/shared/api/feedbackApi';
-import { toast } from 'react-toastify';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
-import { useSearchParams } from 'next/navigation';
 
 export const InboxActions = ({ message }: { message: Feedback }) => {
   const [markAsRead] = useUpdateStatusMutation();
   const params = useSearchParams();
   const page = params.get('page');
-
-  const [loading, setLoading] = useState(false);
 
   const handleMarkAsRead = async () => {
     const status: FeedbackStatus =
@@ -25,22 +21,19 @@ export const InboxActions = ({ message }: { message: Feedback }) => {
         : FEEDBACK_STATUS.NEW;
 
     try {
-      setLoading(true);
-      await markAsRead({
-        id: message.id,
-        status,
-      }).unwrap();
-      toast.success(
+      brandNotification(
+        'SUCCESS',
         status === FEEDBACK_STATUS.NEW
           ? 'Feedback marked as unread!'
           : 'Feedback marked as read!'
       );
+
+      await markAsRead({
+        id: message.id,
+        status,
+      }).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
-    } finally {
-      setLoading(false);
+      handleDispatchError(err);
     }
   };
 
@@ -53,11 +46,7 @@ export const InboxActions = ({ message }: { message: Feedback }) => {
               root: 'flex items-center justify-center border border-solid border-brand-grey-400 hover:bg-brand-grey-600 p-2 rounded-sm',
             }}
           >
-            {loading ? (
-              <Loader size={16} color='black' />
-            ) : (
-              <MoreHorizontal size={16} color='black' />
-            )}
+            <MoreHorizontal size={16} color='black' />
           </UnstyledButton>
         </Menu.Target>
 

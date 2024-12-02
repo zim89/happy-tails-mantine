@@ -6,7 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Edit2 } from 'lucide-react';
 
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
-import { brandNotification } from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { Order } from '@/shared/types/types';
 
 type Props = {
@@ -24,22 +24,32 @@ export const CommentSection = ({ order }: Props) => {
     closeComments();
   };
 
-  const sendFeedback = async () => {
-    try {
-      let request = {
-        orderNumber: order.number,
-        paymentMethod: order.paymentMethod,
-        shippingAddress: order.shippingAddress,
-        billingAddress: order.billingAddress,
-        shippingMethodId: order.shippingMethodDTO.id,
-        commentOfManager: comment,
-      };
+  const processCommentSubmitting = async () => {
+    let request = {
+      orderNumber: order.number,
+      paymentMethod: order.paymentMethod,
+      shippingAddress: order.shippingAddress,
+      billingAddress: order.billingAddress,
+      shippingMethodId: `${order.shippingMethodDTO.id}`,
+      commentOfManager: comment,
+    };
 
-      await dispatch(request).unwrap();
+    try {
       closeSection();
       brandNotification('SUCCESS', 'Comment posted!');
+
+      await dispatch(request).unwrap();
     } catch (err) {
-      if (err instanceof Error) brandNotification('ERROR', err.message);
+      setComment(request.commentOfManager);
+      throw err;
+    }
+  };
+
+  const sendFeedback = async () => {
+    try {
+      await processCommentSubmitting();
+    } catch (err) {
+      handleDispatchError(err);
     }
   };
 

@@ -155,6 +155,18 @@ export const authApi = createApi({
         method: 'put',
         data: payload,
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          authApi.util.updateQueryData('getUserInfo', undefined, (draft) => {
+            Object.assign(draft, payload);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Auth'],
     }),
   }),

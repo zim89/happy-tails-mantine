@@ -95,7 +95,6 @@ export const UpdateUserForm = () => {
             },
           };
 
-          await updateUser(request).unwrap();
           dispatch(
             setAuthData({
               ...currentUser,
@@ -106,6 +105,8 @@ export const UpdateUserForm = () => {
 
           form.clearErrors();
           form.reset();
+
+          await updateUser(request).unwrap();
 
           toast.success('Profile updated successfully!');
         } catch (err) {

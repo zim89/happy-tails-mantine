@@ -7,11 +7,7 @@ import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
 import { cn } from '@/shared/lib/utils';
 import { useCreateShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 
 type Props = {
   onClose: () => void;
@@ -37,23 +33,18 @@ export const AddShippingMethodForm = ({ onClose }: Props) => {
 
   const handleSubmit = async () => {
     try {
+      brandNotification('SUCCESS', 'Shipping method successfully created!');
+      form.reset();
+      onClose();
+
       await dispatch({
         daysOfDelivery: form.values.delivery,
         description: form.values.name,
         name: form.values.name,
         price: form.values.price,
       }).unwrap();
-
-      brandNotification('SUCCESS', 'Shipping method successfully created!');
-      form.reset();
-      onClose();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error('Creating failed: ', err);
     }
   };

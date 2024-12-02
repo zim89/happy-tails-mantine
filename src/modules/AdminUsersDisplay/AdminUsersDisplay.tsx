@@ -6,10 +6,7 @@ import { Table } from './components/Table';
 import { AdminUsersSkeleton } from './components/Skeleton';
 
 export default function AdminUsersDisplay() {
-  const { data, error, isLoading } = useFindManyQuery({
-    page: 0,
-    size: 10000000,
-  });
+  const { data, error, isLoading } = useFindManyQuery({});
 
   if (isLoading || !data) return <AdminUsersSkeleton />;
 

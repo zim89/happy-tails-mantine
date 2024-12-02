@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { axiosBaseQuery } from './authApi';
 import {
   CreateFeedbackPayload,
@@ -47,6 +46,37 @@ export const feedbackApi = createApi({
         method: 'post',
         data,
       }),
+      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              draft.content.unshift({
+                id: Date.now(),
+                content: `${draft.content}`,
+                feedbackStatus: 'NEW',
+                resolvedAt: null,
+                sentAt: Date.now(),
+                starred: false,
+                replyOfManager: '',
+                imageSrc: [],
+                userEmail: '',
+                userName: '',
+                managerRepliedAt: null,
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Feedbacks'],
     }),
     updateStatus: builder.mutation({
@@ -60,6 +90,34 @@ export const feedbackApi = createApi({
           params,
         };
       },
+      async onQueryStarted({ id, status }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              const feedback = draft.content.find((f) => f.id === id);
+              if (feedback) {
+                feedback.feedbackStatus = status;
+              }
+            }
+          )
+        );
+        const patchResultOne = dispatch(
+          feedbackApi.util.updateQueryData('findOne', id, (draft) => {
+            draft.feedbackStatus = status;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+          patchResultOne.undo();
+        }
+      },
       invalidatesTags: ['Feedbacks', 'Feedback'],
     }),
     toggleStarred: builder.mutation({
@@ -67,6 +125,34 @@ export const feedbackApi = createApi({
         url: `/feedback/${id}/starred`,
         method: 'put',
       }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              const feedback = draft.content.find((f) => f.id === id);
+              if (feedback) {
+                feedback.starred = !feedback.starred;
+              }
+            }
+          )
+        );
+        const patchResultOne = dispatch(
+          feedbackApi.util.updateQueryData('findOne', id, (draft) => {
+            draft.starred = !draft.starred;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+          patchResultOne.undo();
+        }
+      },
       invalidatesTags: ['Feedbacks', 'Feedback'],
     }),
     bulkEdit: builder.mutation({
@@ -75,6 +161,30 @@ export const feedbackApi = createApi({
         method: 'patch',
         data: { reviews: data },
       }),
+      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              data.forEach((update) => {
+                const feedback = draft.content.find((f) => f.id === update.id);
+                if (feedback) {
+                  Object.assign(feedback, update);
+                }
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Feedbacks'],
     }),
     remove: builder.mutation<void, { id: ID }>({
@@ -83,6 +193,27 @@ export const feedbackApi = createApi({
           url: `/feedback/${id}`,
           method: 'delete',
         };
+      },
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              draft.content = draft.content.filter(
+                (feedback) => feedback.id !== id
+              );
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
       invalidatesTags: [{ type: 'Feedbacks', id: 'LIST' }],
     }),
@@ -97,6 +228,27 @@ export const feedbackApi = createApi({
           params,
         };
       },
+      async onQueryStarted(ids, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData(
+            'findMany',
+            {
+              limit: 1000000,
+              page: 0,
+            },
+            (draft) => {
+              draft.content = draft.content.filter(
+                (feedback) => !ids.includes(feedback.id)
+              );
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Feedbacks'],
     }),
     reply: builder.mutation<void, { id: ID; content: string }>({
@@ -109,6 +261,18 @@ export const feedbackApi = createApi({
             'Content-type': 'application/json',
           },
         };
+      },
+      async onQueryStarted({ id, content }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          feedbackApi.util.updateQueryData('findOne', id, (draft) => {
+            draft.replyOfManager = content;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
       invalidatesTags: ['Feedback'],
     }),

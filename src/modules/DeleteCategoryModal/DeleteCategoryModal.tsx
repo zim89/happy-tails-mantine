@@ -8,11 +8,7 @@ import styles from './DeleteCategoryModal.module.css';
 
 import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
 
 type Props = {
@@ -28,19 +24,14 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
         closeMain();
         openError();
       } else {
-        await dispatch({ id: categoryLine.id }).unwrap();
-
         closeMain();
         brandNotification('SUCCESS', 'Category successfully deleted!');
+
+        await dispatch({ id: categoryLine.id }).unwrap();
       }
     } catch (err) {
       closeMain();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error('Deleting failed: ', err);
     }
   };

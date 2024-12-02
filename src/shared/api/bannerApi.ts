@@ -43,6 +43,18 @@ export const bannerApi = createApi({
         data: params,
         method: 'post',
       }),
+      async onQueryStarted(params, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          bannerApi.util.updateQueryData('findMany', {}, (draft) => {
+            draft.content.unshift({ id: Date.now(), ...params });
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Banner'],
     }),
     deleteBanner: builder.mutation<Banner, DeleteBanner>({
@@ -50,6 +62,18 @@ export const bannerApi = createApi({
         url: `/banner-image/${id}`,
         method: 'delete',
       }),
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          bannerApi.util.updateQueryData('findMany', {}, (draft) => {
+            draft.content = draft.content.filter((banner) => banner.id !== id);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Banner'],
     }),
     updateBanner: builder.mutation<Banner, UpdateBanner>({
@@ -58,6 +82,21 @@ export const bannerApi = createApi({
         method: 'put',
         data,
       }),
+      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          bannerApi.util.updateQueryData('findMany', {}, (draft) => {
+            const banner = draft.content.find((b) => b.id === data.id);
+            if (banner) {
+              Object.assign(banner, data);
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Banner'],
     }),
   }),

@@ -44,6 +44,22 @@ export const discountApi = createApi({
         method: 'post',
         data: params,
       }),
+      async onQueryStarted(params, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          discountApi.util.updateQueryData('findMany', undefined, (draft) => {
+            draft.content.unshift({
+              id: Date.now(),
+              code: 'TEMP_CODE',
+              ...params,
+            });
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Discount'],
     }),
     deleteDiscountCode: builder.mutation<void, DeleteDiscountCode>({
@@ -51,6 +67,20 @@ export const discountApi = createApi({
         url: `/discount/${id}`,
         method: 'delete',
       }),
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          discountApi.util.updateQueryData('findMany', undefined, (draft) => {
+            draft.content = draft.content.filter(
+              (discount) => discount.id !== id
+            );
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Discount'],
     }),
     findMany: builder.query<BackendResponse<Discount[]>, void>({
@@ -66,6 +96,21 @@ export const discountApi = createApi({
         method: 'put',
         data: params,
       }),
+      async onQueryStarted(params, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          discountApi.util.updateQueryData('findMany', undefined, (draft) => {
+            const discount = draft.content.find((d) => d.id === params.id);
+            if (discount) {
+              Object.assign(discount, params);
+            }
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Discount'],
     }),
   }),

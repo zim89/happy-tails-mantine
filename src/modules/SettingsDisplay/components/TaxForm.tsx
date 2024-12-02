@@ -27,9 +27,9 @@ export const TaxForm = ({ tax }: Props) => {
 
   const handleSubmit = async () => {
     try {
-      await dispatch({ ...tax, rate: currentTaxRate }).unwrap();
       setIsEditing(false);
       brandNotification('SUCCESS', 'Changes saved!');
+      await dispatch({ ...tax, rate: currentTaxRate }).unwrap();
     } catch (err) {
       if (isAxiosQueryError(err)) {
         setError(isErrorDataString(err.data) ? err.data : err.data.message);

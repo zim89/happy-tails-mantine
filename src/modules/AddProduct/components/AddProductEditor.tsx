@@ -18,11 +18,13 @@ export const AddProductEditor = ({ editor }: Props) => {
       productForm.values.description.trim() === '<p></p>'
     ) {
       editor.commands.clearContent();
+    } else {
+      editor.commands.setContent(productForm.values.description);
     }
   }, [productForm.values.description]);
 
   return (
-    <div className='mb-10 flex-1 flex-wrap'>
+    <div className='mb-10 h-[90%] flex-1 flex-wrap'>
       <EditorTemplate
         kind='text'
         editor={editor}

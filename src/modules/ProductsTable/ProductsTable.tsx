@@ -153,7 +153,7 @@ export default function ProductsTable({ data }: Props) {
     state: {
       globalFilter: search,
       pagination: {
-        pageIndex: page ? Number(page) - 1 : 0,
+        pageIndex: page && page !== 'null' ? Number(page) - 1 : 0,
         pageSize: Number(limit) || 10,
       },
     },

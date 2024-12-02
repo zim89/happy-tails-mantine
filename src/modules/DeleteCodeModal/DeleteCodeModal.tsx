@@ -7,11 +7,7 @@ import Image from 'next/image';
 import classes from './classes.module.css';
 
 import DeleteModal from '@/components/DeleteModal';
-import {
-  brandNotification,
-  isAxiosQueryError,
-  isErrorDataString,
-} from '@/shared/lib/helpers';
+import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import {
   Discount,
   useDeleteDiscountCodeMutation,
@@ -25,18 +21,13 @@ export default function DeleteCodeModal({ promoCode }: Props) {
 
   const handleDelete = async () => {
     try {
-      await dispatch({ id: promoCode.id }).unwrap();
-
       closeMain();
       brandNotification('SUCCESS', 'Promo code successfully deleted!');
+
+      await dispatch({ id: promoCode.id }).unwrap();
     } catch (err) {
       closeMain();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleDispatchError(err);
       console.error('Deleting failed: ', err);
     }
   };

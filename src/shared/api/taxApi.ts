@@ -25,6 +25,18 @@ export const taxApi = createApi({
         method: 'put',
         data: tax,
       }),
+      async onQueryStarted(tax, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          taxApi.util.updateQueryData('getTax', undefined, (draft) => {
+            Object.assign(draft, tax);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ['Tax'],
     }),
   }),
