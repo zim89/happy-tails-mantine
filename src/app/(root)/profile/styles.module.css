@@ -7,8 +7,8 @@
   @apply text-brand-orange-400;
 }
 
-.ordersPanel {
-  @apply flex min-h-[700px] flex-col pt-6;
+.historyList {
+  @apply flex min-h-[700px] flex-col px-6 pt-6;
 }
 
 .boxHeading {

@@ -4,19 +4,18 @@ import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tiptap/react';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
 
 import { useCreatePostMutation } from '@/shared/api/postApi';
 
 import {
   brandNotification,
+  getImageSource,
+  handleDispatchError,
   isAxiosQueryError,
-  isErrorDataString,
 } from '@/shared/lib/helpers';
 import PageHeader from '@/components/PageHeader';
 import { PostFormContext } from '@/shared/context/postform.context';
 import { UnsavedChangesContext } from '@/shared/context/unsaved.context';
-import { publishImage } from '@/shared/lib/requests';
 import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
@@ -29,7 +28,6 @@ export const Header = ({ editor }: Props) => {
   const { form, defaultValues } = useContext(PostFormContext);
   const { update: setUnsavedState } = useContext(UnsavedChangesContext);
   const [dispatch] = useCreatePostMutation();
-  const router = useRouter();
 
   const [isEdited, setIsEdited] = useState(false);
   const editorContent = editor?.getHTML();
@@ -81,26 +79,22 @@ export const Header = ({ editor }: Props) => {
     try {
       const { author, content, image, title, isHero } = form.values;
 
-      let posterImgSrc = 'https://placehold.co/600x400.png';
-
       try {
-        if (image) {
-          posterImgSrc = await publishImage(
-            image,
-            `Post poster for: ${form.values.title}`
-          );
-        }
+        let posterImgSrc = await getImageSource(
+          image,
+          `Post poster for: ${form.values.title}`,
+          'https://placehold.co/600x400.png'
+        );
 
+        reset();
         brandNotification('SUCCESS', 'Post creation succeeded!');
-        const { id } = await dispatch({
+        await dispatch({
           authorName: author || 'Happy Tails Admin',
           content,
           title,
           posterImgSrc,
           hero: isHero,
         }).unwrap();
-        reset();
-        router.push(`/admin/blogs/${id}`);
       } catch (err) {
         if (err instanceof AxiosError) {
           form.setFieldError('image', err.message);
@@ -116,10 +110,7 @@ export const Header = ({ editor }: Props) => {
           form.setFieldValue('image', null);
           form.setFieldError('image', `${err.data}`);
         } else {
-          brandNotification(
-            'ERROR',
-            isErrorDataString(err.data) ? err.data : err.data.message
-          );
+          handleDispatchError(err);
         }
       }
     }

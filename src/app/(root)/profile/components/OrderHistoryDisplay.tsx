@@ -1,20 +1,19 @@
 'use client';
 
-import { UnstyledButton } from '@mantine/core';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 
-import { OrderTabs } from '@/app/(root)/profile/components/OrderTabs';
+import { HistoryList } from '@/app/(root)/profile/components/HistoryList';
 import { useFindManyByEmailQuery } from '@/shared/api/ordersApi';
-import classes from '../styles.module.css';
 import { cn } from '@/shared/lib/utils';
-import { filterByDate } from '@/shared/helpers/date.helpers';
+
+import { EmptyHistory } from './EmptyHistory';
+import { filterOrders, searchOrders } from '../lib/utils';
+import { HistorySkeleton } from './HistorySkeleton';
 
 export const OrderHistoryDisplay = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useFindManyByEmailQuery({
-    page: currentPage - 1,
+  const { data, isLoading } = useFindManyByEmailQuery({
+    page: 0,
     limit: 1000000000000,
     sort: ['createdDate', 'desc'],
   });
@@ -22,44 +21,35 @@ export const OrderHistoryDisplay = () => {
   const [filtered, setFiltered] = useState(data?.content || []);
 
   const params = useSearchParams();
-  const router = useRouter();
 
   const searchParam = params.get('search');
-  const pageParam = params.get('page');
   const filterParam = params.get('filter');
 
   useEffect(() => {
     if (data) {
-      setFiltered(
-        data.content
-          .filter((order) =>
-            searchParam
-              ? order.orderStatus
-                  .toLowerCase()
-                  .includes(searchParam.toLowerCase()) ||
-                order.number.toLowerCase().includes(searchParam.toLowerCase())
-              : true
-          )
-          .filter((item) => {
-            return filterParam
-              ? filterByDate(filterParam, item.createdDate)
-              : true;
-          })
-      );
+      if (filterParam) {
+        setFiltered(() => filterOrders(data.content, filterParam));
+      } else if (searchParam) {
+        setFiltered(() => searchOrders(data.content, searchParam));
+      } else {
+        setFiltered(data.content);
+      }
     }
-  }, [data, filterParam, searchParam]);
-
-  useEffect(() => {
-    pageParam ? setCurrentPage(Number(pageParam)) : router.replace('?page=1');
-  }, [pageParam, router]);
+  }, [data, filterParam]);
 
   useEffect(() => {
     if (data) {
-      setCurrentPage(1); // Reset page when new data is received
-      router.replace('?page=1'); // Reset search query when new data is received
+      if (searchParam) {
+        setFiltered(() => searchOrders(data.content, searchParam));
+      } else if (filterParam) {
+        setFiltered(() => filterOrders(data.content, filterParam));
+      } else {
+        setFiltered(data.content);
+      }
     }
-  }, [data, router]);
+  }, [data, searchParam]);
 
+  if (isLoading) return <HistorySkeleton />;
   if (!data) return;
 
   return (
@@ -73,26 +63,9 @@ export const OrderHistoryDisplay = () => {
         Order History
       </h1>
       {data.content.length > 0 ? (
-        <OrderTabs orders={filtered} />
+        <HistoryList orders={filtered} />
       ) : (
-        <div className={classes.box}>
-          <hgroup>
-            <h1 className='text-2xl font-light md:whitespace-pre'>
-              Your Order History is Currently Empty,{' '}
-              <span className='text-brand-orange-800'>Start Shopping now</span>
-            </h1>
-            <p className={classes.boxParagraph}>
-              Your Order History keeps track of all your purchases, making it
-              easy to view, manage, and repurchase your favorite items. Once you
-              start shopping with us, your orders will appear here, complete
-              with all the details you need. Start exploring our wide range of
-              products and find something that catches your eye!
-            </p>
-          </hgroup>
-          <UnstyledButton className='btn mb-8 bg-secondary font-bold text-primary'>
-            <Link href='/products'>Continue shopping</Link>
-          </UnstyledButton>
-        </div>
+        <EmptyHistory />
       )}
     </>
   );
