@@ -293,11 +293,11 @@ export const brandNotification = (
 
 export const getImageSource = async (
   image: any,
-  categoryName: string,
+  description: string,
   fallbackUrl = DEFAULT_CATEGORY_IMAGE
 ): Promise<string> => {
   if (image) {
-    return await publishImage(image, `Category: ${categoryName}`);
+    return await publishImage(image, description);
   }
   return fallbackUrl;
 };
