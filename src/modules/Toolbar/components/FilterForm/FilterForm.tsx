@@ -85,7 +85,7 @@ export default function FilterForm({
         </Radio.Group>
 
         <Radio.Group
-          label='Price'
+          label='Size'
           classNames={{
             label: 'font-bold mb-4 text-base',
           }}

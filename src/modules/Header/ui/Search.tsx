@@ -17,6 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useFindManyQuery } from '@/shared/api/productApi';
+import { SearchInput } from './SearchInput';
 
 export default function SearchMenu() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -67,17 +68,7 @@ export default function SearchMenu() {
           <X className='iconBtn absolute right-0 top-0' onClick={close} />
           <h3 className='text-[1.75rem]/auto mb-8 font-bold'>Search</h3>
           <div className='relative'>
-            <TextInput
-              placeholder='What are you looking for?'
-              leftSection={<Search className='h-4 w-4' />}
-              value={value}
-              onChange={(event) => setValue(event.currentTarget.value)}
-              classNames={{
-                input:
-                  'form-input py-3 pl-8 pr-4 text-base placeholder:text-base placeholder:text-brand-grey-600 hover:border-secondary focus:border-secondary',
-                section: 'text-brand-grey-600',
-              }}
-            />
+            <SearchInput onChange={setValue} />
             {value && (
               <button
                 className='group absolute right-3 top-1/2 -translate-y-1/2'

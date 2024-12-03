@@ -1,35 +1,31 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import Image from 'next/image';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 
 import { CustomBadge } from '@/components/Badge';
-import DarkButton from '@/components/DarkButton';
 import LightButton from '@/components/LightButton';
 import { BG_COLORS } from '@/shared/constants/colors.const';
 import { cn } from '@/shared/lib/utils';
 import { Order } from '@/shared/types/types';
-import classes from '../classes.module.css';
-import { LoaderBackground } from '@/components/LoaderBackground';
 import { formatOrderPriceSchema } from '@/shared/helpers/price.helpers';
+
+import classes from '../classes.module.css';
 
 type Props = {
   order: Order;
   revealedOrders: string[];
   handleReveal(orderID: string): void;
-  handleRepeatOrder: (order: Order) => void;
 };
 
 export const OrderDetails = ({
   handleReveal,
   order,
   revealedOrders,
-  handleRepeatOrder,
 }: Props) => {
   const router = useRouter();
-  const [orderIsProceeding, setOrderIsProceeding] = useState(false);
 
   return (
     <div className='hidden grid-cols-[auto_1fr_1fr] items-center border border-brand-grey-300 p-4 md:grid'>
@@ -48,7 +44,7 @@ export const OrderDetails = ({
             }
             fill
             alt={`${order.orderProductDTOList.length} items`}
-            className='blur-[2px] filter'
+            className='blur-[1px] filter'
           />
           <div className='z-10 text-center'>
             <span
@@ -152,7 +148,6 @@ export const OrderDetails = ({
           >
             Leave a review
           </LightButton>
-         
         </div>
       )}
     </div>
