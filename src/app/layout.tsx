@@ -16,6 +16,8 @@ import '@mantine/dates/styles.css';
 // Styles for phone input
 import 'react-international-phone/style.css';
 
+import 'js-cookie';
+
 import { AppProviders } from '@/shared/config/AppProviders';
 import Sitelinks from './(root)/sitelinks';
 
@@ -44,6 +46,10 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <Sitelinks />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0'
+        ></meta>
       </head>
       <body className={`${lato.variable} ${inter.variable} antialiased`}>
         <AppProviders>
