@@ -176,7 +176,7 @@ export default function PrivacyAndCookiesPage() {
           or through such sites as:{' '}
           <Anchor
             className='text-brand-blue underline'
-            href='www.allaboutcookies.org.'
+            href='https://allaboutcookies.org'
             target='_blank'
           >
             www.allaboutcookies.org.
