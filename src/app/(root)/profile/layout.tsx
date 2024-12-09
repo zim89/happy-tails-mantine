@@ -23,6 +23,12 @@ export default function Layout({ children }: Props) {
     if (!isAuth) router.push(APP_PAGES.UNAUTHORIZED);
   }, [isAuth, router]);
 
+  // Because of the slider, the page is zoomed in a bit, so we need to scale it down
+  useEffect(() => {
+    // @ts-ignore
+    document.body.style.zoom = 0.88;
+  }, []);
+
   if (!isAuth) return null;
 
   return (
