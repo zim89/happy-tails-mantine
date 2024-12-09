@@ -16,8 +16,6 @@ import '@mantine/dates/styles.css';
 // Styles for phone input
 import 'react-international-phone/style.css';
 
-import 'js-cookie';
-
 import { AppProviders } from '@/shared/config/AppProviders';
 import Sitelinks from './(root)/sitelinks';
 
