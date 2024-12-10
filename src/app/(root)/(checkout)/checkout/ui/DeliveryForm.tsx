@@ -15,6 +15,7 @@ import { cleanPostcode } from '@/shared/lib/helpers';
 import Checkbox from '@/components/Checkbox';
 import { useScrollIntoView } from '@mantine/hooks';
 import styles from '../styles/Forms.module.css';
+import { PhoneField } from '@/app/(root)/profile/components/PhoneField';
 
 const countries = ['Canada', 'United States'];
 
@@ -355,20 +356,11 @@ export default function DeliveryForm() {
                 error: 'text-brand-red-400',
               }}
             />
-            <TextInput
+            <PhoneField
               {...form.getInputProps('shippingAddress.phoneNumber')}
+              className='!w-full'
+              inputClassName='!bg-white'
               withAsterisk
-              label='Contact Number'
-              classNames={{
-                root: 'form-root',
-                label: 'form-label',
-                input: cn(
-                  'form-input',
-                  form?.errors['shippingAddress.phoneNumber'] &&
-                    'border-brand-red-400 text-secondary'
-                ),
-                error: 'text-brand-red-400',
-              }}
             />
           </div>
 
@@ -531,20 +523,11 @@ export default function DeliveryForm() {
                   error: 'text-brand-red-400',
                 }}
               />
-              <TextInput
+              <PhoneField
                 {...form.getInputProps('billingAddress.phoneNumber')}
+                className='!w-full'
+                inputClassName='!bg-white'
                 withAsterisk
-                label='Contact Number'
-                classNames={{
-                  root: 'form-root',
-                  label: 'form-label',
-                  input: cn(
-                    'form-input',
-                    form?.errors['billingAddress.phoneNumber'] &&
-                      'border-brand-red-400 text-secondary'
-                  ),
-                  error: 'text-brand-red-400',
-                }}
               />
             </div>
           )}
