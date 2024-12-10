@@ -1,0 +1,195 @@
+{
+  "id": "https://happy-tails-mantine.vercel.app",
+  "scope": "https://happy-tails-mantine.vercel.app",
+  "name": "Happy Tails Shop",
+  "background_color": "#FDFDFD",
+  "theme_color": "#FDFDFD",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "Happy Tails Shop",
+  "orientation": "portrait-primary",
+  "description": "A pet-friendly online shop offering various dog-related products.",
+  "icons": [
+    {
+      "src": "logo/logo@192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo/logo@512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read engaging articles about dog care and related topics.",
+      "url": "/blog"
+    },
+    {
+      "name": "Cart",
+      "short_name": "Cart",
+      "description": "View and manage your shopping cart items.",
+      "url": "/cart"
+    },
+    {
+      "name": "Favorite List",
+      "short_name": "Favorites",
+      "description": "Access your list of saved favorite products.",
+      "url": "/wishlist"
+    },
+    {
+      "name": "Order History",
+      "short_name": "History",
+      "description": "View your past orders and track ongoing deliveries.",
+      "url": "/profile/order-history"
+    },
+    {
+      "name": "Change Delivery Address",
+      "short_name": "Address",
+      "description": "Update your saved delivery address details.",
+      "url": "/profile/delivery"
+    },
+    {
+      "name": "Change Password",
+      "short_name": "Password",
+      "description": "Securely update your account password.",
+      "url": "/profile/update-password"
+    },
+    {
+      "name": "Search",
+      "short_name": "Search",
+      "description": "Quickly find products or posts using keywords.",
+      "url": "/search"
+    },
+    {
+      "name": "Feedback",
+      "short_name": "Feedback",
+      "description": "Share your opinions or report issues for better service.",
+      "url": "/contacts"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/main-page.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Displays main navigation, featured content, and a summary of the website's offerings."
+    },
+    {
+      "src": "screenshots/blog.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A section with informative and engaging articles about dog care and related topics."
+    },
+    {
+      "src": "screenshots/cart.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A shopping cart where users can view selected items, adjust quantities, and proceed to checkout."
+    },
+    {
+      "src": "screenshots/category.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Organizes products into specific categories for easy browsing."
+    },
+    {
+      "src": "screenshots/chat-bot.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Provides instant support, answers queries, and helps with product recommendations."
+    },
+    {
+      "src": "screenshots/delivery-address.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Allows users to update their saved delivery address details."
+    },
+    {
+      "src": "screenshots/favourite-list.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A personalized list where users can save products they like for future reference."
+    },
+    {
+      "src": "screenshots/feedback.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A form to collect user opinions, suggestions, or issues for improving the service."
+    },
+    {
+      "src": "screenshots/filtering.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Lets users narrow down products based on criteria like price, breed size, or brand."
+    },
+    {
+      "src": "screenshots/sorting.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Arranges products by featured, price or alphabetically."
+    },
+    {
+      "src": "screenshots/forgot-password.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Provides a secure option for users to update their account password."
+    },
+    {
+      "src": "screenshots/history.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A section where users can view past purchases and track current orders."
+    },
+    {
+      "src": "screenshots/product-details.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Displays detailed information about a product, including images, specifications, and reviews."
+    },
+    {
+      "src": "screenshots/search-extended.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Advanced search functionality with options to refine results by multiple criteria."
+    },
+    {
+      "src": "screenshots/search.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A basic tool to quickly find products or blog posts using keywords."
+    },
+    {
+      "src": "screenshots/sizes.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "A reference table to help users choose the correct size for products like collars or clothes."
+    },
+    {
+      "src": "screenshots/user-details.png",
+      "sizes": "1920x1020",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": " Enables users to edit their personal information, like name and email."
+    }
+  ]
+}

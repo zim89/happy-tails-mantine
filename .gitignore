@@ -53,3 +53,8 @@ server.ts
 ./sketchfab-viewer.d.ts
 ./src/app/test
 ./src/app/(root)/auth/sketchfab
+
+# PWA
+**/public/workbox-*.js
+**/public/sw.js
+**/public/fallback-*.js

@@ -1,3 +1,11 @@
+const withPWA = require('@ducanh2912/next-pwa').default({
+  dest: 'public',
+  fallbacks: {
+    document: '/~offline',
+    image: 'images/no-signal.png',
+  },
+});
+
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
@@ -18,4 +26,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);
