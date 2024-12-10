@@ -1,4 +1,3 @@
-import { Container } from '@mantine/core';
 import { TeamMember } from './components/TeamMember';
 import { team } from './lib/data';
 

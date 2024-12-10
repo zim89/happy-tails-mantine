@@ -219,7 +219,7 @@ export const DeliveryForm = () => {
       </Group>
 
       <Group className={classes.fieldsGroup}>
-        <PhoneField form={form} />
+        <PhoneField {...form.getInputProps('contactNumber')} />
         <TextInput
           classNames={{
             root: cn('form-root', classes.fieldSizing),

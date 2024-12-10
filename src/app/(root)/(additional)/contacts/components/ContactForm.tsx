@@ -1,5 +1,6 @@
 'use client';
-import { Download, Paperclip, Trash } from 'lucide-react';
+
+import { Paperclip, Trash } from 'lucide-react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +11,8 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
+import Image from 'next/image';
+import { useEffect } from 'react';
 import { hasLength, isEmail, useForm, matches } from '@mantine/form';
 
 import Checkbox from '@/components/Checkbox';
@@ -19,10 +22,8 @@ import { cn } from '@/shared/lib/utils';
 import styles from '../styles.module.css';
 import { IMGUR_CLIENT_ID } from '@/shared/constants/env.const';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
-import { useEffect } from 'react';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { FileType, FileTypeIcons } from '@/shared/constants/file-types.const';
-import Image from 'next/image';
 import { ImageModal } from '@/modules/ChatRoom/components/ImageModal';
 
 export const ContactForm = () => {
@@ -140,7 +141,7 @@ export const ContactForm = () => {
           root: 'form-root mb-7',
           label: 'form-label',
           input: cn(
-            'form-input md:w-[458px] lg:w-[315px]',
+            'form-input md:w-[458px] lg:w-[476px]',
             form?.errors?.userName && 'border-brand-red-400 text-secondary'
           ),
           error: 'form-error',
@@ -155,7 +156,7 @@ export const ContactForm = () => {
           root: 'form-root mb-7',
           label: 'form-label',
           input: cn(
-            'form-input md:w-[458px] lg:w-[315px]',
+            'form-input md:w-[458px] lg:w-[476px]',
             form?.errors?.email && 'border-brand-red-400 text-secondary'
           ),
           error: 'form-error',
@@ -168,7 +169,7 @@ export const ContactForm = () => {
             root: 'form-root',
             label: 'form-label whitespace-pre',
             input: cn(
-              'form-input md:w-[458px] lg:w-[315px]',
+              'form-input md:w-[458px] lg:w-[476px]',
               form?.errors?.content && 'border-brand-red-400 text-secondary'
             ),
             error: 'form-error -bottom-7 md:-bottom-4',

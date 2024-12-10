@@ -1,6 +1,7 @@
 import { UseFormReturnType } from '@mantine/form';
 import {
   PhoneInput,
+  PhoneInputProps,
   defaultCountries,
   parseCountry,
 } from 'react-international-phone';
@@ -15,36 +16,28 @@ const countries = defaultCountries.filter((country) => {
   return ['us', 'ca'].includes(iso2);
 });
 
-type Props = {
-  form: UseFormReturnType<{
-    firstName: string;
-    lastName: string;
-    country: string;
-    city: string;
-    postcode: string;
-    company: string;
-    addressOne: string;
-    addressTwo: string;
-    contactNumber: string;
-    county: string;
-  }>;
+type Props = PhoneInputProps & {
+  withAsterisk?: true;
 };
 
-export const PhoneField = ({ form }: Props) => {
+export const PhoneField = ({ withAsterisk, ...props }: Props) => {
   return (
     <div className='flex w-full flex-col lg:w-auto'>
       <label className='form-label block text-left' htmlFor='phone'>
-        Phone
+        Phone {withAsterisk && <span className='text-brand-red-400'>*</span>}
       </label>
       <PhoneInput
+        {...props}
         inputProps={{
           id: 'phone',
         }}
         defaultCountry='us'
-        {...form.getInputProps('contactNumber')}
         countries={countries}
-        className={cn('form-root', classes.fieldSizing)}
-        inputClassName='w-full !rounded-[2px] !bg-transparent !border-brand-grey-400'
+        className={cn('form-root', classes.fieldSizing, props.className)}
+        inputClassName={cn(
+          'w-full !rounded-[2px] !border-brand-grey-400 !bg-transparent',
+          props.inputClassName
+        )}
       />
     </div>
   );

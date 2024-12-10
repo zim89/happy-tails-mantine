@@ -14,10 +14,10 @@ import { Carousel, Embla } from '@mantine/carousel';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import clsx from 'clsx';
 
 import '@mantine/carousel/styles.css';
 import { Product } from '@/shared/types/types';
+import { cn } from '@/shared/lib/utils';
 
 type ProductSliderProps = ContainerProps & {
   targetCategory?: string;
@@ -78,7 +78,7 @@ export default function ProductSlider({
             <button
               onClick={scrollPrev}
               disabled={!hasPrevSlide}
-              className={clsx(
+              className={cn(
                 'navBtn pr-[2px]',
                 hasPrevSlide ? 'navBtn-primary' : 'navBtn-disabled'
               )}
@@ -88,7 +88,7 @@ export default function ProductSlider({
             <button
               onClick={scrollNext}
               disabled={!hasNextSlide}
-              className={clsx(
+              className={cn(
                 'navBtn pl-[2px]',
                 hasNextSlide ? 'navBtn-primary' : 'navBtn-disabled'
               )}
@@ -136,7 +136,7 @@ export default function ProductSlider({
                       alt={item.name}
                       width={304}
                       height={287}
-                      className='h-[287px] w-[284px] lg:w-[304px]'
+                      className='h-[287px] md:w-[284px] lg:w-[304px]'
                     />
                     <Box>
                       <Text className='mb-2 text-xs leading-normal'>

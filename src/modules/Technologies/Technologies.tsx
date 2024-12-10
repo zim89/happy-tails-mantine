@@ -1,11 +1,11 @@
 'use client';
 
-import { Carousel, Embla } from '@mantine/carousel';
-
-import { technologies } from './lib/data';
 import Image from 'next/image';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
+import { Carousel, Embla } from '@mantine/carousel';
+
+import { technologies } from './lib/data';
 
 export default function Technologies() {
   const [embla, setEmbla] = useState<Embla | null>(null);
@@ -43,7 +43,7 @@ export default function Technologies() {
           container: 'container gap-12 select-none',
           viewport: 'mb-24',
         }}
-        initialSlide={3}
+        initialSlide={2}
       >
         {technologies.map((tech) => (
           <Carousel.Slide key={tech.id}>

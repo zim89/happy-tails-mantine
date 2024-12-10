@@ -19,7 +19,7 @@
 }
 
 .form {
-  @apply bg-brand-grey-200 px-12 py-9;
+  @apply bg-brand-grey-200 px-14 py-10;
 }
 
 .form label {

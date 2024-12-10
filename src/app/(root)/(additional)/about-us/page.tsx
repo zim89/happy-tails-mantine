@@ -1,7 +1,8 @@
-import classes from './classes.module.css';
 import Introduction from '@/modules/Introduction';
 import TeamList from '@/modules/TeamList';
 import Technologies from '@/modules/Technologies';
+
+import classes from './classes.module.css';
 
 export default function Page() {
   return (
@@ -17,7 +18,9 @@ export default function Page() {
         </hgroup>
         <Introduction />
         <TeamList />
-        <Technologies />
+        <div className='hidden md:block'>
+          <Technologies />
+        </div>
       </div>
     </>
   );

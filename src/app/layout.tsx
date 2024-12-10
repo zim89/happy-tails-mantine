@@ -44,10 +44,6 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         <Sitelinks />
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1.0'
-        ></meta>
       </head>
       <body className={`${lato.variable} ${inter.variable} antialiased`}>
         <AppProviders>

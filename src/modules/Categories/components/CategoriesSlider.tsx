@@ -5,7 +5,7 @@ import { Carousel } from '@mantine/carousel';
 
 import { useCategoriesQuery } from '@/shared/api/categoryApi';
 
-const Slide = dynamic(() => import('./Slide'), { ssr: false });
+const Slide = dynamic(() => import('./Slide'));
 
 export default function CategoriesSlider() {
   const { data } = useCategoriesQuery({});
@@ -14,13 +14,7 @@ export default function CategoriesSlider() {
 
   return (
     <div className='max-w-[100vw] pl-4'>
-      <Carousel
-        slideSize='auto'
-        slideGap='md'
-        align='start'
-        height={120}
-        withControls={false}
-      >
+      <Carousel slideSize='auto' slideGap='md' align='start' height={120}>
         {data.content.map((category) => (
           <Slide key={category.id} category={category} />
         ))}
