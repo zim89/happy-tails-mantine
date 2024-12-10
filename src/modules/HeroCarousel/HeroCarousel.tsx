@@ -42,7 +42,7 @@ export default function HeroCarousel() {
         onMouseEnter={autoplay.current.stop}
         onMouseLeave={autoplay.current.reset}
         classNames={{
-          viewport: 'w-screen',
+          viewport: '!w-screen',
           indicators: '!bottom-3 md:!bottom-6 lg:!bottom-8',
           indicator: cn(
             banners.length > 1

@@ -119,7 +119,7 @@ export default function CatalogProductList({
               siblings={isMobile ? 0 : 1}
               classNames={{
                 control: 'pagination-control',
-                dots: 'pagination-dots',
+                dots: 'pagination-dots hidden md:flex',
               }}
             >
               <Group gap={0} justify='center'>

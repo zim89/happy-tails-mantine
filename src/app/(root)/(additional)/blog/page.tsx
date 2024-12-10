@@ -1,9 +1,8 @@
-import { Container } from '@mantine/core';
-
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
+import { fetchAllPosts } from '@/shared/lib/requests';
+
 import HeroBlog from './ui/HeroBlog';
 import PostList from './ui/PostList';
-import { fetchAllPosts } from '@/shared/lib/requests';
 
 export default async function BlogPage() {
   const posts = await fetchAllPosts();

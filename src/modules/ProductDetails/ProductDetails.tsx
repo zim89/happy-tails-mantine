@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { Anchor, NumberInput, NumberInputHandlers } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Info, Minus, Plus } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
 
 import { Product } from '@/shared/types/types';
 import AddToWishBtn from '@/components/AddToWishBtn/AddToWishBtn';
@@ -19,7 +19,9 @@ import { generateColorList } from '@/shared/helpers/colors.helpers';
 import { generateSizes } from '@/shared/helpers/size.helpers';
 import { PostContent } from '@/app/(root)/(additional)/blog/[id]/ui/PostContent';
 
-const ProductSlider = dynamic(() => import('./ui/ProductSlider'));
+const ProductSlider = dynamic(() => import('./ui/ProductSlider'), {
+  ssr: false,
+});
 
 interface Props {
   product: Product;
@@ -68,7 +70,7 @@ export default function ProductDetails({ product }: Props) {
           />
           <div className='mb-16 block md:mb-20 lg:mb-28 lg:flex lg:gap-6'>
             {/*  ProductDetails Image*/}
-            <div className='relative mb-9 h-[341px] w-full flex-none overflow-hidden md:mx-auto md:w-[458px] lg:h-[352px] lg:w-[472px]'>
+            <div className='relative mb-9 aspect-square max-w-[382px] flex-none overflow-hidden md:mx-auto md:h-[341px] md:w-[458px] lg:h-[352px] lg:w-[472px]'>
               <Image
                 src={product.imagePath ?? '/images/no-img.png'}
                 alt={product.name}
@@ -184,14 +186,14 @@ export default function ProductDetails({ product }: Props) {
               <SizeGuide opened={opened} onClose={close} onToggle={toggle} />
 
               {/*ProductDetails footer*/}
-              <div className='mb-6 flex items-center justify-between md:mb-12'>
+              <div className='mb-6 flex items-center justify-between md:mb-12 lg:gap-10'>
                 {/*Number Input*/}
-                <div className='flex w-[158px] min-w-[158px] items-center rounded-sm border border-brand-grey-400'>
+                <div className='flex w-full items-center rounded-sm border border-brand-grey-400 md:w-[158px]'>
                   <button
                     onClick={() => handlersRef.current?.decrement()}
                     disabled={quantity === 1 || !isAvailable}
                     className={cn(
-                      'px-4 py-3',
+                      'bg-brand-grey-100 px-4 py-3',
                       (quantity === 1 || !isAvailable) && 'text-brand-grey-400'
                     )}
                   >
@@ -226,7 +228,7 @@ export default function ProductDetails({ product }: Props) {
                       !isAvailable
                     }
                     className={cn(
-                      'px-4 py-3',
+                      'bg-brand-grey-100 px-4 py-3',
                       ((isOneSize &&
                         quantity === product.productSizes?.[0]?.quantity) ||
                         quantity === selectedSize?.productSize?.quantity ||
@@ -238,7 +240,7 @@ export default function ProductDetails({ product }: Props) {
                   </button>
                 </div>
 
-                <div className='flex w-[458px] gap-3'>
+                <div className='flex items-center gap-3 md:w-[458px]'>
                   <div className='hidden w-full md:block md:max-w-[274px]'>
                     <AddToCartBtn
                       product={product}
