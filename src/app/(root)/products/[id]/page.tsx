@@ -1,15 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Container, Loader } from '@mantine/core';
+import { Loader } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
 
 import { useFindOneQuery } from '@/shared/api/productApi';
 import { availabilityMap } from '@/shared/lib/helpers';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
+import { useZoom } from '@/shared/hooks/useZoom';
 
-const ProductDetails = dynamic(() => import('@/modules/ProductDetails'));
+const ProductDetails = dynamic(() => import('@/modules/ProductDetails'), {
+  ssr: false,
+});
 
 type Props = {
   params: {
@@ -19,6 +22,9 @@ type Props = {
 
 export default function ProductPage({ params }: Props) {
   const { data, isError, isLoading } = useFindOneQuery(params.id);
+
+  // Because of the slider, the page is zoomed in a bit, so we need to scale it down
+  useZoom(0.8);
 
   if (isLoading)
     return (

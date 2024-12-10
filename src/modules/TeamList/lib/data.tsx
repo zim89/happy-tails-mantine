@@ -19,8 +19,8 @@ export const team: TeamMember[] = [
   {
     avatar: '/images/additional/about-us/zahrebelna.png',
     avatarStyles: {
-      objectPosition: '-23px -34px',
-      transform: 'scale(2.5)',
+      objectPosition: '-15px -23px',
+      transform: 'scale(3.5) rotateZ(270deg)',
     },
     name: 'Daria Zahrebelna',
     occupation: 'Project Manager',
