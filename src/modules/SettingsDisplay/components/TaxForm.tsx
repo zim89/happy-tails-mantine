@@ -12,6 +12,8 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   tax: Tax;
@@ -31,14 +33,7 @@ export const TaxForm = ({ tax }: Props) => {
       brandNotification('SUCCESS', 'Changes saved!');
       await dispatch({ ...tax, rate: currentTaxRate }).unwrap();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        setError(isErrorDataString(err.data) ? err.data : err.data.message);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
-      console.error('Updating failed: ', err);
+      handleError(err, toast.error);
     }
   };
 

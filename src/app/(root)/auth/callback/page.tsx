@@ -11,6 +11,8 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
 import axiosInstance from '@/shared/lib/interceptor';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export default function CallbackPage() {
   const params = useSearchParams();
@@ -28,7 +30,7 @@ export default function CallbackPage() {
 
           router.push('/');
         } catch (err) {
-          console.log(err);
+          handleError(err, toast.error);
         }
       }
     };

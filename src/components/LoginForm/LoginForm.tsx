@@ -10,6 +10,8 @@ import Checkbox from '@/components/Checkbox';
 import { useAppDispatch } from '@/shared/redux/store';
 import { useLoginMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -34,8 +36,8 @@ export default function LoginForm() {
       const data = await login(values).unwrap();
       dispatch(setAuthData(data));
       router.push('/');
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

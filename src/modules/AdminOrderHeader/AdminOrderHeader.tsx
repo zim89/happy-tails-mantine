@@ -29,8 +29,8 @@ export default function AdminOrderHeader() {
 
       brandNotification('SUCCESS', 'Copied!');
     } catch (err) {
-      console.log(err);
-      brandNotification('ERROR', "Couldn't copy. Please try again.");
+      console.error(err);
+      toast.error("Couldn't copy. Please try again.");
     }
   };
 

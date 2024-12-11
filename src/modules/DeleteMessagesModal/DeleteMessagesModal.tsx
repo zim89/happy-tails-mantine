@@ -6,6 +6,8 @@ import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { useBulkRemoveMutation } from '@/shared/api/feedbackApi';
 
 import styles from './DeleteMessagesModal.module.css';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   messages: number[];
@@ -29,7 +31,7 @@ export default function DeleteMessagesModal({ messages, setSelected }: Props) {
       await remove(messages).unwrap();
     } catch (err) {
       closeMain();
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

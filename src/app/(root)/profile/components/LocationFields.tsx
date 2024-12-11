@@ -6,6 +6,8 @@ import { UseFormReturnType } from '@mantine/form';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   form: UseFormReturnType<{
@@ -46,7 +48,7 @@ export const LocationFields = ({ form }: Props) => {
       setFound(true);
       setCities(res.data.data);
     } catch (err) {
-      console.log(err);
+      handleError(err, toast.error);
     }
   };
 

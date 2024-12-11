@@ -28,7 +28,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       );
       await toggleStarred(message.id).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 
@@ -43,7 +43,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       );
       await markAsRead({ id: message.id, status }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 
@@ -53,7 +53,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       router.push('/admin/inbox');
       await remove({ id: message.id }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

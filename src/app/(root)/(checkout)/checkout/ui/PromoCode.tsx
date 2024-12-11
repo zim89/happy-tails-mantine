@@ -1,3 +1,5 @@
+'use client';
+
 import { Accordion, Loader, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import axios from 'axios';
@@ -12,6 +14,7 @@ import type { Discount } from '@/shared/api/discountApi';
 import { selectCartTotalPrice } from '@/shared/redux/cart/cartSlice';
 import { API_URL } from '@/shared/constants/env.const';
 import { NOT_FOUND } from '@/shared/constants/httpCodes';
+import { handleError, isClientError } from '@/shared/helpers/error.helpers';
 
 export default function PromoCode() {
   const [isLoading, setIsLoading] = useState(false);
@@ -54,12 +57,8 @@ export default function PromoCode() {
 
       dispatch(setDiscount(discount));
       setMessage('The coupon has been successfully applied');
-    } catch (error: any) {
-      if (error.response.status === NOT_FOUND) {
-        form.setErrors({ code: error.response.data.message });
-      } else {
-        form.setErrors({ code: 'Something went wrong, please try again!' });
-      }
+    } catch (err) {
+      handleError(err, (message) => form.setErrors({ code: message }));
     } finally {
       setIsLoading(false);
     }

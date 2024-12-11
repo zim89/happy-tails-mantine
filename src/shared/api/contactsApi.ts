@@ -27,18 +27,12 @@ export const postRequest = async ({
   userName,
   imageSrc,
 }: Credentials) => {
-  try {
-    const res = await axios.post<Response>(`${API_URL}/feedback`, {
-      content,
-      userName,
-      userEmail,
-      imageSrc,
-    });
+  const res = await axios.post<Response>(`${API_URL}/feedback`, {
+    content,
+    userName,
+    userEmail,
+    imageSrc,
+  });
 
-    return res;
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      throw new Error(err?.response?.data.error);
-    }
-  }
+  return res;
 };

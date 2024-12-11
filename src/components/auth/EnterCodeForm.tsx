@@ -1,6 +1,7 @@
 'use client';
 import { useResetPasswordMutation } from '@/shared/api/authApi';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { handleError } from '@/shared/helpers/error.helpers';
 import { cn } from '@/shared/lib/utils';
 import { Button, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -41,9 +42,8 @@ export default function EnterCodeForm({ email }: { email: string }) {
 
     try {
       await resetPassword({ email }).unwrap();
-    } catch (error) {
-      console.log(error);
-      toast.error('Oops! Something went wrong! Try again later.');
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

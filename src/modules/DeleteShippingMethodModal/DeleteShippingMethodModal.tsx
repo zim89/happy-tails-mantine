@@ -9,6 +9,8 @@ import classes from './classes.module.css';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import { useDeleteShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   shippingMethod: ShippingMethod;
@@ -25,8 +27,7 @@ export default function DeleteShippingMethodModal({ shippingMethod }: Props) {
       await deleteShippingMethod(shippingMethod.id).unwrap();
     } catch (err) {
       closeMain();
-      handleDispatchError(err);
-      console.error('Deleting failed: ', err);
+      handleError(err, toast.error);
     }
   };
 

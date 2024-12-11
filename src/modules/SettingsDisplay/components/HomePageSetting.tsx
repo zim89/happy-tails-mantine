@@ -29,10 +29,10 @@ import { findImageSource } from '../lib/helpers';
 import {
   brandNotification,
   getImageSource,
-  handleDispatchError,
   isAxiosQueryError,
   validateFile,
 } from '@/shared/lib/helpers';
+import { handleError as handleDispatchError } from '@/shared/helpers/error.helpers';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
 import {
   TOO_LARGE_PAYLOAD,
@@ -40,6 +40,7 @@ import {
 } from '@/shared/constants/httpCodes';
 import { HomePageSettingSkeleton } from './skeletons/HomePageSettingSkeleton';
 import BrandBox from '@/components/BrandBox';
+import { toast } from 'react-toastify';
 
 type PreviewImage = {
   id: number | null;
@@ -226,7 +227,7 @@ export const HomePageSetting = () => {
         await deleteBanner({ id: candidateId }).unwrap();
       } catch (err) {
         ref.current = copyRef;
-        handleDispatchError(err);
+        handleDispatchError(err, toast.error);
       }
     }
   };
@@ -240,8 +241,7 @@ export const HomePageSetting = () => {
 
       await processBannerDeletion(ref, index);
     } catch (err) {
-      handleDispatchError(err);
-      console.error('Deletion failed: ', err);
+      handleDispatchError(err, toast.error);
     }
   };
 
@@ -298,7 +298,6 @@ export const HomePageSetting = () => {
       }
     } catch (err) {
       handleError(err, id);
-      console.error('Failed: ', err);
     }
   };
 
@@ -308,7 +307,7 @@ export const HomePageSetting = () => {
         form.setFieldValue(`banner_${id}`, null);
         form.setFieldError(`banner_${id}`, `${err.data}`);
       } else {
-        handleDispatchError(err);
+        handleDispatchError(err, toast.error);
       }
     }
   };

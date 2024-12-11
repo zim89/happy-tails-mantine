@@ -13,6 +13,8 @@ import { cn } from '@/shared/lib/utils';
 
 import classes from './classes.module.css';
 import { useCreateDiscountCodeMutation } from '@/shared/api/discountApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export default function AddCodeModal() {
   const [dispatch] = useCreateDiscountCodeMutation();
@@ -62,8 +64,7 @@ export default function AddCodeModal() {
       await dispatch(requestBody).unwrap();
     } catch (err) {
       clearAndClose();
-      handleDispatchError(err);
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

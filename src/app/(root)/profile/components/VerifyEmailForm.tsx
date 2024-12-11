@@ -14,6 +14,7 @@ import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
 import { cn } from '@/shared/lib/utils';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 type Props = {
   classNames?: {
@@ -36,8 +37,7 @@ export const VerifyEmailForm = ({ classNames, vars }: Props) => {
     try {
       await sendCode().unwrap();
     } catch (err) {
-      console.error(err);
-      toast.error('Failed to send verification code');
+      handleError(err, toast.error);
     }
   };
 
@@ -48,10 +48,7 @@ export const VerifyEmailForm = ({ classNames, vars }: Props) => {
 
       toast.success('Email verified successfully');
     } catch (err) {
-      console.error(err);
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleError(err, toast.error);
     }
   };
 

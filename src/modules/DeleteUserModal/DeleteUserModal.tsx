@@ -7,6 +7,8 @@ import DeleteModal from '@/components/DeleteModal';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { User } from '@/shared/types/auth.types';
 import { useDeleteUserMutation } from '@/shared/api/usersApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   user: User;
@@ -25,8 +27,7 @@ export default function DeleteUserModal({ user }: Props) {
       await dispatch({ userId: user.userId }).unwrap();
     } catch (err) {
       close();
-      handleDispatchError(err);
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

@@ -372,10 +372,6 @@ export const {
 } = ordersApi;
 
 export const getDiscount = async (code: string) => {
-  try {
-    const res = await axios.get(SITE_DOMAIN + '/api/discount/' + code);
-    return res.data;
-  } catch (err) {
-    throw err;
-  }
+  const res = await axios.get(SITE_DOMAIN + '/api/discount/' + code);
+  return res.data;
 };

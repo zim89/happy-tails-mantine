@@ -8,6 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Checkbox from '../Checkbox';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function UpdatePasswordForm({
   email,
@@ -43,9 +44,8 @@ export default function UpdatePasswordForm({
       }).unwrap();
 
       router.push(APP_PAGES.LOGIN);
-    } catch (error) {
-      console.log(error);
-      toast.error('Oops! Something went wrong! Try again later.');
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

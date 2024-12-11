@@ -8,6 +8,8 @@ import LightButton from '@/components/LightButton';
 import { cn } from '@/shared/lib/utils';
 import { useCreateShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   onClose: () => void;
@@ -44,8 +46,7 @@ export const AddShippingMethodForm = ({ onClose }: Props) => {
         price: form.values.price,
       }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
-      console.error('Creating failed: ', err);
+      handleError(err, toast.error);
     }
   };
 

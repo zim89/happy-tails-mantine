@@ -15,6 +15,7 @@ import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 
 import Loader from '../Loader';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export interface Props {
   size: string;
@@ -52,10 +53,7 @@ export default function AddToWishBtn({
 
       toast.success('Successfully added to wishlist');
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        console.log(err);
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleError(err, toast.error);
     }
   };
 

@@ -12,6 +12,8 @@ import {
   Discount,
   useDeleteDiscountCodeMutation,
 } from '@/shared/api/discountApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   promoCode: Discount;
@@ -27,8 +29,7 @@ export default function DeleteCodeModal({ promoCode }: Props) {
       await dispatch({ id: promoCode.id }).unwrap();
     } catch (err) {
       closeMain();
-      handleDispatchError(err);
-      console.error('Deleting failed: ', err);
+      handleError(err, toast.error);
     }
   };
 
