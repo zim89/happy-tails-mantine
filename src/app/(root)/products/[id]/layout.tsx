@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import ProductAdditionalInfo from '@/components/ProductAdditionalInfo/ProductAdditionalInfo';
 import { getProductById } from '@/shared/lib/requests';
 import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 const getProduct = async (id: string) => {
   return await getProductById(id);
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       description: meta.description,
     };
   } catch (err) {
-    console.error(err, toast.error);
+    handleError(err, toast.error);
   }
 }
 export default function DashboardLayout({
