@@ -13,6 +13,8 @@ import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import type { Feedback } from '@/shared/types/feedback.types';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const Actions = ({ message }: { message: Feedback }) => {
   const [remove] = useRemoveMutation();
