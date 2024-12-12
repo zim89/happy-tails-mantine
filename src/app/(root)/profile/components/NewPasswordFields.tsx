@@ -14,6 +14,7 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useResetPasswordVerifyMutation } from '@/shared/api/authApi';
 import { LoaderBackground } from '@/components/LoaderBackground';
 import { NOT_FOUND } from '@/shared/constants/httpCodes';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 type Props = {
   nextStep: () => void;
@@ -88,11 +89,7 @@ export const NewPasswordFields = ({ nextStep }: Props) => {
       form.reset();
       nextStep();
     } catch (err) {
-      if (isAxiosQueryError(err) && err.status === NOT_FOUND) {
-        toast.error('The provided code was not found');
-      } else {
-        toast.error('Oops! Something went wrong! Try again later.');
-      }
+      handleError(err, toast.error);
     }
   };
 

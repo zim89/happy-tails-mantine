@@ -27,6 +27,7 @@ import {
   TCategoryBadge,
   parseCoordinates,
 } from '@/shared/helpers/coords.helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const EditableCategoriesPresentation = () => {
   const { data, isLoading } = useCategoriesQuery({});
@@ -100,11 +101,7 @@ export const EditableCategoriesPresentation = () => {
         }
       }
     } catch (err) {
-      console.error('Error updating category coordinates:', err);
-
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleError(err, toast.error);
     }
   }
 

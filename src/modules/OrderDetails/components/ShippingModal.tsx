@@ -13,6 +13,8 @@ import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { useGetShippingMethodsQuery } from '@/shared/api/shippingMethodsApi';
 import { createRequest, mapAddresses } from '../lib';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   order: Order;
@@ -76,13 +78,9 @@ export const ShippingModal = ({ order }: Props) => {
     billingAddress: ShippingAddress;
     shippingMethodId: string;
   }) => {
-    try {
-      close();
-      brandNotification('SUCCESS', 'Changes saved!');
-      await dispatch(request).unwrap();
-    } catch (err) {
-      throw err;
-    }
+    close();
+    brandNotification('SUCCESS', 'Changes saved!');
+    await dispatch(request).unwrap();
   };
 
   const handleUpdate = async (values: typeof form.values) => {
@@ -97,9 +95,8 @@ export const ShippingModal = ({ order }: Props) => {
 
       await processOrderUpdating(request);
     } catch (err) {
-      console.error(err);
       close();
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

@@ -37,6 +37,7 @@ import { useBulkEditMutation } from '@/shared/api/feedbackApi';
 import { toast } from 'react-toastify';
 import { Mail } from 'lucide-react';
 import DeleteMessagesModal from '@/modules/DeleteMessagesModal';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const InboxTable = ({ data }: { data: Feedback[] }) => {
   const [checked, _] = useState(false);
@@ -227,7 +228,7 @@ export const InboxTable = ({ data }: { data: Feedback[] }) => {
       await bulkEdit(data).unwrap();
       setSelected([]);
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     } finally {
       setIsLoading(false);
     }

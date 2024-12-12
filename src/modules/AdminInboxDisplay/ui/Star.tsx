@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { useToggleStarredMutation } from '@/shared/api/feedbackApi';
 import { handleDispatchError } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
   const [toggleStarred] = useToggleStarredMutation();
@@ -14,7 +16,7 @@ export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
       setIsLoading(true);
       await toggleStarred(id).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     } finally {
       setIsLoading(false);
     }

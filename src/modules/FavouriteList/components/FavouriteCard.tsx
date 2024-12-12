@@ -13,6 +13,8 @@ import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import Loader from '@/components/Loader';
 import { cn } from '@/shared/lib/utils';
 import { BG_COLORS } from '@/shared/constants/colors.const';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   favourite: Favourite;
@@ -33,7 +35,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     try {
       await deleteItem({ id }).unwrap();
     } catch (err) {
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

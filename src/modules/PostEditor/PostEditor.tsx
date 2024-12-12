@@ -13,6 +13,8 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { EditorTemplate } from '../EditorTemplate';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   editor: Editor;
@@ -26,13 +28,7 @@ export default function PostEditor({ editor }: Props) {
       const res = await publishImage(file, '');
       return res;
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
-
+      handleError(err, toast.error);
       return null;
     }
   }, []);

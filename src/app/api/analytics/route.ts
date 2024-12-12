@@ -6,6 +6,7 @@ import {
   GOOGLE_SA_EMAIL,
 } from '@/shared/constants/env.const';
 import { SERVER_ERROR } from '@/shared/constants/httpCodes';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 const searchConsoleApi = google.searchconsole('v1');
 
@@ -20,30 +21,22 @@ const googleJWTClient = new google.auth.JWT(
 );
 
 const generateJWT = async () => {
-  try {
-    const res = await googleJWTClient.authorize();
+  const res = await googleJWTClient.authorize();
 
-    return res.access_token;
-  } catch (err) {
-    console.error(err);
-  }
+  return res.access_token;
 };
 
 const getAnalytics = async (token: string, payload: object) => {
-  try {
-    const res = await searchConsoleApi.searchanalytics.query({
-      siteUrl: 'https://happy-tails-mantine.vercel.app/',
-      key: GOOGLE_API_KEY,
-      access_token: token,
-      requestBody: {
-        ...payload,
-      },
-    });
+  const res = await searchConsoleApi.searchanalytics.query({
+    siteUrl: 'https://happy-tails-mantine.vercel.app/',
+    key: GOOGLE_API_KEY,
+    access_token: token,
+    requestBody: {
+      ...payload,
+    },
+  });
 
-    return res.data;
-  } catch (err) {
-    throw err;
-  }
+  return res.data;
 };
 
 export async function POST(request: NextRequest) {

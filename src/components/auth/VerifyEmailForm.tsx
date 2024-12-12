@@ -11,6 +11,7 @@ import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function VerifyEmailForm({ email }: { email: string }) {
   const dispatch = useAppDispatch();
@@ -41,9 +42,8 @@ export default function VerifyEmailForm({ email }: { email: string }) {
       // }
       // dispatch(setAuthData(data));
       // router.push(APP_PAGES.HOME);
-    } catch (error: any) {
-      console.log(error);
-
+    } catch (err) {
+      handleError(err, toast.error);
       // if (error.status === 404) {
       //   toast.error(
       //     'The code has expired. Click resend code and enter the received code'

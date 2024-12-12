@@ -23,6 +23,8 @@ import { useSelectDeliveries } from '@/shared/hooks/useSelectDeliveries';
 import { UNAUTHORIZED } from '@/shared/constants/httpCodes';
 import { createOrderRequest, mapAddresses, parseItems } from './lib/util';
 import { CreateOrderBody } from '@/shared/types/types';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export default function NewOrder() {
   const {
@@ -104,7 +106,7 @@ export default function NewOrder() {
 
       await processOrderCreation(orderRequest);
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

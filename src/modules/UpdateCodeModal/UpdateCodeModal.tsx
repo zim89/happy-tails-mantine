@@ -16,6 +16,8 @@ import {
   Discount,
   useUpdateDiscountCodeMutation,
 } from '@/shared/api/discountApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   promoCode: Discount;
@@ -71,8 +73,7 @@ export default function UpdateCodeModal({ promoCode }: Props) {
       await dispatch(requestBody).unwrap();
     } catch (err) {
       clearAndClose();
-      handleDispatchError(err);
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

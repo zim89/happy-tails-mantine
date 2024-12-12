@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useRegisterMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { useAppDispatch } from '@/shared/redux/store';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
@@ -46,15 +47,8 @@ export default function RegisterForm() {
         dispatch(setAuthData(response));
         router.push(APP_PAGES.HOME);
       }
-    } catch (error: any) {
-      console.log(error);
-
-      if (error.status === 409) {
-        toast.error('Email already exists. Please try another one.');
-        return;
-      }
-
-      toast.error('Oops! Something went wrong! Try again later.');
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

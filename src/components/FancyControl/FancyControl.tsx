@@ -9,6 +9,8 @@ import axios from 'axios';
 import { sharedProps } from '@/modules/EditorTemplate/lib/shared-props';
 import { SITE_DOMAIN } from '@/shared/constants/env.const';
 import Loader from '../Loader';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   options: {
@@ -47,8 +49,8 @@ export const FancyControl = ({ options }: Props) => {
       }
 
       setIsLoading(false);
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

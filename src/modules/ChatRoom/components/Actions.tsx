@@ -13,6 +13,8 @@ import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { cn } from '@/shared/lib/utils';
 import type { Feedback } from '@/shared/types/feedback.types';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const Actions = ({ message }: { message: Feedback }) => {
   const [remove] = useRemoveMutation();
@@ -28,7 +30,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       );
       await toggleStarred(message.id).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 
@@ -43,7 +45,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       );
       await markAsRead({ id: message.id, status }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 
@@ -53,7 +55,7 @@ export const Actions = ({ message }: { message: Feedback }) => {
       router.push('/admin/inbox');
       await remove({ id: message.id }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

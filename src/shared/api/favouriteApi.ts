@@ -3,14 +3,6 @@ import { axiosBaseQuery } from '@/shared/api/authApi';
 import type { BackendResponse, Product, Sort } from '../types/types';
 import { Favourite } from '../types/favourite.types';
 
-export abstract class ResponseError {
-  timestamp: number;
-  status: number;
-  error: string;
-  message: string;
-  path: string;
-}
-
 type PostFavourite = {
   productId: number;
   size: NonNullable<Product['productSizes']>[number]['size'];

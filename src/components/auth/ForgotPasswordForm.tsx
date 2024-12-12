@@ -2,6 +2,7 @@
 
 import { useResetPasswordMutation } from '@/shared/api/authApi';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
+import { handleError } from '@/shared/helpers/error.helpers';
 import { cn } from '@/shared/lib/utils';
 import { Button, TextInput } from '@mantine/core';
 import { isEmail, useForm } from '@mantine/form';
@@ -28,8 +29,7 @@ export default function ForgotPasswordForm() {
       await resetPassword(values).unwrap();
       router.push(`${APP_PAGES.UPDATE_PASSWORD}?email=${values.email}`);
     } catch (error) {
-      console.log(error);
-      toast.error('Oops! Something went wrong! Try again later.');
+      handleError(error, toast.error);
     }
   };
 

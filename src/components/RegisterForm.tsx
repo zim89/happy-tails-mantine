@@ -7,6 +7,8 @@ import { useAppDispatch } from '@/shared/redux/store';
 import { useRouter } from 'next/navigation';
 import { useLoginMutation, useRegisterMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
@@ -45,8 +47,8 @@ export default function RegisterForm() {
         dispatch(setAuthData(data));
         router.push('/');
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

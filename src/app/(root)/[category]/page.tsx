@@ -10,6 +10,7 @@ import Overview from '@/components/Overview';
 import { categoriesDesc } from './lib/seo';
 import { getAllCategories } from '@/shared/lib/requests';
 import { isOverviewEmpty } from '@/shared/helpers/overview.helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 type Props = {
   params: { category: string };
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: Props) {
       description: category.description,
     };
   } catch (err) {
-    console.error(err);
+    handleError(err);
   }
 }
 

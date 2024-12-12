@@ -17,6 +17,8 @@ import {
 } from '@/shared/lib/helpers';
 import { KEYS } from '@/shared/constants/localStorageKeys';
 import { PostFormContext } from '@/shared/context/postform.context';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type PublishedControllerProps = {
   handleCancel: () => void;
@@ -63,13 +65,7 @@ export const PublishedController = ({
       refetch();
       brandNotification('SUCCESS', 'Post has been saved!');
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        console.error(err);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleError(err, toast.error);
     }
   };
 
@@ -105,13 +101,7 @@ export const ArchivedController = ({
         `The post has been ${status === 'DRAFT' ? 'placed in drafts!' : 'published!'}`
       );
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        console.error(err);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleError(err, toast.error);
     }
   };
 
@@ -169,13 +159,7 @@ export const DraftController = ({ postId, refetch }: DraftControllerProps) => {
       brandNotification('SUCCESS', 'The post has been saved!');
       refetch();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        console.error(err);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleError(err, toast.error);
     }
   };
 
@@ -186,13 +170,7 @@ export const DraftController = ({ postId, refetch }: DraftControllerProps) => {
       brandNotification('SUCCESS', 'The post has been published!');
       refetch();
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        console.error(err);
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
+      handleError(err, toast.error);
     }
   };
 

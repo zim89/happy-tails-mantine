@@ -11,6 +11,7 @@ import { useAppDispatch } from '@/shared/redux/store';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { LoaderBackground } from '@/components/LoaderBackground';
 import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const UpdateUserForm = () => {
   const { currentUser } = useAuth();
@@ -110,12 +111,7 @@ export const UpdateUserForm = () => {
 
           toast.success('Profile updated successfully!');
         } catch (err) {
-          console.error('Error: ', err);
-          if (isAxiosQueryError(err)) {
-            toast.error(
-              isErrorDataString(err.data) ? err.data : err.data.message
-            );
-          }
+          handleError(err, toast.error);
         }
       })}
     >

@@ -11,6 +11,7 @@ import { useLoginMutation } from '@/shared/api/authApi';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -36,8 +37,7 @@ export default function LoginForm() {
       dispatch(setAuthData(data));
       router.push(APP_PAGES.HOME);
     } catch (error) {
-      console.log(error);
-      toast.error('Oops! Something went wrong! Try again later.');
+      handleError(error, toast.error);
     }
   };
 

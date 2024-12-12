@@ -6,9 +6,9 @@ import { useContext, useEffect } from 'react';
 import {
   brandNotification,
   getImageSource,
-  handleDispatchError,
   isAxiosQueryError,
 } from '@/shared/lib/helpers';
+import { handleError as handleDispatchError } from '@/shared/helpers/error.helpers';
 import {
   AxiosQueryError,
   Category,
@@ -27,6 +27,7 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { toast } from 'react-toastify';
 
 export const Controls = () => {
   const { productForm, previewImage, variants, setVariants } =
@@ -201,8 +202,6 @@ export const Controls = () => {
 
       await processProductCreation(newProduct);
     } catch (err) {
-      console.error(err);
-
       handleError(err);
     }
   };
@@ -213,7 +212,7 @@ export const Controls = () => {
         productForm.setFieldValue('image', null);
         productForm.setFieldError('image', `${err.data}`);
       } else {
-        handleDispatchError(err);
+        handleDispatchError(err, toast.error);
       }
     }
   };

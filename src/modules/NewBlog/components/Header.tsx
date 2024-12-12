@@ -20,6 +20,8 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   editor: Editor;
@@ -110,7 +112,7 @@ export const Header = ({ editor }: Props) => {
           form.setFieldValue('image', null);
           form.setFieldError('image', `${err.data}`);
         } else {
-          handleDispatchError(err);
+          handleError(err, toast.error);
         }
       }
     }

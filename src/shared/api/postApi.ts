@@ -1,6 +1,7 @@
 import { BackendResponse, Sort } from '@/shared/types/types';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { axiosBaseQuery } from './authApi';
+import { handleError } from '../helpers/error.helpers';
 
 export interface Post {
   id: number;
@@ -172,7 +173,7 @@ export const postApi = createApi({
         try {
           await queryFulfilled;
         } catch (err) {
-          console.log('ERROR', err);
+          handleError(err);
           patchResult.undo();
         }
       },

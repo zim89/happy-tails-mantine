@@ -5,6 +5,8 @@ import { useAppDispatch } from '@/shared/redux/store';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useCallback } from 'react';
 import { KEYS } from '@/shared/constants/localStorageKeys';
+import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 type Props = {
   children: (logout: () => void) => React.ReactNode;
@@ -23,8 +25,8 @@ export default function Logout({ children }: Props) {
       window.location.replace(APP_PAGES.LOGIN);
       // Clear cart storage after logout
       localStorage.removeItem(KEYS.CART_STORAGE);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err, toast.error);
     }
   }, [dispatch, logout]);
 
