@@ -105,7 +105,6 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
               <li className='border-b border-b-brand-grey-300 lg:border-none'>
                 <Link
                   href='/admin'
-                  onClick={close}
                   className={cn(
                     'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3'
                   )}
@@ -121,7 +120,6 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
               >
                 <Link
                   href={item.href}
-                  onClick={close}
                   className={cn(
                     'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
                     path === item.href && 'font-bold'
@@ -158,7 +156,6 @@ function MenuNavbar({ menu, path }: MenuNavbarProps) {
               >
                 <Link
                   href={'/' + item.name.toLowerCase()}
-                  onClick={close}
                   className={cn(
                     'group flex gap-2 py-4 lg:h-[100px] lg:w-[100px] lg:flex-col lg:items-center lg:py-3',
                     path === '/' + item.name && 'font-bold'
