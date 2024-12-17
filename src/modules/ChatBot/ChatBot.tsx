@@ -40,7 +40,19 @@ const ChatBot = () => {
 
   const flow = {
     start: {
-      message: 'Greetings 😊, how would I help you?',
+      message: () => {
+        const candidate = localStorage.getItem(KEYS.CHAT_BOT);
+
+        return !candidate
+          ? 'Greetings 😊, how would I help you?'
+          : 'Would I help you with something else?';
+      },
+      path: 'loop',
+    },
+
+    error: {
+      message:
+        "I'm experiencing a problem with understanding you. Please try again",
       path: 'loop',
     },
 
@@ -50,7 +62,7 @@ const ChatBot = () => {
       },
       path: () => {
         if (hasError) {
-          return 'start';
+          return 'error';
         }
         return 'loop';
       },
