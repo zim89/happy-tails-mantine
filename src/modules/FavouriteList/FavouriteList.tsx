@@ -5,22 +5,37 @@ import { Group, Pagination } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { useFindManyQuery } from '@/shared/api/favouriteApi';
+import { ITEMS_LIMIT_PER_PAGE } from '@/shared/config/appVariables';
 import PaginationPrevBtn from '@/components/PaginationPrevBtn';
 import PaginationNextBtn from '@/components/PaginationNextBtn';
 import { useDeviceSize } from '@/shared/lib/hooks';
+import { useAuth } from '@/shared/hooks/useAuth';
+
 import { EmptyPage } from './components/EmptyPage';
 import { FavouriteListHeader } from './components/FavouriteListHeader';
 import { FavouriteGrid } from './components/FavouriteGrid';
-import { ITEMS_LIMIT_PER_PAGE } from '@/shared/config/appVariables';
 import { FavouriteSkeleton } from './components/FavouriteSkeleton';
+import { useFindManyQuery } from '@/shared/api/favouriteApi';
+import { useAppSelector } from '@/shared/redux/store';
+import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 
 export const FavouriteList = () => {
+  const { currentUser } = useAuth();
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useFindManyQuery({
-    page: page - 1,
-    limit: ITEMS_LIMIT_PER_PAGE,
-  });
+
+  const { data: serverFavourites, isLoading } = useFindManyQuery(
+    {
+      page: page - 1,
+      limit: ITEMS_LIMIT_PER_PAGE,
+    },
+    {
+      skip: !currentUser,
+    }
+  );
+
+  const localFavourites = useAppSelector(selectFavorites);
+
+  const favourites = serverFavourites?.content || localFavourites;
 
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 10,
@@ -55,23 +70,23 @@ export const FavouriteList = () => {
 
   return (
     <>
-      {!data || (data.content.length === 0 && <EmptyPage />)}
-      {data && !data.empty && (
+      {(!favourites || favourites.length === 0) && <EmptyPage />}
+      {favourites && favourites.length && (
         <section className='py-12 md:py-16'>
           {/* Header */}
-          <FavouriteListHeader favNumber={data.content.length} />
+          <FavouriteListHeader favNumber={favourites.length} />
 
           {/* Products' grid */}
           <div className='container' ref={targetRef}>
-            <FavouriteGrid items={data.content} />
+            <FavouriteGrid items={favourites} />
 
             {/* Pagination */}
-            {data && data.totalPages > 1 && (
+            {favourites.length >= ITEMS_LIMIT_PER_PAGE && (
               <Pagination.Root
                 mt={{ base: 24, md: 48, lg: 72 }}
                 value={page}
                 onChange={onPaginationChange}
-                total={data.totalPages}
+                total={favourites.length / 12}
                 siblings={isMobile ? 0 : 1}
                 classNames={{
                   control: 'pagination-control',
