@@ -34,7 +34,7 @@ export default async function Header() {
   const categories = await fetchCategories();
 
   return (
-    <HeaderTemplate>
+    <HeaderTemplate themed>
       {({ Logo }) => (
         <>
           <div className='container'>
