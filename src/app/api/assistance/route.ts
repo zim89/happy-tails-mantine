@@ -1,4 +1,7 @@
+import { API_URL } from '@/shared/constants/env.const';
+import { BackendResponse, Product } from '@/shared/types/types';
 import { Mistral } from '@mistralai/mistralai';
+import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 const apiKey = process.env.NEXT_PUBLIC_MISTRAL_KEY;
@@ -12,20 +15,33 @@ type ChatParams = {
 };
 
 export const POST = async (params: NextRequest) => {
-  const res = (await params.json()) as unknown as ChatParams;
+  try {
+    const res = (await params.json()) as unknown as ChatParams;
 
-  const chatResponse = await client.agents.complete({
-    agentId,
-    messages: [
-      ...res.messages,
-      {
-        role: 'user',
-        content: res.message,
-      },
-    ],
-  });
+    const products = (
+      await axios.get<BackendResponse<Product[]>>(API_URL + '/products')
+    ).data;
 
-  return NextResponse.json(
-    chatResponse?.choices ? chatResponse?.choices[0]?.message.content : ''
-  );
+    const chatResponse = await client.agents.complete({
+      agentId,
+      messages: [
+        ...res.messages,
+        {
+          role: 'user',
+          content:
+            res.message +
+            `. Here is the JSON array of products for reference: ${JSON.stringify(products.content)}`,
+        },
+      ],
+    });
+
+    return NextResponse.json(
+      chatResponse?.choices ? chatResponse?.choices[0]?.message.content : ''
+    );
+  } catch (err) {
+    return NextResponse.json({
+      error: err,
+      status: 500,
+    });
+  }
 };
