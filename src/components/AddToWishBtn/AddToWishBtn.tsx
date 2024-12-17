@@ -3,7 +3,7 @@
 import { Product } from '@/shared/types/types';
 
 import { WishButton } from './ui/WishButton';
-import { WishListControllerFactory } from './lib/WishListControllerFactory';
+import { useWishListController } from './lib/useWishListController';
 import { useAuth } from '@/shared/hooks/useAuth';
 
 export interface Props {
@@ -20,12 +20,11 @@ export default function AddToWishBtn({
 }: Props) {
   const { currentUser } = useAuth();
 
-  const getProps = WishListControllerFactory({
+  const { isFavourite, isLoading, toggleFavorite } = useWishListController({
     kind: currentUser ? 'Server' : 'Local',
     product,
     size,
   });
-  const { isFavourite, isLoading, toggleFavorite } = getProps();
 
   return (
     <WishButton

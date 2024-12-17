@@ -12,7 +12,7 @@ import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import Loader from '@/components/Loader';
 import { cn } from '@/shared/lib/utils';
 import { BG_COLORS } from '@/shared/constants/colors.const';
-import { WishListControllerFactory } from '@/components/AddToWishBtn/lib/WishListControllerFactory';
+import { useWishListController } from '@/components/AddToWishBtn/lib/useWishListController';
 import { useAuth } from '@/shared/hooks/useAuth';
 
 type Props = {
@@ -27,7 +27,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     return state.find((p) => p.id === favourite.productId);
   });
 
-  const getProps = WishListControllerFactory(
+  const { handleDelete, deletionOnProgress } = useWishListController(
     currentUser
       ? { kind: 'Server', product: sourceProduct, size: favourite.productSize }
       : {
@@ -36,8 +36,6 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
           size: favourite.productSize,
         }
   );
-
-  const { handleDelete, deletionOnProgress } = getProps();
 
   const isAvailable = favourite.productStatus === 'IN STOCK';
 
