@@ -230,6 +230,7 @@ export const UpdateProductProvider = ({ children, product }: ProviderProps) => {
       ...productSelection,
       ...fieldSelection,
       productSizes: productSizesArray,
+      salePrice: productSelection.price,
       categoryId: categoryProductId,
       imagePath: productImage,
       totalQuantity: totalProductQuantity,

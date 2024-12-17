@@ -13,6 +13,8 @@ import {
   AxiosQueryError,
   Category,
   CreateProductBody,
+  Product,
+  ProductStatus,
 } from '@/shared/types/types';
 import { ProductForm, context } from '../lib/utils';
 import { useCreateMutation } from '@/shared/api/productApi';
@@ -58,7 +60,13 @@ export const Controls = () => {
   };
 
   const createProductObject = (
-    rest: any,
+    rest: {
+      name: string;
+      productStatus: ProductStatus;
+      price: number;
+      productType: Product['productType'];
+      description: string;
+    },
     productColorSizes: CreateProductBody['productColorSizes'],
     imagePath: string,
     totalQuantity: number,
@@ -71,7 +79,7 @@ export const Controls = () => {
       imagePath,
       totalQuantity,
       onSale: true,
-      salePrice: 0,
+      salePrice: rest.price,
     };
 
     const candidate = categoryList.find((cat) => cat.name === categoryName);

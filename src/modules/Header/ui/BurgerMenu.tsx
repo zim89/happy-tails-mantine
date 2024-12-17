@@ -53,8 +53,9 @@ export default function BurgerMenu({ categories }: { categories: Category[] }) {
         {/*  Header */}
         <div className='mb-4 flex items-center justify-between border-b border-b-brand-grey-300 bg-brand-grey-100 px-4 py-4 pb-[15px] md:px-9 lg:hidden'>
           <Image
-            src='/logo/logo-tablet.svg'
+            src='/logo/themed-logo-tablet.svg'
             alt='Logo image'
+            className='mix-blend-multiply'
             height={42}
             width={237}
           />
