@@ -50,7 +50,7 @@ server.ts
 /key.json
 
 # Experimental
-./sketchfab-viewer.d.ts
+./src\shared\lib\sketchfab-viewer.ts
 ./src/app/test
 ./src/app/(root)/auth/sketchfab
 
@@ -58,3 +58,4 @@ server.ts
 **/public/workbox-*.js
 **/public/sw.js
 **/public/fallback-*.js
+

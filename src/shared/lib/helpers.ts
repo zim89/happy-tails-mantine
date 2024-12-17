@@ -297,16 +297,17 @@ export const getImageSource = async (
   fallbackUrl = DEFAULT_CATEGORY_IMAGE
 ): Promise<string> => {
   if (image) {
-    return await publishImage(image, description);
+    return await publishImage(image, description, fallbackUrl);
   }
   return fallbackUrl;
 };
 
-export const handleDispatchError = (err: any) => {
+export const handleDispatchError = (err: any, opts?: ToastOptions) => {
   if (isAxiosQueryError(err)) {
     brandNotification(
       'ERROR',
-      isErrorDataString(err.data) ? err.data : err.data.message
+      isErrorDataString(err.data) ? err.data : err.data.message,
+      opts
     );
   }
 };
