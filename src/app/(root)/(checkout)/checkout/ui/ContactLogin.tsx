@@ -1,7 +1,8 @@
+'use client';
+
 import { PasswordInput, TextInput } from '@mantine/core';
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { Eye, EyeOff } from 'lucide-react';
-import { toast } from 'react-toastify';
 
 import Checkbox from '@/components/Checkbox';
 import Loader from '@/components/Loader/Loader';
@@ -10,6 +11,7 @@ import { cn } from '@/shared/lib/utils';
 import { setAuthData } from '@/shared/redux/auth/authSlice';
 import { setContactData } from '@/shared/redux/checkout/checkoutSlice';
 import { useAppDispatch } from '@/shared/redux/store';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function ContactLogin({
   setIsCompleted,
@@ -43,9 +45,8 @@ export default function ContactLogin({
       dispatch(setAuthData(response));
       dispatch(setContactData({ email, subscription }));
       setIsCompleted(true);
-    } catch (error) {
-      console.log(error);
-      toast.error('Oops! Something went wrong! Try again later.');
+    } catch (err) {
+      handleError(err);
     }
   };
 

@@ -1,11 +1,8 @@
 import { UnstyledButton } from '@mantine/core';
 import { useContext, useEffect } from 'react';
 
-import {
-  brandNotification,
-  handleDispatchError,
-  isAxiosQueryError,
-} from '@/shared/lib/helpers';
+import { brandNotification, isAxiosQueryError } from '@/shared/lib/helpers';
+import { handleError as handleDispatchError } from '@/shared/helpers/error.helpers';
 import { context } from '../lib/utils';
 
 import BlockLink from '@/modules/BlockLink';
@@ -14,6 +11,7 @@ import {
   TOO_LARGE_PAYLOAD,
   UNSUPPORTED_TYPE,
 } from '@/shared/constants/httpCodes';
+import { toast } from 'react-toastify';
 
 export const Controls = () => {
   const {
@@ -47,10 +45,10 @@ export const Controls = () => {
         productForm.setFieldValue('image', null);
         productForm.setFieldError('image', `${err.data}`);
       } else {
-        handleDispatchError(err);
+        handleDispatchError(err, toast.error);
       }
     } else {
-      handleDispatchError(err);
+      handleDispatchError(err, toast.error);
     }
   };
 

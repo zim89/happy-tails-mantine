@@ -10,6 +10,8 @@ import { useRemoveCategoryMutation } from '@/shared/api/categoryApi';
 import DeleteModal from '@/components/DeleteModal';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { Category } from '@/shared/types/types';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   categoryLine: Category;
@@ -31,8 +33,7 @@ export default function DeleteCategoryModal({ categoryLine }: Props) {
       }
     } catch (err) {
       closeMain();
-      handleDispatchError(err);
-      console.error('Deleting failed: ', err);
+      handleError(err, toast.error);
     }
   };
 

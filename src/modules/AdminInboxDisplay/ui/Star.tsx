@@ -1,30 +1,38 @@
-import { UnstyledButton } from '@mantine/core';
+import { Loader, UnstyledButton } from '@mantine/core';
 import { LucideStar } from 'lucide-react';
 import { useState } from 'react';
 
 import { useToggleStarredMutation } from '@/shared/api/feedbackApi';
 import { handleDispatchError } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
-  const [isStarred, setIsStarred] = useState(starred);
   const [toggleStarred] = useToggleStarredMutation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleToggleStarred = async (id: number) => {
     try {
-      setIsStarred(!isStarred);
+      setIsLoading(true);
       await toggleStarred(id).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <UnstyledButton onClick={() => handleToggleStarred(id)}>
-      <LucideStar
-        stroke={isStarred ? '#FBBC04' : 'black'}
-        fill={isStarred ? '#FBBC04' : 'none'}
-        size={16}
-      />
+      {isLoading ? (
+        <Loader size={16} color='black' />
+      ) : (
+        <LucideStar
+          stroke={starred ? '#FBBC04' : 'black'}
+          fill={starred ? '#FBBC04' : 'none'}
+          size={16}
+        />
+      )}
     </UnstyledButton>
   );
 };

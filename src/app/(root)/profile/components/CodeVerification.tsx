@@ -1,5 +1,6 @@
+'use client';
+
 import { UnstyledButton } from '@mantine/core';
-import { toast } from 'react-toastify';
 
 import { cn } from '@/shared/lib/utils';
 import classes from '../styles.module.css';
@@ -7,7 +8,8 @@ import { useResetPasswordMutation } from '@/shared/api/authApi';
 import { User } from '@/shared/types/auth.types';
 import { useState } from 'react';
 import { LoaderBackground } from '@/components/LoaderBackground';
-import { isAxiosQueryError, isErrorDataString } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   nextStep: () => void;
@@ -24,10 +26,7 @@ export const CodeVerification = ({ nextStep, currentUser }: Props) => {
       await resetPassword({ email: currentUser.email }).unwrap();
       nextStep();
     } catch (err) {
-      console.log('Error: ', err);
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleError(err, toast.error);
     }
   };
 

@@ -7,6 +7,8 @@ import DeleteModal from '@/components/DeleteModal';
 import { Product } from '@/shared/types/types';
 import { useRemoveMutation } from '@/shared/api/productApi';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   productLine: Product;
@@ -22,8 +24,7 @@ export default function DeleteProductModal({ productLine }: Props) {
       await dispatch({ id: productLine.id }).unwrap();
     } catch (err) {
       closeMain();
-      handleDispatchError(err);
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

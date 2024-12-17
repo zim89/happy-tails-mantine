@@ -11,6 +11,8 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { useChangePostStatusMutation } from '@/shared/api/postApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   id: number;
@@ -35,13 +37,7 @@ export default function ArchivePostModal({
       redirect && router.replace(redirect);
     } catch (err) {
       closeMain();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

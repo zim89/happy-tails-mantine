@@ -22,6 +22,7 @@ import { LocationFields } from './LocationFields';
 import { PostalCodeField } from './PostalCodeField';
 import { formatPhoneNumber } from '@/shared/helpers/phone.helpers';
 import { PhoneField } from './PhoneField';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const DeliveryForm = () => {
   const { currentUser } = useAuth();
@@ -130,10 +131,7 @@ export const DeliveryForm = () => {
 
       toast.success('Changes saved successfully!');
     } catch (err) {
-      console.error('Error: ', err);
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleError(err, toast.error);
     }
   };
 

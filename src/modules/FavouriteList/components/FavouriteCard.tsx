@@ -43,7 +43,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     try {
       await handleDelete(id);
     } catch (err) {
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

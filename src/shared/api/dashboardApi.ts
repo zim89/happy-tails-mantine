@@ -3,6 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 
 import axiosInstance from '@/shared/lib/interceptor';
 import { axiosBaseQuery } from './authApi';
+import { handleError } from '../helpers/error.helpers';
 
 type TopCategoriesResponse = {
   categoryName: string;
@@ -60,7 +61,7 @@ export const dashboardApi = createApi({
             },
           };
         } catch (err) {
-          console.error(err);
+          handleError(err);
           return {
             error: 'Failed to fetch data',
           };

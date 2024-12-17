@@ -43,22 +43,17 @@ type AnalyticsQuery = {
 };
 
 export const getAnalytics = async (params: AnalyticsQuery) => {
-  try {
-    const res = await axios.post<AggregatedAnalyticsResponse>(
-      `${SITE_DOMAIN}/api/analytics`,
-      params,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  const res = await axios.post<AggregatedAnalyticsResponse>(
+    `${SITE_DOMAIN}/api/analytics`,
+    params,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 
-    if (!res) throw new Error('No data returned.');
+  if (!res) throw new Error('No data returned.');
 
-    return res.data;
-  } catch (err) {
-    if (err instanceof AxiosError) throw err;
-    else console.log(err);
-  }
+  return res.data;
 };

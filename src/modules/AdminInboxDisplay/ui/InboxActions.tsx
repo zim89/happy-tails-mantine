@@ -8,6 +8,8 @@ import type { Feedback, FeedbackStatus } from '@/shared/types/feedback.types';
 import { useUpdateStatusMutation } from '@/shared/api/feedbackApi';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { FEEDBACK_STATUS } from '@/shared/constants/feedback.const';
+import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const InboxActions = ({ message }: { message: Feedback }) => {
   const [markAsRead] = useUpdateStatusMutation();
@@ -33,7 +35,7 @@ export const InboxActions = ({ message }: { message: Feedback }) => {
         status,
       }).unwrap();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 
