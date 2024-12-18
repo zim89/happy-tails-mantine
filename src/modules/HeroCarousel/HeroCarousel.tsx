@@ -57,11 +57,16 @@ export default function HeroCarousel() {
               key={index}
               banner={slide.imagePath}
               href={slide.productPath}
+              classNames={{
+                image: 'object-center object-cover',
+              }}
             />
           ))
         ) : (
           <Slide
-            classNames={{ image: 'object-center object-contain' }}
+            classNames={{
+              image: 'object-center object-cover',
+            }}
             banner={'/images/hero-dog-bg-cleared.png'}
             href='/products'
           />

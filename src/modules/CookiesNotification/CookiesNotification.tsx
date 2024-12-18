@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 export default function CookiesNotification() {
   const candidate = localStorage.getItem('cookies_approved');
+
   const [approved, setApproved] = useState(!!candidate);
 
   if (approved) return null;

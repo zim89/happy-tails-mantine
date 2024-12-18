@@ -6,5 +6,6 @@ export const useSelectProducts = <T>(cb: (products: Product[]) => T) => {
     { page: 0, limit: 100000000 },
     { selectFromResult: (res) => ({ products: cb(res.data?.content || []) }) }
   );
+
   return products;
 };

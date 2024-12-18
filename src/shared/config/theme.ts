@@ -7,9 +7,9 @@ const theme = createTheme({
   primaryShade: 4,
   fontFamily: 'Lato',
   breakpoints: {
-    sm: em(414),
-    md: em(768),
-    lg: em(1280),
+    sm: '414px',
+    md: '768px',
+    lg: '1280px',
   },
 });
 

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { LoadingOverlay, NumberFormatter } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
@@ -19,7 +21,6 @@ import { cn } from '@/shared/lib/utils';
 import Loader from '@/components/Loader/Loader';
 import PromoCode from './PromoCode';
 import Checkbox from '@/components/Checkbox';
-import { useRouter } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
 import {
@@ -27,7 +28,6 @@ import {
   type ResponseError,
 } from '@/shared/api/cartApi';
 import { BG_COLORS } from '@/shared/constants/colors.const';
-import { toast } from 'react-toastify';
 import type { Order } from '@/shared/types/types';
 import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 
@@ -67,6 +67,7 @@ export default function CheckoutForm() {
         email: contactData.email,
         commentOfManager: null,
         agreementToTerms,
+        taxAmount: tax,
         emailMeWithOffersAndNews: contactData.subscription,
         discountCode: currentDiscount?.code ?? '',
         cartProducts: cart.map((product) => ({
@@ -82,6 +83,10 @@ export default function CheckoutForm() {
           toast.error('Something went wrong. Please try again later.');
           return;
         }
+
+        console.log('PARAMS: ', formData);
+        console.log('RESPONSE: ', response);
+
         dispatch(clearCart());
         router.push(
           APP_PAGES.CONFIRMATION +

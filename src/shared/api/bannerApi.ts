@@ -1,4 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 import { axiosBaseQuery } from '@/shared/api/authApi';
 import { BackendResponse } from '../types/types';
 
@@ -7,6 +8,7 @@ export type Banner = {
   name: string;
   imagePath: string;
   productPath: string;
+  type: 'SCROLL' | 'FIXED';
 };
 
 type CreateBanner = Omit<Banner, 'id'>;
@@ -35,7 +37,50 @@ export const bannerApi = createApi({
           params,
         };
       },
-      providesTags: ['Banner'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ id }) => ({
+                type: 'Banner' as const,
+                id,
+              })),
+              'Banner',
+            ]
+          : ['Banner'],
+    }),
+    getByType: builder.query<
+      BackendResponse<Banner[]>,
+      {
+        page?: number;
+        size?: number;
+        sort?: string[];
+        type: 'SCROLL' | 'FIXED';
+      }
+    >({
+      query: ({ sort = ['asc'], page = 0, size = 10, type = 'SCROLL' }) => {
+        const pageable = new URLSearchParams({
+          page: page.toString(),
+          size: size.toString(),
+        });
+
+        if (sort) pageable.append('sort', sort.join(','));
+
+        const imageType = new URLSearchParams({ imageType: type });
+
+        return {
+          url: `/banner-image/by_type?${pageable}&${imageType}`,
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.content.map(({ id }) => ({
+                type: 'Banner' as const,
+                id,
+              })),
+              'Banner',
+            ]
+          : ['Banner'],
     }),
     createBanner: builder.mutation<Banner, CreateBanner>({
       query: (params) => ({
@@ -108,4 +153,5 @@ export const {
   useDeleteBannerMutation,
   useUpdateBannerMutation,
   useLazyFindManyQuery,
+  useGetByTypeQuery,
 } = bannerApi;

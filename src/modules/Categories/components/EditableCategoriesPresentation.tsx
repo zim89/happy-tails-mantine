@@ -11,14 +11,15 @@ import {
   useCategoriesQuery,
   useUpdateCategoryMutation,
 } from '@/shared/api/categoryApi';
-import Loader from '@/components/Loader/Loader';
 import { Category } from '@/shared/types/types';
 import { Droppable } from '@/components/Droppable';
 import { Draggable } from '@/components/Draggable';
 import CategoryBadge from '@/modules/Categories/components/CategoryBadge';
+import { SliderSkeleton } from '@/modules/Categories/components/SliderSkeleton';
 import { cn } from '@/shared/lib/utils';
 import {
-  isAxiosQueryError,
+  getImageSource,
+  handleDispatchError,
   isErrorDataString,
   validateFile,
 } from '@/shared/lib/helpers';
@@ -27,48 +28,95 @@ import {
   TCategoryBadge,
   parseCoordinates,
 } from '@/shared/helpers/coords.helpers';
+import {
+  useCreateBannerMutation,
+  useUpdateBannerMutation,
+  useGetByTypeQuery,
+} from '@/shared/api/bannerApi';
 
 export const EditableCategoriesPresentation = () => {
-  const { data, isLoading } = useCategoriesQuery({});
+  const { data: categories, isLoading: categoriesAreLoading } =
+    useCategoriesQuery({});
+  const { data: banners, isLoading: bannerIsLoading } = useGetByTypeQuery({
+    page: 0,
+    size: 1,
+    type: 'FIXED',
+  });
   const [dispatch] = useUpdateCategoryMutation();
+  const [createBanner] = useCreateBannerMutation();
+  const [updateBanner] = useUpdateBannerMutation();
   const [categoriesCoords, setCategoriesCoords] = useState<TCategoryBadge[]>(
     []
   );
-  const { getInputProps, error, getValue, setError } = useField({
+  const { getInputProps, error, getValue, setError, reset } = useField({
     initialValue: null as File | null,
   });
 
   useEffect(() => {
-    if (data?.content && data.content.length > 0) {
-      setCategoriesCoords(parseCoordinates(data.content));
+    if (categories?.content && categories.content.length > 0) {
+      setCategoriesCoords(parseCoordinates(categories.content));
     }
-  }, [data?.content]);
+  }, [categories?.content]);
 
   const imageInputValue = getValue();
 
   useEffect(() => {
-    if (imageInputValue) {
-      const validationError = validateFile(imageInputValue);
-      if (validationError) {
-        const msg = isErrorDataString(validationError.data)
-          ? validationError.data
-          : validationError.data.message;
+    (async () => {
+      try {
+        if (imageInputValue && banners) {
+          const validationError = validateFile(imageInputValue);
+          if (validationError) {
+            const msg = isErrorDataString(validationError.data)
+              ? validationError.data
+              : validationError.data.message;
 
-        setError(msg);
-        toast.error(msg);
+            setError(msg);
+            toast.error(msg);
 
-        return;
+            return;
+          }
+
+          const imageSrc = await getImageSource(
+            imageInputValue,
+            'banner_5',
+            '/images/categories-dog.png'
+          );
+
+          if (banners.content[0] && banners.content[0].name === 'banner_5') {
+            await updateBanner({
+              id: banners.content[0].id,
+              imagePath: imageSrc,
+              productPath: '/',
+              name: 'banner_5',
+              type: 'FIXED',
+            });
+          } else {
+            await createBanner({
+              imagePath: imageSrc,
+              productPath: '/',
+              name: 'banner_5',
+              type: 'FIXED',
+            }).unwrap();
+          }
+
+          toast.success('Image successfully uploaded!');
+        }
+      } catch (err) {
+        handleDispatchError(err, {
+          position: 'top-right',
+        });
+      } finally {
+        reset();
       }
+    })();
+  }, [imageInputValue, banners]);
 
-      toast.success('Image successfully uploaded!');
-    }
-  }, [imageInputValue]);
-
-  if (isLoading || !data) return <Loader size={64} />;
+  if (categoriesAreLoading || bannerIsLoading || !categories)
+    return <SliderSkeleton />;
 
   async function handleDragEnd(event: DragEndEvent) {
     try {
-      const candidate = data?.content.find(
+      const candidate = categories?.content.find(
         (c) => c.id.toString() === event.active.id
       );
 
@@ -101,10 +149,9 @@ export const EditableCategoriesPresentation = () => {
       }
     } catch (err) {
       console.error('Error updating category coordinates:', err);
-
-      if (isAxiosQueryError(err)) {
-        toast.error(isErrorDataString(err.data) ? err.data : err.data.message);
-      }
+      handleDispatchError(err, {
+        position: 'top-right',
+      });
     }
   }
 
@@ -119,11 +166,17 @@ export const EditableCategoriesPresentation = () => {
           <p>Drag to reposition the badge anywhere on the image</p>
           <p className='w-44'>Logged in as Administrator</p>
         </div>
-        <Image
-          src='/images/categories-dog.png'
-          alt='big photo of a dog with variety of things around. Including leads, toys, cosmetics, collars, clothing and furniture.'
-          fill
-        />
+        {banners?.content && banners.content[0]?.name === 'banner_5' && (
+          <Image
+            src={
+              banners.content[0]?.imagePath
+                ? banners.content[0]?.imagePath
+                : '/images/categories-dog.png'
+            }
+            alt='Big photo with variety of things around. Including all categories available in the shop.'
+            fill
+          />
+        )}
         {categoriesCoords.map((cat) => (
           <Draggable id={`${cat.id}`} key={cat.id}>
             <CategoryBadge
@@ -146,7 +199,7 @@ export const EditableCategoriesPresentation = () => {
           <FileInput
             id='image'
             placeholder='Max file size 5 MB'
-            accept='.png,.jpeg,.gif,.webp'
+            accept='.png, .jpeg, .gif, .webp'
             {...getInputProps()}
             classNames={{
               root: 'form-root',
