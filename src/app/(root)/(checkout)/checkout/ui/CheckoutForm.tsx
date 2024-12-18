@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { LoadingOverlay, NumberFormatter } from '@mantine/core';
 
 import { useAppDispatch, useAppSelector } from '@/shared/redux/store';
@@ -19,12 +21,10 @@ import { cn } from '@/shared/lib/utils';
 import Loader from '@/components/Loader/Loader';
 import PromoCode from './PromoCode';
 import Checkbox from '@/components/Checkbox';
-import { useRouter } from 'next/navigation';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
 import { useCreateOrderAuthMutation } from '@/shared/api/cartApi';
 import { BG_COLORS } from '@/shared/constants/colors.const';
-import { toast } from 'react-toastify';
 import type { Order } from '@/shared/types/types';
 import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
 import type { ResponseError } from '@/shared/types/error.types';
@@ -66,6 +66,7 @@ export default function CheckoutForm() {
         email: contactData.email,
         commentOfManager: null,
         agreementToTerms,
+        taxAmount: tax,
         emailMeWithOffersAndNews: contactData.subscription,
         discountCode: currentDiscount?.code ?? '',
         cartProducts: cart.map((product) => ({

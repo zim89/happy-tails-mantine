@@ -268,6 +268,7 @@ export const HomePageSetting = () => {
         name: bannerProp,
         imagePath: imageLink,
         productPath,
+        type: 'SCROLL',
       }).unwrap();
     } else if (bannerId) {
       await updateBanner({
@@ -275,6 +276,7 @@ export const HomePageSetting = () => {
         name: bannerProp,
         imagePath: imageLink,
         productPath,
+        type: 'SCROLL',
       }).unwrap();
     } else throw new Error('Id is missing!');
   };

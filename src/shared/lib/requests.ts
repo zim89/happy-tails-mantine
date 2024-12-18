@@ -86,7 +86,8 @@ export const fetchLastFivePosts = async (): Promise<Post[]> => {
 
 export const publishImage = async (
   image: Blob | string,
-  title: string
+  title: string,
+  fallback = DEFAULT_CATEGORY_IMAGE
 ): Promise<string> => {
   if (process.env.NODE_ENV === 'production') {
     const params = new FormData();
@@ -104,6 +105,6 @@ export const publishImage = async (
 
     return res.data.data.link;
   } else {
-    return DEFAULT_CATEGORY_IMAGE;
+    return fallback;
   }
 };

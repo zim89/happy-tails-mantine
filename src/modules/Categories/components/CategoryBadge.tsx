@@ -32,7 +32,7 @@ export default function CategoryBadge({
             {children}
           </Link>
         ) : (
-          <button
+          <span
             style={{
               top: position.y,
               left: position.x,
@@ -40,7 +40,7 @@ export default function CategoryBadge({
             className='group absolute left-[--x] top-[--y] flex rounded-full bg-brand-grey-100/60 disabled:opacity-60'
           >
             {children}
-          </button>
+          </span>
         )}
       </>
     );

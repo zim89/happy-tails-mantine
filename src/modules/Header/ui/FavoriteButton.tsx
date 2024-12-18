@@ -2,30 +2,31 @@
 
 import { Indicator } from '@mantine/core';
 import { Heart } from 'lucide-react';
-import { useEffect } from 'react';
 import Link from 'next/link';
 
-import { useFindManyQuery } from '@/shared/api/favouriteApi';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { useFindManyQuery } from '@/shared/api/favouriteApi';
+import { useAppSelector } from '@/shared/redux/store';
+import { selectFavorites } from '@/shared/redux/favorites/favoritesSlice';
 
 export default function FavoriteButton() {
   const { currentUser } = useAuth();
-  const { data, isError, refetch } = useFindManyQuery({
-    limit: 100000000000,
-    page: 0,
-  });
 
-  const favourites = data?.content.length || 0;
+  const { data: serverFavourites } = useFindManyQuery(
+    {
+      page: 0,
+      limit: 1000000000,
+    },
+    {
+      skip: !currentUser,
+    }
+  );
 
-  useEffect(() => {
-    (async () => {
-      await refetch();
-    })();
-  }, [currentUser?.firstName, currentUser?.lastName]);
+  const localFavourites = useAppSelector(selectFavorites);
 
-  if (isError || !data) return null;
+  const favourites = serverFavourites?.content || localFavourites;
 
-  const hasFavorites = favourites > 0 && currentUser;
+  if (favourites == null) return null;
 
   return (
     <Link
@@ -34,8 +35,7 @@ export default function FavoriteButton() {
       aria-label='Go to Wishlist'
     >
       <Indicator
-        label={favourites}
-        disabled={!hasFavorites}
+        label={favourites?.length || 0}
         position='bottom-end'
         color='#F39324'
         size={14}

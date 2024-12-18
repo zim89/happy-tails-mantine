@@ -25,7 +25,7 @@ export default function Slide({
           fill
           alt='hero'
           priority
-          className={cn('z-10 object-cover', image)}
+          className={cn('z-10', image)}
           sizes='(max-width: 414px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 100vw'
         />
       </Link>

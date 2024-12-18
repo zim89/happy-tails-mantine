@@ -1,3 +1,9 @@
+'use client';
+
+// This page is rendering on the client side cause it has two versions: server side and local (storing in localstorage),
+// so when you switch to server side or vice verse (simply logout) then it crashes,
+// because of the difference of the page in server side and browser
+
 import { Breadcrumbs } from '@mantine/core';
 import Link from 'next/link';
 

@@ -7,12 +7,13 @@ import { Trash2 } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import AddToCartBtn from '@/components/AddToCartBtn/AddToCartBtn';
-import { useDeleteFavouriteMutation } from '@/shared/api/favouriteApi';
 import { Favourite } from '@/shared/types/favourite.types';
 import { useSelectProducts } from '@/shared/hooks/useSelectProducts';
 import Loader from '@/components/Loader';
 import { cn } from '@/shared/lib/utils';
 import { BG_COLORS } from '@/shared/constants/colors.const';
+import { useWishListController } from '@/components/AddToWishBtn/lib/useWishListController';
+import { useAuth } from '@/shared/hooks/useAuth';
 import { handleError } from '@/shared/helpers/error.helpers';
 import { toast } from 'react-toastify';
 
@@ -22,18 +23,27 @@ type Props = {
 };
 
 export const FavouriteCard = ({ favourite, router }: Props) => {
-  const sourceProduct = useSelectProducts((state) =>
-    state.find((p) => p.id === favourite.productId)
-  );
+  const { currentUser } = useAuth();
 
-  const [deleteItem, { isLoading: deletionIsOnProgress }] =
-    useDeleteFavouriteMutation();
+  const sourceProduct = useSelectProducts((state) => {
+    return state.find((p) => p.id === favourite.productId);
+  });
+
+  const { handleDelete, deletionOnProgress } = useWishListController(
+    currentUser
+      ? { kind: 'Server', product: sourceProduct, size: favourite.productSize }
+      : {
+          kind: 'Local',
+          product: sourceProduct,
+          size: favourite.productSize,
+        }
+  );
 
   const isAvailable = favourite.productStatus === 'IN STOCK';
 
-  const handleDelete = async (id: number) => {
+  const deleteFavourite = async (id: number) => {
     try {
-      await deleteItem({ id }).unwrap();
+      await handleDelete(id);
     } catch (err) {
       handleError(err, toast.error);
     }
@@ -103,14 +113,14 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
               />
             )}
           </div>
-          {!deletionIsOnProgress ? (
+          {!deletionOnProgress ? (
             <UnstyledButton
               classNames={{
                 root: 'bg-transparent flex items-center gap-1 text-brand-red-400 hover:text-brand-red-500',
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(favourite.productId);
+                deleteFavourite(favourite.productId);
               }}
             >
               <Trash2 size={16} />
