@@ -12,6 +12,8 @@ import {
   isErrorDataString,
 } from '@/shared/lib/helpers';
 import { useChangeStatusMutation } from '@/shared/api/ordersApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   children(toggle: () => void): React.ReactNode;
@@ -47,13 +49,8 @@ export default function UpdateStatus({ children, orderRow }: Props) {
       close();
       brandNotification('SUCCESS', 'Changes saved!');
     } catch (err) {
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
       close();
+      handleError(err, toast.error);
     }
   };
 

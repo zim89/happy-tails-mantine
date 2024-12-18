@@ -25,6 +25,8 @@ import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { FileType, FileTypeIcons } from '@/shared/constants/file-types.const';
 import { ImageModal } from '@/modules/ChatRoom/components/ImageModal';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const ContactForm = () => {
   const { isAuth, currentUser } = useAuth();
@@ -115,8 +117,7 @@ export const ContactForm = () => {
       router.push('/contacts/thank-you');
       form.reset();
     } catch (err) {
-      if (err instanceof Error)
-        throw new Error("Failed request, see what's happened: ", err);
+      handleError(err, toast.error);
     }
   };
 

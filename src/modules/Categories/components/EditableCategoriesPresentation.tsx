@@ -33,6 +33,7 @@ import {
   useUpdateBannerMutation,
   useGetByTypeQuery,
 } from '@/shared/api/bannerApi';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export const EditableCategoriesPresentation = () => {
   const { data: categories, isLoading: categoriesAreLoading } =
@@ -149,9 +150,7 @@ export const EditableCategoriesPresentation = () => {
       }
     } catch (err) {
       console.error('Error updating category coordinates:', err);
-      handleDispatchError(err, {
-        position: 'top-right',
-      });
+      handleError(err, toast.error);
     }
   }
 

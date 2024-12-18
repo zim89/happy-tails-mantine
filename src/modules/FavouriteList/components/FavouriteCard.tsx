@@ -14,6 +14,8 @@ import { cn } from '@/shared/lib/utils';
 import { BG_COLORS } from '@/shared/constants/colors.const';
 import { useWishListController } from '@/components/AddToWishBtn/lib/useWishListController';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   favourite: Favourite;
@@ -43,7 +45,7 @@ export const FavouriteCard = ({ favourite, router }: Props) => {
     try {
       await handleDelete(id);
     } catch (err) {
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
 

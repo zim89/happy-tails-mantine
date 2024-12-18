@@ -11,6 +11,8 @@ import classes from './classes.module.css';
 import PageHeader from '@/components/PageHeader';
 import { API_URL } from '@/shared/constants/env.const';
 import { brandNotification } from '@/shared/lib/helpers';
+import { toast } from 'react-toastify';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function AdminOrderHeader() {
   const [opened, setOpened] = useState(false);
@@ -29,8 +31,7 @@ export default function AdminOrderHeader() {
 
       brandNotification('SUCCESS', 'Copied!');
     } catch (err) {
-      console.log(err);
-      brandNotification('ERROR', "Couldn't copy. Please try again.");
+      handleError(err, toast.error);
     }
   };
 

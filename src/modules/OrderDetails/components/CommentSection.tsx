@@ -8,6 +8,8 @@ import { Edit2 } from 'lucide-react';
 import { useUpdateOrderMutation } from '@/shared/api/ordersApi';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
 import { Order } from '@/shared/types/types';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   order: Order;
@@ -49,7 +51,7 @@ export const CommentSection = ({ order }: Props) => {
     try {
       await processCommentSubmitting();
     } catch (err) {
-      handleDispatchError(err);
+      handleError(err, toast.error);
     }
   };
 

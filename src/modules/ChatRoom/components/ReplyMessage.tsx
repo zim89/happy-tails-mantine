@@ -7,6 +7,8 @@ import classes from '../classes.module.css';
 import { useReplyMutation } from '@/shared/api/feedbackApi';
 import type { Feedback } from '@/shared/types/feedback.types';
 import { brandNotification, handleDispatchError } from '@/shared/lib/helpers';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 export const ReplyMessage = ({ message }: { message: Feedback }) => {
   const [sendReply] = useReplyMutation();
@@ -37,9 +39,8 @@ export const ReplyMessage = ({ message }: { message: Feedback }) => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       await processReply(values);
-    } catch (error) {
-      handleDispatchError(error);
-      console.log(error);
+    } catch (err) {
+      handleError(err, toast.error);
     }
   };
 

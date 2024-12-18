@@ -22,6 +22,8 @@ import {
 } from '@/shared/lib/helpers';
 import { productTypeList } from '@/shared/lib/constants';
 import { publishImage } from '@/shared/lib/requests';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   productLine: Product;
@@ -126,13 +128,7 @@ const UpdateProductModal = ({ productLine }: Props) => {
       brandNotification('SUCCESS', 'Product updated successfully!');
     } catch (err) {
       clearAndClose();
-      if (isAxiosQueryError(err)) {
-        brandNotification(
-          'ERROR',
-          isErrorDataString(err.data) ? err.data : err.data.message
-        );
-      }
-      console.log(err);
+      handleError(err, toast.error);
     }
   };
 

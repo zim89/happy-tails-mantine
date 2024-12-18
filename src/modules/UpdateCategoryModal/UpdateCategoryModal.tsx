@@ -22,9 +22,9 @@ import { cn } from '@/shared/lib/utils';
 import {
   brandNotification,
   getImageSource,
-  handleDispatchError,
   isAxiosQueryError,
 } from '@/shared/lib/helpers';
+import { handleError as handleDispatchError } from '@/shared/helpers/error.helpers';
 import { Category } from '@/shared/types/types';
 import {
   TOO_LARGE_PAYLOAD,
@@ -32,6 +32,7 @@ import {
 } from '@/shared/constants/httpCodes';
 import { BrandFileInput } from '@/components/BrandFileInput';
 import { updateCategory } from './lib';
+import { toast } from 'react-toastify';
 
 type Props = {
   categoryLine: Category;
@@ -138,9 +139,8 @@ export default function UpdateCategoryModal({ categoryLine }: Props) {
         form.setFieldError('image', `${err.data}`);
       } else {
         clearAndClose();
-        handleDispatchError(err);
+        handleDispatchError(err, toast.error);
       }
-      console.error(err);
     }
   };
 

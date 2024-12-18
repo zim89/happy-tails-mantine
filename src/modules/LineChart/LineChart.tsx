@@ -24,6 +24,7 @@ import {
   filtersData,
 } from './lib/data';
 import { ChartSkeleton } from './components/ChartSkeleton';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function Analitycs() {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,9 +49,7 @@ export default function Analitycs() {
         setRows(res!.message.rows);
         setIsLoading(false);
       } catch (err) {
-        if (err instanceof Error) {
-          console.error(err);
-        }
+        handleError(err);
       }
     })();
   }, []);

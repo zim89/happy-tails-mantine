@@ -10,6 +10,8 @@ import classes from './classes.module.css';
 import ModalWindow from '@/components/ModalWindow/ModalWindow';
 import { ShippingMethod } from '@/shared/types/shippingMethod.types';
 import { useUpdateShippingMethodMutation } from '@/shared/api/shippingMethodsApi';
+import { handleError } from '@/shared/helpers/error.helpers';
+import { toast } from 'react-toastify';
 
 type Props = {
   shippingMethod: ShippingMethod;
@@ -32,8 +34,7 @@ export default function UpdateShippingMethodModal({
       await dispatch(shippingMethod).unwrap();
     } catch (err) {
       close();
-      handleDispatchError(err);
-      console.error(err);
+      handleError(err, toast.error);
     }
   };
   return (

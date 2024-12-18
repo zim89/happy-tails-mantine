@@ -23,13 +23,12 @@ import PromoCode from './PromoCode';
 import Checkbox from '@/components/Checkbox';
 import { APP_PAGES } from '@/shared/config/pages-url.config';
 import { useGetTaxQuery } from '@/shared/api/taxApi';
-import {
-  useCreateOrderAuthMutation,
-  type ResponseError,
-} from '@/shared/api/cartApi';
+import { useCreateOrderAuthMutation } from '@/shared/api/cartApi';
 import { BG_COLORS } from '@/shared/constants/colors.const';
 import type { Order } from '@/shared/types/types';
 import { CLIENT_ERROR } from '@/shared/constants/httpCodes';
+import type { ResponseError } from '@/shared/types/error.types';
+import { handleError } from '@/shared/helpers/error.helpers';
 
 export default function CheckoutForm() {
   const {
@@ -79,22 +78,13 @@ export default function CheckoutForm() {
 
       try {
         const response = await createOrder(formData).unwrap();
-        if ((response as ResponseError).status === CLIENT_ERROR) {
-          toast.error('Something went wrong. Please try again later.');
-          return;
-        }
-
-        console.log('PARAMS: ', formData);
-        console.log('RESPONSE: ', response);
-
         dispatch(clearCart());
         router.push(
           APP_PAGES.CONFIRMATION +
             `?email=${(response as Order).email}&orderNumber=${(response as Order).number}`
         );
-      } catch (error) {
-        toast.error('Something went wrong. Please try again later.');
-        console.log(error);
+      } catch (err) {
+        handleError(err, toast.error);
       }
     }
   };
