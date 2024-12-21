@@ -19,8 +19,8 @@ export const team: TeamMember[] = [
   {
     avatar: '/images/additional/about-us/zahrebelna.png',
     avatarStyles: {
-      objectPosition: '-15px -23px',
-      transform: 'scale(3.5) rotateZ(270deg)',
+      objectPosition: '-23px -30px',
+      transform: 'scale(3.5)',
     },
     name: 'Daria Zahrebelna',
     occupation: 'Project Manager',
@@ -35,7 +35,7 @@ export const team: TeamMember[] = [
   {
     avatar: '/images/additional/about-us/melnyk.png',
     avatarStyles: {
-      transform: 'scale(1.6)',
+      transform: 'scale(1.5)',
       objectPosition: '0px -10px',
     },
     name: 'Oleksandr Melnyk',
